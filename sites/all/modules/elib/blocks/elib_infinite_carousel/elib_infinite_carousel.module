@@ -1,0 +1,121 @@
+<?php
+
+function elib_infinite_carousel_block($op = 'list', $delta = 0, $edit = array()) {
+  $block = array();
+  $cache_name = 'elib_infinite_carousel_cache' . $delta;
+  $cache_table = 'cache';
+  
+  if ($op == 'list') {
+    $block[0]["info"] = t('eLIB infinite carousel');
+  }
+  else if ($op == 'configure' && $delta == 0) {
+    $form['items'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Number of items in the carousel'),
+      '#default_value' => variable_get('elib_infinite_carousel_block_items', 49),
+    );
+    $form['search'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Search query string'),
+      '#default_value' => variable_get('elib_infinite_carousel_block_query', '(dc.date = 2011 OR dc.date = 2010) AND dc.type = "Lydbog (online)"'),
+    );
+    return $form;
+  }
+  else if ($op == 'save' && $delta == 0) {
+    variable_set('elib_infinite_carousel_block_items',  (int) $edit['items']);
+    variable_set('elib_infinite_carousel_block_query',  $edit['search']);
+    variable_set('elib_infinite_carousel_block_title',  $edit['title']);
+
+    // now clear the cache...
+    cache_clear_all($cache_name, $cache_table);
+
+  }
+  else if ($op == 'view' && $delta == 0) {
+
+    module_load_include('client.inc', 'ting');
+    drupal_add_css( drupal_get_path('module', 'elib_infinite_carousel') . '/elib_infinite_carousel.css' );
+    drupal_add_js( drupal_get_path('module', 'elib_infinite_carousel') . '/elib_infinite_carousel.js' );
+
+    $cache = cache_get($cache_name, $cache_table);
+
+    if (isset($cache->data)) {
+      $books = $cache->data;
+    }
+    else {
+      $query = variable_get('elib_infinite_carousel_block_query', '(dc.date = 2011 OR dc.date = 2010) AND dc.type = "Lydbog (online)"');
+      $limit = variable_get('elib_infinite_carousel_block_items', 49);
+
+      $newlimit = 25;
+
+      $iterations = ceil($limit/$newlimit);
+
+      $books = array();
+      for($i=0;$i<$iterations;$i++){
+
+        $result = array();
+        $page = ($i+1);
+
+        if(($newlimit*$page) > $limit){
+          $newlimit =  $limit % $newlimit;
+        }
+
+        $result = ting_do_search($query, $page, $newlimit);
+
+        if (($result instanceof TingClientSearchResult) && ($result->numTotalObjects)) {
+          foreach ($result->collections as $collection) {
+            foreach ($collection->objects as $object) {
+              $books[] = $object;
+              if(count($books) == $limit){
+                break 3;
+              }
+            }
+          }
+        }
+      }
+
+      // only cache a valid result
+      // check that the cached data exists and is valid
+      if(count($books) > 0) {
+        cache_set($cache_name, $books, $cache_table, strtotime('+24 hours'));
+      }
+    }
+
+    shuffle($books);
+    foreach ($books as $object) {
+      elib_book_cover($object);
+      $alttext = t('@titel af @forfatter',array('@titel' => $object->title, '@forfatter' => $object->creators_string));
+      $image_url = $image_url = ting_covers_collection_url($object, '120_x');
+      $image = theme('image', $image_url, $alttext, $alttext, null, false);
+
+      $list .= '
+        <li>
+          <a href="' . $object->url . '" title="' . $alttext . '">
+            ' . $image . '
+          </a>
+        </li>
+      ';
+//      $list .= '
+//        <li>
+//          <a href="' . $object->url . '" title="' . $alttext . '">
+//            ' . $image . '
+//            <h4>' . $object->title . '</h4>
+//            <h5>' . $object->creators_string . '</h5>
+//          </a>
+//        </li>
+//      ';
+    }
+
+    $block['subject'] = variable_get('elib_infinite_carousel_block_title', t("Nyeste lydbøger"));
+    $block['content'] = '
+      <div class="infiniteCarousel">
+        <div class="wrapper">
+          <ul>
+          '.$list.'
+          </ul>
+        </div>
+      </div>
+    ';
+  }
+
+  return $block;
+}

@@ -1,0 +1,340 @@
+<?php
+
+function netsound_menu_alter(&$items){
+  unset($items['user/password']);
+  unset($items['user/register']);
+}
+
+function netsound_menu(){
+  $items = array();
+  $items['admin/settings/netsound'] = array(
+    'title'            => 'Netsound settings',
+    'description'      => 'settings for Netsound',
+    'access arguments' => array('access administration pages'),
+    'page callback'    => 'drupal_get_form',
+    'page arguments'   => array('netsound_settings_form'),
+    'file'             => 'netsound.admin.inc',
+  );
+  return $items;
+}
+
+function netsound_block($op = 'list', $delta = 0, $edit = array()) {
+  if ($op == 'list') {
+    $blocks[0]['info'] = t('Genre: Keywords');
+    $blocks[1]['info'] = t('Genre: Categories');
+    $blocks[2]['info'] = t('FAQ BLOCK');
+    $blocks[3]['info'] = t('Zero Search top');
+    $blocks[4]['info'] = t('Shortcut menu');
+    $blocks[5]['info'] = t('Contact ELIB');
+    $blocks[6]['info'] = t('Contact NETLYD');
+    return $blocks;
+  }
+  elseif ($op == 'view') {
+    switch($delta){
+      case 0:
+        $block['subject'] = t('Keywords');
+
+         
+        $keywords = explode(',',variable_get('netsound_keywords', ''));
+        if(is_array($keywords)){
+          foreach($keywords as $keyword){
+            $keyword = trim($keyword);
+            $linked[] = l($keyword,'ting/search/'.$keyword);
+          }
+          drupal_add_css(drupal_get_path('module', 'netsound') .'/styles.css');
+          $block['content'] = '<div class="keywords-slider"><div class="canvas">'.implode(" ",$linked).'</div></div>';
+        }
+        break;
+      case 1:
+        //$block['subject'] = t('Categories');
+        //$block['content'] = 'dflksæfd';
+        break;
+      case 2:
+         
+         
+        $content .= faq_page(arg(1));
+         
+        $block['content'] = $content;
+        break;
+      case 3:
+         
+        drupal_set_message('<p style="strong">'.t('Din søgning på <strong>!query</strong> gav ingen resultater. ',array('!query' => strip_tags(arg(1)))).'</p><p>'.t('Hjælp til søgning:<br />- Prøv at bruge synonymer. Du søger måske efter noget, der bruger andre ord. - Gør søgningen mere generel. Prøv mere generelle udtryk i stedet for konkrete udtryk. - Du kan trunkere i netlydbog.dk med "". Skriver du "hund", får du resultat på ord som begynder på "hund", altså hund, hundene, hundens osv.').'</p>');
+        
+        
+        //<p>'.t('Prøv evt din søgning på <a href="http://bibliotek.dk/vis.php?origin=sogning&field1=fritekst&term1=!query&ma=lb">bibliotek.dk</a>',array('!query' => strip_tags(arg(1)))).'</p>');
+         
+        break;
+      case 4:
+        $block['content'] = drupal_get_form('netsound_shortcutmenu_form');
+        break;
+      case 5:
+        $block['content'] = drupal_get_form('netsound_contact_elib_form');
+        break;
+      case 6:
+        $block['content'] = drupal_get_form('netsound_contact_netlyd_form');
+        break;
+    }
+    return $block;
+  }
+}
+
+function netsound_contact_netlyd_form($form_state){
+  $form = array();
+   $form['contact_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Navn'),
+  );
+ 
+  $form['contact_mail'] = array(
+    '#type' => 'textfield',
+    '#title' => t('E-mail'),
+    '#required' => true
+  );
+  
+  $form['contact_library'] = array(
+    '#type' => 'select',
+    '#title' => t('Vælg dit bibliotek'),
+    '#options' => elib_libraries_get_libraries(),
+  	'#required' => true,
+  );
+  global $user;
+  $userinfo = elib_user_get_cred($user->uid); 
+  if($userinfo['lib']){
+    $form['contact_library']['#default_value'] = $userinfo['lib'];
+    $form['contact_library']['#disabled'] = true;
+  }
+  $form['problem'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Kommentar')
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Send besked')
+  );
+  $form['#submit'][] = 'netsound_contact_form_submit';
+  
+  return $form;
+  
+}
+
+
+function netsound_contact_elib_form($form_state){
+  $form = array();
+  
+  $form['contact_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Navn'),
+  );
+  $form['contact_ssn'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Lånerkortnr./CPR'),
+  );  
+  $form['contact_mail'] = array(
+    '#type' => 'textfield',
+    '#title' => t('E-mail'),
+    '#required' => true
+  );
+  $form['contact_library'] = array(
+    '#type' => 'select',
+    '#title' => t('Vælg dit bibliotek'),
+    '#options' => elib_libraries_get_libraries(),
+  	'#required' => true
+  );
+  global $user;
+  $userinfo = elib_user_get_cred($user->uid); 
+  if($userinfo['lib']){
+    $form['contact_library']['#default_value'] = $userinfo['lib'];
+    $form['contact_library']['#disabled'] = true;
+  }
+  $form['book_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Bogtitel'),
+  );
+  $form['mp3player'] = array(
+    '#type' => 'textfield',
+    '#title' => t('MP3 Afspiller'),
+  );
+  $form['wmp_version'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Version af Windows Media Player'),
+  );
+  $form['os'] = array(
+    '#type' => 'select',
+    '#title' => t('Mit styresystem er'),
+    '#options' => array(
+      'win7' => 'Windows 7',
+      'vista' => 'Windows Vista',
+      'winxp' => 'Windows XP',
+      'win2k' => 'Windows 2000',
+      'winnt' => 'Windows NT',
+      'win98' => 'Windows 98',
+      'osx' => 'MacOS 10 eller nyere',
+      'os9' => 'MACOS 9 eller ældre',
+      'linux' => 'Linux'
+    ),
+  );
+  $form['browser'] = array(
+    '#type' => 'select',
+    '#title' => t('Mit internetprogram er'),
+    '#options' => array(
+      'ie8' => 'Internet Explorer 8',
+      'ie7' => 'Internet Explorer 7',
+      'ie6' => 'Internet Explorer 6 eller ældre',
+      'ff' => 'Mozilla Firefox',
+      'safari' => 'Safari',
+      'chrome' => 'Google Chrome',
+      'opera' => 'Opera',
+      'netscape' => 'Netscape',
+    ),
+  );
+  $form['problem'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Problem beskrivelse')
+  );
+  $form['submit'] = array(
+    '#prefix' => '<p>'.t('OBS tekst!').'</p>',
+    '#type' => 'submit',
+    '#value' => t('Send besked')
+  );
+  $form['#submit'][] = 'netsound_contact_form_submit';
+  
+  return $form;
+}
+
+
+function netsound_shortcutmenu_form($form_state){
+  $form  = array();
+  
+  $questions = explode("\n",variable_get('netsound_shortcutmenu', ''));
+  if(is_array($questions)){
+    foreach($questions as $line){
+      list($label,$link) = explode('|',$line);
+      $options[] = trim($label);
+    }
+  }
+  
+  $form['shortcut'] = array(
+		'#type' => 'radios',
+		'#prefix' => '<strong><p>'.t('Drejer din henvendelse sig om et af de følgende punkter?').'</p></strong><p>'.t('Hvis du vælger et af disse punkter istedet for at skrive direkte til os vil ekspeditionstiden være væsentlig kortere. På forhånd tak.').'</p>',
+    #'#description' => ,
+    '#options' => $options,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Kontakt')
+  );
+  $form['#submit'][] = 'netsound_shortcutmenu_form_submit';
+  return $form;
+}
+
+function netsound_contact_form_submit($form, &$form_state){
+  
+  $header = array('Form Key', 'Value');
+  $rows = array();
+  
+  foreach($form_state['values'] as $key => $value){
+    $rows[] = array(
+      array(
+      	'data' => t('mailkey_'.$key),
+      ),
+      array(
+      	'data' => $value,
+      )
+    );
+  }
+  array_pop($rows);
+  array_pop($rows);
+  array_pop($rows);
+  array_pop($rows);
+  //array_pop($rows);  
+  
+  $out = theme('table', $header, $rows, $table_attributes);
+  
+  $params['subject'] = t('Support besked fra netlydbog.dk');
+  $params['body'] = $out;
+  
+  $mail = variable_get('netsound_elibmail', '');
+  if($form_state['values']['form_id'] == 'netsound_contact_netlyd_form'){
+    $mail = variable_get('netsound_supportmail', '');
+  }
+  
+  
+  drupal_mail('netsound','somekey',$mail,language_default(),$params,$form_state['values']['contact_mail'],true);
+  
+  drupal_set_message(t('Tak for din henvendelse. Vi stræber på at behandle den hurtigst muligt.'));
+  drupal_goto(); // frontpage
+}
+
+function netsound_shortcutmenu_form_submit($form, &$form_state){
+  $questions = explode("\n",variable_get('netsound_shortcutmenu', ''));
+  if(is_array($questions)){
+    foreach($questions as $line){
+      list($label,$link) = explode('|',$line);
+      $options[] = url(trim($link));
+    }
+  }
+  drupal_goto($options[$form_state['values']['shortcut']]);
+}
+
+
+function netsound_get_genres_from_categories($tid){
+  $sql = '
+    SELECT node.nid AS nid,
+      content_type_category_genre.field_amount_value AS amount,
+      node.type AS node_type,
+      node.vid AS node_vid,
+      content_type_category_genre.field_searchphrase_value AS searchphrase,
+      node.title AS node_title
+    FROM node node 
+    LEFT JOIN content_type_category_genre ON node.vid = content_type_category_genre.vid
+    INNER JOIN term_node term_node ON node.vid = term_node.vid
+    WHERE term_node.tid = %s
+	';
+  $rows = array();
+
+  $res = db_query($sql,array('%s' => $tid));
+  while($row = db_fetch_array($res)){
+    $rows[] = $row;
+  }
+  return $rows;
+}
+function netsound_form_alter(&$form, $form_state, $form_id) {
+
+  if($form_id == 'contact_mail_page'){
+
+    $form['mail']['#size'] = 29;
+    unset($form['name']);
+    unset($form['subject']);
+    unset($form['copy']);
+     
+  }
+}
+
+function netsound_show_videolink($tid){
+  $res = db_query('SELECT node.nid AS nid
+ FROM node node 
+ INNER JOIN term_node term_node ON node.vid = term_node.vid
+ WHERE (node.type in ("helpvideo")) AND (term_node.tid = '.$tid.')
+  ');
+  $row =  db_fetch_array($res);
+  return node_load($row['nid']);
+
+}
+
+function netsound_mail($key, &$message, $params) {
+
+  $headers = array(
+    'MIME-Version' => '1.0',
+    'Content-Type' => 'text/html; charset=UTF-8; format=flowed',
+    'Content-Transfer-Encoding' => '8Bit',
+    'X-Mailer' => 'Drupal'
+  );
+
+  foreach ($headers as $key => $value) {
+    $message['headers'][$key] = $value;
+  }
+
+  $message['subject'] = $params['subject'];
+  $message['body'] = $params['body'];
+}
+?>
