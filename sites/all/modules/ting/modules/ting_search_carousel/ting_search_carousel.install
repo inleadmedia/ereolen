@@ -1,0 +1,40 @@
+<?php
+// $Id$
+
+/**
+ * @file ting_search_carousel.module
+ * Performs autocomplete for the Ting search box.
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function ting_search_carousel_install() {
+	drupal_install_schema('ting_search_carousel');
+
+  variable_set('ting_search_carousel_searches', array());
+	
+}
+  
+/**
+ * Implementation of hook_uninstall().
+ */
+function ting_search_carousel_uninstall() {
+	drupal_uninstall_schema('ting_search_carousel');
+	
+	variable_del('ting_search_carousel_searches');
+	
+	if ($preset = imagecache_preset_by_name('ting_search_carousel'))
+	{
+    imagecache_preset_delete($preset);	
+	}
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function ting_search_carousel_schema() {
+	$schema = array(); 
+	$schema['cache_ting_search_carousel'] = drupal_get_schema_unprocessed('system', 'cache');
+	return $schema;
+}
