@@ -35,3 +35,33 @@
 .view-latest-news .views-row.views-row-first {
   margin-top: 0;
 }
+
+ul.main-menu li {
+  padding: 0;
+  margin: 0;
+  height: 112px;
+  width: 80px;
+  display: inline-block;
+  background-repeat: no-repeat;
+}
+
+ul.main-menu li a {
+  display:none;
+}
+
+ul.main-menu li:hover {
+  cursor: pointer;
+}
+
+ul.main-menu li.menu-326 {        background-image: url("../images/forside.png"); }
+ul.main-menu li.menu-326:hover {  background-image: url("../images/forside_hover.png"); }
+ul.main-menu li.menu-326.active { background-image: url("../images/forside_active.png"); }
+ul.main-menu li.menu-328 {        background-image: url("../images/emner.png"); }
+ul.main-menu li.menu-328:hover {  background-image: url("../images/emner_hover.png"); }
+ul.main-menu li.menu-328.active { background-image: url("../images/emner_active.png"); }
+ul.main-menu li.menu-829 {        background-image: url("../images/hjaelp.png"); }
+ul.main-menu li.menu-829:hover {  background-image: url("../images/hjaelp_hover.png"); }
+ul.main-menu li.menu-829.active { background-image: url("../images/hjaelp_active.png"); }
+ul.main-menu li.menu-331 {        background-image: url("../images/logind.png"); }
+ul.main-menu li.menu-331:hover {  background-image: url("../images/logind_hover.png"); }
+ul.main-menu li.menu-331.active { background-image: url("../images/logind_active.png"); }
