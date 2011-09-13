@@ -29,16 +29,15 @@ function litteratursiden_feed_compare_menu() {
 function litteratursiden_feed_compare_theme() {
   return array(
     'litteratursiden_feed_compare_front' => array(
-      'arguments' => array('objects' => NULL),
+      'arguments' => array('items' => NULL),
       'template' => 'litteratursiden_feed_compare_front'
     ),
     'litteratursiden_feed_compare_page' => array(
-      'arguments' => array('objects' => NULL),
+      'arguments' => array('items' => NULL),
       'template' => 'litteratursiden_feed_compare_page'
     ),
   );
 }
-
 
 /**
  * Get cached search result from feed-to-TING search/parse process.
@@ -52,10 +51,10 @@ function litteratursiden_feed_compare_get_cached_feed($items) {
   $cache = cache_get('litteratursiden_feed_compare_cache');
   if (empty($cache->data)) {
     $ret = litteratursiden_feed_compare_get_feed($items_on_page);
-    cache_set('litteratursiden_feed_compare_cache', $ret, 'cache', time() + $lifetime); 
+    cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime); 
   }
   else {
-    $ret = $cache->data;
+    $ret = unserialize($cache->data);
   }
 
   if ($items < $items_on_page) {
@@ -67,6 +66,17 @@ function litteratursiden_feed_compare_get_cached_feed($items) {
   }
 
 }
+     
+/**
+ * Convert TING object to array for serializing in cache.
+ */
+function litteratursiden_feed_compare_object_to_array($object) {
+  $array=array();
+  foreach ($object as $member=>$data) {
+    $array[$member]=$data;
+  }
+  return $array;
+}   
 
 /**
  * Gets feed from litteratursiden.dk and performs search in TING datawell.
@@ -88,7 +98,10 @@ function litteratursiden_feed_compare_get_feed($items) {
   while (count($ret) != $items) {
 
     // Get feed from litteratursiden.dk and decode it.
-    $feed_url = 'http://www.litteratursiden.dk/service/recommendations?count=25&offset=' . $i*25;
+
+    $feed_main_url = variable_get('litteratursiden_feed_compare_feed_url', 'http://www.litteratursiden.dk/service/recommendations');
+    $feed_url = $feed_main_url . '?count=25&offset=' . $i*25;
+    //$feed_url = 'http://www.litteratursiden.dk/service/recommendations?count=25&offset=' . $i*25;
     $feed_json_data = file_get_contents($feed_url,TRUE);
     $feed = json_decode($feed_json_data, true);
 
@@ -121,7 +134,7 @@ function litteratursiden_feed_compare_get_feed($items) {
         if ($index) {
 
           // $i*25 - makes indexes not to collide in Return array from feed to feed (if many).
-          $ret[$index+$i*25] = $object;
+          $ret[$index+$i*25] = litteratursiden_feed_compare_object_to_array($object);
 
           if (count($ret) == $items) {
             break 3;
@@ -129,7 +142,7 @@ function litteratursiden_feed_compare_get_feed($items) {
         }
       }
     }
-    $i++;
+   $i++;
   }
 
   // Sort Return array according to item`s order in feed 

@@ -24,8 +24,8 @@ function litteratursiden_feed_compare_feed_and_compare_page_render($subtype, $co
   $block->title = check_plain('Feed and Compare (page)');
 
   $items_on_page = variable_get('litteratursiden_feed_compare_items_on_page', '10');
-  $objects = litteratursiden_feed_compare_get_cached_feed($items_on_page);
+  $items = litteratursiden_feed_compare_get_cached_feed($items_on_page);
 
-  $block->content = theme('litteratursiden_feed_compare_page', $objects);
+  $block->content = theme('litteratursiden_feed_compare_page', $items);
   return $block;
 }

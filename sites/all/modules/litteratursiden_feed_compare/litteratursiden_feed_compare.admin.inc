@@ -18,6 +18,13 @@ function litteratursiden_feed_compare_admin(&$form_state) {
     '#title' => t('Litteratursiden Feed and Compare settings'),
   );
 
+  $form['litteratursiden_feed_compare']['feed_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('URL to feed'),
+    '#required' => FALSE,
+    '#default_value' => variable_get('litteratursiden_feed_compare_feed_url', 'http://www.litteratursiden.dk/service/recommendations'),
+  );
+
   $form['litteratursiden_feed_compare']['items_on_front'] = array(
     '#type' => 'textfield',
     '#title' => t('Items shown on front'),
