@@ -52,10 +52,10 @@ function litteratursiden_feed_compare_get_cached_feed($items) {
   $cache = cache_get('litteratursiden_feed_compare_cache');
   if (empty($cache->data)) {
     $ret = litteratursiden_feed_compare_get_feed($items_on_page);
-    cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime); 
+    cache_set('litteratursiden_feed_compare_cache', $ret, 'cache', time() + $lifetime); 
   }
   else {
-    $ret = unserialize($cache->data);
+    $ret = $cache->data;
   }
 
   if ($items < $items_on_page) {
@@ -75,75 +75,65 @@ function litteratursiden_feed_compare_get_feed($items) {
 
   module_load_include('client.inc', 'ting');
 
-  //$cache = cache_get('litteratursiden_feed_compare_cache');
-  //if (empty($cache->data)) {
+  // main Return array.
+  $ret = array();
 
-    // Return array.
-    $ret = array();
+  // Array to store ISBNs from feed. Later it will become 2-dimensional
+  $feed_isbn = array();
 
-    // Array to store ISBNs from feed. Later it will become 2-dimensional
-    $feed_isbn = array();
+  // Index for counting feeds.
+  $i = 0;
 
-    // Index for counting feeds.
-    $i = 0;
+  // Main loop, works until Return array is filled up with necessary amount of items.
+  while (count($ret) != $items) {
 
-    // Main loop, works until return array is filled up with necessary amount of items.
-    while (count($ret) != $items) {
+    // Get feed from litteratursiden.dk and decode it.
+    $feed_url = 'http://www.litteratursiden.dk/service/recommendations?count=25&offset=' . $i*25;
+    $feed_json_data = file_get_contents($feed_url,TRUE);
+    $feed = json_decode($feed_json_data, true);
 
-      // Get feed from litteratursiden.dk and decode it.
-      $feed_json_data = file_get_contents('http://www.litteratursiden.dk/service/recommendations?count=25&offset=' . $i*25,TRUE);
-      $feed = json_decode($feed_json_data, true);
+    $query = '';
 
-      $query = '';
+    // Now array for ISBNs becomes 2d array, just to store ISBNs from each feed separately.
+    $feed_isbn[$i] = array();
 
-      // Now array for ISBNs becomes 2d array, just to store ISBNs from each feed separately.
-      $feed_isbn[$i] = array();
-
-      // Generating query string to search by ISBNs in TING and perform search.
-      foreach($feed as $key => $val) {
-        if (is_numeric($key)) {
-          $query .= $val['isbn'] . ' OR ';
-          $feed_isbn[$i][] = $val['isbn'];
-        }
+    // Generating query string to search by ISBNs in TING and perform search.
+    foreach($feed as $key => $val) {
+      if (is_numeric($key)) {
+        $query .= $val['isbn'] . ' OR ';
+        $feed_isbn[$i][] = $val['isbn'];
       }
-      $query = substr($query, 0, strlen($query)-4);
-      $search = ting_do_search($query,1,25);
+    }
+    $query = substr($query, 0, strlen($query)-4);
+    $search = ting_do_search($query,1,25);
 
-      // Parse search object for items with type 'book' and write suitable items into return array.
-      foreach($search->collections as $collection) {
-        foreach($collection->objects as $object) {
-          if ($object->type == 'Bog') {
-            $index = NULL;
+    // Parse search object for items with type 'book' and write suitable items into Return array.
+    foreach($search->collections as $collection) {
+      foreach($collection->objects as $object) {
+        $index = NULL;
 
-            // Check if current search item exist in current feed array.
-            $index = array_search($object->record['dc:identifier']['dkdcplus:ISBN'][0],$feed_isbn[$i]);
-            $isbn = $object->record['dc:identifier']['dkdcplus:ISBN'][0];
+        // Check if current search item exist in current feed array.
+        $index = array_search($object->record['dc:identifier']['dkdcplus:ISBN'][0],$feed_isbn[$i]);
+        $isbn = $object->record['dc:identifier']['dkdcplus:ISBN'][0];
 
-            // If item exist - write it into return array with index pointing to it`s position in feed,
-            // it is necessary for sorting items in return array according to feed.
-            if ($index) {
+        // If item exist - write it into Return array with index pointing to it`s position in feed,
+        // it is necessary for sorting items in Return array according to feed.
+        if ($index) {
 
-              // $i*25 - makes indexes not to collide in return array from feed to feed (if many).
-              $ret[$index+$i*25] = $object;
+          // $i*25 - makes indexes not to collide in Return array from feed to feed (if many).
+          $ret[$index+$i*25] = $object;
 
-              if (count($ret) == $items) {
-                break 3;
-              }
-            }
+          if (count($ret) == $items) {
+            break 3;
           }
         }
       }
-      $i++;
     }
-    // Sort return array according to item`s order in feed 
-    ksort($ret);
+    $i++;
+  }
 
-    //$lifetime = variable_get('litteratursiden_feed_compare_cache_lifetime', '360');
-    //cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime); 
-  //}
-  //else {
-    //$ret = unserialize($cache->data);
-  //}
+  // Sort Return array according to item`s order in feed 
+  ksort($ret);
 
   return $ret;
 }
