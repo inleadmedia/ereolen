@@ -13,3 +13,15 @@
     rgb(255,255,255) 55%
   );
 }
+
+#site-header {
+  height: 114px;
+}
+
+#branding {
+  margin-top: 56px;
+}
+
+#search-box {
+  margin-top: 50px;
+}
