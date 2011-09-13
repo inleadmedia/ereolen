@@ -1,0 +1,158 @@
+<?php
+// $Id: $
+
+/**
+ * @file
+ *
+ */
+
+
+/**
+ * Implementation of hook_menu
+ */
+function litteratursiden_feed_compare_menu() {
+  $items = array();
+  $items['admin/settings/litteratursiden_feed_compare'] = array(
+    'title' => 'litteratursiden feed compare title',
+    'description' => t('litteratursiden feed compare descr'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('litteratursiden_feed_compare_admin'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'litteratursiden_feed_compare.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function litteratursiden_feed_compare_theme() {
+  return array(
+    'litteratursiden_feed_compare_front' => array(
+      'arguments' => array('objects' => NULL),
+      'template' => 'litteratursiden_feed_compare_front'
+    ),
+    'litteratursiden_feed_compare_page' => array(
+      'arguments' => array('objects' => NULL),
+      'template' => 'litteratursiden_feed_compare_page'
+    ),
+  );
+}
+
+
+/**
+ * Get cached search result from feed-to-TING search/parse process.
+ */
+function litteratursiden_feed_compare_get_cached_feed($items) {
+
+  $lifetime = variable_get('litteratursiden_feed_compare_cache_lifetime', '360');
+  $items_on_page = variable_get('litteratursiden_feed_compare_items_on_page', '10');
+  $items_on_front = variable_get('litteratursiden_feed_compare_items_on_front', '2');
+
+  $cache = cache_get('litteratursiden_feed_compare_cache');
+  if (empty($cache->data)) {
+    $ret = litteratursiden_feed_compare_get_feed($items_on_page);
+    cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime); 
+  }
+  else {
+    $ret = unserialize($cache->data);
+  }
+
+  if ($items < $items_on_page) {
+    $return = array_chunk($ret, $items, true);
+    return $return[0];
+  }
+  else {
+    return $ret;
+  }
+
+}
+
+/**
+ * Gets feed from litteratursiden.dk and performs search in TING datawell.
+ */
+function litteratursiden_feed_compare_get_feed($items) {
+
+  module_load_include('client.inc', 'ting');
+
+  //$cache = cache_get('litteratursiden_feed_compare_cache');
+  //if (empty($cache->data)) {
+
+    // Return array.
+    $ret = array();
+
+    // Array to store ISBNs from feed. Later it will become 2-dimensional
+    $feed_isbn = array();
+
+    // Index for counting feeds.
+    $i = 0;
+
+    // Main loop, works until return array is filled up with necessary amount of items.
+    while (count($ret) != $items) {
+
+      // Get feed from litteratursiden.dk and decode it.
+      $feed_json_data = file_get_contents('http://www.litteratursiden.dk/service/recommendations?count=25&offset=' . $i*25,TRUE);
+      $feed = json_decode($feed_json_data, true);
+
+      $query = '';
+
+      // Now array for ISBNs becomes 2d array, just to store ISBNs from each feed separately.
+      $feed_isbn[$i] = array();
+
+      // Generating query string to search by ISBNs in TING and perform search.
+      foreach($feed as $key => $val) {
+        if (is_numeric($key)) {
+          $query .= $val['isbn'] . ' OR ';
+          $feed_isbn[$i][] = $val['isbn'];
+        }
+      }
+      $query = substr($query, 0, strlen($query)-4);
+      $search = ting_do_search($query,1,25);
+
+      // Parse search object for items with type 'book' and write suitable items into return array.
+      foreach($search->collections as $collection) {
+        foreach($collection->objects as $object) {
+          if ($object->type == 'Bog') {
+            $index = NULL;
+
+            // Check if current search item exist in current feed array.
+            $index = array_search($object->record['dc:identifier']['dkdcplus:ISBN'][0],$feed_isbn[$i]);
+            $isbn = $object->record['dc:identifier']['dkdcplus:ISBN'][0];
+
+            // If item exist - write it into return array with index pointing to it`s position in feed,
+            // it is necessary for sorting items in return array according to feed.
+            if ($index) {
+
+              // $i*25 - makes indexes not to collide in return array from feed to feed (if many).
+              $ret[$index+$i*25] = $object;
+
+              if (count($ret) == $items) {
+                break 3;
+              }
+            }
+          }
+        }
+      }
+      $i++;
+    }
+    // Sort return array according to item`s order in feed 
+    ksort($ret);
+
+    //$lifetime = variable_get('litteratursiden_feed_compare_cache_lifetime', '360');
+    //cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime); 
+  //}
+  //else {
+    //$ret = unserialize($cache->data);
+  //}
+
+  return $ret;
+}
+
+/**
+ * Implementation of hook_ctools_plugin_directory().
+ */
+function litteratursiden_feed_compare_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && !empty($plugin)) {
+    return "plugins/$plugin";
+  }
+}
