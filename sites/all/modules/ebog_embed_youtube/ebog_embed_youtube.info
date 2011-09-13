@@ -1,0 +1,5 @@
+name = Ebog Embed Youtube
+description = Plugin to embed video from youtube
+package = INLEAD
+core = 6.x
+version = 0.1
