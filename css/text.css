@@ -33,7 +33,38 @@
   font-style: normal;
 }
 
-h2.pane-title {
+body {
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+h2.pane-title,
+#sidebar-first .block h2 {
   font: 18px/28px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
   text-transform: uppercase;
+}
+
+#sidebar-first .block ul li a,
+.view-latest-news .views-field-title a {
+  color: #89104c;
+  text-decoration: none;
+}
+
+#sidebar-first .block ul li a:hover,
+.view-latest-news .views-field-title a:hover {
+  color: #cb1e73;
+  text-decoration: underline;
+}
+
+ul li h5 {
+  display: none;
+}
+
+.view-latest-news .views-field-title {
+  font: 14px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
+}
+
+.view-latest-news .views-field-created {
+  font: 12px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
+  color: #40453f;
 }
