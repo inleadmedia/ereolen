@@ -11,6 +11,7 @@ base theme = omega
 ; ------- Declare default stylesheets
 
 stylesheets[all][] = css/regions.css
+stylesheets[all][] = css/text.css
 
 ; ------- Declare default javascript includes
 
