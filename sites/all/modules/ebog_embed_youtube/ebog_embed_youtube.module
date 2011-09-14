@@ -6,22 +6,6 @@
 
 
 /**
- * Implementation of hook_menu
- */
-function ebog_embed_youtube_menu() {
-  //$items = array();
-  //$items['admin/settings/ebog_embed_youtube'] = array(
-    //'title' => 'ebog embed youtube',
-    //'description' => t('ebog embed youtube'),
-    //'page callback' => 'drupal_get_form',
-    //'page arguments' => array('ebog_embed_youtube_admin'),
-    //'access arguments' => array('administer site configuration'),
-    //'file' => 'ebog_embed_youtube.admin.inc',
-  //);
-  //return $items;
-}
-
-/**
  * Implementation of hook_theme().
  */
 function ebog_embed_youtube_theme() {

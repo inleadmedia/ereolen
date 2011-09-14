@@ -14,7 +14,7 @@ function ebog_embed_youtube_embed_youtube_ctools_content_types() {
     'description' => t('Ebog Embed Youtube description.'),
     'single' => TRUE,
     'category' => array('INLEAD'),
-    'no title override' => TRUE,
+    //'no title override' => TRUE,
   );
 }
 
@@ -27,7 +27,6 @@ function ebog_embed_youtube_embed_youtube_content_type_render($subtype, $conf, $
   $block->content = theme('ebog_embed_youtube', $conf);
   return $block;
 }
-
 
 /**
  * 'Edit form' callback for the content type.
@@ -56,7 +55,19 @@ function ebog_embed_youtube_embed_youtube_content_type_edit_form(&$form, &$form_
 }
 
 function ebog_embed_youtube_embed_youtube_content_type_edit_form_submit(&$form, &$form_state) {
-  $embed_url = str_replace('http://www.youtube.com/watch?v=', 'http://www.youtube.com/embed/', $form_state['values']['embed_url']);
-  $form_state['conf']['embed_url'] = $embed_url;
+  $video_url = $form_state['values']['embed_url'];
+
+  $query = parse_url($video_url, PHP_URL_QUERY);
+  $query = explode('&',$query);
+  $embed_code = '';
+  foreach ($query as $param) {
+    if (strrpos($param, 'v=') == 0) {
+      $embed_code = substr($param, 2);
+      break;
+    }
+  }
+
+  $form_state['conf']['embed_url'] = $form_state['values']['embed_url'];
+  $form_state['conf']['embed_code'] = $embed_code;
   $form_state['conf']['descr'] = $form_state['values']['descr'];
 }
