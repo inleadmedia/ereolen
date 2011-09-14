@@ -65,3 +65,52 @@ ul.main-menu li.menu-829.active { background-image: url("../images/hjaelp_active
 ul.main-menu li.menu-331 {        background-image: url("../images/logind.png"); }
 ul.main-menu li.menu-331:hover {  background-image: url("../images/logind_hover.png"); }
 ul.main-menu li.menu-331.active { background-image: url("../images/logind_active.png"); }
+
+/**
+ * SEARCH FORM
+ */
+#search-theme-form,
+#search-theme-form .form-item,
+ #search-theme-form .form-text,
+#search-theme-form .form-submit {
+  display: inline-block;
+  zoom: 1; /* ie7 hack for display:inline-block */
+  *display: inline;
+  border: 0 none;
+  outline: 0 none;
+  padding: 0;
+  margin: 0;
+  background: none;
+}
+#search-theme-form {
+  background: #FFFFFF;
+  padding: 3px 3px 3px 8px;
+  border: 2px solid #dbddda;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+#search-theme-form .form-item {
+  background-image: url("../images/magnifier.png");
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+#search-theme-form .form-text {
+  color: #8c938b;
+  padding: 6px 6px 4px 46px;
+  font-size: 15px;
+}
+#search-theme-form .form-submit {
+  background-color: #A5165D;
+  color: #FFFFFF;
+  height: 30px;
+  width: 60px;
+  text-transform: uppercase;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
+  -webkit-box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
+  box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
+}
+

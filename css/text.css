@@ -68,3 +68,7 @@ ul li h5 {
   font: 12px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
   color: #40453f;
 }
+
+#search-theme-form .form-submit {
+  font: 18px/28px 'DroidSerifBold', Helvetica, Arial, sans-serif;
+}
