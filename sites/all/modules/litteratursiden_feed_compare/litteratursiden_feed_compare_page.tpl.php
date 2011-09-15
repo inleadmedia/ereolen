@@ -1,23 +1,41 @@
 <div class="feed_and_compare_page">
-<?php foreach ($items as $item) { ?>
-  <div class="feed_and_compare_page_item" style="border:1px dashed red;width:100%;margin:0 0 10px 0;">
-    <div class="feed_and_compare_page_item_image">
-        <b>image:</b> <?php echo $item['image_url']; ?><br>
+
+  <?php if ($items['status'] == 'empty') { ?>
+    <div class="feed_and_compare_empty" style="border:1px dashed red;margin:0 10px 10px 0;">
+      <b>nothing found</b>
     </div>
-    <div class="feed_and_compare_page_item_descr">
-      <div class="feed_and_compare_item_isbn">
-        <b>ISBN:</b> <?php echo $item['record']['dc:identifier']['dkdcplus:ISBN'][0]; ?><br>
-      </div>
-      <div class="feed_and_compare_page_item_title">
-        <b>title:</b> <?php echo $item['title']; ?><br>
-      </div>
-      <div class="feed_and_compare_page_item_author">
-        <b>author:</b> <?php echo $item['creators_string']; ?><br>
-      </div>
-      <div class="feed_and_compare_page_item_teaser">
-        <b>teaser:</b> <?php echo $item['abstract']; ?><br>
-      </div>
+  <?php } ?>
+
+  <?php if ($items['status'] == 'error') { ?>
+    <div class="feed_and_compare_error" style="border:1px dashed red;margin:0 10px 10px 0;">
+      <b>error:</b> <?php echo $items['message']; ?>
     </div>
-  </div>
-<?php } ?>
+  <?php } ?>
+
+  <?php if ($items['status'] == 'ok') { ?>
+    <?php foreach ($items['data'] as $key => $item) { ?>
+      <?php if (is_numeric($key)) { ?>
+        <div class="feed_and_compare_page_item" style="border:1px dashed red;width:100%;margin:0 0 10px 0;">
+          <div class="feed_and_compare_page_item_image">
+            <b>image:</b> <?php echo theme_image($item['image_url'], '', '', array('width'=>'100px'), FALSE); ?><br>
+          </div>
+          <div class="feed_and_compare_page_item_descr">
+            <div class="feed_and_compare_item_isbn">
+              <b>ISBN:</b> <?php echo $item['isbn']; ?><br>
+            </div>
+            <div class="feed_and_compare_page_item_title">
+              <b>title:</b> <?php echo $item['title']; ?><br>
+            </div>
+            <div class="feed_and_compare_page_item_author">
+              <b>author:</b> <?php echo $item['author']; ?><br>
+            </div>
+            <div class="feed_and_compare_page_item_description">
+              <b>teaser:</b> <?php echo $item['description']; ?><br>
+            </div>
+          </div>
+        </div>
+      <?php } ?>
+    <?php } ?>
+  <?php } ?>
+
 </div>
