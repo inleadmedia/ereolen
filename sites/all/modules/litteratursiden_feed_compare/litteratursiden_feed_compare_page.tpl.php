@@ -1,8 +1,3 @@
-
-
-<?php fb($items,'items');?>
-
-
 <div class="feed_and_compare_page">
 <?php foreach ($items as $item) { ?>
   <div class="feed_and_compare_page_item" style="border:1px dashed red;width:100%;margin:0 0 10px 0;">
