@@ -41,7 +41,6 @@ function litteratursiden_feed_compare_theme() {
  * Get cached search result from feed-to-TING search/parse process.
  */
 function litteratursiden_feed_compare_get_cached_feed($items) {
-
   $lifetime = variable_get('litteratursiden_feed_compare_cache_lifetime', '360');
   $items_on_page = variable_get('litteratursiden_feed_compare_items_on_page', '10');
   $items_on_front = variable_get('litteratursiden_feed_compare_items_on_front', '2');
@@ -62,7 +61,6 @@ function litteratursiden_feed_compare_get_cached_feed($items) {
   else {
     return $ret;
   }
-
 }
      
 /**
@@ -82,6 +80,7 @@ function litteratursiden_feed_compare_object_to_array($object) {
 function litteratursiden_feed_compare_get_feed($items) {
 
   module_load_include('client.inc', 'ting');
+  //module_load_include('isbn_static_func.inc', 'elib');
 
   // main Return array.
   $ret = array();
@@ -99,7 +98,6 @@ function litteratursiden_feed_compare_get_feed($items) {
 
     $feed_main_url = variable_get('litteratursiden_feed_compare_feed_url', 'http://www.litteratursiden.dk/service/recommendations');
     $feed_url = $feed_main_url . '?count=25&offset=' . $i*25;
-    //$feed_url = 'http://www.litteratursiden.dk/service/recommendations?count=25&offset=' . $i*25;
     $feed_json_data = file_get_contents($feed_url,TRUE);
     $feed = json_decode($feed_json_data, true);
 
@@ -130,6 +128,25 @@ function litteratursiden_feed_compare_get_feed($items) {
         // If item exist - write it into Return array with index pointing to it`s position in feed,
         // it is necessary for sorting items in Return array according to feed.
         if ($index) {
+
+
+//$object->cover_url = 'http://www.elib.se/cover_images/' . convertFromIsbn13ToIsbn10($isbn) . '.jpg';
+//$object->cover_url = 'http://www.elib.se/product_images/ISBN' . $isbn . '.jpg';
+
+//$isbn = convertFromIsbn13ToIsbn10($isbn);
+//$c = elib_client();
+//$c->setLibrary(variable_get('elib_retailer_id', ''));
+//try {
+  //$book = $c->getBook($isbn);
+//}
+//catch (Exception $e) {
+  //error_log(__FILE__ . ' +' . __LINE__ . ' ' . print_r($e, 1));
+  //return;
+//}
+//$qwe = variable_get('elib_retailer_id', '');
+//fb($qwe,'qwe');
+//fb($book,'book');
+
 
           // $i*25 - makes indexes not to collide in Return array from feed to feed (if many).
           $ret[$index+$i*25] = litteratursiden_feed_compare_object_to_array($object);
