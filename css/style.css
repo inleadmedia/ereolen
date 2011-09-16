@@ -128,3 +128,29 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
 }
 
+/**
+ * CAROUSEL
+ */
+.infiniteCarousel {
+  width: 940px;
+}
+
+.infiniteCarousel .wrapper {
+  width: 930px;
+}
+
+.infiniteCarousel .back {
+  background: url("../images/cycle-left.png") no-repeat center left;
+}
+
+.infiniteCarousel .back:hover {
+  background: url("../images/cycle-left_hover.png") no-repeat center left;
+}
+
+.infiniteCarousel .forward {
+  background: url("../images/cycle-right.png") no-repeat center right;
+}
+
+.infiniteCarousel .forward:hover {
+  background: url("../images/cycle-right_hover.png") no-repeat center right;
+}
