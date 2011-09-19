@@ -1,9 +1,4 @@
 <div class="ebog_embed_video">
-
-
-<?php fb($conf); ?>
-
-
 	<?php if ($conf['type'] == 'undefined') { ?>
 		<p>USER PROVIDED WRONG URL TO VIDEO</p>
 	<?php } elseif (!empty($conf['embed_code']) AND !empty($conf['embed_url'])) { ?>
