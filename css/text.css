@@ -74,3 +74,8 @@ ul li h5 {
 #search-theme-form .form-submit {
   font: 18px/28px 'DroidSerifBold', Helvetica, Arial, sans-serif;
 }
+
+.block-elib_infinite_carousel h2 {
+  font: 14px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
+  color: #2C2E29;
+}

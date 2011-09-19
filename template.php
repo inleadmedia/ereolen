@@ -37,11 +37,19 @@ function ebog_theme(&$existing, $type, $theme, $path) {
  * @param $hook
  *   The name of the template being rendered (name of the .tpl.php file.)
  */
-/* -- Delete this line if you want to use this function
-function ebog_preprocess(&$vars, $hook) {
-  $vars['sample_variable'] = t('Lorem ipsum.');
-}
-// */
+//function ebog_preprocess(&$vars, $hook) {
+  //fb($vars,$hook);
+  //$vars['sample_variable'] = t('Lorem ipsum.');
+//}
+//function ebog_preprocess_views_view(&$vars) {
+  //switch ($vars['name']) {
+    //case 'anmeldelser':
+      //fb($vars,'vars');
+      //break;
+    //default:
+      //break;
+  //}
+//}
 
 /**
  * Override or insert variables into the page templates.
