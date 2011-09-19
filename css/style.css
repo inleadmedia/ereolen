@@ -4,7 +4,7 @@
  */
 .pane-content,
 #sidebar-first .block .content {
-  border: 3px solid #DBDDDA;
+  border: 2px solid #DBDDDA;
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -15,7 +15,7 @@
 
 .pane-content .picture img {
   border: 1px solid #DDDFDC;
-  padding: 2px;
+  padding: 3px;
 }
 
 #sidebar-first .block .content {
@@ -148,7 +148,8 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   margin-right: 20px;
 }
 
-.panel-2col .panel-col-first .inside {
+.panel-2col .panel-col-first .inside,
+.panel-2col .panel-col-last .inside {
     margin: 0px;
 }
 
@@ -192,7 +193,9 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 
 .view-anmeldelser .field-field-book .picture img {
   width: 120px;
-  height: 180px;
+	/*
+   *height: 180px;
+	 */
 }
 
 .view-anmeldelser .field-field-book .record {
@@ -218,6 +221,24 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 }
 
 
+.display-book .title,
+.display-book .author,
+.display-book .icons {
+  float: left;
+}
+
+.display-book .picture {
+  float: left;
+  margin: 12px;
+}
+
+.display-book .picture a {
+  display: block;
+}
+
+.display-book .picture img {
+  width: 120px;
+}
 
 
 
