@@ -1,0 +1,143 @@
+<?php
+/**
+ * @file
+ *
+ */
+
+
+/**
+ * Implementation of hook_menu
+ */
+function litteratursiden_feed_compare_menu() {
+  $items = array();
+  $items['admin/settings/litteratursiden_feed_compare'] = array(
+    'title' => 'litteratursiden feed compare title',
+    'description' => t('litteratursiden feed compare descr'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('litteratursiden_feed_compare_admin'),
+    'access arguments' => array('administer site configuration'),
+    'file' => 'litteratursiden_feed_compare.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function litteratursiden_feed_compare_theme() {
+  return array(
+    'litteratursiden_feed_compare_front' => array(
+      'arguments' => array('items' => NULL),
+      'template' => 'litteratursiden_feed_compare_front'
+    ),
+    'litteratursiden_feed_compare_page' => array(
+      'arguments' => array('items' => NULL),
+      'template' => 'litteratursiden_feed_compare_page'
+    ),
+  );
+}
+
+/**
+ * Get cached search result from feed-to-TING search/parse process.
+ */
+function litteratursiden_feed_compare_get_cached_feed($items) {
+
+  $lifetime = variable_get('litteratursiden_feed_compare_cache_lifetime', '360');
+  $items_on_page = variable_get('litteratursiden_feed_compare_items_on_page', '10');
+  $items_on_front = variable_get('litteratursiden_feed_compare_items_on_front', '2');
+
+  $cache = cache_get('litteratursiden_feed_compare_cache');
+  if (empty($cache->data)) {
+    $ret = litteratursiden_feed_compare_get_feed($items_on_page);
+    cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime); 
+  }
+  else {
+    $ret = unserialize($cache->data);
+  }
+
+  return $ret;
+
+  //if ($items < $items_on_page) {
+    //$return = array_chunk($ret, $items, true);
+    //return $return[0];
+  //}
+  //else {
+    //return $ret;
+  //}
+}
+     
+/**
+ * Convert TING object to array for serializing in cache.
+ */
+function litteratursiden_feed_compare_object_to_array($object) {
+  $array=array();
+  foreach ($object as $member=>$data) {
+    $array[$member]=$data;
+  }
+  return $array;
+}   
+
+
+/**
+ * Gets feed from litteratursiden.dk and performs search in TING datawell.
+ */
+function litteratursiden_feed_compare_get_feed($items) {
+
+  $ret = array();
+  $ret['status'] = '';
+  $ret['message'] = '';
+  $ret['data'] = array();
+
+  module_load_include('isbn_static_func.inc', 'elib');
+
+  for ($i = 0; $i < 25; $i++) {
+    $feed_main_url = variable_get('litteratursiden_feed_compare_feed_url', 'http://www.litteratursiden.dk/service/recommendations');
+    $feed_url = $feed_main_url . '?count=25&offset=' . $i*25;
+    $feed_json_data = file_get_contents($feed_url,TRUE);
+    $feed = json_decode($feed_json_data, true);
+    $c = elib_client();
+    $c->setLibrary(variable_get('elib_retailer_id', ''));
+    $amo = 0;
+    foreach($feed as $key => $val) {
+      if (is_numeric($key)) {
+        $isbn = convertFromIsbn13ToIsbn10($val['isbn']);
+        if ($isbn == '' OR $isbn == 0) continue;
+        try {
+          $book = $c->getBook($isbn);
+        }
+        catch (Exception $e) {
+          $ret['status'] = 'error';
+          $ret['message'] = $e;
+          return $ret;
+        }
+        if ($book->data) {
+          $book_obj = json_decode(json_encode($book));
+          $ret['data'][$amo] = array();
+          $ret['data'][$amo]['isbn'] = $book_obj->data->product->external_ids->external_id[1]->id;
+          $ret['data'][$amo]['title'] = $book_obj->data->product->title;
+          $ret['data'][$amo]['author'] = $book_obj->data->product->contributors->contributor[0]->first_name . ' ' . $book_obj->data->product->contributors->contributor[0]->family_name;
+          $ret['data'][$amo]['description'] = $book_obj->data->product->description;
+          $ret['data'][$amo]['image_url'] = $book_obj->data->product->coverimage;
+          $i++;
+        }
+      }
+    }
+    if ($amo > 0) {
+      $ret['status'] = 'ok';
+    }
+    else {
+      $ret['status'] = 'empty';
+    }
+  }
+
+  return $ret;
+}
+
+/**
+ * Implementation of hook_ctools_plugin_directory().
+ */
+function litteratursiden_feed_compare_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && !empty($plugin)) {
+    return "plugins/$plugin";
+  }
+}
