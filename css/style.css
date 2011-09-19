@@ -1,13 +1,19 @@
+
 /**
  * SIDEBAR FIRST
  */
 .pane-content,
 #sidebar-first .block .content {
-  border: 1px solid #DBDDDA;
-  border-bottom: 0;
-  -moz-border-radius: 5px 5px 0px 0px;
-  -webkit-border-radius: 5px 5px 0px 0px;
+  border: 2px solid #DBDDDA;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
   padding: 10px;
+}
+
+.pane-content .picture img {
+  border: 1px solid #DDDFDC;
+  padding: 2px;
 }
 
 #sidebar-first .block .content {
@@ -127,4 +133,53 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   -webkit-box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
   box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
 }
+
+
+#header-regions {
+  height: 238px;
+}
+
+#main-content-container {
+  margin-top: 36px;
+}
+
+.view-anmeldelser h2,
+.view-anmeldelser .submitted,
+.view-anmeldelser .field-field-date,
+.view-anmeldelser .field-field-review,
+.view-anmeldelser .field-field-book .field-label,
+.view-anmeldelser .field-field-book .record .types {
+  display: none;
+}
+
+.view-anmeldelser .field-field-book li {
+  list-style-type: none 
+}
+
+.view-anmeldelser .field-field-book .picture {
+  float: left;
+  margin-right: 12px;
+}
+
+.view-anmeldelser .field-field-book .picture img {
+  width: 120px;
+  height: 180px;
+}
+
+.view-anmeldelser .field-field-book .record {
+  float: left;
+  width: 100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 

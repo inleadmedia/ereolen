@@ -40,8 +40,10 @@ body {
 
 h2.pane-title,
 #sidebar-first .block h2 {
-  font: 18px/28px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
+  font: 18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
   text-transform: uppercase;
+  margin-bottom: 7px;
+  color: #2c2e29;
 }
 
 #sidebar-first .block ul li a,
