@@ -4,11 +4,13 @@
  */
 .pane-content,
 #sidebar-first .block .content {
-  border: 2px solid #DBDDDA;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  padding: 10px;
+  border: 3px solid #DBDDDA;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+	/*
+   *padding: 10px;
+	 */
 }
 
 .pane-content .picture img {
@@ -135,6 +137,21 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 }
 
 
+
+
+.panel-2col .panel-col-first,
+.panel-2col .panel-col-last {
+  width: 340px;
+}
+
+.panel-2col .panel-col-first {
+  margin-right: 20px;
+}
+
+.panel-2col .panel-col-first .inside {
+    margin: 0px;
+}
+
 #header-regions {
   height: 238px;
 }
@@ -148,17 +165,29 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 .view-anmeldelser .field-field-date,
 .view-anmeldelser .field-field-review,
 .view-anmeldelser .field-field-book .field-label,
-.view-anmeldelser .field-field-book .record .types {
+.view-anmeldelser .field-field-book .record .types,
+.view-anmeldelser .field-field-book .record .meta,
+.view-anmeldelser .field-field-book .record .subjects {
   display: none;
 }
 
+.view-anmeldelser .node {
+	border: none;
+	margin: 0px;
+	padding: 0px;
+}
+
 .view-anmeldelser .field-field-book li {
-  list-style-type: none 
+  list-style-type: none;
 }
 
 .view-anmeldelser .field-field-book .picture {
   float: left;
-  margin-right: 12px;
+  margin: 12px 12px 20px 12px;
+}
+
+.view-anmeldelser .field-field-book .picture a {
+  display: block;
 }
 
 .view-anmeldelser .field-field-book .picture img {
@@ -168,7 +197,24 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 
 .view-anmeldelser .field-field-book .record {
   float: left;
-  width: 100px;
+	margin: 12px 0 20px 0;
+  width: 173px;
+}
+
+.view-anmeldelser .field-field-book .abstract {
+	font-size: 12px;
+}
+
+.view-anmeldelser h3 {
+	margin-bottom: 20px;
+}
+
+.view-anmeldelser h3 a {
+  color: #89104c;
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: normal;
+	font-family: serif;
 }
 
 
