@@ -4,7 +4,6 @@
 	<?php } elseif (!empty($conf['embed_code']) AND !empty($conf['embed_url'])) { ?>
 
 		<?php if ($conf['type'] == 'youtube') { ?>
-			<p>youtube:</p>
 			<div class="ebog_embed_youtube">
 				<object style="width:207px;height:144px;">
 					<param name="movie" value="http://www.youtube.com/v/<?php echo $conf['embed_code']; ?>">
@@ -23,7 +22,6 @@
 		<?php } ?>
 
 		<?php if ($conf['type'] == 'vimeo') { ?>
-			<p>vimeo:</p>
 			<div class="ebog_embed_vimeo">
 				<iframe 
 					src="http://player.vimeo.com/video/<?php echo $conf['embed_code']; ?>" 
@@ -38,7 +36,6 @@
 		<?php } ?>
 
 		<?php if ($conf['descr'] != '') { ?>
-			<p>description:</p>
 			<div class="ebog_embed_descr">
 				<?php echo $conf['descr']; ?>
 			</div>
