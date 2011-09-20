@@ -49,7 +49,8 @@ h2.pane-title,
 #sidebar-first .block ul li a,
 .view-latest-news .views-field-title a,
 .display-book h3.title a,
-.display-book .author a {
+.display-book .author a,
+.view-anmeldelser h3 a {
   color: #89104c;
   text-decoration: none;
 }
@@ -57,7 +58,8 @@ h2.pane-title,
 #sidebar-first .block ul li a:hover,
 .view-latest-news .views-field-title a:hover,
 .display-book h3.title a:hover,
-.display-book .author a:hover {
+.display-book .author a:hover,
+.view-anmeldelser h3 a:hover {
   color: #cb1e73;
   text-decoration: underline;
 }
@@ -85,11 +87,7 @@ ul li h5 {
 }
 
 .view-anmeldelser h3 a {
-  color: #89104c;
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: normal;
-  font-family: serif;
+  font: 21px/26px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
 }
 
 .display-book h3.title {
