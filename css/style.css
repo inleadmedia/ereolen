@@ -258,19 +258,45 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   float: left;
 }
 
-.display-book .icons .icons {
-  float: right;
-  border: 0;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 45px;
-  background-color: #A5165D;
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
-  background: -webkit-linear-gradient(top, #A5165D, #8A114C); /* Safari 5.1, Chrome 10+ */
-  background: -moz-linear-gradient(top, #A5165D, #8A114C); /* Firefox 3.6+ */  
-  background: -ms-linear-gradient(top, #A5165D, #8A114C); /* IE 10 */
-  background: -o-linear-gradient(top, #A5165D, #8A114C); /* Opera 11.10+ */
-  height: 24px;
+/* - Temporary commented out, coze of buttons are just images now, and not text links.
+ *.display-book .icons .icons {
+ *  float: right;
+ *  border: 0;
+ *  border-radius: 5px;
+ *  -moz-border-radius: 5px;
+ *  -webkit-border-radius: 45px;
+ *  background-color: #A5165D;
+ *  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
+ *  background: -webkit-linear-gradient(top, #A5165D, #8A114C); [> Safari 5.1, Chrome 10+ <]
+ *  background: -moz-linear-gradient(top, #A5165D, #8A114C); [> Firefox 3.6+ <]  
+ *  background: -ms-linear-gradient(top, #A5165D, #8A114C); [> IE 10 <]
+ *  background: -o-linear-gradient(top, #A5165D, #8A114C); [> Opera 11.10+ <]
+ *  height: 24px;
+ *}
+ */
+
+div.fivestar-widget-static .star {
+    width: 13px;
+    height: 12px;
+    background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
+    float: left;
+    overflow: hidden;
+    text-indent: -999em;
+}
+
+div.fivestar-widget-static .star span.on,
+div.fivestar-widget-static .star span.off {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+div.fivestar-widget-static .star span.on {
+    background: url("../images/star.png") no-repeat scroll 0 0 transparent;
+}
+
+div.fivestar-widget-static .star span.off {
+    background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
 }
 
 
