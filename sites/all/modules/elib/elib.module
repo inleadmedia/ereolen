@@ -647,7 +647,7 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
     $part['author'].
     $part['icons'].
     $part['text'].
-    '<div style="margin-left:80px;">'.$extras.'</div>
+    '<div class="extras" style="margin-left:80px;">'.$extras.'</div>
   </div>';
   
 }
