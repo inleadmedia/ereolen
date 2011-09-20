@@ -209,6 +209,15 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   border-bottom: 2px solid #DBDDDA; 
 }
 
+.display-book.index-1 {
+  padding-top: 0;
+}
+
+.display-book.index-10 {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
 .display-book .left {
   margin-right: 12px;
 }
