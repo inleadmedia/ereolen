@@ -263,6 +263,10 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   height: 24px;
 }
 
+.fivestar-static-form-item {
+  padding-bottom: 36px;
+}
+
 div.fivestar-widget-static .star {
   width: 13px;
   height: 12px;
