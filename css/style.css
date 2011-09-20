@@ -8,6 +8,9 @@
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
+  display: inline-block;
+  zoom: 1; /* ie7 hack for display:inline-block */
+  *display: inline;
 }
 
 .pane-content .picture img {
@@ -212,9 +215,25 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 .display-book .title,
 .display-book .author,
 .display-book .icons {
-  float: left;
+.display-book {
+  display: inline-block;
+  zoom: 1; /* ie7 hack for display:inline-block */
+  *display: inline;
+  margin: 12px;
 }
 
+.display-book .left {
+  float: left;
+  margin-right: 12px;
+}
+
+.display-book .right {
+  float: left;
+  width: 226px;
+}
+.display-book .title,
+.display-book .author,
+.display-book .icons,
 .display-book .picture {
   float: left;
   margin: 12px;
@@ -222,6 +241,7 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   height: 100px;
   overflow: hidden;
   border: 1px solid Lightgray;
+  clear: both;
 }
 
 .display-book .picture a {
@@ -229,7 +249,7 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 }
 
 .display-book .picture img {
-  width: 120px;
+  width: 65px;
 }
 
 .display-book h3.title {
@@ -240,6 +260,27 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 
 .display-book h3.title a:hover {
   text-decoration: underline;
+.display-book .extras,
+.display-book .icons .description {
+  display: none;
+}
+
+.display-book .icons {
+}
+
+.display-book .icons .icons {
+  float: right;
+  border: 0;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 45px;
+  background-color: #A5165D;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
+  background: -webkit-linear-gradient(top, #A5165D, #8A114C); /* Safari 5.1, Chrome 10+ */
+  background: -moz-linear-gradient(top, #A5165D, #8A114C); /* Firefox 3.6+ */  
+  background: -ms-linear-gradient(top, #A5165D, #8A114C); /* IE 10 */
+  background: -o-linear-gradient(top, #A5165D, #8A114C); /* Opera 11.10+ */
+  height: 24px;
 }
 
 .display-book .author {
