@@ -644,7 +644,7 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
     <div class="left">'.
       $part['picture'].
     '</div>
-    '<div class="right">'.
+    <div class="right">'.
       $part['loginexpire'].
       $part['title'].
       $part['author'].
