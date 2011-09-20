@@ -253,6 +253,12 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   background: -ms-linear-gradient(top, #A5165D, #8A114C); [> IE 10 <]
   background: -o-linear-gradient(top, #A5165D, #8A114C); [> Opera 11.10+ <]
   height: 24px;
+  padding: 0 10px 0 10px;
+}
+
+.diplay-book .icons .icons img {
+  padding: 4px;
+  vertical-align: text-bottom;
 }
 
 .fivestar-static-form-item {
