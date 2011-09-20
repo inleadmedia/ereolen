@@ -32,6 +32,10 @@
 }
 
 #main-content-container {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto; 
   margin-top: 36px;
 }
 
