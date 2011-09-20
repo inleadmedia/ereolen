@@ -92,19 +92,6 @@ ul li h5 {
 	font-family: serif;
 }
 
-.display-book h3.title a {
-  color: #89104b;
-  font-size: 14px;
-  font-family: serif;
-  text-decoration: none;
-}
-
-.display-book .author a {
-  color: #89104b;
-  font-size: 11px;
-  text-decoration: none;
-}
-
 .display-book h3.title {
   font: 16px/20px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
 }
@@ -126,11 +113,6 @@ ul li h5 {
 .ebog_embed_video {
   color: #89104b;
   font-size: 14px;
-}
-
-.display-book h3.title a:hover,
-.display-book .author a:hover {
-  text-decoration: underline;
 }
 
 div.fivestar-widget-static .star {
