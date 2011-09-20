@@ -240,7 +240,9 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   width: 120px;
 }
 
-
+.display-book .extras {
+  display: none;
+}
 
 
 
