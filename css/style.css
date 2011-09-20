@@ -11,6 +11,9 @@
 	/*
    *padding: 10px;
 	 */
+  display: inline-block;
+  zoom: 1; /* ie7 hack for display:inline-block */
+  *display: inline;
 }
 
 .pane-content .picture img {
