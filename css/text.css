@@ -47,13 +47,17 @@ h2.pane-title,
 }
 
 #sidebar-first .block ul li a,
-.view-latest-news .views-field-title a {
+.view-latest-news .views-field-title a,
+.display-book h3.title a,
+.display-book .author a {
   color: #89104c;
   text-decoration: none;
 }
 
 #sidebar-first .block ul li a:hover,
-.view-latest-news .views-field-title a:hover {
+.view-latest-news .views-field-title a:hover,
+.display-book h3.title a:hover,
+.display-book .author a:hover {
   color: #cb1e73;
   text-decoration: underline;
 }
@@ -79,3 +83,8 @@ ul li h5 {
   font: 14px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
   color: #2C2E29;
 }
+
+.display-book h3.title {
+  font: 16px/20px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
+}
+
