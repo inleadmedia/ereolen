@@ -640,14 +640,18 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   }
 
   $part['icons'] = '<div class="icons">'.$part['rating'].$part['icons'].'</div>';
-  return '<div class="display-book '.$displaysize.' line ruler-after index-' . $block_index . '">'.
-    $part['picture'].
-    $part['loginexpire'].
-    $part['title'].
-    $part['author'].
-    $part['icons'].
-    $part['text'].
-    '<div class="extras" style="margin-left:80px;">'.$extras.'</div>
+  return '<div class="display-book '.$displaysize.' line ruler-after index-' . $block_index . '">
+    <div class="left">'.
+      $part['picture'].
+    '</div>
+    '<div class="right">'.
+      $part['loginexpire'].
+      $part['title'].
+      $part['author'].
+      $part['icons'].
+      $part['text'].
+      '<div class="extras" style="margin-left:80px;">'.$extras.'</div>
+    </div>
   </div>';
   
 }
