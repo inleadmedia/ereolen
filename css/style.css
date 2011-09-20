@@ -225,6 +225,7 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 
 .display-book .right {
   width: 226px;
+  clear: none;
 }
 
 .display-book .picture {
