@@ -95,16 +95,18 @@
         </div><!-- /#sidebar-first -->
       <?php endif; ?>
     </div><!-- /#main-content-container -->
-    
-    <?php if($footer_first || $footer_message): ?>
-    <div id="footer-wrapper" class="container-<?php print $footer_container_width; ?> clearfix">
-      <?php if($footer_first): ?>
-        <div id="footer-first" class="<?php print $footer_first_classes; ?>">
-          <?php print $footer_first; ?>
-        </div><!-- /#footer-first -->
+
+    <div id="footer">    
+      <?php if($footer_first || $footer_message): ?>
+      <div id="footer-wrapper" class="container-<?php print $footer_container_width; ?> clearfix">
+        <?php if($footer_first): ?>
+          <div id="footer-first" class="<?php print $footer_first_classes; ?>">
+            <?php print $footer_first; ?>
+          </div><!-- /#footer-first -->
+        <?php endif; ?>
+      </div><!-- /#footer-wrapper -->
       <?php endif; ?>
-    </div><!-- /#footer-wrapper -->
-    <?php endif; ?>
+    </div>
   </div><!-- /#page -->
   <?php print $closure; ?>
 </body>
