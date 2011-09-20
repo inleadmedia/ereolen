@@ -1,4 +1,3 @@
-
 /**
  * SIDEBAR FIRST
  */
@@ -93,7 +92,7 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
  */
 #search-theme-form,
 #search-theme-form .form-item,
- #search-theme-form .form-text,
+#search-theme-form .form-text,
 #search-theme-form .form-submit {
   display: inline-block;
   zoom: 1; /* ie7 hack for display:inline-block */
@@ -104,6 +103,7 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   margin: 0;
   background: none;
 }
+
 #search-theme-form {
   background: #FFFFFF;
   padding: 3px 3px 3px 8px;
@@ -112,16 +112,19 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
+
 #search-theme-form .form-item {
   background-image: url("../images/magnifier.png");
   background-repeat: no-repeat;
   background-position: left top;
 }
+
 #search-theme-form .form-text {
   color: #8c938b;
   padding: 6px 6px 4px 46px;
   font-size: 15px;
 }
+
 #search-theme-form .form-submit {
   background-color: #A5165D;
   color: #FFFFFF;
@@ -135,7 +138,6 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   -webkit-box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
   box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
 }
-
 
 /**
  * RECOMMENDATIONS
@@ -152,9 +154,9 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 }
 
 .view-anmeldelser .node {
-	border: none;
-	margin: 0px;
-	padding: 0px;
+  border: none;
+  margin: 0px;
+  padding: 0px;
 }
 
 .view-anmeldelser .field-field-book li {
@@ -176,18 +178,17 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 
 .view-anmeldelser .field-field-book .record {
   float: left;
-	margin: 12px 0 20px 0;
+  margin: 12px 0 20px 0;
   width: 173px;
 }
 
 .view-anmeldelser .field-field-book .abstract {
-	font-size: 12px;
+  font-size: 12px;
 }
 
 .view-anmeldelser h3 {
-	margin-bottom: 20px;
+  margin-bottom: 20px;
 }
-
 
 /**
  * VIDEO BLOCK
@@ -204,11 +205,9 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   margin-bottom: 15px;
 }
 
-
 /**
  * BOOK ITEM
  */
-
 .display-book {
   clear: both;
   display: inline-block;
@@ -258,47 +257,44 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   float: left;
 }
 
-/* - Temporary commented out, coze of buttons are just images now, and not text links.
- *.display-book .icons .icons {
- *  float: right;
- *  border: 0;
- *  border-radius: 5px;
- *  -moz-border-radius: 5px;
- *  -webkit-border-radius: 45px;
- *  background-color: #A5165D;
- *  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
- *  background: -webkit-linear-gradient(top, #A5165D, #8A114C); [> Safari 5.1, Chrome 10+ <]
- *  background: -moz-linear-gradient(top, #A5165D, #8A114C); [> Firefox 3.6+ <]  
- *  background: -ms-linear-gradient(top, #A5165D, #8A114C); [> IE 10 <]
- *  background: -o-linear-gradient(top, #A5165D, #8A114C); [> Opera 11.10+ <]
- *  height: 24px;
- *}
- */
+.display-book .icons .icons {
+  float: right;
+  border: 0;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 45px;
+  background-color: #A5165D;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
+  background: -webkit-linear-gradient(top, #A5165D, #8A114C); [> Safari 5.1, Chrome 10+ <]
+  background: -moz-linear-gradient(top, #A5165D, #8A114C); [> Firefox 3.6+ <]
+  background: -ms-linear-gradient(top, #A5165D, #8A114C); [> IE 10 <]
+  background: -o-linear-gradient(top, #A5165D, #8A114C); [> Opera 11.10+ <]
+  height: 24px;
+}
 
 div.fivestar-widget-static .star {
-    width: 13px;
-    height: 12px;
-    background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
-    float: left;
-    overflow: hidden;
-    text-indent: -999em;
+  width: 13px;
+  height: 12px;
+  background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
+  float: left;
+  overflow: hidden;
+  text-indent: -999em;
 }
 
 div.fivestar-widget-static .star span.on,
 div.fivestar-widget-static .star span.off {
-    display: block;
-    height: 100%;
-    width: 100%;
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 div.fivestar-widget-static .star span.on {
-    background: url("../images/star.png") no-repeat scroll 0 0 transparent;
+  background: url("../images/star.png") no-repeat scroll 0 0 transparent;
 }
 
 div.fivestar-widget-static .star span.off {
-    background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
+  background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
 }
-
 
 /**
  * CAROUSEL
