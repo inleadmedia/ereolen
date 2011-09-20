@@ -208,18 +208,20 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   *display: inline;
 }
 
-.display-book .picture {
+.display-book .left {
   float: left;
-  margin: 12px;
-  width: 65px;
-  height: 100px;
-  overflow: hidden;
-  border: 1px solid Lightgray;
-  clear: both;
+  margin-right: 12px;
 }
 
-.display-book .picture a {
-  display: block;
+.display-book .right {
+  float: left;
+  width: 226px;
+}
+
+.display-book .picture {
+  float: left;
+  border: 1px solid #DBDDDA;
+  clear: both;
 }
 
 .display-book .picture img {
@@ -228,8 +230,6 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 
 .display-book h3.title,
 .display-book .author {
-  margin-top: 12px;
-  width: 240px;
   float: left;
 }
 
