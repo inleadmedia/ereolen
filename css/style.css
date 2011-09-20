@@ -208,32 +208,14 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 /**
  * BOOK ITEM
  */
+
 .display-book {
   clear: both;
-}
-
-.display-book .title,
-.display-book .author,
-.display-book .icons {
-.display-book {
   display: inline-block;
   zoom: 1; /* ie7 hack for display:inline-block */
   *display: inline;
-  margin: 12px;
 }
 
-.display-book .left {
-  float: left;
-  margin-right: 12px;
-}
-
-.display-book .right {
-  float: left;
-  width: 226px;
-}
-.display-book .title,
-.display-book .author,
-.display-book .icons,
 .display-book .picture {
   float: left;
   margin: 12px;
@@ -252,20 +234,28 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   width: 65px;
 }
 
-.display-book h3.title {
-  display: block;
+.display-book h3.title,
+.display-book .author {
   margin-top: 12px;
   width: 240px;
+  float: left;
 }
 
-.display-book h3.title a:hover {
+.display-book h3.title a:hover,
+.display-book .author a:hover {
   text-decoration: underline;
+}
+
+.display-book .icons .icons,
+.display-book div .item-list,
 .display-book .extras,
 .display-book .icons .description {
   display: none;
 }
 
 .display-book .icons {
+  margin-top: 6px;
+  float: left;
 }
 
 .display-book .icons .icons {
@@ -281,32 +271,6 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   background: -ms-linear-gradient(top, #A5165D, #8A114C); /* IE 10 */
   background: -o-linear-gradient(top, #A5165D, #8A114C); /* Opera 11.10+ */
   height: 24px;
-}
-
-.display-book .author {
-  display: block;
-  margin-top: 12px;
-  width: 240px;
-}
-
-.display-book .author a:hover {
-  text-decoration: underline;
-}
-
-.display-book .icons {
-  margin-top: 6px;
-}
-
-.display-book .description {
-  display: none;
-}
-
-.display-book .icons .icons {
-  display: none;
-}
-
-.display-book div .item-list {
-  display: none;
 }
 
 
