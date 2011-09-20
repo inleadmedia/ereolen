@@ -79,3 +79,25 @@ ul li h5 {
   font: 14px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
   color: #2C2E29;
 }
+
+
+.view-anmeldelser h3 a {
+  color: #89104c;
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: normal;
+	font-family: serif;
+}
+
+.display-book h3.title a {
+  color: #89104b;
+	font-size: 14px;
+	font-family: serif;
+  text-decoration: none;
+}
+
+.display-book .author a {
+  color: #89104b;
+	font-size: 11px;
+  text-decoration: none;
+}

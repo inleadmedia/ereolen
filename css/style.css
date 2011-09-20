@@ -8,9 +8,6 @@
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
-	/*
-   *padding: 10px;
-	 */
 }
 
 .pane-content .picture img {
@@ -137,30 +134,9 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 }
 
 
-
-
-.panel-2col .panel-col-first,
-.panel-2col .panel-col-last {
-  width: 340px;
-}
-
-.panel-2col .panel-col-first {
-  margin-right: 20px;
-}
-
-.panel-2col .panel-col-first .inside,
-.panel-2col .panel-col-last .inside {
-    margin: 0px;
-}
-
-#header-regions {
-  height: 238px;
-}
-
-#main-content-container {
-  margin-top: 36px;
-}
-
+/**
+ * RECOMMENDATIONS
+ */
 .view-anmeldelser h2,
 .view-anmeldelser .submitted,
 .view-anmeldelser .field-field-date,
@@ -193,9 +169,6 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 
 .view-anmeldelser .field-field-book .picture img {
   width: 120px;
-	/*
-   *height: 180px;
-	 */
 }
 
 .view-anmeldelser .field-field-book .record {
@@ -212,14 +185,29 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 	margin-bottom: 20px;
 }
 
-.view-anmeldelser h3 a {
-  color: #89104c;
-	text-decoration: none;
-	font-size: 20px;
-	font-weight: normal;
-	font-family: serif;
+
+/**
+ * VIDEO BLOCK
+ */
+.ebog_embed_video {
+  margin: 10px 6px 23px 6px;
+  color: #89104b;
+  font-size: 14px;
 }
 
+.ebog_embed_vimeo iframe {
+  width: 324px;
+  height: 184px;
+  margin-bottom: 15px;
+}
+
+
+/**
+ * BOOK ITEM
+ */
+.display-book {
+  clear: both;
+}
 
 .display-book .title,
 .display-book .author,
@@ -230,6 +218,10 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 .display-book .picture {
   float: left;
   margin: 12px;
+  width: 65px;
+  height: 100px;
+  overflow: hidden;
+  border: 1px solid Lightgray;
 }
 
 .display-book .picture a {
@@ -240,8 +232,41 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   width: 120px;
 }
 
+.display-book h3.title {
+  display: block;
+  margin-top: 12px;
+  width: 240px;
+}
 
+.display-book h3.title a:hover {
+  text-decoration: underline;
+}
 
+.display-book .author {
+  display: block;
+  margin-top: 12px;
+  width: 240px;
+}
+
+.display-book .author a:hover {
+  text-decoration: underline;
+}
+
+.display-book .icons {
+  margin-top: 6px;
+}
+
+.display-book .description {
+  display: none;
+}
+
+.display-book .icons .icons {
+  display: none;
+}
+
+.display-book div .item-list {
+  display: none;
+}
 
 
 /**

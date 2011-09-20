@@ -25,3 +25,30 @@
 #search-box {
   margin-top: 50px;
 }
+
+
+#header-regions {
+  height: 238px;
+}
+
+#main-content-container {
+  margin-top: 36px;
+}
+
+.panel-2col .panel-col-first,
+.panel-2col .panel-col-last {
+  width: 340px;
+}
+
+.panel-2col .panel-col-first {
+  margin-right: 20px;
+}
+
+.panel-2col .panel-col-first .inside,
+.panel-2col .panel-col-last .inside {
+    margin: 0px;
+}
+
+.panel-2col .panel-separator {
+    margin-bottom: 25px;
+}
