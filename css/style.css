@@ -33,8 +33,6 @@
 
 #block-elib_block_categories-0 ul li:after {
   content: " • ";
-  color: #c5ccc4;
-  font-size: 10px;
 }
 
 #block-elib_block_categories-0 ul li.last:after {
@@ -120,14 +118,11 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 }
 
 #search-theme-form .form-text {
-  color: #8c938b;
   padding: 6px 6px 4px 46px;
-  font-size: 15px;
 }
 
 #search-theme-form .form-submit {
   background-color: #A5165D;
-  color: #FFFFFF;
   height: 30px;
   width: 60px;
   text-transform: uppercase;
@@ -195,8 +190,6 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
  */
 .ebog_embed_video {
   margin: 10px 6px 23px 6px;
-  color: #89104b;
-  font-size: 14px;
 }
 
 .ebog_embed_vimeo iframe {
@@ -240,11 +233,6 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   float: left;
 }
 
-.display-book h3.title a:hover,
-.display-book .author a:hover {
-  text-decoration: underline;
-}
-
 .display-book .icons .icons,
 .display-book div .item-list,
 .display-book .extras,
@@ -278,7 +266,6 @@ div.fivestar-widget-static .star {
   background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
   float: left;
   overflow: hidden;
-  text-indent: -999em;
 }
 
 div.fivestar-widget-static .star span.on,
