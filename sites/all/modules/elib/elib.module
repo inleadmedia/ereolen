@@ -484,9 +484,9 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
     '</div>';
    $out[] = elib_get_rating($object->id);
     $out[] = '<div class="icons">' .
-      l(theme('image', 'sites/all/themes/ebog/img/stream.png', '', '', null, false), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
-      l(theme('image', 'sites/all/themes/ebog/img/fetch.png', '', '', null, false), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' ' .
-      l(theme('image', 'sites/all/themes/ebog/img/sample.png', '', '', null, false), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .
+      l(theme('image', 'sites/all/themes/ebog/images/buttons/stream.png', '', '', null, false), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
+      l(theme('image', 'sites/all/themes/ebog/images/buttons/fetch.png', '', '', null, false), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' ' .
+      l(theme('image', 'sites/all/themes/ebog/images/buttons/sample.png', '', '', null, false), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .
     '</div>';
       
   return implode($out);
@@ -535,9 +535,9 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   $part['author'] = '<div class="author">' . t('!creator_name', array('!creator_name' => l($obj->creators_string,'ting/search/'.$obj->creators_string))) . '</div>';
   $part['icons'] = '
     <div class="icons">' .
-      l(theme('image', 'sites/all/themes/ebog/img/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
-      l(theme('image', 'sites/all/themes/ebog/img/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .
-      l(theme('image', 'sites/all/themes/ebog/img/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .
+      l(theme('image', 'sites/all/themes/ebog/images/buttons/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
+      l(theme('image', 'sites/all/themes/ebog/images/buttons/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .
+      l(theme('image', 'sites/all/themes/ebog/images/buttons/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .
     '</div>
   ';
    
@@ -548,9 +548,9 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   	
   	$part['icons'] = '
       <div class="icons">' .
-        l(theme('image', 'sites/all/themes/ebog/img/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' ' .
-        l(theme('image', 'sites/all/themes/ebog/img/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' ' .
-        l(theme('image', 'sites/all/themes/ebog/img/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' ' .
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' ' .
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '
       </div>
     ';
   	$part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
@@ -619,9 +619,9 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
         
     $part['icons'] = '
       <div class="icons">' .
-        l(theme('image', 'sites/all/themes/ebog/img/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' '.
-        l(theme('image', 'sites/all/themes/ebog/img/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' '.
-        l(theme('image', 'sites/all/themes/ebog/img/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' '.
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' '.
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '
       </div>
     ';
   }
@@ -630,9 +630,9 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
     $displaysize = 'small';
     $part['icons'] = '
       <div class="">' .
-        l(theme('image', 'sites/all/themes/ebog/img/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
-        l(theme('image', 'sites/all/themes/ebog/img/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
-        l(theme('image', 'sites/all/themes/ebog/img/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .' '.
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .' '.
         l(theme('image', 'sites/all/themes/netsound2/img/remove.png', '', '', null, false), $obj->url.'/huskeliste/fjern?'.drupal_get_destination(), array('html' => true)) .'
       </div>
     ';
@@ -714,9 +714,9 @@ function elib_displaybook2(TingClientObject $obj,$fields,$settings='',$displaysi
   $part['author'] = '<div class="author">' . t('By !creator_name', array('!creator_name' => l($obj->creators_string,'ting/search/'.$obj->creators_string))) . '</div>';
   $part['icons'] = '
     <div class="icons">' .
-      l(theme('image', 'sites/all/themes/ebog/img/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' ' .
-      l(theme('image', 'sites/all/themes/ebog/img/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' ' .
-      l(theme('image', 'sites/all/themes/ebog/img/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .'
+      l(theme('image', 'sites/all/themes/ebog/images/buttons/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' ' .
+      l(theme('image', 'sites/all/themes/ebog/images/buttons/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' ' .
+      l(theme('image', 'sites/all/themes/ebog/images/buttons/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .'
     </div>
   ';
    
@@ -727,9 +727,9 @@ function elib_displaybook2(TingClientObject $obj,$fields,$settings='',$displaysi
     $part['text'] = '<div class="spacing-before" style="text-transform:uppercase;">Anmelder</div><div>'.$u['user'].'</div><div class="text"  style="margin-left:80px;"><p class="spacing-before">'.truncate_utf8($elib[0],400,true,true).' '.l('LÆS MERE →',$obj->url).'</p>';
     $part['icons'] = '
       <div class="iconsnoheight">' .
-        l(theme('image', 'sites/all/themes/ebog/img/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
-        l(theme('image', 'sites/all/themes/ebog/img/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' ' .
-        l(theme('image', 'sites/all/themes/ebog/img/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .'
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/stream.png', '', '', null, false), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/fetch.png', '', '', null, false), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' ' .
+        l(theme('image', 'sites/all/themes/ebog/images/buttons/sample.png', '', '', null, false), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .'
       </div>
     ';
     $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, '', '', null, false), $obj->url, array('html' => true)) . '</div>';
