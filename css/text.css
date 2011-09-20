@@ -36,6 +36,7 @@
 body {
   font-family: Verdana;
   font-size: 12px;
+  color: #40453F;
 }
 
 h2.pane-title,
@@ -115,5 +116,9 @@ ul li h5 {
 
 div.fivestar-widget-static .star {
   text-indent: -999em;
+}
+
+.view-anmeldelser .field-field-book .abstract {
+  line-height: 16px;
 }
 
