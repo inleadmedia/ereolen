@@ -114,5 +114,5 @@ function ebog_preprocess_block(&$vars, $hook) {
  * @return string
  */
 function ebog_render_attributes($attributes) {
-	return omega_render_attributes($attributes);  
+  return omega_render_attributes($attributes);  
 }
