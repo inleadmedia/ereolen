@@ -201,36 +201,36 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 /**
  * BOOK ITEM
  */
-.display-book {
+.display-book,
+.display-book .picture,
+.display-book .title,
+.display-book .author,
+.display-book .icons,
+.display-book .extras {
   clear: both;
+  float: left;
+}
+
+.display-book {
   display: inline-block;
   zoom: 1; /* ie7 hack for display:inline-block */
   *display: inline;
 }
 
 .display-book .left {
-  float: left;
   margin-right: 12px;
 }
 
 .display-book .right {
-  float: left;
   width: 226px;
 }
 
 .display-book .picture {
-  float: left;
   border: 1px solid #DBDDDA;
-  clear: both;
 }
 
 .display-book .picture img {
   width: 65px;
-}
-
-.display-book h3.title,
-.display-book .author {
-  float: left;
 }
 
 .display-book .icons .icons,
@@ -242,7 +242,6 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 
 .display-book .icons {
   margin-top: 6px;
-  float: left;
 }
 
 .display-book .icons .icons {
