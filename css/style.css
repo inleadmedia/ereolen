@@ -44,11 +44,6 @@ div.messages.error {
   padding: 10px;
 }
 
-.pane-elib-block-lastloans-2 .pane-content {
-  display: inline-block;
-  zoom: 1; /*ie7 hack for display:inline-block*/
-}
-
 .pane-content .picture img {
   border: 1px solid #DDDFDC;
   padding: 3px;
@@ -235,7 +230,6 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 /**
  * BOOK ITEM
  */
-.display-book,
 .display-book .left,
 .display-book .right,
 .display-book .picture,
@@ -245,6 +239,10 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 .display-book .extras {
   clear: both;
   float: left;
+}
+
+.display-book {
+  clear: both;
 }
 
 .display-book {
