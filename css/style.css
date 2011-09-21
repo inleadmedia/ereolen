@@ -268,9 +268,9 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 #ting-object .inner .icons {
   float: right;
   border: 0;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 45px;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
   background-color: #A5165D;
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
   background: -webkit-linear-gradient(top, #A5165D, #8A114C); [> Safari 5.1, Chrome 10+ <]
