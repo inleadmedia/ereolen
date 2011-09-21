@@ -14,6 +14,7 @@ stylesheets[all][] = css/regions.css
 stylesheets[all][] = css/text.css
 stylesheets[all][] = css/style.css
 stylesheets[all][] = css/item.css
+stylesheets[all][] = css/search.css
 
 ; ------- Declare default javascript includes
 
