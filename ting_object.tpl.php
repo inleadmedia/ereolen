@@ -161,12 +161,12 @@ catch (Exception $e) {
         </div>
       </div>
       <div class="icons">
-        <?php print l(theme('image', 'sites/all/themes/netsound2/img/streamok.png', '', '', null, false), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?>
-        <?php print l(theme('image', 'sites/all/themes/netsound2/img/fetch.png', '', '', null, false), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?>
-        <?php print l(theme('image', 'sites/all/themes/netsound2/img/sample.png', '', '', null, false), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?>
+        <?php print l(theme('image', 'sites/all/themes/ebog/images/buttons/stream.png', '', '', null, false), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?>
+        <?php print l(theme('image', 'sites/all/themes/ebog/images/buttons/fetch.png', '', '', null, false), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?>
+        <?php print l(theme('image', 'sites/all/themes/ebog/images/buttons/sample.png', '', '', null, false), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?>
         <?php 
           if($user->uid){
-            print l(theme('image', 'sites/all/themes/netsound2/img/husk.png', '', '', null, false), $object->url.'/huskeliste?'.drupal_get_destination(), array('html' => true));
+            print l(theme('image', 'sites/all/themes/ebog/images/buttons/husk.png', '', '', null, false), $object->url.'/huskeliste?'.drupal_get_destination(), array('html' => true));
           }
         ?>
       </div>
