@@ -53,7 +53,9 @@ h2.pane-title,
 .display-book h3.title a,
 .display-book .author a,
 .view-anmeldelser h3 a,
-#ting-object .author span {
+#ting-object .author em,
+#ting-search-result h3 a,
+#ting-search-result .creator em {
   color: #89104c;
   text-decoration: none;
 }
@@ -62,7 +64,8 @@ h2.pane-title,
 .view-latest-news .views-field-title a:hover,
 .display-book h3.title a:hover,
 .display-book .author a:hover,
-.view-anmeldelser h3 a:hover {
+.view-anmeldelser h3 a:hover,
+#ting-search-result h3 a:hover {
   color: #cb1e73;
   text-decoration: underline;
 }
@@ -84,6 +87,14 @@ ul li h5 {
   font: 18px/28px 'DroidSerifBold', Helvetica, Arial, sans-serif;
 }
 
+.panel-pane .review-title,
+h1#page-title.title {
+  font: 18px/28px 'DroidSerifBold', Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  font-weight: normal;
+  border-bottom: 2px solid #DBDDDA; 
+}
+
 .block-elib_infinite_carousel h2 {
   font: 14px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
   color: #2C2E29;
@@ -93,7 +104,8 @@ ul li h5 {
   font: 21px/26px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
 }
 
-.display-book h3.title {
+.display-book h3.title,
+#ting-search-result h3 {
   font: 16px/20px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
 }
 

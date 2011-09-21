@@ -27,13 +27,6 @@
   color: #8c938b;
 }
 
-.panel-pane .review-title {
-  font: 18px/28px 'DroidSerifBold', Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
-  font-weight: normal;
-  border-bottom: 2px solid #DBDDDA; 
-}
-
-.panel-separator {
-  height: 35px;
+#ting-object .abstract {
+  margin-top: 25px;
 }
