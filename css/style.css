@@ -7,6 +7,28 @@ html, body {
 }
 
 /**
+ * MESSAGES
+ */
+div.messages {
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  padding: 10px;
+}
+
+div.messages.status {
+  color: #33A333;
+  border-color: #33A333;
+  background-color: #C7F2C8;
+}
+
+div.messages.error {
+  color: #A30000;
+  border-color: #A30000;
+  background-color: #FCC;
+}
+
+/**
  * SIDEBAR FIRST
  */
 .pane-content,
