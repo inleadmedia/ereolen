@@ -1,0 +1,39 @@
+.not-front .pane-content {
+  border: 0 none;
+  padding: 0;
+}
+
+.panel-1col .panel-pane {
+  float: right;
+} 
+
+#ting-object .author,
+#ting-object .rating,
+#ting-object .abstract,
+#ting-object .description,
+#ting-object .details,
+#ting-object .icons,
+.panel-separator {
+  clear:both;
+  list-style-type: none;
+}
+
+#ting-object .details .item-list h3 {
+  float: left;
+  font-weight: normal;
+}
+
+#ting-object .details {
+  color: #8c938b;
+}
+
+.panel-pane .review-title {
+  font: 18px/28px 'DroidSerifBold', Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  font-weight: normal;
+  border-bottom: 2px solid #DBDDDA; 
+}
+
+.panel-separator {
+  height: 35px;
+}
