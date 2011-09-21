@@ -281,7 +281,8 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   padding: 0 10px 0 10px;
 }
 
-.display-book .icons .icons img {
+.display-book .icons .icons img,
+#ting-object .inner .icons {
   padding: 4px;
   vertical-align: text-bottom;
 }
