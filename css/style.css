@@ -255,6 +255,10 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   width: 65px;
 }
 
+#ting-object .picture img {
+  width: 152px;
+}
+
 .display-book .extras,
 .display-book .icons .description {
   display: none;
