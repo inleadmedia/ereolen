@@ -98,6 +98,7 @@ h1#page-title.title {
 .block-elib_infinite_carousel h2 {
   font: 14px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
   color: #2C2E29;
+  text-transform: uppercase;
 }
 
 .view-anmeldelser h3 a {

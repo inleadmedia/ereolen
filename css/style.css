@@ -368,6 +368,7 @@ form.fivestar-widget .description {
 
 .infiniteCarousel .wrapper {
   width: 930px;
+  margin: 0;
 }
 
 .infiniteCarousel .back {
