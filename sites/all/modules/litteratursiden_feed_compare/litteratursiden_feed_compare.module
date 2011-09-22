@@ -83,10 +83,12 @@ function litteratursiden_feed_compare_get_feed($items) {
   $ret = array();
   $i = 0;
   $amo = 0;
+  $feed_main_url = variable_get('litteratursiden_feed_compare_feed_url', 'http://www.litteratursiden.dk/service/recommendations');
 
   while ($i != 25) {
-    $feed_json_data = file_get_contents('http://www.litteratursiden.dk/service/recommendations?count=25&offset=' . $i*25,TRUE);
-    $feed = json_decode($feed_json_data, true);
+    $feed_url = $feed_main_url . '?count=25&offset=' . $i*25;
+    $feed_json_data = file_get_contents($feed_url, TRUE);
+    $feed = json_decode($feed_json_data, TRUE);
     foreach($feed as $key => $val) {
       if (is_numeric($key)) {
         $query = "dc.title='" . $val['title'] . "'";
