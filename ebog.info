@@ -23,16 +23,17 @@ stylesheets[all][] = css/search.css
 
 ; ------- Declare default theme regions
 
-regions[sidebar_first] = sidebar first
+regions[navigation] = Navigation
+regions[search] = Search
 
-regions[search] = search
+regions[header_first] = Header
 
-regions[header_first] = header first
+regions[content_top] = Content
+regions[content_bottom] = Content bottom
 
-regions[content_top] = content top
-regions[content_bottom] = content bottom
+regions[sidebar_first] = Sidebar
 
-regions[footer_first] = footer first
+regions[footer_first] = Footer
 
 ; ------- Declare default theme features
 

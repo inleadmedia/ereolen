@@ -29,9 +29,10 @@
         <?php endif; ?>
       </div><!-- /#branding -->
 
-      <?php if ($main_menu_links): ?>
+      <?php if ($navigation): ?>
         <div id="site-menu" class="grid-<?php print $header_menu_width; ?>">
-        <?php if($main_menu_links): ?>
+        <?php if($navigation): ?>
+          <div><?php print $navigation; ?></div>
           <div><?php print $main_menu_links; ?></div>
         <?php endif; ?>
         </div><!-- /#site-menu -->
