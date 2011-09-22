@@ -25,6 +25,8 @@ stylesheets[all][] = css/search.css
 
 regions[sidebar_first] = sidebar first
 
+regions[search] = search
+
 regions[header_first] = header first
 
 regions[content_top] = content top

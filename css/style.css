@@ -127,10 +127,10 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
 /**
  * SEARCH FORM
  */
-#search-theme-form,
-#search-theme-form .form-item,
-#search-theme-form .form-text,
-#search-theme-form .form-submit {
+#ting-search-form,
+#ting-search-form .form-item,
+#ting-search-form .form-text,
+#ting-search-form .form-submit {
   display: inline-block;
   zoom: 1; /* ie7 hack for display:inline-block */
   *display: inline;
@@ -141,7 +141,7 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   background: none;
 }
 
-#search-theme-form {
+#ting-search-form {
   background: #FFFFFF;
   padding: 3px 3px 3px 8px;
   border: 2px solid #dbddda;
@@ -150,17 +150,18 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   border-radius: 5px;
 }
 
-#search-theme-form .form-item {
+#ting-search-form .form-item {
   background-image: url("../images/magnifier.png");
   background-repeat: no-repeat;
   background-position: left top;
+  margin: 0;
 }
 
-#search-theme-form .form-text {
+#ting-search-form .form-text {
   padding: 6px 6px 4px 46px;
 }
 
-#search-theme-form .form-submit {
+#ting-search-form .form-submit {
   background-color: #A5165D;
   height: 30px;
   width: 60px;
@@ -171,6 +172,11 @@ ul.main-menu li.menu-331.active { background-image: url("../images/logind_active
   -moz-box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
   -webkit-box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
   box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
+}
+
+#ting-search-form h2,
+#ting-search-form .example {
+  display:none;
 }
 
 /**

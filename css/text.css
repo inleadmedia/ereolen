@@ -83,7 +83,7 @@ ul li h5 {
   color: #40453f;
 }
 
-#search-theme-form .form-submit {
+#ting-search-form .form-submit {
   font: 18px/28px 'DroidSerifBold', Helvetica, Arial, sans-serif;
 }
 
@@ -120,12 +120,12 @@ h1#page-title.title {
   font-size: 10px;
 }
 
-#search-theme-form .form-text {
+#ting-search-form .form-text {
   color: #8c938b;
   font-size: 15px;
 }
 
-#search-theme-form .form-submit {
+#ting-search-form .form-submit {
   color: #FFFFFF;
 }
 

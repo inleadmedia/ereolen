@@ -37,8 +37,8 @@
         </div><!-- /#site-menu -->
       <?php endif; ?>
 
-      <?php if ($search_box): ?>
-        <div id="search-box" class="grid-<?php print $search_width; ?>"><?php print $search_box; ?></div><!-- /#search-box -->
+      <?php if ($search): ?>
+        <div id="search-box" class="grid-<?php print $search_width; ?>"><?php print $search; ?></div><!-- /#search-box -->
       <?php endif; ?>
     </div><!-- /#site-header -->
 
