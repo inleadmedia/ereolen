@@ -115,6 +115,21 @@ h1#page-title.title {
   color #2C2E29;
 }
 
+#footer #footer-first .block.block-block h2 {
+  font: 20px/26px 'BebasNeueRegular', Helvetica, Arial, sans-serif;
+  color: #8c938b;
+}
+
+#footer #footer-first #block-block-8.block.block-block h2 {
+  font: 36px/26px 'BebasNeueRegular', Helvetica, Arial, sans-serif;
+  color: #2c2e29;
+}
+
+#footer #footer-first .block.block-block .content p {
+  color: #40453f;
+  line-height: 18px;
+}
+
 #block-elib_block_categories-0 ul li:after {
   color: #c5ccc4;
   font-size: 10px;

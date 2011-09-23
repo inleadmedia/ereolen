@@ -373,6 +373,25 @@ form.fivestar-widget .description {
 }
 
 /**
+ * FOOTER
+ */
+#footer #footer-first {
+  margin: 10px;
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+#footer #footer-first .block.block-block {
+  width: 220px;
+  float: left;
+}
+
+#footer #footer-first .block.block-block .content {
+  margin-right: 10px;
+  margin-top: 25px;
+}
+
+/**
  * CAROUSEL
  */
 .infiniteCarousel {
