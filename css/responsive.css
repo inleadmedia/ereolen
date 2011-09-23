@@ -1,0 +1,146 @@
+@media screen and (max-width:320px){
+  #header-regions,
+  #sidebar-first,
+  .pane-embedvideo {
+    display: none;
+  }
+
+  #site-header #branding,
+  #site-header #site-menu,
+  #site-header #search-box {
+    float: none;
+    width: 300px;
+  }
+
+  .grid-1,
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .grid-5,
+  .grid-6,
+  .grid-7,
+  .grid-8,
+  .grid-9,
+  .grid-10,
+  .grid-11,
+  .grid-12,
+  .grid-13,
+  .grid-14,
+  .grid-15,
+  .grid-16 {
+    margin: 0;
+    width: 300px;
+  }
+
+  #page {
+    background: none;
+  }
+
+  .container-12,
+  .container-16,
+  .container-24,
+   #page,
+  body,
+  .panel-2col .panel-col-first,
+  .panel-2col .panel-col-last,
+  .container-12 .grid-9,
+  .container-16 .grid-12,
+  .container-12 .grid-12,
+  .container-16 .grid-16 {
+    width: 300px;
+  }
+
+  #site-header {
+    height: 210px;
+    margin: 0 0 25px;
+  }
+
+  #search-box {
+    margin: 0;
+  }
+
+  #ting-search-form,
+  #ting-search-form .form-item,
+  #ting-search-form .form-text,
+  #ting-search-form .form-submit {
+    float: left;
+  }
+
+  #ting-search-form .form-item {
+    width: 225px
+  }
+
+  #site-menu ul.menu li,
+  #site-menu ul.menu li a {
+    width: 70px;
+  }
+
+  #main-content-container {
+    margin: 0;
+  }
+
+  .panel-2col .panel-col-first {
+    float: none;
+    margin-right: 0;
+  }
+
+  .pane-views-panes .view-content div.views-row:nth-child(2),
+  .pane-views-panes .view-content div.views-row:nth-child(3),
+  .pane-block .display-book:nth-child(4),
+  .pane-block .display-book:nth-child(5),
+  .pane-block .display-book:nth-child(6),
+  .pane-block .display-book:nth-child(7),
+  .pane-block .display-book:nth-child(8),
+  .pane-block .display-book:nth-child(9),
+  .pane-block .display-book:nth-child(10) {
+    display:none
+  }
+
+  .view-anmeldelser .views-row {
+    border-bottom: 0;
+    padding: 0;
+  }
+
+  #page {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .view-anmeldelser .field-field-book .picture img {
+    width: 80px;
+  }
+
+  .view-anmeldelser h3 a {
+    font: 16px/18px 'DroidSerifRegular',Helvetica,Arial,sans-serif;
+  }
+
+  body {
+    font-size: 10px;
+    line-height: 14px;
+  }
+
+  .view-anmeldelser .field-field-book .record h3 {
+    margin-bottom: 5px;
+  }
+
+  .display-book .right {
+    width: 190px;
+  }
+
+  #site-header #branding {
+    display: block;
+    margin-bottom: 15px;
+    margin-left: 46px;
+    margin-top: 35px;
+  }
+
+  #ting-search-form .form-submit {
+    background-color: #A5165D;
+    border-radius: 1px 1px 1px 1px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.9) inset;
+    height: 30px;
+    text-transform: uppercase;
+    width: 60px;
+  }
+
+}
