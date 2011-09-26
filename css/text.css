@@ -55,7 +55,8 @@ h2.pane-title,
 .view-anmeldelser h3 a,
 #ting-object .author em,
 #ting-search-result h3 a,
-#ting-search-result .creator em {
+#ting-search-result .creator em,
+#ting-result #pager a {
   color: #89104c;
   text-decoration: none;
 }
@@ -65,7 +66,8 @@ h2.pane-title,
 .display-book h3.title a:hover,
 .display-book .author a:hover,
 .view-anmeldelser h3 a:hover,
-#ting-search-result h3 a:hover {
+#ting-search-result h3 a:hover,
+#ting-result #pager a:hover {
   color: #cb1e73;
   text-decoration: underline;
 }
@@ -106,7 +108,8 @@ h1#page-title.title {
 }
 
 .display-book h3.title,
-#ting-search-result h3 {
+#ting-search-result h3,
+#ting-result #pager a {
   font: 16px/20px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
 }
 

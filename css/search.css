@@ -48,3 +48,29 @@
 #ting-search-result .subjects {
   display: none;
 }
+
+#ting-result #pager {
+  margin-top: 20px;
+}
+
+#ting-result #pager .navwide,
+#ting-result #pager .nav {
+  float: left;
+  width: 220px;
+}
+
+#ting-result #pager .nav,
+#ting-result #pager div:first-child + * {
+  margin-right: 10px;
+}
+
+#ting-result #pager .navwide {
+  margin-left: 10px;
+  text-align: right;
+}
+
+ #ting-result #pager div:first-child + * {
+  text-align: center;
+}
+
+
