@@ -73,29 +73,29 @@ catch (Exception $e) {
       <div class="details">
         <div class="left grid-4 omega alpha">
           <?php if (!empty($object->language)) { ?>
-            <?php print theme('item_list', array($object->language), t('Language'), 'span', array('class' => 'language'));?>
+            <?php print theme('item_list', array($object->language), t('Language').t(':&nbsp;'), 'span', array('class' => 'language'));?>
           <?php } ?>
           <?php if (!empty($object->record['dkdcplus:version'][''])) { ?>
-            <?php print theme('item_list', $object->record['dkdcplus:version'][''], t('Version'), 'span', array('class' => 'version'));?>
+            <?php print theme('item_list', $object->record['dkdcplus:version'][''], t('Version').t(':&nbsp;'), 'span', array('class' => 'version'));?>
           <?php } ?>
           <?php if (!empty($object->subjects)) { ?>
-            <?php print theme('item_list', $object->subjects, t('Subjects'), 'span', array('class' => 'subject'));?>
+            <?php print theme('item_list', $object->subjects, t('Subjects').t(':&nbsp;'), 'ul', array('class' => 'subject'));?>
           <?php } ?>
         </div>
         <div class="right grid-5 omega alpha">
           <?php if (!empty($object->record['dc:source'][''])) { ?>
-            <?php print theme('item_list', $object->record['dc:source'][''], t('Original title'), 'span', array('class' => 'titles'));?>
+            <?php print theme('item_list', $object->record['dc:source'][''], t('Original title').t(':&nbsp;'), 'span', array('class' => 'titles'));?>
           <?php } ?>
           <?php if (!empty($object->record['dc:identifier']['dkdcplus:ISBN'])) { ?>
-            <?php print theme('item_list', $object->record['dc:identifier']['dkdcplus:ISBN'], t('ISBN no.'), 'span', array('class' => 'identifier'));?>
+            <?php print theme('item_list', $object->record['dc:identifier']['dkdcplus:ISBN'], t('ISBN').t(':&nbsp;'), 'span', array('class' => 'identifier'));?>
           <?php } ?>
           <?php if (!empty($object->record['dc:publisher'][''])) { ?>
-            <?php print theme('item_list', $object->record['dc:publisher'][''], t('Publisher'), 'span', array('class' => 'publisher'));?>
+            <?php print theme('item_list', $object->record['dc:publisher'][''], t('Publisher'.t(':&nbsp;')), 'span', array('class' => 'publisher'));?>
           <?php } ?>
         </div>
 
         <div class="various" style="display:none;">
-          <?php print theme('item_list', array($object->type), t('Type'), 'span', array('class' => 'type')); ?>
+          <?php print theme('item_list', array($object->type), t('Type').t(':&nbsp;'), 'span', array('class' => 'type')); ?>
           <?php if (!empty($object->record['dc:format'][''])) { ?>
             <?php print theme('item_list', $object->record['dc:format'][''], t('Format'), 'span', array('class' => 'format'));?>
           <?php } ?>
