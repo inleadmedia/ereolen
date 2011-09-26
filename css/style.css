@@ -46,10 +46,21 @@ div.messages.error {
 
 div#sidebar-first div#block-block-12 .content {
   background: none;
-  line-height: 0;
   margin: 0;
-  padding: 0;
+  padding: 16px;
   border: none;
+  background-color: #A5165D;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
+  background: -webkit-linear-gradient(top, #A5165D, #8A114C); [> Safari 5.1, Chrome 10+ <]
+  background: -moz-linear-gradient(top, #A5165D, #8A114C); [> Firefox 3.6+ <]
+  background: -ms-linear-gradient(top, #A5165D, #8A114C); [> IE 10 <]
+  background: -o-linear-gradient(top, #A5165D, #8A114C); [> Opera 11.10+ <]
+}
+
+div#sidebar-first div#block-block-12 .content h3 {
+  background: url("../images/help-icon.png") no-repeat scroll 0 0 transparent;
+  line-height: 40px;
+  padding-left: 45px;
 }
 
 .pane-content .picture img,
