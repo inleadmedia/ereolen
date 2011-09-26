@@ -18,6 +18,10 @@
   list-style-type: none;
 }
 
+.panel-separator {
+  height: 35px;
+}
+
 #ting-object .details .item-list h3 {
   float: left;
   font-weight: normal;

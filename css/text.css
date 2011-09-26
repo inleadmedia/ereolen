@@ -56,7 +56,9 @@ h2.pane-title,
 #ting-object .author em,
 #ting-search-result h3 a,
 #ting-search-result .creator em,
-#ting-result #pager a {
+#ting-result #pager a,
+.panel-pane.pane-block.pane-netsound-review-1 a,
+.panel-pane.pane-block.pane-netsound-review-2 a {
   color: #89104c;
   text-decoration: none;
 }
@@ -67,7 +69,9 @@ h2.pane-title,
 .display-book .author a:hover,
 .view-anmeldelser h3 a:hover,
 #ting-search-result h3 a:hover,
-#ting-result #pager a:hover {
+#ting-result #pager a:hover,
+.panel-pane.pane-block.pane-netsound-review-1 a:hover,
+.panel-pane.pane-block.pane-netsound-review-2 a:hover {
   color: #cb1e73;
   text-decoration: underline;
 }
@@ -76,9 +80,25 @@ ul li h5 {
   display: none;
 }
 
-.view-latest-news .views-field-title {
+.view-latest-news .views-field-title,
+#ting-object .inner .author,
+.panel-pane.pane-block.pane-netsound-review-1 a,
+.panel-pane.pane-block.pane-netsound-review-2 a {
   font: 14px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
 }
+
+.panel-pane.pane-block.pane-netsound-review-1 a,
+.panel-pane.pane-block.pane-netsound-review-2 a {
+  display: block;
+  margin-top: 10px;
+}
+
+.panel-pane.pane-block.pane-netsound-review-1 a:first-letter,
+.panel-pane.pane-block.pane-netsound-review-2 a:first-letter {
+  text-transform: capitalize;
+}
+
+
 
 .view-latest-news .views-field-created {
   font: 12px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
@@ -90,7 +110,8 @@ ul li h5 {
 }
 
 .panel-pane .review-title,
-h1#page-title.title {
+h1#page-title.title,
+.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title {
   font: 18px/28px 'DroidSerifBold', Helvetica, Arial, sans-serif;
   text-transform: uppercase;
   font-weight: normal;

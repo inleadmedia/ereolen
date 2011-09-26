@@ -453,3 +453,10 @@ form.fivestar-widget .description {
 .panel-2col .panel-separator {
   margin: 0 0 20px 0;
 }
+
+.panel-pane.pane-block.pane-netsound-review-0,
+.panel-pane.pane-block.pane-netsound-review-1,
+.panel-pane.pane-block.pane-netsound-review-2,
+.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 {
+  float: right;
+}
