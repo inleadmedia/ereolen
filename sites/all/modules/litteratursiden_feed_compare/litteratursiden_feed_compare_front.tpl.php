@@ -17,7 +17,7 @@
     </div>
   <?php } ?>
 
-  <?php if ($items['status'] == 'ok') { ?>
+  <?php if (($items['status'] == 'ok') || ($items['status'] == 'notfull')) { ?>
     <?php foreach ($items['data'] as $key => $item) { ?>
       <?php if (is_numeric($key)) { ?>
         <div class="feed_and_compare_front_item" style="border:1px dashed red;width:48%;float:left;margin:0 10px 10px 0;">
