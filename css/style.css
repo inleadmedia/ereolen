@@ -118,18 +118,18 @@ div.messages.error {
   cursor: pointer;
 }
 
-#site-menu ul.menu li:first-child a                          { background-image: url("../images/forside.png");        }
-#site-menu ul.menu li:first-child a:hover                    { background-image: url("../images/forside_hover.png");  }
-#site-menu ul.menu li:first-child .active-trail a            { background-image: url("../images/forside_active.png"); }
-#site-menu ul.menu li:first-child + * a                      { background-image: url("../images/emner.png");          }
-#site-menu ul.menu li:first-child + * a:hover                { background-image: url("../images/emner_hover.png");    }
-#site-menu ul.menu li:first-child + *.active-trail a         { background-image: url("../images/emner_active.png");   }
-#site-menu ul.menu li:first-child + * + * a                  { background-image: url("../images/hjaelp.png");         }
-#site-menu ul.menu li:first-child + * + * a:hover            { background-image: url("../images/hjaelp_hover.png");   }
-#site-menu ul.menu li:first-child + * + *.active-trail       { background-image: url("../images/hjaelp_active.png");  }
-#site-menu ul.menu li:first-child + * + * + * a              { background-image: url("../images/logind.png");         }
-#site-menu ul.menu li:first-child + * + * + * a:hover        { background-image: url("../images/logind_hover.png");   }
-#site-menu ul.menu li:first-child + * + * + *.active-trail a { background-image: url("../images/logind_active.png");  }
+#site-menu ul.menu li:first-child a                    { background-image: url("../images/forside.png");        }
+#site-menu ul.menu li:first-child a:hover              { background-image: url("../images/forside_hover.png");  }
+#site-menu ul.menu li:first-child a.active             { background-image: url("../images/forside_active.png"); }
+#site-menu ul.menu li:first-child + * a                { background-image: url("../images/emner.png");          }
+#site-menu ul.menu li:first-child + * a:hover          { background-image: url("../images/emner_hover.png");    }
+#site-menu ul.menu li:first-child + * a.active         { background-image: url("../images/emner_active.png");   }
+#site-menu ul.menu li:first-child + * + * a            { background-image: url("../images/hjaelp.png");         }
+#site-menu ul.menu li:first-child + * + * a:hover      { background-image: url("../images/hjaelp_hover.png");   }
+#site-menu ul.menu li:first-child + * + * a.active     { background-image: url("../images/hjaelp_active.png");  }
+#site-menu ul.menu li:first-child + * + * + * a        { background-image: url("../images/logind.png");         }
+#site-menu ul.menu li:first-child + * + * + * a:hover  { background-image: url("../images/logind_hover.png");   }
+#site-menu ul.menu li:first-child + * + * + * a.active { background-image: url("../images/logind_active.png");  }
 
 /**
  * SEARCH FORM
@@ -308,6 +308,12 @@ div.messages.error {
   display: none;
 }
 
+#ting-object .item-list ul.subject {
+  clear: both;
+  margin: 0;
+  padding: 0;
+}
+
 .display-book .icons {
   margin-top: 6px;
 }
@@ -337,6 +343,10 @@ div.messages.error {
 
 .fivestar-static-form-item {
   padding-bottom: 36px;
+}
+
+div.fivestar-widget div.on a {
+  background-position: 0 -12px;
 }
 
 div.fivestar-widget-static .star,
