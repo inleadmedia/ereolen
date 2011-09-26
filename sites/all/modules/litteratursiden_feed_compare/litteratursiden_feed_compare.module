@@ -6,7 +6,7 @@
 
 
 /**
- * Implementation of hook_menu
+ * Implementation of hook_menu().
  */
 function litteratursiden_feed_compare_menu() {
   $items = array();
@@ -47,7 +47,7 @@ function litteratursiden_feed_compare_get_cached_feed($items) {
   $cache = cache_get('litteratursiden_feed_compare_cache');
   if (empty($cache->data)) {
     $ret = litteratursiden_feed_compare_get_feed($items);
-    cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime); 
+    cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime);
   }
   else {
     $ret = unserialize($cache->data);
@@ -56,17 +56,17 @@ function litteratursiden_feed_compare_get_cached_feed($items) {
   return $ret;
 
 }
-     
+
 /**
  * Convert TING object to array for serializing in cache.
  */
 function litteratursiden_feed_compare_object_to_array($object) {
   $array=array();
-  foreach ($object as $member=>$data) {
-    $array[$member]=$data;
+  foreach ($object as $member => $data) {
+    $array[$member] = $data;
   }
   return $array;
-}   
+}
 
 
 /**
@@ -89,13 +89,13 @@ function litteratursiden_feed_compare_get_feed($items) {
     $feed_url = $feed_main_url . '?count=25&offset=' . $i*25;
     $feed_json_data = file_get_contents($feed_url, TRUE);
     $feed = json_decode($feed_json_data, TRUE);
-    foreach($feed as $key => $val) {
+    foreach ($feed as $key => $val) {
       if (is_numeric($key)) {
         $query = "dc.title='" . $val['title'] . "'";
-        $search = ting_do_search($query,1,25);
+        $search = ting_do_search($query, 1, 25);
         if ($search->numTotalObjects > 0) {
-          foreach($search->collections as $collection) {
-            foreach($collection->objects as $object) {
+          foreach ($search->collections as $collection) {
+            foreach ($collection->objects as $object) {
               $isbn = $object->record['dc:identifier']['dkdcplus:ISBN'][0];
               if (!empty($isbn)) {
                 // Title from feed consists of title+author.
