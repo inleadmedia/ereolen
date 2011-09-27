@@ -35,6 +35,12 @@
 			</div>
 		<?php } ?>
 
+		<?php if ($conf['title'] != '') { ?>
+			<div class="ebog_embed_title">
+				<?php echo $conf['title']; ?>
+			</div>
+		<?php } ?>
+
 		<?php if ($conf['descr'] != '') { ?>
 			<div class="ebog_embed_descr">
 				<?php echo $conf['descr']; ?>
