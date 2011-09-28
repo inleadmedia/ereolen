@@ -916,3 +916,19 @@ div.fivestar-widget div.hover a {
 .pane-elib-block-categories-0 ul li ul li.highlight a {
   color: #90C50F;
 }
+
+.feed-and-compare-page li .meta {
+  width: 32%;
+}
+.feed-and-compare-page li .moreinfo {
+  width: 52%;
+}
+.feed-and-compare-page .item-list .title {
+  font-weight: normal;
+}
+.feed-and-compare-page .title a {
+  color: #90C50F;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 14px;
+}

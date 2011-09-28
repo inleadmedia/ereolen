@@ -42,6 +42,8 @@ function litteratursiden_feed_compare_theme() {
  */
 function litteratursiden_feed_compare_get_cached_feed($items) {
 
+  $items = variable_get('litteratursiden_feed_compare_items_on_page', '10');
+
   $lifetime = variable_get('litteratursiden_feed_compare_cache_lifetime', '360');
 
   $cache = cache_get('litteratursiden_feed_compare_cache');
@@ -117,8 +119,14 @@ function litteratursiden_feed_compare_get_feed($items) {
                     $ret['data'][$amo]['isbn'] = $book_obj->data->product->external_ids->external_id[1]->id;
                     $ret['data'][$amo]['title'] = $book_obj->data->product->title;
                     $ret['data'][$amo]['author'] = $book_obj->data->product->contributors->contributor[0]->first_name . ' ' . $book_obj->data->product->contributors->contributor[0]->family_name;
+                    $ret['data'][$amo]['abstract'] = $object->abstract;
                     $ret['data'][$amo]['description'] = $book_obj->data->product->description;
                     $ret['data'][$amo]['image_url'] = $book_obj->data->product->coverimage;
+                    $ret['data'][$amo]['url'] = $object->url;
+                    $ret['data'][$amo]['creators_string'] = $object->creators_string;
+                    $ret['data'][$amo]['contributors'] = $object->record['dc:contributor']['oss:dkind'];
+                    $ret['data'][$amo]['subjects'] = $object->subjects;
+                    $ret['data'][$amo]['date'] = $object->date;
                     $amo++;
                   }
                 }

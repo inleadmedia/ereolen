@@ -3,7 +3,7 @@
  * @file
  */
 ?>
-<div class="feed_and_compare_front">
+<div class="feed-and-compare-front clear-block">
 
   <?php if ($items['status'] == 'empty') { ?>
     <div class="feed_and_compare_empty" style="border:1px dashed red;margin:0 10px 10px 0;">
@@ -18,6 +18,7 @@
   <?php } ?>
 
   <?php if (($items['status'] == 'ok') || ($items['status'] == 'notfull')) { ?>
+    <?php $i=0; ?>
     <?php foreach ($items['data'] as $key => $item) { ?>
       <?php if (is_numeric($key)) { ?>
         <div class="feed_and_compare_front_item" style="border:1px dashed red;width:48%;float:left;margin:0 10px 10px 0;">
@@ -35,11 +36,17 @@
               <b>author:</b> <?php echo $item['author']; ?><br />
             </div>
             <div class="feed_and_compare_front_item_description">
-              <b>teaser:</b> <?php echo $item['description']; ?><br />
+              <b>teaser:</b> <?php echo $item['abstract']; ?><br />
             </div>
           </div>
         </div>
+        <?php $i++; ?>
       <?php } ?>
+      <?php
+        if ($i == variable_get('litteratursiden_feed_compare_items_on_front', '2')) {
+          break;
+        }
+      ?>
     <?php } ?>
   <?php } ?>
 

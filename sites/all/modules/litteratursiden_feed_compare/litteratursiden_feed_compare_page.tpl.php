@@ -3,44 +3,68 @@
  * @file
  */
 ?>
-<div class="feed_and_compare_page">
-
-  <?php if ($items['status'] == 'empty') { ?>
-    <div class="feed_and_compare_empty" style="border:1px dashed red;margin:0 10px 10px 0;">
-      <b>nothing found</b>
-    </div>
-  <?php } ?>
-
-  <?php if ($items['status'] == 'error') { ?>
-    <div class="feed_and_compare_error" style="border:1px dashed red;margin:0 10px 10px 0;">
-      <b>error:</b> <?php echo $items['message']; ?>
-    </div>
-  <?php } ?>
-
-  <?php if ($items['status'] == 'ok') { ?>
-    <?php foreach ($items['data'] as $key => $item) { ?>
-      <?php if (is_numeric($key)) { ?>
-        <div class="feed_and_compare_page_item" style="border:1px dashed red;width:100%;margin:0 0 10px 0;">
-          <div class="feed_and_compare_page_item_image">
-            <b>image:</b> <?php echo theme_image($item['image_url'], '', '', array('width' => '100px'), FALSE); ?><br />
+<div class="feed-and-compare-page clear-block">
+  <ul>
+  <?php
+  foreach ($items['data'] as $item) {
+  ?>
+    <li class="clear-block ruler-after">
+      <div class="picture unit">
+        <?php if ($item['image_url']) { ?>
+          <div class="inner left">
+            <?php echo theme_image($item['image_url'], '', '', array('width' => '100px'), FALSE); ?><br />
           </div>
-          <div class="feed_and_compare_page_item_descr">
-            <div class="feed_and_compare_item_isbn">
-              <b>ISBN:</b> <?php echo $item['isbn']; ?><br />
-            </div>
-            <div class="feed_and_compare_page_item_title">
-              <b>title:</b> <?php echo $item['title']; ?><br />
-            </div>
-            <div class="feed_and_compare_page_item_author">
-              <b>author:</b> <?php echo $item['author']; ?><br />
-            </div>
-            <div class="feed_and_compare_page_item_description">
-              <b>teaser:</b> <?php echo $item['description']; ?><br />
-            </div>
+        <?php } ?>
+      </div>
+      <div class="meta unit">
+        <div class="inner">
+        <h3 class="title">
+          <?php print l($item['title'], $item['url'], array('attributes' => array('class' =>'title'))) ;?>
+        </h3>
+        <div class="author">
+          <?php
+          echo t(
+            'By !creator_name',
+            array('!creator_name' => l($item['creators_string'], 'ting/search/'.$item['creators_string'], array('html' => true)))
+          );
+          ?>
+        </div>
+        <?php
+        if (!empty($item['contributors'])) {
+          foreach($item['contributors'] as $reader) {
+            $readers[] = l($reader,'ting/search/'.$reader);
+          }
+        ?>
+          <div class="reader">
+          <?php print theme('item_list', $readers, t('Reader '), 'span', array('class' => 'contributor')); ?>
+          </div>
+          <div>
+          <?php print theme('item_list', array($item['date']), t('Udgivelses år '), 'span', array('class' => 'year')); ?>
+          </div>
+        <?php
+        }
+        ?>
+        <?php
+        if (!empty($item['subjects'])) {
+          $subs = array();
+          foreach($item['subjects'] as $subject) {
+            $subs[] = l($subject,'ting/search/'.$subject);
+          }
+          print theme('item_list', $subs, t('Genre '), 'span', array('class' => 'subject'));
+        }
+        ?>
+        </div>
+      </div>
+      <div class="moreinfo unit lastUnit">
+        <div class="inner right">
+          <div class="abstract">
+            <?php print check_plain($item['abstract']); ?>
           </div>
         </div>
-      <?php } ?>
-    <?php } ?>
-  <?php } ?>
-
+      </div>
+    </li>
+  <?php
+  }
+  ?>
+  </ul>
 </div>
