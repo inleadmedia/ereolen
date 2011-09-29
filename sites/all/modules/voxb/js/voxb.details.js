@@ -51,7 +51,7 @@ $(document).ajaxComplete(function(event,request, settings){
         dataType: 'json',
         data: 'ids=' + ids.join(','),
         success: function(data) {
-          var faust_prefix = $('#ting-search-result li:first').attr('id').substring(0, 6);
+          var faust_prefix = $('#ting-search-result li.display-book:first').attr('id').substring(0, 6);
           $.each(data, function(key, value) {
             $('div#' + key).append(voxb_draw_rating(value.rating)).after('<div class="clearfix"></div>');
           });
