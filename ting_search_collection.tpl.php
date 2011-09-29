@@ -26,7 +26,7 @@
               <?php echo t('By %creator_name%', array('%creator_name%' => $collection->creators_string)) ?>
             </span>
           <?php endif; ?>
-          <div id="<?php print $collection->localId ?>"></div>
+          <div id="<?php print $collection->objects[0]->localId ?>"></div>
           <?php if ($collection->date) : ?>
             <span class="publication_date">
               <?php echo t('(%publication_date%)', array('%publication_date%' => $collection->date)) /* TODO: Improve date handling, localizations etc. */ ?>
