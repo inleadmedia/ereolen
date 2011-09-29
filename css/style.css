@@ -405,10 +405,14 @@ h1#page-title.title,
 .display-book .picture,
 .display-book .title,
 .display-book .author,
-.display-book .icons,
 .display-book .extras {
   clear: both;
   float: left;
+}
+
+.display-book .icons {
+  clear: both;
+  float: right;
 }
 
 .display-book {
@@ -430,7 +434,7 @@ h1#page-title.title,
   padding-top: 0;
 }
 
-.display-book.index-10,
+.display-book.index-7,
 .view-anmeldelser .views-row-last,
 .pane-front .feed-and-compare-front .feed_and_compare_front_item:first-child + * {
   border-bottom: 0;
