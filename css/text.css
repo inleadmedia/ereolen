@@ -33,11 +33,11 @@
   font-style: normal;
 }
 
-body, .ui-tabs-panel {
+body, .ui-tabs-panel, input, textarea {
   font-family: Verdana;
   font-size: 12px;
   color: #40453F;
-  line-height: 16px;
+  line-height: 18px;
 }
 
 h2.pane-title,
@@ -195,7 +195,8 @@ div#sidebar-first div#block-block-12 .content a:hover {
 
 #sidebar-first #block-elib_block_categories-0 .content .categories-link a,
 .pane-front .bottom-bar .see-more a,
-.pane-embedvideo .bottom-bar .see-more a {
+.pane-embedvideo .bottom-bar .see-more a,
+#sidebar-first #block-views-latest_news-block_1 .content .view-footer a {
   line-height: 26px;
   text-decoration: none;
   font-size: 12px;
@@ -204,7 +205,8 @@ div#sidebar-first div#block-block-12 .content a:hover {
 
 #sidebar-first #block-elib_block_categories-0 .content .categories-link a:hover,
 .pane-front .bottom-bar .see-more a:hover,
-.pane-embedvideo .bottom-bar .see-more a:hover {
+.pane-embedvideo .bottom-bar .see-more a:hover,
+#sidebar-first #block-views-latest_news-block_1 .content .view-footer a:hover {
   text-decoration: underline;
 }
 
