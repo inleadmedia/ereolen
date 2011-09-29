@@ -22,7 +22,7 @@
     $profile = unserialize($_SESSION['voxb']['profile']);
   ?>
 
- <div class="line clear-block rulerafter">
+  <div class="line clear-block rulerafter">
     <div class="unit size1of4 review-title">
       Bruger anmeldelser
     </div>
@@ -41,46 +41,46 @@
         </div>
       </div>
     </div>
-
-    <?php
-      $reviews = $voxb_item->getReviews('review')->getCount();
-      echo '<div id="pager_block">';
-      echo theme('voxb_review_pager', array('count' => $reviews, 'limit' => $limit, 'faust_number' => $faust_number, 'cur_page' => 1));
-      echo '</div>';
-      echo '<div style="clear: both;"></div>';
-      if ($user->uid) {
-        $data = $profile->getVoxbUserData($faust_number);
-        if ($data['review']['title'] != 'videoreview') {
-          if ($data['review']['title'] == 'review') {
-            $params = array(
-              'faust_number' => $faust_number,
-              'review_content' => $data['review']['data'],
-              'action' => 'update',
-            );
-          }
-          else {
-            $params = array(
-              'faust_number' => $faust_number,
-              'review_content' => '',
-              'action' => 'submit',
-            );
-          }
-    ?>
-    </div>
-    <div class="line clear-block rulerafter">
-      <div class="unit size1of4 review-title">
-        Skriv anmeldelse
-      </div>
-      <div class="unit lastUnit">
-        <div class="addReviewContainer">
-          <?php echo drupal_get_form('ding_voxb_review_form', $params); ?>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-    </div>
+  </div>
 
   <?php
-      }
+    $reviews = $voxb_item->getReviews('review')->getCount();
+    echo '<div id="pager_block">';
+    echo theme('voxb_review_pager', array('count' => $reviews, 'limit' => $limit, 'faust_number' => $faust_number, 'cur_page' => 1));
+    echo '</div>';
+    echo '<div style="clear: both;"></div>';
+    if ($user->uid) {
+      $data = $profile->getVoxbUserData($faust_number);
+      if ($data['review']['title'] != 'videoreview') {
+        if ($data['review']['title'] == 'review') {
+          $params = array(
+            'faust_number' => $faust_number,
+            'review_content' => $data['review']['data'],
+            'action' => 'update',
+          );
+        }
+        else {
+          $params = array(
+            'faust_number' => $faust_number,
+            'review_content' => '',
+            'action' => 'submit',
+          );
+        }
+
+  ?>
+        <div class="line clear-block rulerafter">
+          <div class="unit size1of4 review-title">
+            Skriv anmeldelse
+          </div>
+          <div class="unit lastUnit">
+            <div class="addReviewContainer">
+              <?php echo drupal_get_form('ding_voxb_review_form', $params); ?>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+  <?php }
     }
   ?>
+
   </div>
