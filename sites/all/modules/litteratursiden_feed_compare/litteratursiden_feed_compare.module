@@ -11,8 +11,8 @@
 function litteratursiden_feed_compare_menu() {
   $items = array();
   $items['admin/settings/litteratursiden_feed_compare'] = array(
-    'title' => 'litteratursiden feed compare title',
-    'description' => t('litteratursiden feed compare descr'),
+    'title' => 'Litteratursiden feed compare',
+    'description' => t('Litteratursiden feed compare'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('litteratursiden_feed_compare_admin'),
     'access arguments' => array('administer site configuration'),
