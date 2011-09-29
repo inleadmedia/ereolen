@@ -1,9 +1,12 @@
-<div class="ebog_embed_video">
-	<?php if ($conf['type'] == 'undefined') { ?>
-		<p>USER PROVIDED WRONG URL TO VIDEO</p>
-	<?php }
-        elseif (!empty($conf['embed_code']) AND !empty($conf['embed_url'])) { ?>
-
+<?php
+/**
+ * @file
+ */
+?>
+<?php if ($conf['type'] == 'undefined') { ?>
+  <p>USER PROVIDED WRONG URL TO VIDEO</p>
+<?php } elseif (!empty($conf['embed_code']) AND !empty($conf['embed_url'])) { ?>
+  <div class="ebog_embed_video">
 		<?php if ($conf['type'] == 'youtube') { ?>
 			<div class="ebog_embed_youtube">
 				<object style="width:207px;height:144px;">
@@ -47,13 +50,12 @@
 				<?php echo $conf['descr']; ?>
 			</div>
 		<?php } ?>
-
+  </div>
+  <div class="bottom-bar">
     <div class="see-more ebog_embed_see_more">
       <?php if ($conf['see_more_link'] != '' && $conf['see_more_title'] != '') { ?>
         <?php echo l($conf['see_more_title'], $conf['see_more_link']); ?>
       <?php } ?>
     </div>
-
-  <?php } ?>
-
-</div>
+  </div>
+<?php } ?>
