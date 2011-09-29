@@ -48,6 +48,12 @@
 			</div>
 		<?php } ?>
 
+    <div class="see-more ebog_embed_see_more">
+      <?php if ($conf['see_more_link'] != '' && $conf['see_more_title'] != '') { ?>
+        <?php echo l($conf['see_more_title'], $conf['see_more_link']); ?>
+      <?php } ?>
+    </div>
+
   <?php } ?>
 
 </div>

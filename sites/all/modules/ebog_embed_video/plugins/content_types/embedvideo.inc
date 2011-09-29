@@ -58,6 +58,24 @@ function ebog_embed_video_embedvideo_content_type_edit_form(&$form, &$form_state
     '#prefix' => '<div class="clear-block no-float">',
     '#suffix' => '</div>',
   );
+  $form['see_more_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('title for "see more link"'),
+    '#size' => 100,
+    '#default_value' => !empty($conf['see_more_title']) ? $conf['see_more_title'] : '',
+    '#prefix' => '<div class="clear-block no-float">',
+    '#suffix' => '</div>',
+    '#required' => TRUE,
+  );
+  $form['see_more_link'] = array(
+    '#type' => 'textfield',
+    '#title' => t('link for "see more link"'),
+    '#size' => 100,
+    '#default_value' => !empty($conf['see_more_link']) ? $conf['see_more_link'] : '',
+    '#prefix' => '<div class="clear-block no-float">',
+    '#suffix' => '</div>',
+    '#required' => TRUE,
+  );
   return $form;
 }
 
@@ -90,5 +108,7 @@ function ebog_embed_video_embedvideo_content_type_edit_form_submit(&$form, &$for
   $form_state['conf']['type'] = $type;
   $form_state['conf']['title'] = $form_state['values']['title'];
   $form_state['conf']['descr'] = $form_state['values']['descr'];
+  $form_state['conf']['see_more_title'] = $form_state['values']['see_more_title'];
+  $form_state['conf']['see_more_link'] = $form_state['values']['see_more_link'];
 
 }
