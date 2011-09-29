@@ -6,7 +6,7 @@
  */
 ?>
 
-<div id="voxb">
+<div id="voxb" class="grid-9 omega alpha">
   <?php
     $ac_identifier = $data['object']->record['ac:identifier'][''][0];
     $ac_identifier = explode('|', $ac_identifier);
@@ -24,7 +24,7 @@
 
   <div class="line clear-block rulerafter">
     <div class="unit size1of4 review-title">
-      Bruger anmeldelser
+      L&aelig;sernes anmeldelser
     </div>
     <div class="unit lastUnit">
       <div class="view-display-id-panel_pane_1">
@@ -48,7 +48,7 @@
     echo '<div id="pager_block">';
     echo theme('voxb_review_pager', array('count' => $reviews, 'limit' => $limit, 'faust_number' => $faust_number, 'cur_page' => 1));
     echo '</div>';
-    echo '<div style="clear: both;"></div>';
+    echo '<div class="panel-separator"></div>';
     if ($user->uid) {
       $data = $profile->getVoxbUserData($faust_number);
       if ($data['review']['title'] != 'videoreview') {
