@@ -58,7 +58,8 @@ h2.pane-title,
 #ting-search-result .creator em,
 #ting-result #pager a,
 .panel-pane.pane-block.pane-netsound-review-1 a,
-.panel-pane.pane-block.pane-netsound-review-2 a {
+.panel-pane.pane-block.pane-netsound-review-2 a,
+.panel-pane.pane-embedvideo .ebog_embed_title {
   color: #89104c;
   text-decoration: none;
 }
@@ -83,7 +84,8 @@ ul li h5 {
 .view-latest-news .views-field-title,
 #ting-object .inner .author,
 .panel-pane.pane-block.pane-netsound-review-1 a,
-.panel-pane.pane-block.pane-netsound-review-2 a {
+.panel-pane.pane-block.pane-netsound-review-2 a,
+.panel-pane.pane-embedvideo .ebog_embed_title {
   font: 14px/18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
 }
 
@@ -180,11 +182,6 @@ div#sidebar-first div#block-block-12 .content a:hover {
 
 #ting-search-form .form-submit {
   color: #FFFFFF;
-}
-
-.ebog_embed_video {
-  color: #89104b;
-  font-size: 14px;
 }
 
 div.fivestar-widget-static .star {

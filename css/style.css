@@ -297,8 +297,10 @@ div#sidebar-first div#block-block-12 .content h3 {
  * VIDEO BLOCK
  */
 .ebog_embed_youtube,
-.ebog_embed_vimeo {
-  margin-bottom: 15px;
+.ebog_embed_vimeo,
+.ebog_embed_title,
+.ebog_embed_descr {
+  margin-bottom: 8px;
 }
 
 .ebog_embed_youtube object embed,
