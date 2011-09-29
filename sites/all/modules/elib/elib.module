@@ -483,11 +483,17 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
       t('By %creator_name%', array('%creator_name%' => $object->creators_string)) . 
     '</div>';
    $out[] = '<div class="rating-for-faust '.$object->localId.'"></div>';
-    $out[] = '<div class="icons">' .
-      l(t('Prøv'), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
-      l(t('Køb'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' ' .
-      l(t('Lån'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .
-    '</div>';
+    $out[] = '
+      <div class="icons">
+        <ul>
+          <li>' . l(t('Prøv'), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Køb'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Lån'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '</li>
+        </ul>
+      </div>
+    ';
       
   return implode($out);
     
@@ -534,11 +540,15 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   $part['title'] = '<h3 class="title">' . l($obj->title, $obj->url, array('attributes' => array('class' =>'title'))) . '</h3>';
   $part['author'] = '<div class="author">' . t('!creator_name', array('!creator_name' => l($obj->creators_string,'ting/search/'.$obj->creators_string))) . '</div>';
   $part['icons'] = '
-    <div class="icons"><ul><li>' .
-      l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .'</li><li>' .
-      l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li><li>' . 
-      l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .
-    '</li></ul></div>
+    <div class="icons">
+      <ul>
+        <li>' . l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li class="seperator"></li>
+        <li>' . l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li class="seperator"></li>
+        <li>' . l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '</li>
+      </ul>
+    </div>
   ';
    
   if($displaysize == 'review'){
@@ -547,10 +557,14 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   	$part['text'] = '<div class="spacing-before" style="text-transform:uppercase;">Anmelder</div><div>'.$u['user'].'</div><div class="text"  style="margin-left:80px;"><p class="spacing-before">'.truncate_utf8($elib[0],400,true,true).' '.l('LÆS MERE →',$obj->url).'</p>';
   	
   	$part['icons'] = '
-      <div class="icons">' .
-        l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' ' .
-        l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' ' .
-        l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '
+      <div class="icons">
+        <ul>
+          <li>' . l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '</li>
+        </ul>
       </div>
     ';
   	$part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
@@ -618,10 +632,14 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
     }
         
     $part['icons'] = '
-      <div class="icons">' .
-        l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' '.
-        l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . ' '.
-        l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '
+      <div class="icons">
+        <ul>
+          <li>' . l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '</li>
+        </ul>
       </div>
     ';
   }
@@ -629,11 +647,16 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   if($displaysize == 'small_rm'){
     $displaysize = 'small';
     $part['icons'] = '
-      <div class="">' .
-        l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
-        l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
-        l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .' '.
-        l(t('Husk'), $obj->url.'/huskeliste/fjern?'.drupal_get_destination(), array('html' => true)) .'
+      <div class="">
+        <ul>
+          <li>' . l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Husk'), $obj->url.'/huskeliste/fjern?'.drupal_get_destination(), array('html' => true)) . '</li>
+        </ul>
       </div>
     ';
     
@@ -718,10 +741,14 @@ function elib_displaybook2(TingClientObject $obj,$fields,$settings='',$displaysi
   $part['title'] = '<h3 class="title">' . l($obj->title, $obj->url, array('attributes' => array('class' =>'title'))) . '</h3>';
   $part['author'] = '<div class="author">' . t('By !creator_name', array('!creator_name' => l($obj->creators_string,'ting/search/'.$obj->creators_string))) . '</div>';
   $part['icons'] = '
-    <div class="icons">' .
-      l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' ' .
-      l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' ' .
-      l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .'
+    <div class="icons">
+      <ul>
+        <li>' . l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li class="seperator"></li>
+        <li>' . l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li class="seperator"></li>
+        <li>' . l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '</li>
+      </ul>
     </div>
   ';
    
@@ -731,10 +758,14 @@ function elib_displaybook2(TingClientObject $obj,$fields,$settings='',$displaysi
     
     $part['text'] = '<div class="spacing-before" style="text-transform:uppercase;">Anmelder</div><div>'.$u['user'].'</div><div class="text"  style="margin-left:80px;"><p class="spacing-before">'.truncate_utf8($elib[0],400,true,true).' '.l('LÆS MERE →',$obj->url).'</p>';
     $part['icons'] = '
-      <div class="iconsnoheight">' .
-        l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' '.
-        l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) .' ' .
-        l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) .'
+      <div class="iconsnoheight">
+        <ul>
+          <li>' . l(t('Prøv'), $obj->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Køb'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li class="seperator"></li>
+          <li>' . l(t('Lån'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) . '</li>
+        </ul>
       </div>
     ';
     $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, '', '', null, false), $obj->url, array('html' => true)) . '</div>';
