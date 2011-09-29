@@ -42,7 +42,7 @@ $(document).ajaxComplete(function(event,request, settings){
     $('#ting-search-result').lenght != 0
   ){
     var ids = new Array();
-    $('#ting-search-result li').each(function(index) {
+    $('#ting-search-result li.display-book').each(function(index) {
       ids.push($(this).attr('id').substring($(this).attr('id').lastIndexOf(':') + 1));
     });
     if (ids.length > 0) {
