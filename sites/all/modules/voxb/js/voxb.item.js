@@ -59,7 +59,7 @@
               success:function(msg) {
                 $('div.ratingsContainer .ajax_anim').hide();
                 if (msg['status']) {
-                  $('.ratingCountSpan').html('(' + msg['rating_count'] + ')');
+                  $('.ratingCountSpan').html('(' + msg['rating_count'] + ' stemmer)');
                   // update rating
                   Drupal.voxb_item.initial_rating = msg['rating'];
                   $("div.userRate div.rating:lt(" + Drupal.voxb_item.initial_rating + ")").removeClass('star-off').removeClass('star-black').addClass('star-on');
