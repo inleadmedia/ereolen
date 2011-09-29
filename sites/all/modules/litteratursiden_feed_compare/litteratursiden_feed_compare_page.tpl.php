@@ -19,20 +19,20 @@
       <div class="meta unit">
         <div class="inner">
         <h3 class="title">
-          <?php print l($item['title'], $item['url'], array('attributes' => array('class' =>'title'))) ;?>
+          <?php print l($item['title'], $item['url'], array('attributes' => array('class' => 'title'))) ;?>
         </h3>
         <div class="author">
           <?php
           echo t(
             'By !creator_name',
-            array('!creator_name' => l($item['creators_string'], 'ting/search/'.$item['creators_string'], array('html' => true)))
+            array('!creator_name' => l($item['creators_string'], 'ting/search/' . $item['creators_string'], array('html' => TRUE)))
           );
           ?>
         </div>
         <?php
         if (!empty($item['contributors'])) {
-          foreach($item['contributors'] as $reader) {
-            $readers[] = l($reader,'ting/search/'.$reader);
+          foreach ($item['contributors'] as $reader) {
+            $readers[] = l($reader, 'ting/search/' . $reader);
           }
         ?>
           <div class="reader">
