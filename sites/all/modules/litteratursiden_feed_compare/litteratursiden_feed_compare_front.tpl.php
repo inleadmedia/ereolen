@@ -22,14 +22,14 @@
     <?php foreach ($items['data'] as $key => $item) { ?>
       <?php if (is_numeric($key)) { ?>
         <div class="feed_and_compare_front_item">
-          <div class="feed_and_compare_front_item_image">
+          <div class="picture">
             <?php echo theme_image($item['image_url'], '', '', array('width' => '100px'), FALSE); ?><br />
           </div>
-          <div class="feed_and_compare_front_item_info">
-            <div class="feed_and_compare_front_item_title">
+          <div class="record">
+            <div class="title">
               <?php echo $item['title']; ?><br />
             </div>
-            <div class="feed_and_compare_front_item_description">
+            <div class="descr">
               <?php echo $item['abstract']; ?><br />
             </div>
           </div>
@@ -44,8 +44,10 @@
     <?php } ?>
   <?php } ?>
 
+</div>
+
+<div class="bottom-bar">
   <div class="see-more feed_and_compare_front_see_more">
     <?php echo l($conf['see_more_title'], $conf['see_more_link']); ?>
   </div>
-
 </div>
