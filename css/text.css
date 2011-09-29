@@ -59,7 +59,8 @@ h2.pane-title,
 #ting-result #pager a,
 .panel-pane.pane-block.pane-netsound-review-1 a,
 .panel-pane.pane-block.pane-netsound-review-2 a,
-.panel-pane.pane-embedvideo .ebog_embed_title {
+.panel-pane.pane-embedvideo .ebog_embed_title,
+.feed-and-compare-front .title {
   color: #89104c;
   text-decoration: none;
 }
@@ -126,7 +127,8 @@ h1#page-title.title,
   text-transform: uppercase;
 }
 
-.view-anmeldelser h3 a {
+.view-anmeldelser h3 a,
+.feed-and-compare-front .title {
   font: 21px/26px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
 }
 
@@ -193,4 +195,19 @@ div#sidebar-first div#block-block-12 .content a:hover {
 
 div.fivestar-widget-static .star {
   text-indent: -999em;
+}
+
+#sidebar-first #block-elib_block_categories-0 .content .categories-link a,
+.pane-front .bottom-bar .see-more a,
+.pane-embedvideo .bottom-bar .see-more a {
+  line-height: 26px;
+  text-decoration: none;
+  font-size: 12px;
+  color: #ccfa00;
+}
+
+#sidebar-first #block-elib_block_categories-0 .content .categories-link a:hover,
+.pane-front .bottom-bar .see-more a:hover,
+.pane-embedvideo .bottom-bar .see-more a:hover {
+  text-decoration: underline;
 }
