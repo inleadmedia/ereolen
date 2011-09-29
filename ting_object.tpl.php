@@ -197,13 +197,18 @@ catch (Exception $e) {
       <div class="icons">
         <ul>
           <li><?php print l(t('Prøv'), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
+          <li class="seperator"></li>
           <li><?php print l(t('Køb'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+          <li class="seperator"></li>
           <li><?php print l(t('Lån'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
-          <li><?php 
+          <?php 
             if($user->uid){
+              print '<li class="seperator"></li>';
+              print '<li>';
               print l(t('Husk'), $object->url.'/huskeliste?'.drupal_get_destination(), array('html' => true));
+              print '</li>';
             }
-          ?></li>
+          ?>
       </div>
     </div>
   </div>

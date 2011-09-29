@@ -186,7 +186,8 @@ h1#page-title.title,
 #sidebar-first #block-elib_block_categories-0 .content .categories-link a:hover,
 .pane-front .bottom-bar .see-more a:hover,
 .pane-embedvideo .bottom-bar .see-more a:hover,
-#sidebar-first #block-views-latest_news-block_1 .content .view-footer a:hover {
+#sidebar-first #block-views-latest_news-block_1 .content .view-footer a:hover,
+#main-content .icons ul li a:hover {
   padding: 2px 6px;
   border: 1px solid #b41a67;
   border-radius: 3px 3px 3px 3px;
@@ -327,8 +328,30 @@ h1#page-title.title,
   padding: 0px;
 }
 
-.view-anmeldelser .field-field-book li {
+.view-anmeldelser .field-field-book li,
+#main-content .icons ul li {
   list-style-type: none;
+}
+
+#main-content .icons ul {
+  margin: 0;
+}
+
+#main-content .icons ul li {
+  float: left;
+  margin: 0 4px;
+}
+
+#main-content .icons ul li.seperator {
+  float: left;
+  margin: 0;
+  border: 1px solid #B31A66;
+  height: 18px;
+  margin-top: 3px;
+}
+
+#main-content .icons ul li a {
+  padding: 4px 7px;
 }
 
 .view-anmeldelser .field-field-book .picture,
@@ -461,7 +484,6 @@ h1#page-title.title,
   background: -ms-linear-gradient(top, #A5165D, #8A114C); [> IE 10 <]
   background: -o-linear-gradient(top, #A5165D, #8A114C); [> Opera 11.10+ <]
   height: 24px;
-  padding: 0 10px 0 10px;
 }
 
 .display-book .icons .icons img,
