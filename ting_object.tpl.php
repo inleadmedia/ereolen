@@ -195,14 +195,15 @@ catch (Exception $e) {
         </div>
       </div>
       <div class="icons">
-        <?php print l(theme('image', 'sites/all/themes/ebog/images/buttons/stream.png', '', '', null, false), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?>
-        <?php print l(theme('image', 'sites/all/themes/ebog/images/buttons/fetch.png', '', '', null, false), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?>
-        <?php print l(theme('image', 'sites/all/themes/ebog/images/buttons/sample.png', '', '', null, false), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?>
-        <?php 
-          if($user->uid){
-            print l(theme('image', 'sites/all/themes/ebog/images/buttons/husk.png', '', '', null, false), $object->url.'/huskeliste?'.drupal_get_destination(), array('html' => true));
-          }
-        ?>
+        <ul>
+          <li><?php print l(t('Prøv'), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
+          <li><?php print l(t('Køb'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+          <li><?php print l(t('Lån'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
+          <li><?php 
+            if($user->uid){
+              print l(t('Husk'), $object->url.'/huskeliste?'.drupal_get_destination(), array('html' => true));
+            }
+          ?></li>
       </div>
     </div>
   </div>
