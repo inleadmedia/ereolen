@@ -428,8 +428,16 @@ form.fivestar-widget .description {
 }
 
 .infiniteCarousel .wrapper {
-  width: 930px;
-  margin: 0;
+  margin-left: 28px;
+  width: 885px;
+}
+
+.infiniteCarousel ul li {
+  display: block;
+  float: left;
+  height: 198px;
+  padding: 0 13px;
+  width: 120px;
 }
 
 .infiniteCarousel .back {
