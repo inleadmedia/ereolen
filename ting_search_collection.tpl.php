@@ -6,7 +6,7 @@
  * Template to render a Ting collection of books.
  */
 ?>
-  <li>
+  <li class="display-book ting-collection ruler-after line clear-block" id="<?php print $collection->id ?>">
 
     <div class="picture">
       <?php $image_url = ting_covers_collection_url($collection->objects[0], '80_x'); ?>
@@ -26,6 +26,7 @@
               <?php echo t('By %creator_name%', array('%creator_name%' => $collection->creators_string)) ?>
             </span>
           <?php endif; ?>
+          <div id="<?php print $collection->localId ?>"></div>
           <?php if ($collection->date) : ?>
             <span class="publication_date">
               <?php echo t('(%publication_date%)', array('%publication_date%' => $collection->date)) /* TODO: Improve date handling, localizations etc. */ ?>
