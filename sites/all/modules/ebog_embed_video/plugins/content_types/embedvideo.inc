@@ -69,10 +69,10 @@ function ebog_embed_video_embedvideo_content_type_edit_form_submit(&$form, &$for
   if (strpos($embed_url, 'youtube')) {
     $type = 'youtube';
     $query = parse_url($embed_url, PHP_URL_QUERY);
-    $query = explode('&',$query);
+    $query = explode('&', $query);
     foreach ($query as $param) {
       if (strrpos($param, 'v=') == 0) {
-        $embed_code = substr($param, 2);
+        $embed_code = drupal_substr($param, 2);
         break;
       }
     }

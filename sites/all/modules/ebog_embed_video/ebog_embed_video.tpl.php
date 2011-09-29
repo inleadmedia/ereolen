@@ -1,7 +1,8 @@
 <div class="ebog_embed_video">
 	<?php if ($conf['type'] == 'undefined') { ?>
 		<p>USER PROVIDED WRONG URL TO VIDEO</p>
-	<?php } elseif (!empty($conf['embed_code']) AND !empty($conf['embed_url'])) { ?>
+	<?php }
+        elseif (!empty($conf['embed_code']) AND !empty($conf['embed_url'])) { ?>
 
 		<?php if ($conf['type'] == 'youtube') { ?>
 			<div class="ebog_embed_youtube">
@@ -23,12 +24,12 @@
 
 		<?php if ($conf['type'] == 'vimeo') { ?>
 			<div class="ebog_embed_vimeo">
-				<iframe 
-					src="http://player.vimeo.com/video/<?php echo $conf['embed_code']; ?>" 
+				<iframe
+					src="http://player.vimeo.com/video/<?php echo $conf['embed_code']; ?>"
 					width="207"
 					height="144"
-					frameborder="0" 
-					webkitAllowFullScreen 
+					frameborder="0"
+					webkitAllowFullScreen
 					allowFullScreen
 				>
 				</iframe>
