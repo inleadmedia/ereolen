@@ -27,11 +27,11 @@ function litteratursiden_feed_compare_menu() {
 function litteratursiden_feed_compare_theme() {
   return array(
     'litteratursiden_feed_compare_front' => array(
-      'arguments' => array('items' => NULL),
+      'arguments' => array('items' => NULL, 'conf' => NULL),
       'template' => 'litteratursiden_feed_compare_front'
     ),
     'litteratursiden_feed_compare_page' => array(
-      'arguments' => array('items' => NULL),
+      'arguments' => array('items' => NULL, 'conf' => NULL),
       'template' => 'litteratursiden_feed_compare_page'
     ),
   );

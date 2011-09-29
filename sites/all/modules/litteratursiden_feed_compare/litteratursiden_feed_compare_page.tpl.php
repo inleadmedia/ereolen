@@ -36,10 +36,10 @@
           }
         ?>
           <div class="reader">
-          <?php print theme('item_list', $readers, t('Reader '), 'span', array('class' => 'contributor')); ?>
+            <?php print theme('item_list', $readers, t('Reader ')); ?>
           </div>
-          <div>
-          <?php print theme('item_list', array($item['date']), t('Udgivelses år '), 'span', array('class' => 'year')); ?>
+          <div class="year">
+            <?php print theme('item_list', array($item['date']), t('Udgivelses år ')); ?>
           </div>
         <?php
         }
@@ -50,7 +50,11 @@
           foreach($item['subjects'] as $subject) {
             $subs[] = l($subject,'ting/search/'.$subject);
           }
-          print theme('item_list', $subs, t('Genre '), 'span', array('class' => 'subject'));
+        ?>
+          <div class="subject">
+            <?php print theme('item_list', $subs, t('Genre ')); ?>
+          </div>
+        <?php
         }
         ?>
         </div>
@@ -67,4 +71,11 @@
   }
   ?>
   </ul>
+
+  <div class="see-more feed_and_compare_page_see_more">
+    <?php if ($conf['see_more_link'] != '' && $conf['see_more_title'] != '') { ?>
+      <?php echo l($conf['see_more_title'], $conf['see_more_link']); ?>
+    <?php } ?>
+  </div>
+
 </div>
