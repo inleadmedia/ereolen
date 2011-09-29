@@ -91,7 +91,6 @@ catch (Exception $e) {
         <img src="/<?php echo VOXB_PATH . '/img/ajax-loader.gif'; ?>" alt="" class="ajax_anim" />
         <div class="clearfix"></div>
       </div>
-      <div class="rating"><?php print $n->content["fivestar_widget"]['#value']; ?></div>
       <div class="abstract"><?php print check_plain($object->record['dcterms:abstract'][''][0]); ?></div>
       <div class="description">
       <?php if (!empty($object->record['dc:description'])): ?>

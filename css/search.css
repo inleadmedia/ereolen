@@ -41,11 +41,19 @@
 }
 
 #ting-search-result ul li .record .right {
-  width: 340px;
+  width: 328px;
   float: left;
 }
 
 #ting-search-result .subjects {
+  display: none;
+}
+
+#ting-search-result .meta {
+  clear: both;
+}
+
+#ting-search-result .meta .publication_date {
   display: none;
 }
 

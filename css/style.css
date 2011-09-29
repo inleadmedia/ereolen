@@ -427,45 +427,40 @@ div.messages.error {
   vertical-align: text-bottom;
 }
 
-.fivestar-static-form-item {
-  padding-bottom: 36px;
+/**
+ * VOXB
+ */
+.rating-for-faust {
+  clear: both;
 }
 
-div.fivestar-widget div.on a {
-  background-position: 0 -12px;
-}
-
-div.fivestar-widget-static .star,
-div.fivestar-widget .star,
-div.fivestar-widget .star a {
+div.addRatingContainer .rating {
   width: 13px;
-  height: 12px;
+  height: 12px !important;
   background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
   float: left;
   overflow: hidden;
 }
 
-div.fivestar-widget-static .star span.on,
-div.fivestar-widget-static .star span.off {
+div.addRatingContainer .rating.star-on,
+div.addRatingContainer .rating.star-off {
   display: block;
-  height: 100%;
-  width: 100%;
 }
 
-div.fivestar-widget-static .star span.on,
-div.fivestar-widget .star.hover a {
+div.addRatingContainer .rating.star-on {
   background: url("../images/star.png") no-repeat scroll 0 0 transparent;
 }
 
-div.fivestar-widget-static .star span.off,
-div.fivestar-widget a.star {
+div.addRatingContainer .rating.star-off {
   background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
 }
 
-div.fivestar-widget .cancel,
-form.fivestar-widget .description {
-  display: none;
-
+#ting-object .ratingsContainer {
+  width: 100%;
+  margin: 5px 0;
+  float: none;
+  clear: both;
+  display: block;
 }
 
 /**
