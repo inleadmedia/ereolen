@@ -434,7 +434,7 @@ div.messages.error {
   clear: both;
 }
 
-div.addRatingContainer .rating {
+.addRatingContainer .rating {
   width: 13px;
   height: 12px !important;
   background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
@@ -442,16 +442,18 @@ div.addRatingContainer .rating {
   overflow: hidden;
 }
 
-div.addRatingContainer .rating.star-on,
-div.addRatingContainer .rating.star-off {
+.addRatingContainer .rating.star-on,
+.addRatingContainer .rating.star-off,
+.addRatingContainer .rating.star-black {
   display: block;
 }
 
-div.addRatingContainer .rating.star-on {
+.addRatingContainer .rating.star-on,
+.addRatingContainer .rating.star-black {
   background: url("../images/star.png") no-repeat scroll 0 0 transparent;
 }
 
-div.addRatingContainer .rating.star-off {
+.addRatingContainer .rating.star-off {
   background: url("../images/star.png") no-repeat scroll 0 -12px transparent;
 }
 
