@@ -127,7 +127,8 @@ div.messages.error {
 
 .panel-pane .review-title,
 h1#page-title.title,
-.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title {
+.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title,
+.pane-netsound-0 h2.pane-title {
   margin-bottom: 12px;
 }
 
@@ -713,4 +714,18 @@ h1#page-title.title,
 .panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1,
 .panel-pane.pane-voxb {
   float: right;
+}
+
+/**
+ * EMNER
+ */
+.page-emner #main-content ul,
+.page-emner #main-content ul li {
+  margin: 0;
+  padding: 0;
+}
+
+.page-emner #main-content ul li {
+  list-style-type: disc;
+  list-style-position: inside;
 }

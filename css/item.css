@@ -1,4 +1,6 @@
-.section-ting .pane-content {
+.section-ting .pane-content,
+.page-emner .pane-content,
+.page-help .pane-content {
   border: 0 none;
   padding: 0;
 }
