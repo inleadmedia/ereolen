@@ -27,7 +27,7 @@ input[type=submit] {
   color: #CCFA00;
 }
 
- input[type=submit]:hover {
+input[type=submit]:hover {
   text-decoration: underline;
   -moz-box-shadow: inset 0 0 6px #000000;
   -webkit-box-shadow: inset 0 0 6px #000000;
@@ -147,7 +147,8 @@ h1#page-title.title,
 #sidebar-first #block-elib_block_categories-0 .content,
 .panel-pane.pane-embedvideo .pane-content,
 .panel-pane.pane-front .pane-content,
-#sidebar-first #block-views-latest_news-block_1 .content {
+#sidebar-first #block-views-latest_news-block_1 .content,
+.pane-elib-block-lastloans-3 .pane-content {
   padding: 0 !important;
   border: 0 !important;
 }
@@ -437,7 +438,8 @@ h1#page-title.title,
 }
 
 .display-book.index-1,
-.view-anmeldelser .views-row-first {
+.view-anmeldelser .views-row-first,
+.pane-elib-user-account .pane-content .display-book.biglist:first-child {
   padding-top: 0;
 }
 
@@ -545,7 +547,8 @@ h1#page-title.title,
   display: block;
 }
 
-#voxb textarea {
+#voxb textarea,
+#user-login .form-item input {
   width: 500px;
   border: 1px solid #DBDDDA;
   border-radius: 4px;
@@ -553,7 +556,8 @@ h1#page-title.title,
   -webkit-border-radius: 4px;
 }
 
-#voxb input[type="submit"] {
+#voxb input[type="submit"],
+#user-login input[type="submit"] {
   float: right;
 }
 
@@ -566,6 +570,74 @@ h1#page-title.title,
   text-transform: capitalize;
   font-style: normal;
 }
+
+/**
+ * LOGIN
+ */
+#user-login {
+  width: 500px;
+}
+
+#user-login .form-item input {
+  width: 490px;
+  padding: 4px;
+}
+
+#user-login #edit-library-wrapper label {
+  float: left;
+  margin-right: 15px;
+}
+
+#user-login #edit-name-wrapper label,
+#user-login #edit-pass-wrapper label {
+  color: #8C938B;
+}
+
+#user-login .form-item label {
+  font-weight: normal;
+}
+
+/**
+ * MIN SIDE
+ */
+.page-min-side .panel-separator {
+  clear: none;
+  display: none;
+}
+
+.pane-elib-user-account,
+.pane-netsound-cart-0 {
+  float: left;
+  width: 340px;
+  margin: 0;
+}
+
+.pane-elib-user-account {
+  margin-right: 10px;
+}
+
+.pane-netsound-cart-0 {
+  margin-left: 10px;
+}
+
+.pane-elib-user-account ul {
+  margin: 0;
+}
+
+.pane-elib-block-lastloans-3 {
+  margin-bottom: 35px;
+}
+
+.pane-elib-user-account .loanperiod {
+  clear: both;
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+.pane-elib-user-account .loanperiod.short   { color: #C00;    }
+.pane-elib-user-account .loanperiod.medium  { color: #FF8;     }
+.pane-elib-user-account .loanperiod.long    { color: #9BC833;  }
+
 
 /**
  * FOOTER
