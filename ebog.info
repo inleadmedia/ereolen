@@ -15,10 +15,11 @@ stylesheets[all][] = css/text.css
 stylesheets[all][] = css/style.css
 stylesheets[all][] = css/item.css
 stylesheets[all][] = css/search.css
+stylesheets[all][] = css/faq.css
 
 ; ------- Declare default javascript includes
 
-;scripts[] = js/your_js_file.js
+scripts[] = js/script.js
 
 
 ; ------- Declare default theme regions

@@ -41,8 +41,13 @@ body, .ui-tabs-panel, input, textarea {
 }
 
 h2.pane-title,
-#sidebar-first .block h2 {
-  font: 18px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
+#sidebar-first .block h2,
+#main-content .pane-faq-panel-pane-1 .view-content .item-list h3,
+.panel-pane .review-title,
+h1#page-title.title,
+.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title {
+  font: 18px/28px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
+  font-weight: normal;
   text-transform: uppercase;
   margin-bottom: 7px;
   color: #2c2e29;
@@ -114,10 +119,8 @@ ul li h5 {
 
 .panel-pane .review-title,
 h1#page-title.title,
-.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title {
-  font: 18px/28px 'DroidSerifBold', Helvetica, Arial, sans-serif;
-  text-transform: uppercase;
-  font-weight: normal;
+.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title,
+.faq h2.pane-title {
   border-bottom: 2px solid #DBDDDA; 
 }
 
@@ -197,7 +200,8 @@ div#sidebar-first div#block-block-12 .content a:hover {
 .pane-front .bottom-bar .see-more a,
 .pane-embedvideo .bottom-bar .see-more a,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer a,
-#main-content .icons ul li a {
+#main-content .icons ul li a,
+#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content a {
   line-height: 26px;
   text-decoration: none;
   font-size: 12px;
@@ -208,7 +212,8 @@ div#sidebar-first div#block-block-12 .content a:hover {
 .pane-front .bottom-bar .see-more a:hover,
 .pane-embedvideo .bottom-bar .see-more a:hover,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer a:hover,
-#main-content .icons ul li a:hover {
+#main-content .icons ul li a:hover,
+#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content a {
   text-decoration: underline;
 }
 
