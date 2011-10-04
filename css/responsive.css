@@ -1,17 +1,61 @@
-@media screen and (max-width:320px){
-  #header-regions,
-  #sidebar-first,
-  .pane-embedvideo {
+@media screen and (max-width:480px){
+  .front #main-wrapper #main-content .panel-panel.panel-col-first,
+  .block-elib_infinite_carousel h2,
+  .infiniteCarousel a.arrow {
     display: none;
+  }
+
+  body,
+  #footer,
+  #page {
+    width: 100%;
+  /*overflow: hidden;*/
+  }
+
+  body,
+  #page,
+  #search-box {
+    margin: 0;
+    padding: 0;
+  }
+
+  #site-header,
+  #header-regions,
+  #main-content-container,
+  #footer-wrapper {
+    width: 90%;
   }
 
   #site-header #branding,
   #site-header #site-menu,
-  #site-header #search-box {
-    float: none;
-    width: 300px;
+  #site-header #search-box,
+  #hader-regions #header-first,
+  .panel-2col .panel-col-first, .panel-2col .panel-col-last {
+    width: 100%;
   }
 
+  #site-header #branding {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .container-16 .grid-1,
+  .container-16 .grid-2,
+  .container-16 .grid-3,
+  .container-16 .grid-4,
+  .container-16 .grid-5,
+  .container-16 .grid-6,
+  .container-16 .grid-7,
+  .container-16 .grid-8,
+  .container-16 .grid-9,
+  .container-16 .grid-10,
+  .container-16 .grid-11,
+  .container-16 .grid-12,
+  .container-16 .grid-13,
+  .container-16 .grid-14,
+  .container-16 .grid-15,
+  .container-16 .grid-16,
   .grid-1,
   .grid-2,
   .grid-3,
@@ -29,25 +73,130 @@
   .grid-15,
   .grid-16 {
     margin: 0;
-    width: 300px;
+    width: 100%;
+  }
+
+  #header-regions {
+    height: 157px;
+    overflow: hidden;
+  }
+
+  #header-regions .infiniteCarousel,
+  #header-regions .infiniteCarousel .wrapper {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .infiniteCarousel .wrapper ul {
+    width: 100%;
+  }
+
+  .infiniteCarousel ul li {
+    height: auto;
+    width: 33%;
+    padding: 0;
+  }
+
+  .infiniteCarousel ul li a img {
+    height: auto;
+    margin: auto;
+    width: 75%;
   }
 
   #page {
     background: none;
+    background-image: -moz-linear-gradient(center bottom , #DBDDDA 9%, #FFFFFF 55%);
+    height: 370px;
   }
 
+  #site-header {
+    height: 190px;
+  }
+
+  #search-box {
+    text-align: center;
+    float: none;
+  }
+
+  #ting-search-form {
+    padding: 0;
+    width: 100%;
+    border: 0;
+  }
+
+  #ting-search-form div {
+    padding: 3px 3px 3px 8px;
+    border-radius: 5px 5px 5px 5px;
+    border: 2px solid #DBDDDA;
+  }
+
+  #ting-search-form .form-item {
+    background: none;
+  }
+
+  #site-menu ul.menu li:first-child a                    { background: none; }
+  #site-menu ul.menu li:first-child a:hover              { background: none; }
+  #site-menu ul.menu li:first-child a.active             { background: none; }
+  #site-menu ul.menu li:first-child + * a                { background: none; }
+  #site-menu ul.menu li:first-child + * a:hover          { background: none; }
+  #site-menu ul.menu li:first-child + * a.active         { background: none; }
+  #site-menu ul.menu li:first-child + * + * a            { background: none; }
+  #site-menu ul.menu li:first-child + * + * a:hover      { background: none; }
+  #site-menu ul.menu li:first-child + * + * a.active     { background: none; }
+  #site-menu ul.menu li:first-child + * + * + * a        { background: none; }
+  #site-menu ul.menu li:first-child + * + * + * a:hover  { background: none; }
+  #site-menu ul.menu li:first-child + * + * + * a.active { background: none; }
+
+  #site-menu {
+    height: 32px;
+    padding-top: 8px;
+    border-top: 2px solid #DBDDDA;
+  }
+
+  #site-menu ul.menu li {
+    width: 25%;
+    height: 32px;
+    float: left;
+    background: none;
+  }
+
+  #site-menu ul.menu li a {
+    width: 100%;
+    height: 32px;
+    text-indent: 0;
+    background: none;
+    text-align: center;
+    font: 20px/26px 'BebasNeueRegular', Helvetica, Arial, sans-serif;
+    color: #8c938b;   
+    text-decoration: none;
+  }
+
+  #site-menu ul.menu li:hover a,
+  #site-menu ul.menu li a:hover {
+    text-decoration: underline;
+  }
+
+  #site-menu ul.menu li a.active {
+    color: #84004c;
+  }
+
+  #footer #footer-first .block.block-block {
+    clear: both;
+  }
+
+  /*
   .container-12,
   .container-16,
   .container-24,
-   #page,
-  body,
+  #page,
   .panel-2col .panel-col-first,
   .panel-2col .panel-col-last,
   .container-12 .grid-9,
   .container-16 .grid-12,
   .container-12 .grid-12,
   .container-16 .grid-16 {
-    width: 300px;
+    width: 90%;
   }
 
   #site-header {
@@ -142,5 +291,5 @@
     text-transform: uppercase;
     width: 60px;
   }
-
+*/
 }
