@@ -438,13 +438,12 @@ h1#page-title.title,
   border-bottom: 2px solid #DBDDDA; 
 }
 
-.display-book.index-1,
+.display-book:first-child,
 .view-anmeldelser .views-row-first,
 .pane-elib-user-account .pane-content .display-book.biglist:first-child {
   padding-top: 0;
 }
 
-.display-book.index-7,
 .view-anmeldelser .views-row-last,
 .pane-front .feed-and-compare-front .feed_and_compare_front_item:first-child + * {
   border-bottom: 0;
