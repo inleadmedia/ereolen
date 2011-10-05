@@ -1,4 +1,4 @@
-@media screen and (max-width:479px){
+@media screen and (max-width:480px){
   .front #main-wrapper #main-content .panel-panel.panel-col-first,
   .block-elib_infinite_carousel h2,
   .infiniteCarousel a.arrow,
@@ -114,11 +114,6 @@
   }
 
   #page {
-    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#DBDDDA));
-    background: -webkit-linear-gradient(top, #DBDDDA, #FFFFFF); [> Safari 5.1, Chrome 10+ <]
-    background: -moz-linear-gradient(top, #DBDDDA, #FFFFFF); [> Firefox 3.6+ <]
-    background: -ms-linear-gradient(top, #DBDDDA, #FFFFFF); [> IE 10 <]
-    background: -o-linear-gradient(top, #DBDDDA, #FFFFFF); [> Opera 11.10+ <]
     height: 370px;
   }
 
@@ -132,19 +127,17 @@
   }
 
   #ting-search-form {
-    padding: 0;
-    width: 100%;
-    border: 0;
-  }
-
-  #ting-search-form div {
     padding: 3px 3px 3px 8px;
+    height: 30px;
+    width: 96%;
     border-radius: 5px 5px 5px 5px;
     -moz-border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
-    border: 2px solid #DBDDDA;
+  }
+
+  #ting-search-form div {
     background-color: #FFFFFF;
-    width: 90%;
+    width: 100%;
     display: inline-block;
     zoom: 1; /* ie7 hack for display:inline-block */
     *display: inline;

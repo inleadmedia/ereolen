@@ -16,6 +16,7 @@ stylesheets[all][] = css/style.css
 stylesheets[all][] = css/item.css
 stylesheets[all][] = css/search.css
 stylesheets[all][] = css/faq.css
+stylesheets[all][] = css/responsive.css
 
 ; ------- Declare default javascript includes
 

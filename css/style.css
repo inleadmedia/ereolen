@@ -16,11 +16,15 @@ input[type=submit] {
   border: 0;
   padding: 0 15px;
   height: 26px;
+  background-color: #A5165D;
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#a5165d), to(#8a114c));
-  background: -moz-linear-gradient(top, #a5165d, #8a114c);
+  background: -webkit-gradient(linear, left top, left bottom, from(#A5165D), to(#8A114C));
+  background: -webkit-linear-gradient(top, #A5165D, #8A114C);
+  background: -moz-linear-gradient(top, #A5165D, #8A114C);
+  background: -ms-linear-gradient(top, #A5165D, #8A114C);
+  background: -o-linear-gradient(top, #A5165D, #8A114C);
   line-height: 26px;
   text-decoration: none;
   font-size: 12px;
@@ -29,9 +33,9 @@ input[type=submit] {
 
 input[type=submit]:hover {
   text-decoration: underline;
+  box-shadow: inset 0 0 6px #000000;
   -moz-box-shadow: inset 0 0 6px #000000;
   -webkit-box-shadow: inset 0 0 6px #000000;
-  box-shadow: inset 0 0 6px #000000;
 }
 
 /**
@@ -96,10 +100,10 @@ div.messages.error {
   border: none;
   background-color: #A5165D;
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
-  background: -webkit-linear-gradient(top, #A5165D, #8A114C); [> Safari 5.1, Chrome 10+ <]
-  background: -moz-linear-gradient(top, #A5165D, #8A114C); [> Firefox 3.6+ <]
-  background: -ms-linear-gradient(top, #A5165D, #8A114C); [> IE 10 <]
-  background: -o-linear-gradient(top, #A5165D, #8A114C); [> Opera 11.10+ <]
+  background: -webkit-linear-gradient(top, #A5165D, #8A114C);
+  background: -moz-linear-gradient(top, #A5165D, #8A114C);
+  background: -ms-linear-gradient(top, #A5165D, #8A114C);
+  background: -o-linear-gradient(top, #A5165D, #8A114C);
 }
 
 #sidebar-first #block-block-12 .content h3 {
@@ -179,8 +183,11 @@ h1#page-title.title,
   border-radius: 0px 0px 4px 4px;
   -moz-border-radius: 0px 0px 4px 4px;
   -webkit-border-radius: 0px 0px 4px 4px;
-  background: -webkit-gradient(linear, left top, left bottom, from(#a5165d), to(#8a114c));
-  background: -moz-linear-gradient(top, #a5165d, #8a114c);
+  background: -webkit-gradient(linear, left top, left bottom, from(#A5165D), to(#8A114C));
+  background: -webkit-linear-gradient(top, #A5165D, #8A114C);
+  background: -moz-linear-gradient(top, #A5165D, #8A114C);
+  background: -ms-linear-gradient(top, #A5165D, #8A114C);
+  background: -o-linear-gradient(top, #A5165D, #8A114C);
 }
 
 #sidebar-first #block-elib_block_categories-0 .content .categories-link a,
@@ -200,9 +207,9 @@ h1#page-title.title,
   padding: 2px 6px;
   border: 1px solid #b41a67;
   border-radius: 3px 3px 3px 3px;
+  box-shadow: inset 0 0 3px #000000;
   -moz-box-shadow: inset 0 0 3px #000000;
   -webkit-box-shadow: inset 0 0 3px #000000;
-  box-shadow: inset 0 0 3px #000000;
 }
 
 .clear-fix {
@@ -301,6 +308,11 @@ h1#page-title.title,
 
 #ting-search-form .form-submit {
   background-color: #A5165D;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
+  background: -webkit-linear-gradient(top, #A5165D, #8A114C);
+  background: -moz-linear-gradient(top, #A5165D, #8A114C);
+  background: -ms-linear-gradient(top, #A5165D, #8A114C);
+  background: -o-linear-gradient(top, #A5165D, #8A114C);
   height: 30px;
   width: 60px;
   text-transform: uppercase;
@@ -496,10 +508,10 @@ h1#page-title.title,
   -webkit-border-radius: 4px;
   background-color: #A5165D;
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#8A114C), to(#A5165D));
-  background: -webkit-linear-gradient(top, #A5165D, #8A114C); [> Safari 5.1, Chrome 10+ <]
-  background: -moz-linear-gradient(top, #A5165D, #8A114C); [> Firefox 3.6+ <]
-  background: -ms-linear-gradient(top, #A5165D, #8A114C); [> IE 10 <]
-  background: -o-linear-gradient(top, #A5165D, #8A114C); [> Opera 11.10+ <]
+  background: -webkit-linear-gradient(top, #A5165D, #8A114C);
+  background: -moz-linear-gradient(top, #A5165D, #8A114C);
+  background: -ms-linear-gradient(top, #A5165D, #8A114C);
+  background: -o-linear-gradient(top, #A5165D, #8A114C);
   height: 24px;
 }
 
@@ -663,18 +675,11 @@ h1#page-title.title,
  */
 .infiniteCarousel {
   width: 940px;
-  height: 230px;
-  position: relative;
 }
 
 .infiniteCarousel .wrapper {
   margin-left: 28px;
   width: 885px;
-  overflow: auto;
-  height: 230px;
-  margin: 0 5px;
-  position: absolute;
-  top: 0;
 }
 
 .infiniteCarousel ul li {
