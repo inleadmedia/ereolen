@@ -58,11 +58,18 @@ function ebog_theme(&$existing, $type, $theme, $path) {
  * @param $hook
  *   The name of the template being rendered ("page" in this case.)
  */
-/* -- Delete this line if you want to use this function
 function ebog_preprocess_page(&$vars, $hook) {
-  $vars['sample_variable'] = t('Lorem ipsum.');
+  global $user;
+
+  if(arg(0) == 'min_side' && $user->uid == 0){
+    drupal_goto('user/login',drupal_get_destination());
+  }
+
+  if(arg(3) == 'stream' || arg(3) == 'download' || $_GET['clean'] == 1 ){
+    $vars['template_files'] = array('page-clean');
+    $vars['css']['all']['theme']['sites/all/themes/ebog/css/style.css'] = false;
+  }
 }
-// */
 
 /**
  * Override or insert variables into the node templates.
