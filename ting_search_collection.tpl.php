@@ -23,7 +23,7 @@
         <div class="meta">
           <?php if ($collection->creators_string) : ?>
             <span class="creator">
-              <?php echo t('By %creator_name%', array('%creator_name%' => $collection->creators_string)) ?>
+              <?php echo t('By !creator_name', array('!creator_name' => l($collection->creators_string,'ting/search/'.$collection->creators_string,array('html' => true)))) ?>
             </span>
           <?php endif; ?>
           <div id="<?php print $collection->objects[0]->localId ?>"></div>
