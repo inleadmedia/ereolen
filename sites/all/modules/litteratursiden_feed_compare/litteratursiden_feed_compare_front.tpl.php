@@ -7,7 +7,7 @@
 
   <?php if ($items['status'] == 'empty') { ?>
     <div class="feed_and_compare_empty">
-      <b>nothing found</b>
+      <h1>Der var desv&aelig;rre ingen materialer som matchede anmeldelser hos Litteratursiden.</h1>
     </div>
   <?php } ?>
 

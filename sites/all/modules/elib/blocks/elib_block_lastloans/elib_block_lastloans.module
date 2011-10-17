@@ -74,7 +74,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             }
           }
           if($out == ''){
-            $out = t('???');
+            $out = t('<h1>Der er desv&aelig;rre ikke nogen popul&aelig;re b&oslash;ger.</h1>');
           }
     		$block['subject'] = t('populære bøger');
     		break;
