@@ -139,7 +139,7 @@ if ($op == 'list') {
   	      }
 	      }
 	      else {
-	        $out[] = t('Du har ingen aktive netlydbog lån.');
+	        $out[] = t('Du har ingen aktive ebogslån.');
 	      }
       
       $block['content'] = implode($out);

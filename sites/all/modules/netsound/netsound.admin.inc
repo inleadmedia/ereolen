@@ -12,7 +12,7 @@ function netsound_settings_form($form_state){
   
   $form['netsound']['supportforms'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Netlydbog Supportformular')
+    '#title' => t('eReolen Supportformular')
   );
   
   $form['netsound']['supportforms']['netsound_shortcutmenu'] = array(
@@ -29,7 +29,7 @@ function netsound_settings_form($form_state){
   );
   $form['netsound']['supportforms']['netsound_supportmail'] = array(
     '#type' => 'textfield',
-    '#title' => 'Netlydbog.dk support email address',
+    '#title' => 'eReolen.dk support email address',
    	'#default_value' => variable_get('netsound_supportmail', ''),
   );
   

@@ -105,7 +105,7 @@ function elib_infinite_carousel_block($op = 'list', $delta = 0, $edit = array())
 //      ';
     }
 
-    $block['subject'] = variable_get('elib_infinite_carousel_block_title', t("Nyeste lydbøger"));
+    $block['subject'] = variable_get('elib_infinite_carousel_block_title', t("Nyeste ebøger"));
     $block['content'] = '
       <div class="infiniteCarousel">
         <div class="wrapper">

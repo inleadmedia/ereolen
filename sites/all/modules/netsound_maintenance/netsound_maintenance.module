@@ -16,7 +16,7 @@ function netsound_maintenance_cron() {
      //error_log(var_export($row,true));
      
      $book = ting_get_object_by_id($row['title']);
-     if($book instanceof TingClientObject && $book->type != 'Lydbog (online)') {
+     if($book instanceof TingClientObject && $book->type != 'Netdokument') {
       db_query("DELETE FROM votingapi_vote WHERE vote_id = " . $row["vote_id"]);
       $deleted++;
       error_log("DELETED VOTE: " . $row["vote_id"] . " / " . $row["title"] . " " . strtoupper($book->type) . ": ". $book->title);
