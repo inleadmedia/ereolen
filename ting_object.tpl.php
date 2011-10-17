@@ -70,7 +70,7 @@ catch (Exception $e) {
   <div class="meta unit grid-9 omega">
     <div class="inner">
       <h1 class="book-title"><?php print check_plain($object->record['dc:title'][''][0]); ?></h1>
-      <div class="author"><?php echo t('By %creator_name%', array('%creator_name%' => $object->creators_string)) ?></div>
+      <div class="author"><?php echo t('By !creator_name', array('!creator_name' => l($object->creators_string,'ting/search/'.$object->creators_string,array('html' => true)))) ?></div>
       <div class="ratingsContainer">
         <?php
           $rating = $voxb_item->getRating();
