@@ -496,12 +496,14 @@ h1#page-title.title,
   padding: 0;
 }
 
-.display-book .icons {
+.display-book .icons,
+#ting-search-result .record .icons {
   margin-top: 6px;
 }
 
 .display-book .icons .icons,
-#ting-object .inner .icons {
+#ting-object .inner .icons,
+#ting-search-result .record .icons {
   float: right;
   border: 0;
   border-radius: 4px;

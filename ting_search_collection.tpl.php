@@ -61,6 +61,15 @@ foreach ($collection->objects as $obj){
             </p>
           </div>
         <?php endif; ?>
+        <div class="icons">
+          <ul>
+            <li><?php print l(t('Prøv'), $netObj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
+            <li class="seperator"></li>
+            <li><?php print l(t('Køb'), $netObj->url.'/buy', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+            <li class="seperator"></li>
+            <li><?php print l(t('Lån'), $netObj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
+          </ul>
+        </div>
       </div>
     </div>
 

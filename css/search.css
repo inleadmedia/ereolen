@@ -17,7 +17,7 @@
   float: left;
 }
 
-#ting-search-result ul li {
+#ting-search-result ul li.display-book {
   display: inline-block;
   zoom: 1; /* ie7 hack for display:inline-block */
   *display: inline;
@@ -26,20 +26,20 @@
   border-bottom: 2px solid #DBDDDA;
 }
 
-#ting-search-result ul li .picture {
+#ting-search-result ul li.display-book .picture {
   width: 100px;
 }
 
-#ting-search-result ul li .record {
+#ting-search-result ul li.display-book .record {
   width: 600px;
 }
 
-#ting-search-result ul li .record .left {
+#ting-search-result ul li.display-book .record .left {
   width: 260px;
   float: left;
 }
 
-#ting-search-result ul li .record .right {
+#ting-search-result ul li.display-book .record .right {
   width: 328px;
   float: left;
 }
