@@ -196,11 +196,11 @@ catch (Exception $e) {
       </div>
       <div class="icons">
         <ul>
-          <li><?php print l(t('Prøv'), $object->url.'/stream', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
+          <li><?php print l(t('Prøv'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
           <li class="seperator"></li>
-          <li><?php print l(t('Køb'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+          <li><?php print l(t('Køb'), $object->url.'/buy', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
           <li class="seperator"></li>
-          <li><?php print l(t('Lån'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
+          <li><?php print l(t('Lån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
           <?php 
             if($user->uid){
               print '<li class="seperator"></li>';
