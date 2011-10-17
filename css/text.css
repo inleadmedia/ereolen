@@ -45,6 +45,7 @@ h2.pane-title,
 #main-content .pane-faq-panel-pane-1 .view-content .item-list h3,
 .panel-pane .review-title,
 h1#page-title.title,
+#ting-search-results #ting-search-summary,
 .panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title {
   font: 18px/28px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
   font-weight: normal;
@@ -124,6 +125,7 @@ ul li h5 {
 h1#page-title.title,
 .panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title,
 .faq h2.pane-title,
+#ting-search-results #ting-search-summary,
  .pane-netsound-0 h2.pane-title {
   border-bottom: 2px solid #DBDDDA; 
 }

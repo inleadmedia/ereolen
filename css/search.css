@@ -1,6 +1,5 @@
 #ting-search-results #ting-search-tabs,
 #ting-search-results #ting-search-sort,
-#ting-search-results #ting-search-summary,
 #ting-search-results #ting-search-legend {
   display: none;
 }
@@ -81,4 +80,7 @@
   text-align: center;
 }
 
-
+#ting-result #ting-sort-by {
+  float: right;
+  margin-bottom: 15px;
+}

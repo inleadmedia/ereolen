@@ -132,6 +132,7 @@ div.messages.error {
 .panel-pane .review-title,
 h1#page-title.title,
 .panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title,
+#ting-search-results #ting-search-summary,
 .pane-netsound-0 h2.pane-title {
   margin-bottom: 12px;
 }
