@@ -351,7 +351,7 @@ function elib_get_lydbog($tingObjectID,$format){
 	
 	// ellers så hent lokal URL
 	if($response->status->code != 101){
-		$content .= '<div class="status" style="position:absolute;bottom:0;">Fejl: '.$status.'</div>';
+		$content .= '<div class="status">Fejl: '.$status.'</div>';
 	}
 	
 	return $content;
