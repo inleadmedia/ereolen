@@ -64,7 +64,7 @@ class RestJsonTingClientObjectRequest extends RestJsonTingClientRequest
 				$request->setQuery('rec.id:'.$localId);
 			}
 			elseif ($isbn = $this->getISBN()){
-        $request->setQuery('dc.identifier:'.$isbn);
+        $request->setQuery('(dc.identifier='.$isbn.')');
       }			
 			//transfer agency from object to search request
 			if ($agency = $this->getAgency()) {
