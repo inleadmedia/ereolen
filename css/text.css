@@ -220,7 +220,7 @@ div#sidebar-first div#block-block-12 .content a:hover {
 .pane-embedvideo .bottom-bar .see-more a:hover,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer a:hover,
 #main-content .icons ul li a:hover,
-#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content a {
+#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content a:hover {
   text-decoration: underline;
 }
 

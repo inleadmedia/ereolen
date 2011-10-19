@@ -344,7 +344,7 @@ h1#page-title.title,
 #main-content .icons ul li.seperator {
   float: left;
   margin: 0;
-  border: 1px solid #B31A66;
+  border: 1px solid #BF2226;
   height: 18px;
   margin-top: 3px;
 }
@@ -664,10 +664,10 @@ h1#page-title.title,
   width: 120px;
 }
 
-.infiniteCarousel .back           { background: url("../images/cycle.png") no-repeat scroll 0    0    transparent; }
-.infiniteCarousel .back:hover     { background: url("../images/cycle.png") no-repeat scroll 0    32px transparent; }
-.infiniteCarousel .forward        { background: url("../images/cycle.png") no-repeat scroll 32px 0    transparent; }
-.infiniteCarousel .forward:hover  { background: url("../images/cycle.png") no-repeat scroll 32px 32px transparent; }
+.infiniteCarousel .back           { background: url("../images/cycle.png") no-repeat scroll 0    0      transparent; }
+.infiniteCarousel .back:hover     { background: url("../images/cycle.png") no-repeat scroll 0    -36px  transparent; }
+.infiniteCarousel .forward        { background: url("../images/cycle.png") no-repeat scroll -36px 0     transparent; }
+.infiniteCarousel .forward:hover  { background: url("../images/cycle.png") no-repeat scroll -36px -36px transparent; }
 
 
 
