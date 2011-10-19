@@ -3,7 +3,8 @@
   .block-elib_infinite_carousel h2,
   .infiniteCarousel a.arrow,
   #sidebar-first,
-  #ting-search-result ul li .record .right {
+  #ting-search-result ul li .record .right,
+  #ting-result #ting-sort-by {
     display: none;
   }
 
@@ -194,7 +195,7 @@
     background: none;
     text-align: center;
     font: 20px/26px 'BebasNeueRegular', Helvetica, Arial, sans-serif;
-    color: #8c938b;   
+    color: #8C938B;   
     text-decoration: none;
   }
 
@@ -204,7 +205,7 @@
   }
 
   #site-menu ul.menu li a.active {
-    color: #84004c;
+    color: #BF2226;
   }
 
   #footer #footer-first .block.block-block {
@@ -226,17 +227,18 @@
     padding: 10px 0;
   }
 
-  .display-book {
+  .display-book,
+  #ting-search-result ul li.display-book .record .left {
     width: 100%;
   }
 
   .display-book .right,
-  #ting-search-result ul li .record {
+  #ting-search-result ul li.display-book .record {
     width: 70%;
   }
 
   .display-book .left,
-  #ting-search-result ul li .picture {
+  #ting-search-result ul li.display-book .picture {
     width: 30%;
     margin: 0;
   }
