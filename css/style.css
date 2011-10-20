@@ -63,7 +63,8 @@ div.messages.error {
 #sidebar-first #block-views-latest_news-block_1 .content .view-content,
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
-.pane-faq-panel-pane-1 .view-content .item-list ul {
+.pane-faq-panel-pane-1 .view-content .item-list ul,
+.panel-pane.pane-latest-news .pane-content .view-content .views-row {
   border: 2px solid #DBDDDA;
   border-radius: 4px;
   -moz-border-radius: 4px;
@@ -142,7 +143,8 @@ h1#page-title.title,
 .panel-pane.pane-embedvideo .pane-content,
 .panel-pane.pane-front .pane-content,
 #sidebar-first #block-views-latest_news-block_1 .content,
-.pane-elib-block-lastloans-3 .pane-content {
+.pane-elib-block-lastloans-3 .pane-content,
+.panel-pane.pane-latest-news .pane-content {
   padding: 0 !important;
   border: 0 !important;
 }
