@@ -27,6 +27,12 @@
     #FFFFFF,
     #DBDDDA
   );
+  background: linear-gradient(
+    top,
+    #FFFFFF,
+    #DBDDDA
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#FFFFFF', EndColorStr='#DBDDDA');
 }
 
 #site-header {
@@ -56,7 +62,7 @@
 }
 
 #footer {
-  background-image: -webkit-gradient(
+  background: -webkit-gradient(
     linear,
     left bottom,
     left top,
@@ -68,7 +74,7 @@
     #DBDDDA,
     #DADCD9
   );
-  background-image: -moz-linear-gradient(
+  background: -moz-linear-gradient(
     center bottom,
     rgb(218,220,217) 9%,
     rgb(219,221,218) 55%
@@ -78,11 +84,12 @@
     #DBDDDA,
     #DADCD9
   );
-  background: -o-linear-gradient(
+  background: linear-gradient(
     top,
     #DBDDDA,
     #DADCD9
   );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#BE1F24', EndColorStr='#E82A30');
 }
 
 .panel-2col .panel-col-first,
