@@ -189,6 +189,7 @@ $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus
               print '</li>';
             }
           ?>
+         </ul>
       </div>
     </div>
   </div>
