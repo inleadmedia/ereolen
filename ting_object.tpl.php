@@ -200,7 +200,7 @@ catch (Exception $e) {
           <li class="seperator"></li>
           <li><?php print l(t('Køb'), $object->url.'/buy', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
           <li class="seperator"></li>
-          <li><?php print l(t('Lån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
+          <li><?php print l(t('Lån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]', 'class' => 'ting-object-loan'))) ?></li>
           <?php 
             if($user->uid){
               print '<li class="seperator"></li>';
