@@ -8,28 +8,9 @@
  * - $object: The TingClientObject instance we're rendering.
  */
 
-/*if($object->type != 'Netdokument') {
-  drupal_set_message(t('Bogen findes ikke som ebog, foretager søgning...'), 'error');
-  drupal_goto('/ting/search/'.$object->title,NULL,NULL,301); // set the statuscode as MOVED PERMANENTLY
-}*/
-
-/*logic for rating */
-elib_book_cover($object);
-
 module_load_include('isbn_static_func.inc', 'elib');
 
 $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus:ISBN'][0]);
-
-$c = elib_client();
-$c->setLibrary(variable_get('elib_retailer_id', ''));
-try {
-  $book = $c->getBook($isbn);
-}
-catch (Exception $e) {
-  watchdog('qwe','<pre>'.print_r($e,1).'</pre>');
-  // error_log(__FILE__ . ':' . __LINE__ . ' ' . print_r($e,1));
-  return;
-}
 
   drupal_add_css(VOXB_PATH . '/css/voxb-pager.css');
   drupal_add_css(VOXB_PATH . '/css/voxb.css');
@@ -55,8 +36,7 @@ catch (Exception $e) {
 <div id="ting-object" class="line rulerafter">
 
   <div class="picture unit grid-3 alpha">
-    <?php $image_url = ting_covers_collection_url($object, '170_x'); ?>
-
+    <?php $image_url = elib_book_cover($isbn, '170_x'); ?>
     <?php if (strpos($image_url,'imagecache')): ?>
       <div class="inner left" style="margin-bottom:10px;">
         <?php print theme('image', $image_url, $object->title, $object->title, null, false); ?>

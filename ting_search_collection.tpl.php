@@ -9,16 +9,15 @@
 foreach ($collection->objects as $obj){
 	if($obj->type == 'Netdokument') {
 		$netObj = $obj;
-//		$netObj = ting_get_object_by_id($obj->id);
 
-  elib_book_cover($netObj);
+  $isbn = convertToEAN($obj->record['dc:identifier']['dkdcplus:ISBN'][0]);
   $alttext = t('@titel af @forfatter',array('@titel' => $netObj->title, '@forfatter' => $netObj->creators_string));
 
 ?>
   <li class="display-book ting-collection ruler-after line clear-block" id="<?php print $netObj->id ?>">
 
     <div class="picture">
-      <?php $image_url = ting_covers_collection_url($netObj->objects[0], '80_x'); ?>
+      <?php $image_url = elib_book_cover($isbn, '80_x'); ?>
       <?php if ($image_url) { ?>
         <?php print l(theme('image', $image_url, $alttext, $alttext, null, false), $netObj->url, array('html' => true)); ?>
       <?php } ?>
