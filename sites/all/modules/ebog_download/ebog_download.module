@@ -87,6 +87,7 @@ function ebog_download_loan_initial($ting_id) {
   if ($user->uid) {
     // Elib related ting object
     $isbn = elib_get_isbn_from_object_id($ting_id);
+    $ean = convertToEAN($isbn);
 
     // Get user info
     $userinfo = elib_user_get_cred();
@@ -99,7 +100,7 @@ function ebog_download_loan_initial($ting_id) {
       $client->setLibrary(variable_get('elib_retailer_id', ''));
 
       // Yay, that's hardcoded, remove ASAP...
-      $elib_id = '9788723034656';
+      $elib_id = $ean;
       $book = $client->getBook($elib_id);
 
       // Check that this item exists in elib's db
@@ -113,7 +114,7 @@ function ebog_download_loan_initial($ting_id) {
         // Fetch loaned items
         $loans = elib_client()->getLoans();
         // Fetch loan count
-        $loan_count = 0;//$loans->status->LibraryExtension->usertotalloans;
+        $loan_count = 0;
 
         if ($loans->status->code == 101) {
           // Cleanup expired items
