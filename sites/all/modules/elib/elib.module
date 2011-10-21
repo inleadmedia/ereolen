@@ -908,11 +908,14 @@ function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
  * @return string
  */
 function elib_book_cover($isbn, $presetname) {
-
+  if (!$isbn || $isbn == '') {
+    _elib_covers_default_image();
+  }
   $path = elib_init_cover_path($isbn);
   if (file_exists(file_create_path($path))) {
     return imagecache_create_url($presetname, $path);
   } else {
+    var_dump($isbn);
     // init elib client
     $c = elib_client();
     $c->setLibrary(variable_get('elib_retailer_id', ''));
@@ -921,9 +924,19 @@ function elib_book_cover($isbn, $presetname) {
       $book = $c->getBook($isbn);
     } catch (Exception $e) { }
     // store cover from elib in drupal
-    $path = _elib_covers_fetch_or_redirect($path, (string)$book->data->coverimage, $presetname);
+    if ((string)$book->data->coverimage == '') {
+      _elib_covers_default_image();
+    }
+    $path = _elib_covers_fetch_or_redirect($path, (string)$book->data->coverimage);
     return imagecache_create_url($presetname, $path);
   }
+}
+
+/**
+* Help function, returns path to default image.
+*/
+function _elib_covers_default_image() {
+  return drupal_get_path('module', 'ting_covers') . '/img/default.gif';
 }
 
 /**
@@ -936,7 +949,7 @@ function _elib_covers_fetch_or_redirect($path, $source_url) {
       return $path;
     }
   }
-  return drupal_get_path('module', 'ting_covers') . '/img/default.gif';
+  return _elib_covers_default_image();
 }
 
 /**
