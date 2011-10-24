@@ -1,0 +1,234 @@
+<?php
+/**
+ * @file
+ * 
+ * Ebog download main module file.
+ * 
+ * Provides extended download workflow for ebooks.
+ */
+
+/**
+ * Implementation of hook_init.
+ */
+function ebog_download_init() {
+  if (!defined('EBOG_DOWNLOAD_PATH')) {
+    define('EBOG_DOWNLOAD_PATH', drupal_get_path('module', 'ebog_download'));
+  }
+
+  drupal_add_js(EBOG_DOWNLOAD_PATH . '/js/ebog_download_scripts.js', 'file');
+  drupal_add_css(EBOG_DOWNLOAD_PATH . '/css/ebog_download_style.css', 'file');
+  drupal_add_css(drupal_get_path('module', 'jquery_ui') . '/jquery.ui/themes/default/ui.all.css', 'file');
+  jquery_ui_add(array('ui.dialog', 'ui.draggable'));
+}
+
+/**
+ * Implementation of hook_menu.
+ */
+function ebog_download_menu() {
+  $menu = array();
+
+  $menu['ting/object/%/download/request'] = array(
+    'title' => 'Download ting ebook',
+    'description' => 'Checker for download abilities regarding selected ebook for specific user.',
+    'page callback' => 'ebog_download_loan_initial',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $menu['ting/object/%/download/popup'] = array(
+    'title' => 'Show a popup before download',
+    'description' => 'Display some user specific text and perform some check before download.',
+    'page callback' => 'ebog_download_loan_popup',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $menu;
+}
+
+/**
+ * Implementation of hook_theme.
+ */
+function ebog_download_theme($existing, $type, $theme, $path) {
+  $hooks = array();
+
+  $hooks['ebog_download_checkboxes'] = array(
+    'arguments' => array(),
+    'template' => 'templates/ebog_download-checkboxes',
+  );
+
+  $hooks['ebog_download_error'] = array(
+    'arguments' => array('data' => NULL),
+    'template' => 'templates/ebog_download-error',
+  );
+
+  $hooks['ebog_download_info'] = array(
+    'arguments' => array('data' => NULL),
+    'template' => 'templates/ebog_download-info',
+  );
+
+  return $hooks;
+}
+
+/**
+ * Provides item loan/check routine for elib service.
+ *
+ * @global $user
+ *   Logged in user data
+ * @param $ting_id
+ *   Ting object id
+ */
+function ebog_download_loan_initial($ting_id) {
+  global $user;
+  $status = array();
+  
+  if ($user->uid) {
+    // Elib related ting object
+    $isbn = elib_get_isbn_from_object_id($ting_id);
+    $ean = convertToEAN($isbn);
+
+    // Get user info
+    $userinfo = elib_user_get_cred();
+    // Check user's elib data
+    if ($userinfo['cpr'] && $userinfo['pin'] && $userinfo['lib']) {
+      elib_client()->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
+
+      // Library client
+      $client = elib_client();
+      $client->setLibrary(variable_get('elib_retailer_id', ''));
+
+      // Fetch book object
+      $elib_id = $ean;
+      $book = $client->getBook($elib_id);
+
+      // Check that this item exists in elib's db
+      if ($book->status->code == '101') {
+        // Already loaned marker
+        $loaned = FALSE;
+        // Download link
+        $down_link = '';
+        // Store the closest loan period
+        $closest_loan = '';
+        // Fetch loaned items
+        $loans = elib_client()->getLoans();
+        // Fetch loan count
+        $loan_count = 0;
+
+        // Loans are fetched w/o errors
+        if ($loans->status->code == 101) {
+          // Cleanup expired items
+          elib_user_cleanuploans($loans->data->orderitem);
+          $loan_count = count($loans->data->orderitem);
+
+          // Check if this item is on loan
+          for ($i = 0; $i < count($loans->data->orderitem); $i++) {
+            $item = $loans->data->orderitem[$i];
+
+            // Do we have a match?
+            if ($item->book['id'] == $elib_id) {
+              $loaned = TRUE;
+              $down_link = $item->data->data->downloadurl;
+              
+              break;
+            }
+          }
+
+          // Whether the item is on loan
+          if ($loaned) {
+            // Display dload link
+            $status = array(
+              'title' => t('Fejl'),
+              'content' => theme('ebog_download_info', array('message' => t('You already loaned this item.'), 'link' => $down_link))
+            );
+          }
+          else {
+            // Get the closes loan time
+            if ($loans->status->LibraryExtension->userebookloansnexttime) {
+              // If user has some loans
+              $closest_loan = elib_str_to_time($loans->status->LibraryExtension->userebookloansnexttime, TRUE) - time();
+            }
+            // Get library loan limit
+            $lib_limit = elib_libraries_get_maxloans($userinfo['lib']);
+            if ($lib_limit - $loan_count > 0) {
+              // Make some loan
+              $response = elib_client()->makeLoan($elib_id);
+
+              // Check loan status
+              if ($response->status->code == 101) {
+                // Fetch loaned item dload url
+                $down_link = $response->data->downloadurl;
+                
+                $status = array(
+                  'title' => t('Success'),
+                  'content' => theme('ebog_download_info', array('message' => t('Successfuly loaned this item.'), 'link' => $down_link))
+                );
+              }
+              else {
+                $status = array(
+                  'title' => t('Fejl'),
+                  'content' => theme('ebog_download_error', array('message' => t('Error occured while loaning this item.')))
+                );
+              }
+            }
+            else {
+              // Calculate remaining time before next loan, could be handy
+              $new_loan_days = floor($closest_loan / 86400);
+              $new_loan_hours = floor(($closest_loan % 86400) / 3600);
+
+              $status = array(
+                'title' => t('Fejl'),
+                'content' => theme('ebog_download_error', array('message' => t('Dit bibliotek har nået det maksimalt tilladte antal udlån af ebøger, beklager.')))
+              );
+            }
+          }
+        }
+        else {
+          $status = array(
+            'title' => t('Fejl'),
+            'content' =>  theme('ebog_download_error', array('message' => t('Failed to fetch your loans.')))
+          );
+        }
+      }
+      else {
+        $status = array(
+          'title' => t('Fejl'),
+          'content' => theme('ebog_download_error', array('message' => t('Item not found in database.')))
+        );
+      }
+    }
+    else {
+      $status = array(
+        'title' => t('Fejl'),
+        'content' => theme('ebog_download_error', array('message' => t('Failed to fetch your personal data.')))
+      );
+    }
+  }
+  else {
+    $status = array(
+      'title' => t('Fejl'),
+      'content' => theme('ebog_download_error', array('message' => t('Only authenticated users are able to loan.')))
+    );
+  }
+
+  // Send response
+  echo json_encode($status);
+  exit(0);
+}
+
+/**
+ * More a dummy method, used only for confirmation dialog retrieval.
+ *
+ * @param $ting_id
+ *   Ting object id.
+ */
+function ebog_download_loan_popup($ting_id) {
+  $status = array(
+    'title' => t('Download ebog'),
+    'content' => theme('ebog_download_checkboxes'),
+  );
+
+  echo json_encode($status);
+  exit(0);
+}
