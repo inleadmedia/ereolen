@@ -505,6 +505,7 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
 
     }
 
+/*
     $out[] = '
       <div class="icons">
       <div class="icons">
@@ -518,6 +519,7 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
       </div>
       </div>
     ';
+*/
 
   $out[] = '
     </div>
