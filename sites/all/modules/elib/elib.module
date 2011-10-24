@@ -537,17 +537,19 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
 	}
   // fetch cover from elib
   elib_book_cover($obj);
+  $isbn = convertToEAN($obj->record['dc:identifier']['dkdcplus:ISBN'][0]);
   
 	switch($displaysize){
 		case 'small':
 		case 'small_rm':
 		case 'lorem':
 		case 'review':
-                        $image_url = elib_book_cover($item->ebookid, '65_x');
+      $image_url = elib_book_cover($isbn, '65_x');
 			break;
 		case 'medium':
 		case 'textright':
                         $image_url = elib_book_cover($item->ebookid, '170_x');
+      $image_url = elib_book_cover($isbn, '170_x');
 			break;
 	}
 
