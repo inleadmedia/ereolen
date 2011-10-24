@@ -548,7 +548,6 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
 			break;
 		case 'medium':
 		case 'textright':
-                        $image_url = elib_book_cover($item->ebookid, '170_x');
       $image_url = elib_book_cover($isbn, '170_x');
 			break;
 	}
@@ -705,6 +704,8 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
       $part['loginexpire'].
       $part['title'].
       $part['author'].
+rry
+
       $part['rating'].
       $part['icons'].
       $part['text'].
