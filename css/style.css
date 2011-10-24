@@ -240,9 +240,7 @@ h1#page-title.title,
 #ting-search-form .form-item,
 #ting-search-form .form-text,
 #ting-search-form .form-submit {
-  display: inline-block;
-  zoom: 1; /* ie7 hack for display:inline-block */
-  *display: inline;
+  display: block;
   border: 0 none;
   outline: 0 none;
   padding: 0;
@@ -256,7 +254,7 @@ h1#page-title.title,
   border: 2px solid #dbddda;
 }
 
-#ting-search-form .form-item {
+#ting-search-form div:first-child {
   background-image: url("../images/magnifier.png");
   background-repeat: no-repeat;
   background-position: left top;
@@ -264,6 +262,8 @@ h1#page-title.title,
 }
 
 #ting-search-form .form-text {
+  float: left;
+  background-color: transparent;
   width: 166px;
   padding: 6px 6px 4px 28px;
 }
