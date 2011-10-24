@@ -1,0 +1,107 @@
+<?php
+
+/**
+ * Implementation of hook_init.
+ */
+function ebog_preview_init() {
+  if (!defined('EBOG_PREVIEW_PATH')) {
+    define('EBOG_PREVIEW_PATH', drupal_get_path('module', 'ebog_preview'));
+  }
+  
+  drupal_add_js(EBOG_PREVIEW_PATH . '/js/ebog_preview_scripts.js', 'file');
+}
+
+/**
+ * Implementation of hook_menu.
+ */
+function ebog_preview_menu() {
+  $menu = array();
+
+  $menu['ting/object/%/sample/preview'] = array(
+    'title' => 'Preview ting ebook',
+    'description' => 'Provide an ebook preview using Monocle.',
+    'page callback' => 'ebog_preview_preview',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $menu;
+}
+
+/**
+ * Make a preview of a selected item.
+ *
+ * @param $ting_id
+ *   Ting object id
+ */
+function ebog_preview_preview($ting_id) {
+  $isbn = elib_get_isbn_from_object_id($ting_id);
+  $ean = convertToEAN($isbn);
+
+  $client = elib_client();
+  $client->setLibrary(variable_get('elib_retailer_id', ''));
+  
+  $book = $client->getBook($ean);
+
+  // Book fetched correctly
+  if ($book->status->code == 101) {
+    $preview_link = (string)$book->data->teaser->link;
+    $filename = basename($preview_link, '.epub');
+
+    if (substr($preview_link, -4) == 'epub') {
+      $result = drupal_http_request($preview_link);
+
+      // File fetched successfuly
+      if ($result->code == 200) {
+        $dir = file_directory_path() . '/ebog_preview/' . $filename;
+
+        // Create needed directory
+        if (!file_check_directory($dir, FILE_CREATE_DIRECTORY)) {
+          if (mkdir($dir, 0777, TRUE) === FALSE) {
+            echo 'HANDLE DIRECTORY CREATE FAILURE';
+            exit(0);
+          }
+        }
+
+        $epub_file = $dir . '/' . $filename . '.epub';
+
+        // Attempt to save downloaded file
+        if (!file_save_data($result->data, $epub_file, FILE_EXISTS_REPLACE)) {
+          echo 'HANDLE FILE SAVE FAILURE';
+          exit(0);
+        }
+        
+        // Unpack the epub file (ha, it's a zip)
+        $zip = new ZipArchive();
+        if ($zip->open($epub_file)) {
+          if ($zip->extractTo($dir)) {
+            // @todo
+            // EPUB PROCESSING
+          }
+          else {
+            echo 'HANDLE EPUB EXTRACT FAILURE';
+          }
+
+          $zip->close();
+        }
+        else {
+          echo 'HANDLE EPUB OPEN FAILURE';
+        }
+      }
+      else {
+        echo 'HANDLE FILE DOWNLOAD FAILURE';
+      }
+    }
+    else {
+      // @todo
+      // Just ask for download
+    }
+    
+  }
+  else {
+    echo 'HANDLE BOOK NON EXISTENCE';
+  }
+
+  exit(0);
+}
