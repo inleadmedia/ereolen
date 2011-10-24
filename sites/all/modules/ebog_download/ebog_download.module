@@ -99,7 +99,7 @@ function ebog_download_loan_initial($ting_id) {
       $client = elib_client();
       $client->setLibrary(variable_get('elib_retailer_id', ''));
 
-      // Yay, that's hardcoded, remove ASAP...
+      // Fetch book object
       $elib_id = $ean;
       $book = $client->getBook($elib_id);
 
@@ -116,6 +116,7 @@ function ebog_download_loan_initial($ting_id) {
         // Fetch loan count
         $loan_count = 0;
 
+        // Loans are fetched w/o errors
         if ($loans->status->code == 101) {
           // Cleanup expired items
           elib_user_cleanuploans($loans->data->orderitem);
@@ -128,10 +129,8 @@ function ebog_download_loan_initial($ting_id) {
             // Do we have a match?
             if ($item->book['id'] == $elib_id) {
               $loaned = TRUE;
-              // @todo
-              // THIS IS NOT WORKING AT ALL, fetch loaned item url
-              //$down_link = elib_client()->GetUrl($item->retailerordernumber);
-              $down_link = 'http://googleforidiots.com/';
+              $down_link = $item->data->data->downloadurl;
+              
               break;
             }
           }
@@ -141,7 +140,7 @@ function ebog_download_loan_initial($ting_id) {
             // Display dload link
             $status = array(
               'title' => t('Fejl'),
-              'content' => theme('ebog_download_info', array('message' => t('You already loaned this item.')))
+              'content' => theme('ebog_download_info', array('message' => t('You already loaned this item.'), 'link' => $down_link))
             );
           }
           else {
@@ -158,9 +157,8 @@ function ebog_download_loan_initial($ting_id) {
 
               // Check loan status
               if ($response->status->code == 101) {
-                // @todo
                 // Fetch loaned item dload url
-                $down_link = 'http://googleforidiots.com/';
+                $down_link = $response->data->downloadurl;
                 
                 $status = array(
                   'title' => t('Success'),
@@ -175,6 +173,7 @@ function ebog_download_loan_initial($ting_id) {
               }
             }
             else {
+              // Calculate remaining time before next loan, could be handy
               $new_loan_days = floor($closest_loan / 86400);
               $new_loan_hours = floor(($closest_loan % 86400) / 3600);
 
@@ -213,8 +212,8 @@ function ebog_download_loan_initial($ting_id) {
     );
   }
 
+  // Send response
   echo json_encode($status);
-
   exit(0);
 }
 
