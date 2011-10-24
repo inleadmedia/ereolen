@@ -915,7 +915,6 @@ function elib_book_cover($isbn, $presetname) {
   if (file_exists(file_create_path($path))) {
     return imagecache_create_url($presetname, $path);
   } else {
-    var_dump($isbn);
     // init elib client
     $c = elib_client();
     $c->setLibrary(variable_get('elib_retailer_id', ''));
