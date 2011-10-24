@@ -245,8 +245,9 @@ function ting_search_form(&$form_state) {
   );
 
   $form['submit'] = array(
-    '#type' => 'submit',
+    '#type' => 'image_button',
     '#value' => t('Search'),
+    '#src' => 'sites/all/themes/ebog/images/search.png'
   );
 
   $form['example_text'] = array(
