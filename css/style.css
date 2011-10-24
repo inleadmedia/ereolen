@@ -268,12 +268,6 @@ h1#page-title.title,
   padding: 6px 6px 4px 28px;
 }
 
-#ting-search-form .form-submit {
-  height: 30px;
-  width: 60px;
-  text-transform: uppercase;
-}
-
 #ting-search-form h2,
 #ting-search-form .example {
   display:none;
@@ -671,7 +665,6 @@ input[type=submit],
 .pane-content .bottom-bar,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer,
 #main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid,
-#ting-search-form .form-submit,
 .display-book .icons .icons,
 #ting-object .inner .icons,
 #ting-search-result .record .icons,
@@ -740,8 +733,7 @@ div.messages,
 .pane-embedvideo .bottom-bar .see-more a:hover,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer a:hover,
 #main-content .icons ul li a:hover,
-#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content a:hover,
-#ting-search-form .form-submit {
+#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content a:hover {
   -webkit-border-radius: 3px;
      -moz-border-radius: 3px;
           border-radius: 3px;
@@ -768,12 +760,6 @@ div.messages,
   -webkit-box-shadow: inset 0 0 3px #000000;
      -moz-box-shadow: inset 0 0 3px #000000;
           box-shadow: inset 0 0 3px #000000;
-}
-
-#ting-search-form .form-submit {
-  -webkit-box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
-     -moz-box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
-          box-shadow: inset 3px 5px 3px rgba(0, 0, 0, .4);
 }
 
 input[type=submit]:hover {
