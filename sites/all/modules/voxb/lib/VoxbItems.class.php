@@ -31,10 +31,12 @@ class VoxbItems extends VoxbBase {
     $fetch = array();
 
     foreach ($faustNums as $k => $v) {
-      $fetch[] = array(
-        'objectIdentifierValue' => $v,
-        'objectIdentifierType' => 'FAUST'
-      );
+      if ($v) {
+        $fetch[] = array(
+          'objectIdentifierValue' => $v,
+          'objectIdentifierType' => 'FAUST'
+        );
+      }
     }
 
     $data = array(
@@ -43,11 +45,11 @@ class VoxbItems extends VoxbBase {
     );
 
     $this->reviews = new VoxbReviewsController($this->reviewHandlers);
-
     $o = $this->call('fetchData', $data);
 
     if ($o->totalItemData) {
-      foreach ($o->totalItemData as $k => $v) {
+      $items = is_array($o->totalItemData) ? $o->totalItemData : array($o->totalItemData);
+      foreach ($items as $k => $v) {
         $this->items[(string)$v->fetchData->objectIdentifierValue] = new VoxbItem();
         $this->items[(string)$v->fetchData->objectIdentifierValue]->addReviewHandler('review', new VoxbReviews());
         $this->items[(string)$v->fetchData->objectIdentifierValue]->fetchData($v);

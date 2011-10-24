@@ -484,7 +484,7 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
     $out[] = '<div class="author">' .
       t('By %creator_name%', array('%creator_name%' => $object->creators_string)) . 
     '</div>';
-    $out[] = '<div class="rating-for-faust"><div class="'.$obj->localId.'"></div></div>';
+    $out[] = '<div class="rating-for-faust"><div class="'.$object->localId.'"></div></div>';
 
     if($elib_data->loanexpiredate) {
     $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
