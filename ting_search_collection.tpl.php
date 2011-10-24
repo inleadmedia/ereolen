@@ -6,6 +6,7 @@
  * Template to render a Ting collection of books.
  */
 
+module_load_include('isbn_static_func.inc', 'elib');
 foreach ($collection->objects as $obj){
 	if($obj->type == 'Netdokument') {
 		$netObj = $obj;
