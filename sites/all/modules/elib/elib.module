@@ -456,8 +456,9 @@ function elib_login_validate($form, &$form_state) {
 
 
 function elib_displaybook(TingClientObject $object,$elib_data = false){
-	
-  $image_url = ting_covers_collection_url($object, '65_x');
+
+  $isbn = convertToEAN($object->record['dc:identifier']['dkdcplus:ISBN'][0]);
+  $image_url = elib_book_cover($isbn, '65_x');
 
   $out[] = '
     <div class="left">
