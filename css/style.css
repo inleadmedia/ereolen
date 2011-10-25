@@ -259,13 +259,23 @@ h1#page-title.title,
   background-repeat: no-repeat;
   background-position: left top;
   margin: 0;
+  height: 30px;
+}
+
+#ting-search-form .form-item {
+  float: left;
+  width: 200px;
 }
 
 #ting-search-form .form-text {
   float: left;
   background-color: transparent;
-  width: 166px;
+  width: 166px; 
   padding: 6px 6px 4px 28px;
+}
+
+#ting-search-form .form-submit {
+  float: right;
 }
 
 #ting-search-form h2,
