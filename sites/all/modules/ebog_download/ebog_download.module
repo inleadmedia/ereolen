@@ -91,13 +91,14 @@ function ebog_download_loan_initial($ting_id) {
 
     // Get user info
     $userinfo = elib_user_get_cred();
+
     // Check user's elib data
     if ($userinfo['cpr'] && $userinfo['pin'] && $userinfo['lib']) {
       elib_client()->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
 
       // Library client
       $client = elib_client();
-      $client->setLibrary(variable_get('elib_retailer_id', ''));
+      $client->setLibrary($userinfo['lib']);
 
       // Fetch book object
       $elib_id = $ean;
@@ -159,7 +160,7 @@ function ebog_download_loan_initial($ting_id) {
               if ($response->status->code == 101) {
                 // Fetch loaned item dload url
                 $down_link = $response->data->downloadurl;
-                
+
                 $status = array(
                   'title' => t('Success'),
                   'content' => theme('ebog_download_info', array('message' => t('Successfuly loaned this item.'), 'link' => $down_link))
