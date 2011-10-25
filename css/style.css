@@ -232,6 +232,9 @@ h1#page-title.title,
 #site-menu ul.menu li:first-child + * + * + * a        { background: url("../images/menu.png")        no-repeat scroll -276px 0 transparent; }
 #site-menu ul.menu li:first-child + * + * + * a:hover  { background: url("../images/menu-hover.png")  no-repeat scroll -276px 0 transparent; }
 #site-menu ul.menu li:first-child + * + * + * a.active { background: url("../images/menu-active.png") no-repeat scroll -276px 0 transparent; }
+#site-menu ul.menu li:first-child + * + * + .account-link a        { background: url("../images/menu.png")        no-repeat scroll -368px 0 transparent; }
+#site-menu ul.menu li:first-child + * + * + .account-link a:hover  { background: url("../images/menu-hover.png")  no-repeat scroll -368px 0 transparent; }
+#site-menu ul.menu li:first-child + * + * + .account-link a.active { background: url("../images/menu-active.png") no-repeat scroll -368px 0 transparent; }
 
 /**
  * SEARCH FORM
@@ -270,7 +273,7 @@ h1#page-title.title,
 #ting-search-form .form-text {
   float: left;
   background-color: transparent;
-  width: 166px; 
+  width: 166px;
   padding: 6px 6px 4px 28px;
 }
 
