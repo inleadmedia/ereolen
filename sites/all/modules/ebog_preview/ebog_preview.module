@@ -58,7 +58,7 @@ function ebog_preview_preview($ting_id) {
 
         // Create needed directory
         if (!file_check_directory($dir, FILE_CREATE_DIRECTORY)) {
-          if (mkdir($dir, 0777, TRUE) === FALSE) {
+          if (!mkdir($dir, 0777, TRUE)) {
             echo 'HANDLE DIRECTORY CREATE FAILURE';
             exit(0);
           }
@@ -73,7 +73,7 @@ function ebog_preview_preview($ting_id) {
         }
         
         // Unpack the epub file (ha, it's a zip)
-        $zip = new ZipArchive();
+        /*$zip = new ZipArchive();
         if ($zip->open($epub_file)) {
           if ($zip->extractTo($dir)) {
             // @todo
@@ -87,6 +87,20 @@ function ebog_preview_preview($ting_id) {
         }
         else {
           echo 'HANDLE EPUB OPEN FAILURE';
+        }*/
+
+        require_once(EBOG_PREVIEW_PATH . '/lib/ebooklib/ebookRead.php');
+
+        $epub = new ebookRead($epub_file);
+
+        $i = 0;
+        $html_files = array();
+        while ($row = $epub->getManifestItem($i, 'href')) {
+          if (preg_match('/chapter[0-9]{1,5}\.html/i', $row)) {
+            //var_dump($row);
+            $html_files[] = $i;
+          }
+          $i++;
         }
       }
       else {
