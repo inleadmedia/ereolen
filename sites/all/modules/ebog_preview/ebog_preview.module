@@ -7,7 +7,7 @@ function ebog_preview_init() {
   if (!defined('EBOG_PREVIEW_PATH')) {
     define('EBOG_PREVIEW_PATH', drupal_get_path('module', 'ebog_preview'));
   }
-  
+
   drupal_add_js(EBOG_PREVIEW_PATH . '/js/ebog_preview_scripts.js', 'file');
 }
 
@@ -41,7 +41,7 @@ function ebog_preview_preview($ting_id) {
 
   $client = elib_client();
   $client->setLibrary(variable_get('elib_retailer_id', ''));
-  
+
   $book = $client->getBook($ean);
 
   // Book fetched correctly
@@ -71,13 +71,39 @@ function ebog_preview_preview($ting_id) {
           echo 'HANDLE FILE SAVE FAILURE';
           exit(0);
         }
-        
+
         // Unpack the epub file (ha, it's a zip)
-        /*$zip = new ZipArchive();
+        $zip = new ZipArchive();
         if ($zip->open($epub_file)) {
           if ($zip->extractTo($dir)) {
-            // @todo
-            // EPUB PROCESSING
+            // EPUB processing
+            $meta_inf = ebog_preview_fetch_meta_inf($dir);
+            if ($meta_inf) {
+              $metadata = ebog_preview_fetch_meta_data($dir . '/' . $meta_inf);
+              var_dump($metadata);
+
+              if ($metadata instanceof SimpleXMLElement) {
+                $spines = ebog_preview_fetch_spine($metadata);
+
+                if (count($spines) > 0) {
+                  $content = '';
+                  foreach ($spines as $spine) {
+                    $content .= ebog_preview_fetch_content($spine, $metadata, $dir);
+                  }
+
+                  var_dump($content);
+                }
+                else {
+                  echo 'HANDLE EMPTY EBOOK';
+                }
+              }
+              else {
+                echo 'HANDLE METADATA READ FAILURE';
+              }
+            }
+            else {
+              echo 'HANDLE EPUB META FILE OPEN FAILURE';
+            }
           }
           else {
             echo 'HANDLE EPUB EXTRACT FAILURE';
@@ -87,20 +113,6 @@ function ebog_preview_preview($ting_id) {
         }
         else {
           echo 'HANDLE EPUB OPEN FAILURE';
-        }*/
-
-        require_once(EBOG_PREVIEW_PATH . '/lib/ebooklib/ebookRead.php');
-
-        $epub = new ebookRead($epub_file);
-
-        $i = 0;
-        $html_files = array();
-        while ($row = $epub->getManifestItem($i, 'href')) {
-          if (preg_match('/chapter[0-9]{1,5}\.html/i', $row)) {
-            //var_dump($row);
-            $html_files[] = $i;
-          }
-          $i++;
         }
       }
       else {
@@ -111,11 +123,92 @@ function ebog_preview_preview($ting_id) {
       // @todo
       // Just ask for download
     }
-    
+
   }
   else {
     echo 'HANDLE BOOK NON EXISTENCE';
   }
 
   exit(0);
+}
+
+function ebog_preview_fetch_meta_inf($dir) {
+  $meta_file = $dir . '/META-INF/container.xml';
+  if (file_exists($meta_file)) {
+    $handle = fopen($meta_file, 'rt');
+    $meta_data = fread($handle, filesize($meta_file));
+    fclose($handle);
+
+    $meta_xml = new SimpleXMLElement($meta_data);
+    $meta_opf = (string)$meta_xml->rootfiles->rootfile['full-path'];
+
+    return $meta_opf;
+  }
+
+  return 0;
+}
+
+function ebog_preview_fetch_meta_data($opf_path) {
+  if (file_exists($opf_path)) {
+    $handle = fopen($opf_path, 'rt');
+    $meta_data = fread($handle, filesize($opf_path));
+    fclose($handle);
+
+    $meta_xml = new SimpleXMLElement($meta_data);
+
+    return $meta_xml;
+  }
+
+  return 0;
+}
+
+function ebog_preview_fetch_spine($meta_xml) {
+  $i = 0;
+  $result = array();
+  while ($spine = $meta_xml->spine->itemref[$i]) {
+    $result[] = (string)$spine['idref'];
+    $i++;
+  }
+
+  return $result;
+}
+
+function ebog_preview_fetch_content($spine, $metadata, $dir) {
+  $i = 0;
+  while ($item = $metadata->manifest->item[$i]) {
+    if ($item['id'] == $spine) {
+      $page_path = (string)$item['href'];
+      $page_content = ebog_preview_read_page($dir . '/OPS/' . $page_path);
+
+      return $page_content;
+    }
+    $i++;
+  }
+
+  return '';
+}
+
+function ebog_preview_read_page($path) {
+  if (file_exists($path)) {
+    $handle = fopen($path, 'rt');
+    $page_content = fread($handle, filesize($path));
+    fclose($path);
+
+    $page_content = ebog_preview_refine($page_content);
+
+    return $page_content;
+  }
+
+  return '';
+}
+
+function ebog_preview_refine($data) {
+  $m = array();
+  preg_match('~<body[^>]+?>(.+?)<\/body>~is', $data, $m);
+
+  if (isset($m[1])) {
+    return $m[1];
+  }
+
+  return '';
 }
