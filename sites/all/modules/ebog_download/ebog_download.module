@@ -55,7 +55,7 @@ function ebog_download_theme($existing, $type, $theme, $path) {
   $hooks = array();
 
   $hooks['ebog_download_checkboxes'] = array(
-    'arguments' => array(),
+    'arguments' => array('data' => NULL),
     'template' => 'templates/ebog_download-checkboxes',
   );
 
@@ -225,9 +225,21 @@ function ebog_download_loan_initial($ting_id) {
  *   Ting object id.
  */
 function ebog_download_loan_popup($ting_id) {
+  $user_agent = $_SERVER['HTTP_USER_AGENT'];
+  $reader = t('Adobe Digital Edition');
+  // android - Aldiko Book Reader
+  // iPod, iPad, iPhone - Bluefire Reader
+  // else - Adobe PDF reader
+  if (preg_match('/android/', $user_agent)) {
+    $reader = t('Aldiko Book Reader');
+  }
+  elseif (preg_match('/(iPod)|(iPad)|(iPhone)/', $user_agent)) {
+    $reader = t('Bluefire Reader');
+  }
+
   $status = array(
     'title' => t('Download ebog'),
-    'content' => theme('ebog_download_checkboxes'),
+    'content' => theme('ebog_download_checkboxes', array('reader' => $reader)),
   );
 
   echo json_encode($status);
