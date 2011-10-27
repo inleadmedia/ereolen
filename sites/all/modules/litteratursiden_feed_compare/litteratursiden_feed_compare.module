@@ -88,12 +88,13 @@ function litteratursiden_feed_compare_get_feed($items) {
   $feed_main_url = variable_get('litteratursiden_feed_compare_feed_url', 'http://www.litteratursiden.dk/service/recommendations');
 
   while ($i != 25) {
-    $feed_url = $feed_main_url . '?count=25&offset=' . $i*25;
+    $feed_url = $feed_main_url . '?count=20&offset=' . $i*25;
     $feed_json_data = file_get_contents($feed_url, TRUE);
     $feed = json_decode($feed_json_data, TRUE);
     foreach ($feed as $key => $val) {
       if (is_numeric($key)) {
-        $query = "dc.title='" . $val['title'] . "'";
+        $a = explode(' af ', $val['title']);
+        $query = $a[0];
         $search = ting_do_search($query, 1, 25);
         if ($search->numTotalObjects > 0) {
           foreach ($search->collections as $collection) {
@@ -102,33 +103,24 @@ function litteratursiden_feed_compare_get_feed($items) {
               if (!empty($isbn)) {
                 // Title from feed consists of title+author.
                 // Combine title and author from TING to perform reasonable search.
-                $source = $object->record['dc:source'][''][0] . ' af ' . $object->record['dc:creator']['oss:aut'][0];
-                $title = $object->record['dc:title'][''][0] . ' af ' . $object->record['dc:creator']['oss:aut'][0];
-                if ($val['title'] == $source || $val['title'] ==  $title) {
-                  try {
-                    $book = $c->getBook(convertFromIsbn13ToIsbn10($isbn));
-                  }
-                  catch (Exception $e) {
-                    $ret['status'] = 'error';
-                    $ret['message'] = $e;
-                    return $ret;
-                  }
-                  if (!empty($book->data)) {
-                    $book_obj = json_decode(json_encode($book));
-                    $ret['data'][$amo] = array();
-                    $ret['data'][$amo]['isbn'] = $book_obj->data->product->external_ids->external_id[1]->id;
-                    $ret['data'][$amo]['title'] = $book_obj->data->product->title;
-                    $ret['data'][$amo]['author'] = $book_obj->data->product->contributors->contributor[0]->first_name . ' ' . $book_obj->data->product->contributors->contributor[0]->family_name;
-                    $ret['data'][$amo]['abstract'] = $object->abstract;
-                    $ret['data'][$amo]['description'] = $book_obj->data->product->description;
-                    $ret['data'][$amo]['image_url'] = $book_obj->data->product->coverimage;
-                    $ret['data'][$amo]['url'] = $object->url;
-                    $ret['data'][$amo]['creators_string'] = $object->creators_string;
-                    $ret['data'][$amo]['contributors'] = $object->record['dc:contributor']['oss:dkind'];
-                    $ret['data'][$amo]['subjects'] = $object->subjects;
-                    $ret['data'][$amo]['date'] = $object->date;
-                    $amo++;
-                  }
+                try {
+                  $book = $c->getBook($isbn);
+                }
+                catch (Exception $e) {
+                  $ret['status'] = 'error';
+                  $ret['message'] = $e;
+                  return $ret;
+                }
+                if (!empty($book->data)) {
+                  $ret['data'][] = array(
+                    'title' => (string)$book->data->title,
+                    'isbn' => (string)$book->data->$isbn,
+                    'author' => (string)$book->data->contributors->first_name . ' ' . (string)$book->data->contributors->family_name,
+                    'abstract' => (string)$book->data->description,
+                    'image' => (string)$book->data->coverimage,
+                    'url' => $object->url
+                  );
+                  $amo++;
                 }
               }
             }

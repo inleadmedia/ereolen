@@ -4,7 +4,6 @@
  */
 ?>
 <div class="feed-and-compare-front clear-block">
-
   <?php if ($items['status'] == 'empty') { ?>
     <div class="feed_and_compare_empty">
       <h1>Der var desv&aelig;rre ingen materialer som matchede anmeldelser hos Litteratursiden.</h1>
@@ -21,16 +20,22 @@
     <?php $i=0; ?>
     <?php foreach ($items['data'] as $key => $item) { ?>
       <?php if (is_numeric($key)) { ?>
-        <div class="feed_and_compare_front_item">
-          <div class="picture">
-            <?php echo theme_image($item['image_url'], '', '', array('width' => '100px'), FALSE); ?><br />
+        <div class="feed_and_compare_front_item display-book">
+          <div class="left">
+            <?php
+            $alttext = t('@titel af @forfatter',array('@titel' => $item['title'], '@forfatter' => $item['author']));
+	          echo l(theme('image', $item['image'], $alttext, $alttext, array('width' => '70px'), false), $item['url'], array('html' => true));
+            ?>
           </div>
-          <div class="record">
-            <div class="title">
-              <?php echo $item['title']; ?><br />
+          <div class="record right">
+            <h3 class="title">
+              <?php echo l($item['title'], $item['url'], array('html' => true)); ?>
+            </h3>
+            <div class="author">
+              <?php echo l($item['author'], '/ting/search/' . urlencode($item['author']), array('html' => true)); ?>
             </div>
             <div class="descr">
-              <?php echo $item['abstract']; ?><br />
+              <?php echo utf8_encode(substr(utf8_decode(strip_tags($item['abstract'])),0,250)) . '...'; ?>
             </div>
           </div>
         </div>
