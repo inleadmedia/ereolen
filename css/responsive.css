@@ -2,7 +2,9 @@
   .front #main-wrapper #main-content .panel-panel.panel-col-first,
   .block-elib_infinite_carousel h2,
   .infiniteCarousel a.arrow,
-  #sidebar-first,
+  #sidebar-first #block-elib_block_categories-0,
+  #sidebar-first div#block-block-12.block.block-block,
+  #sidebar-first #block-views-latest_news-block_1,
   #ting-search-result ul li .record .right,
   #ting-result #ting-sort-by {
     display: none;
