@@ -70,7 +70,7 @@ function ebog_preprocess_page(&$vars, $hook) {
   }
   else {
     $vars['primary_links']['login-link'] = array(
-      'href'  => 'login',
+      'href'  => 'user',
       'title' => t('Login')
     );
   }
@@ -79,7 +79,11 @@ function ebog_preprocess_page(&$vars, $hook) {
   $vars['navigation'] = '<div class="block block-menu" id="block-menu-primary-links"><div class="content">' . $rendered_primary_links . '</div></div>';
 
   if(arg(0) == 'min_side' && $user->uid == 0){
-    drupal_goto('user/login',drupal_get_destination());
+    drupal_goto('user',drupal_get_destination());
+  }
+
+  if(arg(0) == 'user' && $user->uid != 0){
+    drupal_goto('min_side',drupal_get_destination());
   }
 
   if(arg(3) == 'stream' || arg(3) == 'download' || $_GET['clean'] == 1 ){
