@@ -85,6 +85,8 @@
     #DBDDDA,
     #DADCD9
   );
+  /* For Internet Explorer 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#DBDDDA, endColorstr=#DADCD9)";
   background: linear-gradient(
     top,
     #DBDDDA,
