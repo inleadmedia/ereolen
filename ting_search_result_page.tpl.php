@@ -27,5 +27,5 @@
 </div>
 <div id="ting-search-spinner">
   <h4><?php print t('Searching'); ?>…</h4>
-  <div class="spinner"><img src="images/spinner.gif" /></div>
+  <div class="spinner"><img src="/sites/all/themes/ebog/images/spinner.gif" /></div>
 </div>
