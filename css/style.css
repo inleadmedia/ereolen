@@ -53,7 +53,7 @@ div.messages.error {
 #sidebar-first #block-elib_block_categories-0 .content .categories,
 #sidebar-first #block-views-latest_news-block_1 .content .view-content,
 .pane-embedvideo .ebog_embed_video,
-.pane-front .feed-and-compare-front,
+.pane-front,
 .pane-faq-panel-pane-1 .view-content .item-list ul,
 .panel-pane.pane-latest-news .pane-content .view-content .views-row {
   border: 2px solid #DBDDDA;
@@ -68,7 +68,7 @@ div.messages.error {
 #sidebar-first #block-views-latest_news-block_1 .content .view-content,
 .panel-pane.pane-embedvideo .pane-content,
 .pane-embedvideo .ebog_embed_video,
-.pane-front .feed-and-compare-front,
+.pane-front,
 .pane-faq-panel-pane-1 .view-content .item-list ul {
   border-bottom: 0;
 }
@@ -136,7 +136,7 @@ h1#page-title.title,
 
 #sidebar-first #block-elib_block_categories-0 .content .categories,
 .pane-embedvideo .ebog_embed_video,
-.pane-front .feed-and-compare-front,
+.pane-front,
 #sidebar-first #block-views-latest_news-block_1 .content .view-content,
 .pane-faq-panel-pane-1 .view-content .item-list ul {
   padding: 10px;
@@ -333,7 +333,7 @@ h1#page-title.title,
 }
 
 .view-anmeldelser .field-field-book .picture,
-.pane-front .feed-and-compare-front .picture {
+.pane-front .picture {
   float: left;
   padding-right: 10px;
 }
@@ -348,13 +348,13 @@ h1#page-title.title,
 }
 
 .view-anmeldelser .field-field-book .record,
-.pane-front .feed-and-compare-front .record {
+.pane-front .record {
   float: left;
   width: 198px;
 }
 
 .view-anmeldelser .field-field-book .record h3,
-.pane-front .feed-and-compare-front .title {
+.pane-front .title {
   margin-bottom: 10px;
 }
 
@@ -399,12 +399,10 @@ h1#page-title.title,
 
 .display-book,
 .view-anmeldelser .views-row,
-.pane-front .feed-and-compare-front .feed_and_compare_front_item {
+.pane-front {
   display: inline-block;
   zoom: 1; /* ie7 hack for display:inline-block */
-  *display: inline;
-  padding: 10px 0 10px 0;
-  border-bottom: 2px solid #DBDDDA;
+ 
 }
 
 .display-book:first-child,
@@ -414,12 +412,12 @@ h1#page-title.title,
 }
 
 .view-anmeldelser .views-row-last,
-.pane-front .feed-and-compare-front .feed_and_compare_front_item:first-child + * {
+.pane-front .feed_and_compare_front_item:first-child + * {
   border-bottom: 0;
   padding-bottom: 0;
 }
 
-.pane-front .feed-and-compare-front .feed_and_compare_front_item:first-child {
+.pane-front .feed_and_compare_front_item:first-child {
   padding-top: 0;
 }
 
@@ -699,7 +697,7 @@ div.messages,
 #sidebar-first #block-elib_block_categories-0 .content .categories,
 #sidebar-first #block-views-latest_news-block_1 .content .view-content,
 .pane-embedvideo .ebog_embed_video,
-.pane-front .feed-and-compare-front,
+.pane-front,
 .pane-faq-panel-pane-1 .view-content .item-list ul,
 .panel-pane.pane-latest-news .pane-content .view-content .views-row,
 .display-book .icons .icons,
@@ -727,6 +725,10 @@ div.messages,
   -webkit-background-clip: padding-box;
      -moz-background-clip: padding;
           background-clip: padding-box;
+}
+
+.feed_and_compare_front_item .descr {
+  clear: left;
 }
 
 #sidebar-first #block-elib_block_categories-0 .content .categories-links,
