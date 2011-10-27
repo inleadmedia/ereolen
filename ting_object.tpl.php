@@ -178,7 +178,7 @@ $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus
         <ul>
           <li><?php print l(t('Prøv'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
           <li class="seperator"></li>
-          <li><?php print l(t('Køb'), $object->url.'/buy', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+          <li><?php print l(t('Køb'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
           <li class="seperator"></li>
           <li><?php print l(t('Lån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
           <?php 
