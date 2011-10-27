@@ -22,6 +22,8 @@
     #FFFFFF,
     #DBDDDA
   );
+  /* For Internet Explorer 8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#DBDDDA)";
   background: -o-linear-gradient(
     top,
     #FFFFFF,
