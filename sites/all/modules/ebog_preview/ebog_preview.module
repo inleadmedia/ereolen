@@ -43,172 +43,18 @@ function ebog_preview_preview($ting_id) {
   $client->setLibrary(variable_get('elib_retailer_id', ''));
 
   $book = $client->getBook($ean);
+  $response = array();
 
   // Book fetched correctly
   if ($book->status->code == 101) {
     $preview_link = (string)$book->data->teaser->link;
-    $filename = basename($preview_link, '.epub');
 
-    if (substr($preview_link, -4) == 'epub') {
-      $result = drupal_http_request($preview_link);
-
-      // File fetched successfuly
-      if ($result->code == 200) {
-        $dir = file_directory_path() . '/ebog_preview/' . $filename;
-
-        // Create needed directory
-        if (!file_check_directory($dir, FILE_CREATE_DIRECTORY)) {
-          if (!mkdir($dir, 0777, TRUE)) {
-            echo 'HANDLE DIRECTORY CREATE FAILURE';
-            exit(0);
-          }
-        }
-
-        $epub_file = $dir . '/' . $filename . '.epub';
-
-        // Attempt to save downloaded file
-        if (!file_save_data($result->data, $epub_file, FILE_EXISTS_REPLACE)) {
-          echo 'HANDLE FILE SAVE FAILURE';
-          exit(0);
-        }
-
-        // Unpack the epub file (ha, it's a zip)
-        $zip = new ZipArchive();
-        if ($zip->open($epub_file)) {
-          if ($zip->extractTo($dir)) {
-            // EPUB processing
-            $meta_inf = ebog_preview_fetch_meta_inf($dir);
-            if ($meta_inf) {
-              $metadata = ebog_preview_fetch_meta_data($dir . '/' . $meta_inf);
-              var_dump($metadata);
-
-              if ($metadata instanceof SimpleXMLElement) {
-                $spines = ebog_preview_fetch_spine($metadata);
-
-                if (count($spines) > 0) {
-                  $content = '';
-                  foreach ($spines as $spine) {
-                    $content .= ebog_preview_fetch_content($spine, $metadata, $dir);
-                  }
-
-                  var_dump($content);
-                }
-                else {
-                  echo 'HANDLE EMPTY EBOOK';
-                }
-              }
-              else {
-                echo 'HANDLE METADATA READ FAILURE';
-              }
-            }
-            else {
-              echo 'HANDLE EPUB META FILE OPEN FAILURE';
-            }
-          }
-          else {
-            echo 'HANDLE EPUB EXTRACT FAILURE';
-          }
-
-          $zip->close();
-        }
-        else {
-          echo 'HANDLE EPUB OPEN FAILURE';
-        }
-      }
-      else {
-        echo 'HANDLE FILE DOWNLOAD FAILURE';
-      }
-    }
-    else {
-      // @todo
-      // Just ask for download
-    }
-
+    $response = array('status' => 'dl', 'msg' => $preview_link);
   }
   else {
-    echo 'HANDLE BOOK NON EXISTENCE';
+    $response = array('status' => 'err', 'msg' => t('Book not found.'));
   }
 
+  echo json_encode($response);
   exit(0);
-}
-
-function ebog_preview_fetch_meta_inf($dir) {
-  $meta_file = $dir . '/META-INF/container.xml';
-  if (file_exists($meta_file)) {
-    $handle = fopen($meta_file, 'rt');
-    $meta_data = fread($handle, filesize($meta_file));
-    fclose($handle);
-
-    $meta_xml = new SimpleXMLElement($meta_data);
-    $meta_opf = (string)$meta_xml->rootfiles->rootfile['full-path'];
-
-    return $meta_opf;
-  }
-
-  return 0;
-}
-
-function ebog_preview_fetch_meta_data($opf_path) {
-  if (file_exists($opf_path)) {
-    $handle = fopen($opf_path, 'rt');
-    $meta_data = fread($handle, filesize($opf_path));
-    fclose($handle);
-
-    $meta_xml = new SimpleXMLElement($meta_data);
-
-    return $meta_xml;
-  }
-
-  return 0;
-}
-
-function ebog_preview_fetch_spine($meta_xml) {
-  $i = 0;
-  $result = array();
-  while ($spine = $meta_xml->spine->itemref[$i]) {
-    $result[] = (string)$spine['idref'];
-    $i++;
-  }
-
-  return $result;
-}
-
-function ebog_preview_fetch_content($spine, $metadata, $dir) {
-  $i = 0;
-  while ($item = $metadata->manifest->item[$i]) {
-    if ($item['id'] == $spine) {
-      $page_path = (string)$item['href'];
-      $page_content = ebog_preview_read_page($dir . '/OPS/' . $page_path);
-
-      return $page_content;
-    }
-    $i++;
-  }
-
-  return '';
-}
-
-function ebog_preview_read_page($path) {
-  if (file_exists($path)) {
-    $handle = fopen($path, 'rt');
-    $page_content = fread($handle, filesize($path));
-    fclose($path);
-
-    $page_content = ebog_preview_refine($page_content);
-
-    return $page_content;
-  }
-
-  return '';
-}
-
-function ebog_preview_refine($data) {
-  $m = array();
-  preg_match('~<body[^>]+?>(.+?)<\/body>~is', $data, $m);
-
-  if (isset($m[1])) {
-    return $m[1];
-  }
-
-  return '';
 }
