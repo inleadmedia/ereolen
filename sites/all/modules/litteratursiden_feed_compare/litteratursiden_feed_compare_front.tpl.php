@@ -12,7 +12,7 @@
 
   <?php if ($items['status'] == 'error') { ?>
     <div class="feed_and_compare_error">
-      <b>error:</b> <?php echo $items['message']; ?>
+      <b>Error:</b> <?php echo $items['message']; ?>
     </div>
   <?php } ?>
 
@@ -24,7 +24,7 @@
           <div class="left">
             <?php
             $alttext = t('@titel af @forfatter',array('@titel' => $item['title'], '@forfatter' => $item['author']));
-	          echo l(theme('image', $item['image'], $alttext, $alttext, array('width' => '70px'), false), $item['url'], array('html' => true));
+	          echo l(theme('image', $item['image'], $alttext, $alttext, array('width' => '120px'), false), $item['url'], array('html' => true));
             ?>
           </div>
           <div class="record right">
@@ -32,7 +32,7 @@
               <?php echo l($item['title'], $item['url'], array('html' => true)); ?>
             </h3>
             <div class="author">
-              <?php echo l($item['author'], '/ting/search/' . urlencode($item['author']), array('html' => true)); ?>
+              <?php echo l($item['author'], 'ting/search/' . urlencode($item['author']), array('html' => true)); ?>
             </div>
             <div class="descr">
               <?php echo utf8_encode(substr(utf8_decode(strip_tags($item['abstract'])),0,250)) . '...'; ?>
