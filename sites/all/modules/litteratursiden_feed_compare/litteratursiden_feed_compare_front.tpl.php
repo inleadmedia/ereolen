@@ -20,7 +20,7 @@
     <?php $i=0; ?>
     <?php foreach ($items['data'] as $key => $item) { ?>
       <?php if (is_numeric($key)) { ?>
-        <div class="feed_and_compare_front_item display-book">
+        <div class="feed_and_compare_item display-book">
           <div class="left">
             <?php
             $alttext = t('@titel af @forfatter',array('@titel' => $item['title'], '@forfatter' => $item['author']));
