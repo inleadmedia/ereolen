@@ -67,7 +67,9 @@ h1#page-title.title,
 .panel-pane.pane-block.pane-netsound-review-2 a,
 .panel-pane.pane-embedvideo .ebog_embed_title,
 .feed-and-compare-front .title,
-.page-emner #main-content ul li a {
+.page-emner #main-content ul li a,
+.feed-and-compare-page h3.title a,
+.feed-and-compare-page .author a {
   color: #5B6574;
   text-decoration: none;
 }
@@ -83,7 +85,9 @@ h1#page-title.title,
 #ting-result #pager a:hover,
 .panel-pane.pane-block.pane-netsound-review-1 a:hover,
 .panel-pane.pane-block.pane-netsound-review-2 a:hover,
-.page-emner #main-content ul li a:hover {
+.page-emner #main-content ul li a:hover
+.feed-and-compare-page h3.title a:hover,
+.feed-and-compare-page .author a:hover {
   color: #BE1F24;
   text-decoration: underline;
 }
