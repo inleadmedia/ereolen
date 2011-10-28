@@ -69,9 +69,16 @@ h1#page-title.title,
 .feed-and-compare-front .title,
 .page-emner #main-content ul li a,
 .feed-and-compare-page h3.title a,
-.feed-and-compare-page .author a {
+.feed-and-compare-page .author a,
+#footer a,
+.page-anmeldelser .feed-and-compare-page h3.title a:hover {
   color: #5B6574;
   text-decoration: none;
+}
+
+.page-anmeldelser .feed-and-compare-page h3.title a,
+.page-anmeldelser .feed-and-compare-page .author a:hover {
+  color: #d5661e;
 }
 
 #sidebar-first .block ul li a:hover,
@@ -87,7 +94,8 @@ h1#page-title.title,
 .panel-pane.pane-block.pane-netsound-review-2 a:hover,
 .page-emner #main-content ul li a:hover
 .feed-and-compare-page h3.title a:hover,
-.feed-and-compare-page .author a:hover {
+.feed-and-compare-page .author a:hover,
+#footer a:hover {
   color: #BE1F24;
   text-decoration: underline;
 }
@@ -133,6 +141,10 @@ h1#page-title.title,
 #ting-search-results #ting-search-summary,
  .pane-netsound-0 h2.pane-title {
   border-bottom: 2px solid #DBDDDA;
+}
+
+.page-anmeldelser h1#page-title.title {
+  border-bottom: 2px solid #d5661e;
 }
 
 .block-elib_infinite_carousel h2 {

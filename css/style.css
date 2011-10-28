@@ -100,6 +100,10 @@ div.messages.error {
   border: 1px solid #BE1F24;
 }
 
+.page-anmeldelser .feed_and_compare_item img:hover {
+  border: 1px solid #d5661e;
+}
+
 #sidebar-first .block .content {
   background-color: #EDEDED;
   line-height: 20px;
@@ -238,6 +242,9 @@ h1#page-title.title,
 #site-menu ul.menu li.account-link a        { background: url("../images/menu.png")        no-repeat scroll -368px 0 transparent; }
 #site-menu ul.menu li.account-link a:hover  { background: url("../images/menu-hover.png")  no-repeat scroll -368px 0 transparent; }
 #site-menu ul.menu li.account-link a.active { background: url("../images/menu-active.png") no-repeat scroll -368px 0 transparent; }
+#site-menu ul.menu li.menu-1239 a           { background: url("../images/menu.png")        no-repeat scroll -460px 0 transparent; }
+#site-menu ul.menu li.menu-1239 a:hover     { background: url("../images/menu-hover.png")  no-repeat scroll -460px 0 transparent; }
+#site-menu ul.menu li.menu-1239 a.active    { background: url("../images/menu-active.png") no-repeat scroll -460px 0 transparent; }
 
 /**
  * SEARCH FORM
@@ -410,6 +417,10 @@ h1#page-title.title,
   *display: inline;
   padding: 10px 0 10px 0;
   border-bottom: 2px solid #DBDDDA; 
+}
+
+.page-anmeldelser .display-book {
+  border-bottom: 2px solid #d5661e;
 }
 
 .display-book:first-child,
