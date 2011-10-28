@@ -46,7 +46,8 @@ h2.pane-title,
 .panel-pane .review-title,
 h1#page-title.title,
 #ting-search-results #ting-search-summary,
-.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title {
+.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title,
+.statusBox h3 {
   font: 18px/28px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
   font-weight: normal;
   text-transform: uppercase;

@@ -31,6 +31,8 @@ input[type=submit]:hover {
  */
 div.messages {
   padding: 10px;
+  margin-top: 0;
+  border-width: 2px;
 }
 
 div.messages.status {
@@ -306,7 +308,8 @@ h1#page-title.title,
 .view-anmeldelser .field-field-book .field-label,
 .view-anmeldelser .field-field-book .record .types,
 .view-anmeldelser .field-field-book .record .meta,
-.view-anmeldelser .field-field-book .record .subjects {
+.view-anmeldelser .field-field-book .record .subjects,
+.section-ting #main-content-container h1.title#page-title {
   display: none;
 }
 
@@ -487,6 +490,7 @@ h1#page-title.title,
   float: right;
   border: 0;
   height: 24px;
+  margin-top: 15px;
 }
 
 .display-book .icons .icons img,

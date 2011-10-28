@@ -82,7 +82,7 @@ function ebog_preprocess_page(&$vars, $hook) {
     drupal_goto('user',drupal_get_destination());
   }
 
-  if(arg(0) == 'user' && $user->uid != 0){
+  if(arg(0) == 'user' && $user->status == '1'){
     drupal_goto('min_side',drupal_get_destination());
   }
 

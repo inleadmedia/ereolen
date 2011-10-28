@@ -6,7 +6,9 @@
   #sidebar-first div#block-block-12.block.block-block,
   #sidebar-first #block-views-latest_news-block_1,
   #ting-search-result ul li .record .right,
-  #ting-result #ting-sort-by {
+  #ting-result #ting-sort-by,
+  #header-regions,
+  #ting-object .details {
     display: none;
   }
 
@@ -147,16 +149,18 @@
     display: inline-block;
     zoom: 1; /* ie7 hack for display:inline-block */
     *display: inline;
+    background: none;
+  }
+
+  #ting-search-form div:first-child {
+    background: none;
   }
 
   #ting-search-form .form-item {
-    background: none;
     float: left;
-    width: 80%;
   }
 
   #ting-search-form .form-submit {
-    width: 20%;
     float: right;
   }
 
@@ -251,7 +255,17 @@
   }
 
   #ting-object .picture {
-    display: none;
+    float: left;
+    width: 30%;
+  }
+
+  #ting-object .picture img {
+    width: 85%;
+  }
+
+  #ting-object .meta.unit.grid-9.omega {
+    float: right;
+    width: 70%;
   }
 
   .panel-panel.panel-col .panel-separator,
