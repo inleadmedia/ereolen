@@ -19,6 +19,8 @@
           $('#ting-download-popup').remove();
           $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
             modal : true,
+            width: 'auto',
+            height: 'auto',
             buttons: {
               "Download ebog" : function() {
                 if (!check_rules()) {
@@ -46,6 +48,8 @@
             $('#ting-download-popup-info').remove();
             $('<div id="ting-download-popup-info" title="' + response.title + '">' + response.content + '</div>').dialog({
               modal : true,
+              width: 'auto',
+              height: 'auto',
               buttons: {
                 "Ok" : function() { $(this).dialog('close'); }
               }
@@ -57,6 +61,8 @@
         $('#ting-download-popup-error').remove();
         $('<div id="ting-download-popup-error" title="' + Drupal.t('Fejl') + '"><p>' + Drupal.t('Check all checkboxes') + '</p></div>').dialog({
           modal : true,
+          width: 'auto',
+          height: 'auto',
           buttons: {
             "Ok" : function() { $(this).dialog('close'); }
           }
