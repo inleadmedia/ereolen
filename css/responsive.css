@@ -140,7 +140,7 @@
             border-radius: 5px;
     -webkit-background-clip: padding-box;
        -moz-background-clip: padding;
-            background-clip: padding-box; 
+            background-clip: padding-box;
   }
 
   #ting-search-form div {
@@ -204,7 +204,7 @@
     background: none;
     text-align: center;
     font: 20px/26px 'BebasNeueRegular', Helvetica, Arial, sans-serif;
-    color: #8C938B;   
+    color: #8C938B;
     text-decoration: none;
   }
 
@@ -336,11 +336,15 @@
   #user-login input[type="submit"] {
     float: left;
     width: 100%;
-  } 
+  }
 
   .pane-elib-user-account,
   .pane-netsound-cart-0 {
     margin: 0;
     width: 100%;
+  }
+
+  div.ui-dialog .ui-dialog-content {
+    width: 200px !important;
   }
 }
