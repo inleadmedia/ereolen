@@ -24,7 +24,9 @@
           <div class="left">
             <?php
             $alttext = t('@titel af @forfatter',array('@titel' => $item['title'], '@forfatter' => $item['author']));
-	          echo l(theme('image', $item['image'], $alttext, $alttext, array('width' => '120px'), false), $item['url'], array('html' => true));
+            $cover = elib_book_cover($item['isbn'], '120_x');
+	    echo l(theme('image', $cover, $alttext, $alttext, array('width' => '120px'), false), $item['url'], array('html' 
+=> true));
             ?>
           </div>
           <div class="record right">
@@ -35,7 +37,7 @@
               <?php echo l($item['author'], 'ting/search/' . urlencode($item['author']), array('html' => true)); ?>
             </div>
             <div class="descr">
-              <?php echo utf8_encode(substr(utf8_decode(strip_tags($item['abstract'])),0,250)) . '...'; ?>
+              <?php echo substr(strip_tags($item['abstract']),0,250) . '...'; ?>
             </div>
           </div>
         </div>
