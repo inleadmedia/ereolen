@@ -113,7 +113,7 @@ function litteratursiden_feed_compare_get_feed($items) {
                 if (!empty($book->data)) {
                   $ret['data'][] = array(
                     'title' => (string)$book->data->title,
-                    'isbn' => (string)$book->data->$isbn,
+                    'isbn' => (string)$book->data->external_ids->id,
                     'author' => (string)$book->data->contributors->first_name . ' ' . (string)$book->data->contributors->family_name,
                     'abstract' => (string)$litteratursiden_item['description'],
                     'image' => (string)$book->data->coverimage,
