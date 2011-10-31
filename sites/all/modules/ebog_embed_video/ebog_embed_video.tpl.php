@@ -14,7 +14,7 @@
 					<param name="allowFullScreen" value="true">
 					<param name="allowScriptAccess" value="always">
 					<embed
-						src="http://www.youtube.com/v/<?php echo $conf['embed_code']; ?>"
+						src="https://www.youtube.com/v/<?php echo $conf['embed_code']; ?>"
 						type="application/x-shockwave-flash"
 						allowfullscreen="true"
 						allowScriptAccess="always"
