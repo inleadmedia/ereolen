@@ -17,7 +17,7 @@
         url : href + '/popup',
         dataType : 'json',
         success : function(response) {
-          //$('#ting-download-popup').remove();
+          $('#ting-download-popup').remove();
           if (response.status == 'err') {
 
             $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
