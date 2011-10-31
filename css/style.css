@@ -718,6 +718,7 @@ input[type=submit],
   background:      -o-linear-gradient(#BE1F24, #E82A30);
   background:         linear-gradient(#BE1F24, #E82A30);
       filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#BE1F24', EndColorStr='#E82A30');
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#BE1F24', EndColorStr='#E82A30');
 }
 
 input[type=submit],
