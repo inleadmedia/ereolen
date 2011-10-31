@@ -14,6 +14,20 @@
         dataType : 'json',
         success : function(response) {
           $('#ting-download-popup').remove();
+          if (response.status == 'err') {
+
+            $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
+              modal : true,
+              buttons: {
+                "Ok" : function() {
+                  $('#ting-download-popup').dialog('close');
+                }
+              }
+            });
+
+            return;
+          }
+          
           $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
             modal : true,
             buttons: {
