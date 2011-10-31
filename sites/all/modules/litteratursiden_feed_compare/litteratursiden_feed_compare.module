@@ -98,7 +98,8 @@ function litteratursiden_feed_compare_get_feed($items) {
           foreach ($search->collections as $collection) {
             foreach ($collection->objects as $object) {
               $isbn = $object->record['dc:identifier']['dkdcplus:ISBN'][0];
-              if (!empty($isbn)) {
+              $litteratursiden_item = litteratursiden_feed_compare_get_litteratursiden_item($object->title, $object->creators[0]);
+              if (!empty($isbn) && !$litteratursiden_item['error']) {
                 // Title from feed consists of title+author.
                 // Combine title and author from TING to perform reasonable search.
                 try {
@@ -114,7 +115,7 @@ function litteratursiden_feed_compare_get_feed($items) {
                     'title' => (string)$book->data->title,
                     'isbn' => (string)$book->data->$isbn,
                     'author' => (string)$book->data->contributors->first_name . ' ' . (string)$book->data->contributors->family_name,
-                    'abstract' => (string)$book->data->description,
+                    'abstract' => (string)$litteratursiden_item['description'],
                     'image' => (string)$book->data->coverimage,
                     'url' => $object->url
                   );
@@ -149,6 +150,33 @@ function litteratursiden_feed_compare_ctools_plugin_directory($module, $plugin) 
   if ($module == 'ctools' && !empty($plugin)) {
     return "plugins/$plugin";
   }
+}
+
+/**
+ * Get item data from litteratursiden service.
+ *
+ * @return array
+ *  Item data.
+ */
+function litteratursiden_feed_compare_get_litteratursiden_item($title, $author, $encoded = FALSE) {
+  if (!$encoded) {
+    $title_enc = urlencode($title);
+    $author_enc = urlencode($author);
+  }
+  $request_url = "http://www.litteratursiden.dk/service/netlydbog?title=$title_enc&author=$author_enc";
+  $json_responce = _litteratursiden_feed_compare_file_get_contents_curl($request_url);
+  $item_data = json_decode($json_responce, TRUE);
+  return $item_data;
+}
+
+/**
+ * Check if item exists in litteratursiden.
+ *
+ * @return boolean
+ */
+function litteratursiden_feed_compare_litteratursiden_item_exists($title, $author, $encoded = FALSE) {
+  $item = litteratursiden_feed_compare_get_litteratursiden_item($title, $author, $encoded);
+  return !$item['error'];
 }
 
 /**
