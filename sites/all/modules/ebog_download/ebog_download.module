@@ -230,10 +230,10 @@ function ebog_download_loan_popup($ting_id) {
   // android - Aldiko Book Reader
   // iPod, iPad, iPhone - Bluefire Reader
   // else - Adobe PDF reader
-  if (preg_match('/android/', $user_agent)) {
+  if (preg_match('/android/i', $user_agent)) {
     $reader = t('Aldiko Book Reader');
   }
-  elseif (preg_match('/(iPod)|(iPad)|(iPhone)/', $user_agent)) {
+  elseif (preg_match('/(iPod)|(iPad)|(iPhone)/i', $user_agent)) {
     $reader = t('Bluefire Reader');
   }
 

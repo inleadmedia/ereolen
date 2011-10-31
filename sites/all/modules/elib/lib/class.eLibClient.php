@@ -112,7 +112,7 @@ class eLibClient{
   }
 
   public function getPopularBooks(){
-    $params['top'] = 10;
+    $params['top'] = 7;
     $params['listtype'] = 1;
     $params['fromdate'] = date('Y-m-d', strtotime('-1 year'));
     $params['todate'] = date('Y-m-d');

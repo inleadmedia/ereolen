@@ -3,14 +3,11 @@
 
   // Handle clicked loan link, those matching 'ting/object/%/download' pattern
   $(document).ready(function() {
-    $('a').filter(function(){
-      var hr = new String($(this).attr('href'));
-      // Check pattern
-      if (hr.match(/ting\/object\/(.)+\/download/)) {
+    $('a').live('click', function() {
+      href = $(this).attr('href');
+      if (!href.match(/ting\/object\/(.)+\/download/)) {
         return true;
       }
-    }).click(function() {
-      href = $(this).attr('href');
       $.ajax({
         type : 'post',
         url : href + '/popup',
