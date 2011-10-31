@@ -4,7 +4,6 @@
  *
  */
 
-
 /**
  * Implementation of hook_menu().
  */
@@ -47,12 +46,11 @@ function litteratursiden_feed_compare_get_cached_feed($items) {
   $lifetime = variable_get('litteratursiden_feed_compare_cache_lifetime', '360');
 
   $cache = cache_get('litteratursiden_feed_compare_cache');
-  if (empty($cache->data)) {
+  $ret = unserialize($cache->data);
+
+  if (empty($ret)) {
     $ret = litteratursiden_feed_compare_get_feed($items);
     cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime);
-  }
-  else {
-    $ret = unserialize($cache->data);
   }
 
   return $ret;
@@ -89,7 +87,7 @@ function litteratursiden_feed_compare_get_feed($items) {
 
   while ($i != 25) {
     $feed_url = $feed_main_url . '?count=20&offset=' . $i*25;
-    $feed_json_data = file_get_contents($feed_url, TRUE);
+    $feed_json_data = _litteratursiden_feed_compare_file_get_contents_curl($feed_url);
     $feed = json_decode($feed_json_data, TRUE);
     foreach ($feed as $key => $val) {
       if (is_numeric($key)) {
@@ -151,4 +149,21 @@ function litteratursiden_feed_compare_ctools_plugin_directory($module, $plugin) 
   if ($module == 'ctools' && !empty($plugin)) {
     return "plugins/$plugin";
   }
+}
+
+/**
+ * Replacement for file_get_contents().
+ */
+function _litteratursiden_feed_compare_file_get_contents_curl($url) {
+  $ch = curl_init();
+
+  curl_setopt($ch, CURLOPT_HEADER, 0);
+  //Set curl to return the data instead of printing it to the browser.
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($ch, CURLOPT_URL, $url);
+
+  $data = curl_exec($ch);
+  curl_close($ch);
+
+  return $data;
 }
