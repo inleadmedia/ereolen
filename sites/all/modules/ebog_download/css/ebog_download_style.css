@@ -1,6 +1,7 @@
 .ui-dialog-overlay {
   background-color: #000;
   opacity: 0.5;
+  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);
 }
 .ui-dialog .ui-dialog-content {
   width: 300px !important;

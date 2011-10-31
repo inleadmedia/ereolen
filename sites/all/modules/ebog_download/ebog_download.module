@@ -225,22 +225,35 @@ function ebog_download_loan_initial($ting_id) {
  *   Ting object id.
  */
 function ebog_download_loan_popup($ting_id) {
-  $user_agent = $_SERVER['HTTP_USER_AGENT'];
-  $reader = t('Adobe Digital Edition');
-  // android - Aldiko Book Reader
-  // iPod, iPad, iPhone - Bluefire Reader
-  // else - Adobe PDF reader
-  if (preg_match('/android/i', $user_agent)) {
-    $reader = t('Aldiko Book Reader');
-  }
-  elseif (preg_match('/(iPod)|(iPad)|(iPhone)/i', $user_agent)) {
-    $reader = t('Bluefire Reader');
-  }
+  global $user;
+  $status = array();
 
-  $status = array(
-    'title' => t('Download ebog'),
-    'content' => theme('ebog_download_checkboxes', array('reader' => $reader)),
-  );
+  // Whether user is logged in.
+  if ($user->uid) {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $reader = t('Adobe Digital Edition');
+    // android - Aldiko Book Reader
+    // iPod, iPad, iPhone - Bluefire Reader
+    // else - Adobe PDF reader
+    if (preg_match('/android/i', $user_agent)) {
+      $reader = t('Aldiko Book Reader');
+    }
+    elseif (preg_match('/(iPod)|(iPad)|(iPhone)/i', $user_agent)) {
+      $reader = t('Bluefire Reader');
+    }
+
+    $status = array(
+      'title' => t('Download ebog'),
+      'content' => theme('ebog_download_checkboxes', array('reader' => $reader)),
+    );
+  }
+  else {
+    $status = array(
+      'status' => 'err',
+      'title' => t('Fejl'),
+      'content' => theme('ebog_download_error', array('message' => t('Only authenticated users are able to loan.')))
+    );
+  }
 
   echo json_encode($status);
   exit(0);

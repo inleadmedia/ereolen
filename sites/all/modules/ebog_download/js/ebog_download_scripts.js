@@ -1,4 +1,8 @@
 (function ($) {
+  $('.ebog-dlink').live('click', function() {
+    $('#ting-download-popup-info').dialog('close');
+  });
+  
   var href = '';
 
   // Handle clicked loan link, those matching 'ting/object/%/download' pattern
@@ -14,6 +18,20 @@
         dataType : 'json',
         success : function(response) {
           $('#ting-download-popup').remove();
+          if (response.status == 'err') {
+
+            $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
+              modal : true,
+              buttons: {
+                "Ok" : function() {
+                  $('#ting-download-popup').dialog('close');
+                }
+              }
+            });
+
+            return;
+          }
+          
           $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
             modal : true,
             width: 'auto',
