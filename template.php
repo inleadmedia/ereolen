@@ -82,10 +82,6 @@ function ebog_preprocess_page(&$vars, $hook) {
     drupal_goto('user',drupal_get_destination());
   }
 
-  if(arg(0) == 'user' && $user->status == '1'){
-    drupal_goto('min_side',drupal_get_destination());
-  }
-
   if(arg(3) == 'stream' || arg(3) == 'download' || $_GET['clean'] == 1 ){
     $vars['template_files'] = array('page-clean');
     $vars['css']['all']['theme']['sites/all/themes/ebog/css/style.css'] = false;
