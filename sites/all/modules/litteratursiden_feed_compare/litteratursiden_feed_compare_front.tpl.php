@@ -37,7 +37,10 @@
               <?php echo l($item['author'], 'ting/search/' . urlencode($item['author']), array('html' => true)); ?>
             </div>
             <div class="descr">
-              <?php echo substr(strip_tags($item['abstract']),0,250) . '...'; ?>
+              <?php echo substr(strip_tags($item['abstract']),0,150) . '...'; ?>
+            </div>
+            <div class="litteratursiden" style="margin:0;padding:0;margin-top:20px;">
+              <img src="sites/all/themes/ebog/images/litteratursiden.png" style="border:0;margin:0;padding:0;" />
             </div>
           </div>
         </div>
