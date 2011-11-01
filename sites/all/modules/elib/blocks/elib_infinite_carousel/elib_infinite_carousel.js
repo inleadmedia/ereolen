@@ -17,7 +17,7 @@ $.fn.infiniteCarousel = function () {
 
 
         // 1. Pad so that 'visible' number will always be seen, otherwise create empty items
-        if (($items.length % visible) != 0) {
+        if (($items.length % visible) != 0 && visible >= 0) {
             $slider.append(repeat('<li class="empty" />', visible - ($items.length % visible)));
             $items = $slider.find('> li');
         }
