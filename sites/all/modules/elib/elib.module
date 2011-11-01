@@ -451,6 +451,8 @@ function elib_login_validate($form, &$form_state) {
       // credentials in our own cache bin.
       //alma_user_cache_credentials($user, $form_state['values']['name'], $form_state['values']['pass']);
     }
+    // TODO: find propper way of redirecting...
+    echo '<script type="text/javascript">window.location = "/min_side"</script>';
   }
 }
 
