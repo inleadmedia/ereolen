@@ -419,7 +419,7 @@ h1#page-title.title,
   zoom: 1; /* ie7 hack for display:inline-block */
   *display: inline;
   padding: 10px 0 10px 0;
-  border-bottom: 2px solid #DBDDDA; 
+  border-bottom: 2px solid #DBDDDA;
 }
 
 .page-anmeldelser .display-book {
@@ -544,8 +544,10 @@ h1#page-title.title,
 }
 
 #voxb input[type="submit"],
-#user-login input[type="submit"] {
+#user-login input#edit-submit {
   float: right;
+  width: auto;
+  line-height: 100%;
 }
 
 #voxb .voxbReview {
