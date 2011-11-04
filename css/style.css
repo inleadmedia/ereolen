@@ -631,9 +631,7 @@ h1#page-title.title,
  * FOOTER
  */
 #footer #footer-first {
-  margin: 10px;
-  margin-top: 50px;
-  margin-bottom: 100px;
+  padding: 50px 10px 100px;
 }
 
 #footer #footer-first .block.block-block {
