@@ -59,10 +59,7 @@
     <div id="main-content-container" class="container-<?php print $content_container_width; ?> clearfix">
       <div id="main-wrapper" class="column <?php print $main_content_classes; ?>">
         <?php if($help || $messages): ?>
-        <div class="statusBox clearfix">
-          <h3>Status</h3>
           <?php print $help; ?><?php print $messages; ?>
-        </div><!-- /.container-xx -->
         <?php endif; ?>
 
         <?php if (!empty($mission)) {
