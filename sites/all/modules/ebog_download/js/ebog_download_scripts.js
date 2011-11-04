@@ -66,7 +66,7 @@
             $('<div id="ting-download-popup-info" title="' + response.title + '">' + response.content + '</div>').dialog({
               modal : true,
               width: 'auto',
-              height: 'auto',
+              height: 'auto'
             });
           }
         });
