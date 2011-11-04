@@ -17,8 +17,8 @@ function ebog_download_init() {
 
   drupal_add_js(EBOG_DOWNLOAD_PATH . '/js/ebog_download_scripts.js', 'file');
   drupal_add_css(EBOG_DOWNLOAD_PATH . '/css/ebog_download_style.css', 'file');
-  drupal_add_css(drupal_get_path('module', 'jquery_ui') . '/jquery.ui/themes/default/ui.all.css', 'file');
   jquery_ui_add(array('ui.dialog', 'ui.draggable'));
+  jquery_ui_theme_load();
 }
 
 /**
