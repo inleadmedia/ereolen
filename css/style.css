@@ -219,9 +219,8 @@ h1#page-title.title,
 #site-menu ul.menu li a {
   height: 112px;
   width: 80px;
-  display: inline-block;
-  zoom: 1; /* ie7 hack for display:inline-block */
-  *display: inline;
+  display: block;
+  float: left;
   background-repeat: no-repeat;
 }
 
