@@ -35,8 +35,8 @@
     #FFFFFF,
     #DBDDDA
   );
-  filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#DBDDDA)";
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#DBDDDA)";
+  zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#DBDDDA');
 }
 
 #site-header {
@@ -94,8 +94,8 @@
     #DBDDDA,
     #DADCD9
   );
-  filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#DBDDDA, endColorstr=#DADCD9)";
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#DBDDDA, endColorstr=#DADCD9)";
+  zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#DBDDDA', endColorstr='#DADCD9');
 }
 
 .panel-2col .panel-col-first,
