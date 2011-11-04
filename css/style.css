@@ -731,8 +731,8 @@ input[type=submit],
   background:     -ms-linear-gradient(#BE1F24, #E82A30);
   background:      -o-linear-gradient(#BE1F24, #E82A30);
   background:         linear-gradient(#BE1F24, #E82A30);
+        zoom: 1;
       filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#BE1F24', EndColorStr='#E82A30');
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#BE1F24', EndColorStr='#E82A30');
 }
 
 input[type=submit],
@@ -831,6 +831,6 @@ input[type=submit]:hover {
 .ui-dialog-overlay {
   background-color: #000;
   opacity: 0.5;
-  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);
-  -ms-filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+  zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
 }
