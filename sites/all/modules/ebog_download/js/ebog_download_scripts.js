@@ -22,8 +22,10 @@
 
             $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
               modal : true,
+              width: 'auto',
+              height: 'auto',
               buttons: {
-                "Ok" : function() {
+                "OK" : function() {
                   $('#ting-download-popup').dialog('close');
                 }
               }
@@ -37,7 +39,7 @@
             width: 'auto',
             height: 'auto',
             buttons: {
-              "Download ebog" : function() {
+              "Videre til download" : function() {
                 if (!check_rules()) {
                   $('#ting-download-popup').dialog('close');
                 }
@@ -65,9 +67,6 @@
               modal : true,
               width: 'auto',
               height: 'auto',
-              buttons: {
-                "Ok" : function() { $(this).dialog('close'); }
-              }
             });
           }
         });
@@ -79,7 +78,7 @@
           width: 'auto',
           height: 'auto',
           buttons: {
-            "Ok" : function() { $(this).dialog('close'); }
+            "OK" : function() { $(this).dialog('close'); }
           }
         });
 
