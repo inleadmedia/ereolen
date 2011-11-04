@@ -233,6 +233,10 @@ h1#page-title.title,
   background-repeat: no-repeat;
 }
 
+#site-menu ul.menu li {
+  margin-right: 5px;
+}
+
 #site-menu ul.menu li:hover {
   cursor: pointer;
 }
