@@ -227,9 +227,8 @@ h1#page-title.title,
 #site-menu ul.menu li a {
   height: 112px;
   width: 80px;
-  display: inline-block;
-  zoom: 1; /* ie7 hack for display:inline-block */
-  *display: inline;
+  display: block;
+  float: left;
   background-repeat: no-repeat;
 }
 
@@ -427,7 +426,7 @@ h1#page-title.title,
   zoom: 1; /* ie7 hack for display:inline-block */
   *display: inline;
   padding: 10px 0 10px 0;
-  border-bottom: 2px solid #DBDDDA; 
+  border-bottom: 2px solid #DBDDDA;
 }
 
 .page-anmeldelser .display-book {
