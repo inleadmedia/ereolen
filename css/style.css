@@ -827,3 +827,10 @@ input[type=submit]:hover {
      -moz-box-shadow: inset 0 0 6px #000000;
           box-shadow: inset 0 0 6px #000000;
 }
+
+.ui-dialog-overlay {
+  background-color: #000;
+  opacity: 0.5;
+  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+  -ms-filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+}
