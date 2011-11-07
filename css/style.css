@@ -718,6 +718,7 @@ div.panel-pane.pane-node-content .pane-content div.submitted {
  */
 input[type=submit],
 #sidebar-first #block-elib_block_categories-0 .content .categories-links,
+.pane-content div.bottom-bar,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer,
 #main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid,
 .display-book .icons .icons,
@@ -778,6 +779,7 @@ div.messages,
 }
 
 #sidebar-first #block-elib_block_categories-0 .content .categories-links,
+.pane-content div.bottom-bar,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer,
 #main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid {
   -webkit-border-radius: 0 0 4px 4px;
