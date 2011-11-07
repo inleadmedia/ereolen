@@ -12,6 +12,13 @@
       if (!href.match(/ting\/object\/(.)+\/download/)) {
         return true;
       }
+
+      var clicked = $(this);
+
+      clicked.parent().find('.ajax-loader').remove();
+      clicked.hide();
+      clicked.parent().append('<div class="ajax-loader"></div>');
+
       $.ajax({
         type : 'post',
         url : href + '/popup',
@@ -46,6 +53,9 @@
               }
             }
           });
+
+          clicked.parent().find('.ajax-loader').remove();
+          clicked.show();
         }
       });
 

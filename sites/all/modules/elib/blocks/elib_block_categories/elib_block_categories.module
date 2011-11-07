@@ -101,7 +101,7 @@ function elib_block_categories_block($op = 'list', $delta = 0) {
       $data .= '<div class="categories"><ul>';
       foreach ($menu as $x => $item) {
         foreach ($item['below'] as $y => $link) {
-          $data .= '<li><a href="' . url($link['link']['link_path']) . '">' . $link['link']['link_title'] . '</a></li>';
+          $data .= '<li><a href="' . url($link['link']['link_path']) . '">' . $link['link']['link_title'] . '</a></li>' . "\n";
         }
       }
       $data .= '</ul></div>';
