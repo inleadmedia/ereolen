@@ -1,9 +1,9 @@
 <?php
 /**
  * @file
- * 
+ *
  * Ebog download main module file.
- * 
+ *
  * Provides extended download workflow for ebooks.
  */
 
@@ -83,7 +83,7 @@ function ebog_download_theme($existing, $type, $theme, $path) {
 function ebog_download_loan_initial($ting_id) {
   global $user;
   $status = array();
-  
+
   if ($user->uid) {
     // Elib related ting object
     $isbn = elib_get_isbn_from_object_id($ting_id);
@@ -131,7 +131,7 @@ function ebog_download_loan_initial($ting_id) {
             if ($item->book['id'] == $elib_id) {
               $loaned = TRUE;
               $down_link = $item->data->data->downloadurl;
-              
+
               break;
             }
           }
