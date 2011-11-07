@@ -29,3 +29,11 @@
 .ebog-download-info {
   text-align: center;
 }
+
+.ajax-loader {
+  background-image: url('../images/throbber.gif');
+  background-position: 10px -14px;
+  background-repeat: no-repeat;
+  height: 24px;
+  width: 37px;
+}
