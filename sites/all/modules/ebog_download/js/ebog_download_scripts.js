@@ -25,6 +25,9 @@
         dataType : 'json',
         success : function(response) {
           $('#ting-download-popup').remove();
+          clicked.parent().find('.ajax-loader').remove();
+          clicked.show();
+          
           if (response.status == 'err') {
 
             $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
@@ -53,9 +56,6 @@
               }
             }
           });
-
-          clicked.parent().find('.ajax-loader').remove();
-          clicked.show();
         }
       });
 
