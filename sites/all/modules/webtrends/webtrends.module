@@ -72,7 +72,7 @@ function webtrends_footer() {
     $script .= '_tag.dcsid = "'. ($webtrends_values['webtrends_source_id'] ? $webtrends_values['webtrends_source_id'] : variable_get('webtrends_source_id', '')).'";'."\n";
     $script .= '_tag.domain = "'. ($webtrends_values['webtrends_domain'] ? $webtrends_values['webtrends_domain'] : variable_get('webtrends_domain', '')).'";'."\n";
     $script .= '_tag.fpcdom = "'. ($webtrends_values['webtrends_fpcdom'] ? $webtrends_values['webtrends_fpcdom'] : variable_get('webtrends_fpcdom', '')).'";'."\n";
-    $script .= '_tag.dcsGetId();'."\n";
+    /* $script .= '_tag.dcsGetId();'."\n"; */
     $script .= '_tag.dcsCollect();'."\n";
     $script .= '} window.onload=init_webtrends;</script>';    
   }
