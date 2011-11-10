@@ -49,8 +49,8 @@ $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus
   </div>
   <div class="meta unit grid-9 omega">
     <div class="inner">
-      <div style="float: right;">
-        <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fereolen.dk%2F&amp;send=false&amp;layout=box_count&amp;width=100&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font=lucida+grande&amp;height=90&amp;appId=141470115938521" scrolling="no" frameborder="0" style="float: right; border:none; overflow:hidden; width:100px; height:90px;" allowTransparency="true"></iframe>
+      <div class="facebook-like">
+        <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fereolen.dk%2Fting%2Fobject%2F150028%253A9788711417621&amp;send=false&amp;layout=box_count&amp;width=100&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=90" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:90px;" allowTransparency="true"></iframe>
       </div>
       <h1 class="book-title"><?php print check_plain($object->record['dc:title'][''][0]); ?></h1>
       <div class="author"><?php echo t('By !creator_name', array('!creator_name' => l($object->creators_string,'ting/search/'.$object->creators_string,array('html' => true)))) ?></div>
