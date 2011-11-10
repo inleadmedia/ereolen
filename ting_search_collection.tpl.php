@@ -57,7 +57,7 @@ foreach ($collection->objects as $obj){
         <?php if ($netObj->abstract) : ?>
           <div class="abstract">
             <p>
-              <?php print check_plain($netObj->abstract); ?>
+              <?php print substr(check_plain($netObj->abstract),0,200) . '...'; ?>
             </p>
           </div>
         <?php endif; ?>
