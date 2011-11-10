@@ -902,7 +902,7 @@ function user_menu() {
 
   // Registration and login pages.
   $items['user'] = array(
-    'title' => 'User account',
+    'title' => 'Log ind',
     'page callback' => 'user_page',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
