@@ -221,18 +221,6 @@
     color: #BF2226;
   }
 
-  #footer #footer-first .block.block-block {
-    clear: both;
-  }
-
-  #footer #footer-first .block.block-block {
-    margin-bottom: 35px;
-  }
-
-  #footer #footer-first .block.block-block .content {
-    margin-top: 10px;
-  }
-
   .panel-pane.pane-block.pane-elib-block-lastloans-2 .pane-content {
     border: 0;
     border-top: 2px solid #DBDDDA;
@@ -350,5 +338,24 @@
 
   div.ui-dialog .ui-dialog-content {
     width: 200px !important;
+  }
+
+  #footer #footer-first {
+    padding: 30px 10px 10px;
+  }
+
+  #footer #footer-first .block.block-block {
+    clear: both;
+    margin-bottom: 0px;
+  }
+
+  #footer #footer-first .block.block-block .content {
+    margin-top: 10px;
+  }
+
+  #footer #footer-first #block-block-9 h2,
+  #footer #footer-first #block-block-10 h2,
+  #footer #footer-first #block-block-11 h2 {
+    display: none;
   }
 }
