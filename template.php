@@ -86,20 +86,6 @@ function ebog_preprocess_page(&$vars, $hook) {
     $vars['template_files'] = array('page-clean');
     $vars['css']['all']['theme']['sites/all/themes/ebog/css/style.css'] = false;
   }
-
-  /* Proces OpenGraph tags into head if we are located on a itemPage */
-  if(($vars['template_files'][0] == 'page-ting') && ($vars['template_files'][1] == 'page-ting-object')) {
-    $vars['head'] .= '<meta property="og:url" content="'. $OBJECT_URL .'" />';
-    $vars['head'] .= '<meta property="og:type" content="book" />';
-    $vars['head'] .= '<meta property="og:title" content="' . $OBJECT_TITLE .'" />';
-    $vars['head'] .= '<meta property="og:image:secure_url" content="' . $OBJECT_IMAGE_URL . '" />';
-    $vars['head'] .= '<meta property="og:site_name" content="eReolen.dk" />';
-    $vars['head'] .= '<meta property="fb:admins" content="694811338" />';
-    $vars['head'] .= '<meta property="og:author" content="' . $OBJECT_AUTHOR . '" />';
-    $vars['head'] .= '<meta property="og:isbn" content="' . $OBJECT_ISBN . '" />';
-    $vars['head'] .= '<meta property="og:release_date" content="' . $OBJECT_RELEASEDATE . '" />';
-  }
-
 }
 
 /**
