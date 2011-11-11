@@ -837,7 +837,8 @@ input[type=submit]:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
 }
 
-.facebook-like {
+#ting-object .facebook-like {
+  float: right;
   position: absolute;
   right: 0;
   top: 0;
