@@ -4,6 +4,8 @@
   });
   
   var href = '';
+  var clicked = null;
+  var button = null;
 
   // Handle clicked loan link, those matching 'ting/object/%/download' pattern
   $(document).ready(function() {
@@ -13,8 +15,7 @@
         return true;
       }
 
-      var clicked = $(this);
-
+      clicked = $(this);
       clicked.parent().find('.ajax-loader').remove();
       clicked.hide();
       clicked.parent().append('<div class="ajax-loader"></div>');
@@ -85,6 +86,8 @@
         });
       }
       else {
+        button.css('visibility', 'visible');
+        button.parent().find('.ajax-loader').remove();
         $('#ting-download-popup-error').remove();
         $('<div id="ting-download-popup-error" title="' + Drupal.t('Fejl') + '"><p>' + Drupal.t('Check all checkboxes') + '</p></div>').dialog({
           modal : true,
