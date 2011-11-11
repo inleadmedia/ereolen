@@ -50,9 +50,10 @@
             height: 'auto',
             buttons: {
               "Videre til download" : function() {
-                if (!check_rules()) {
-                  $('#ting-download-popup').dialog('close');
-                }
+                button = $('#ting-download-popup').parents('.ui-dialog:first').find('button');
+                button.css('visibility', 'hidden');
+                button.parent().append('<div class="ajax-loader"></div>');
+                check_rules();
               }
             }
           });
@@ -71,6 +72,8 @@
           url : href + '/request',
           dataType : 'json',
           success : function(response) {
+            button.css('visibility', 'visible');
+            button.parent().find('.ajax-loader').remove();
             $('#ting-download-popup').dialog('close');
             $('#ting-download-popup-info').remove();
             $('<div id="ting-download-popup-info" title="' + response.title + '">' + response.content + '</div>').dialog({
