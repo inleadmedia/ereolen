@@ -4,7 +4,7 @@
   });
   
   var href = '';
-  var clicked = $(this);
+  var clicked = null;
   var button = null;
 
   // Handle clicked loan link, those matching 'ting/object/%/download' pattern
