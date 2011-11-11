@@ -358,4 +358,19 @@
   #footer #footer-first #block-block-11 h2 {
     display: none;
   }
+
+  #ting-object .abstract {
+    margin-top: 0px;
+  }
+
+  #ting-object .facebook-like iframe {
+    width: 180px;
+    float: left;
+  }
+
+  #ting-object .facebook-like {
+    position: inherit;
+    clear: both;
+    float: left;
+  }
 }
