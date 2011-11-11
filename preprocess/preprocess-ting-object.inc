@@ -11,7 +11,7 @@ $isbn = preg_replace('/[^0-9]+/', '', $vars['object']->record['dc:identifier']['
 $head .= '<meta property="og:url"               content="' . $base_url .'/ting/object/' . $vars['object']->id . '" />' . "\n";
 $head .= '<meta property="og:type"              content="book" />' . "\n";
 $head .= '<meta property="og:title"             content="' . $vars['object']->title .'" />' . "\n";
-$head .= '<meta property="og:description"       content="' . $vars['object']->abstract .'" />' . "\n";
+$head .= '<meta property="og:description"       content="Lån `' . $vars['object']->title . '` på eReolen.dk: ' . $vars['object']->abstract .'" />' . "\n";
 $head .= '<meta property="og:image"             content="' . elib_book_cover($isbn, '170_x') . '" />' . "\n";
 $head .= '<meta property="og:image:secure_url"  content="' . elib_book_cover($isbn, '170_x') . '" />' . "\n";
 $head .= '<meta property="og:site_name"         content="eReolen.dk" />' . "\n";
