@@ -19,7 +19,7 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
     if (Drupal.hasOwnProperty('almaAvailability')) {
       Drupal.almaAvailability.id_list = result.alma_ids;
       Drupal.almaAvailability.get_availability(function (data, textStatus) {
-        if (!data) { return; }
+        if (!data) {return;}
         var $list = $element.find('ul.ting-search-collection-types');
 
         // For each Alma ID, find the associated type indicators and set
@@ -66,6 +66,26 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
         $pager.find('a.next').parent().remove();
       }
 
+      // Update pager
+      var pages = Math.ceil(result.count / result.resultsPerPage);
+      $pager.find('.nav-placeholder').each(function(i, e) {
+        var page = currentPage - 2 + i;
+
+        if (page <= pages) {
+          $(this).find('a').html((i == 2) ? '[' + page + ']' : page).attr('href', '#page=' + page);
+          if (page > 0) {
+             $(this).find('a').css({'visibility': 'visible'});
+          }
+        }
+      });
+
+      $($pager).find('.nav-placeholder a').click(function() {
+        var page = $(this).attr('href').split('=');
+        Drupal.updatePageUrl(page[1]);
+        Drupal.doUrlSearch(facetBrowserElement, searchResultElement);
+        return false;
+      });
+
       pageNumberClasses = {
         '.first': 1,
         '.prev': currentPage - 1,
@@ -110,7 +130,7 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
 
       $.getJSON(Drupal.settings.tingSearch.ting_url, vars, function(data) {
         //Update tabs now that we have the result
-        Drupal.tingSearch.summary.ting = { count: data.count, page: data.page };
+        Drupal.tingSearch.summary.ting = {count: data.count, page: data.page};
         Drupal.tingSearch.updateTabs('ting');
 
         //Update search result and facet browser
