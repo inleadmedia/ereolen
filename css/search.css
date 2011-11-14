@@ -63,11 +63,17 @@
 #ting-result #pager .navwide,
 #ting-result #pager .nav {
   float: left;
-  width: 220px;
 }
 
-#ting-result #pager .nav,
-#ting-result #pager div:first-child + * {
+#ting-result #pager .nav-placeholder {
+  height: 20px;
+}
+
+#ting-result #pager .nav-placeholder a {
+  visibility: hidden;
+}
+
+#ting-result #pager .nav {
   margin-right: 10px;
 }
 
