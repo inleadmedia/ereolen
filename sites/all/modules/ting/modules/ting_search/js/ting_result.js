@@ -54,11 +54,10 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
     if (morePages || currentPage > 1) {
       $pager = $(Drupal.settings.tingResult.pagerTemplate);
 
-      // If we're on the first page, remove the previous  and first page
+      // If we're on the first page, remove the previous
       // links from the template.
       if (currentPage < 2) {
         $pager.find('a.prev').parent().remove();
-        $pager.find('a.first').parent().remove();
       }
 
       // If there's no more pages, remove the next link.
@@ -87,7 +86,6 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
       });
 
       pageNumberClasses = {
-        '.first': 1,
         '.prev': currentPage - 1,
         '.next': currentPage + 1
       };
