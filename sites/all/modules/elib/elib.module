@@ -486,33 +486,39 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
       t('By %creator_name%', array('%creator_name%' => $object->creators_string)) . 
     '</div>';
     $out[] = '<div class="rating-for-faust"><div class="'.$object->localId.'"></div></div>';
-
+    $loanperiod_class = '';
+    
     if($elib_data->loanexpiredate) {
-    $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
-    $diff = $loanlimit-time();
-    $days = floor($diff/86400);
-    $loanperiod_class = 'long';
+      $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
+      $diff = $loanlimit-time();
+      $days = floor($diff/86400);
+      $loanperiod_class = 'long';
 
-    if($days < 14){
-      $loanperiod_class = 'medium';
+      if($days < 14) {
+        $loanperiod_class = 'medium';
+      }
+
+      if($days < 7) {
+        $loanperiod_class = 'short';
+      }
     }
 
-    if($days < 7){
-      $loanperiod_class = 'short';
-    }
-
-    $out[] = '
-      <div class="loanperiod '.$loanperiod_class.'">'.t('Lånet udløber om %days',array('%days' => format_plural($days, 'en dag', '@count dage'))).'</div>
-    ';
-
+    if ((int)$elib_data->loanstate == 1) {
+      $out[] = '
+        <div class="loanperiod '.$loanperiod_class.'">'.t('Lånet udløber om %days',array('%days' => format_plural($days, 'en dag', '@count dage'))).'</div>
+      ';
     }
 
     if ((int)$elib_data->loanstate == 2) {
       $out[] = '
+        <div class="loanperiod '.$loanperiod_class.'">'.t('Lånet er udløbet, du kan genlåne').'</div>
+      ';
+      
+      $out[] = '
         <div class="icons">
         <div class="icons">
           <ul>
-            <li>' . l(t('Re-Lån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+            <li>' . l(t('Genlån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           </ul>
         </div>
         </div>
