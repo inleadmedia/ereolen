@@ -512,7 +512,7 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
         <div class="icons">
         <div class="icons">
           <ul>
-            <li>' . l(t('Lån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+            <li>' . l(t('Re-Lån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           </ul>
         </div>
         </div>
