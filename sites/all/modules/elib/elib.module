@@ -458,7 +458,6 @@ function elib_login_validate($form, &$form_state) {
 
 
 function elib_displaybook(TingClientObject $object,$elib_data = false){
-
   $isbn = convertToEAN($object->record['dc:identifier']['dkdcplus:ISBN'][0]);
   $image_url = elib_book_cover($isbn, '65_x');
 
@@ -506,6 +505,18 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
       <div class="loanperiod '.$loanperiod_class.'">'.t('Lånet udløber om %days',array('%days' => format_plural($days, 'en dag', '@count dage'))).'</div>
     ';
 
+    }
+
+    if ((int)$elib_data->loanstate == 2) {
+      $out[] = '
+        <div class="icons">
+        <div class="icons">
+          <ul>
+            <li>' . l(t('Lån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          </ul>
+        </div>
+        </div>
+      ';
     }
 
 /*
