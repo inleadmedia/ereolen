@@ -83,10 +83,7 @@ div.messages.error {
 }
 
 #sidebar-first #block-block-12 .content {
-  background: none;
-  margin: 0;
   padding: 16px;
-  border: none;
 }
 
 #sidebar-first #block-block-12 .content h3 {
@@ -728,7 +725,6 @@ input[type=submit],
 .display-book .icons .icons,
 #ting-object .inner .icons,
 #ting-search-result .record .icons,
-#sidebar-first #block-block-12 .content,
 #ting-search-form input.form-submit {
   background: #BE1F24;
   background: -webkit-gradient(linear, 0 0, 0 bottom, from(#BE1F24), to(#E82A30));
