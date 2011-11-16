@@ -165,6 +165,10 @@ h1#page-title.title,
   font: 16px/20px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
 }
 
+div#sidebar-first div#block-block-12 {
+  cursor: pointer;
+}
+
 #ting-object h1.book-title,
 div#sidebar-first div#block-block-12 .content h3 {
   color #2C2E29;

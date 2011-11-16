@@ -48,6 +48,10 @@ jQuery(function($){
       setTimeout(function(){window.location.reload()},100);
     });
     
-  } 
+  }
+
+  $('#block-block-12').click(function() {
+    document.location.href = "help";
+  });
 
 });
