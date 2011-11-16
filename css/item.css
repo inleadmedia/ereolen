@@ -20,7 +20,7 @@
 }
 
 .panel-separator {
-  height: 35px;
+  height: 0;
 }
 
 #ting-object .details .item-list h3 {
