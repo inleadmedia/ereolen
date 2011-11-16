@@ -387,7 +387,7 @@ h1#page-title.title,
 
 .view-anmeldelser .field-field-book .record h3,
 .feed_and_compare_item .author {
-  margin-bottom: 10px;
+  margin-bottom: 4px;
 }
 
 /**
@@ -781,7 +781,21 @@ div.messages,
 }
 
 .feed_and_compare_item .descr {
-  clear: left;
+  float: left;
+}
+
+.feed-and-compare-front .feed_and_compare_item .descr {
+  height: 130px;
+  overflow: hidden;
+}
+
+.feed-and-compare-front .feed_and_compare_item h3.title {
+  height: 20px;
+  overflow: hidden;
+}
+
+.feed-and-compare-front .feed_and_compare_item .litteratursiden {
+  clear: both;
 }
 
 #sidebar-first #block-elib_block_categories-0 .content .categories-links,
