@@ -864,3 +864,7 @@ input[type=submit]:hover {
   right: 0;
   top: 0;
 }
+
+.view-latest-news .views-field-created {
+  margin: 0 0 5px 0;
+}
