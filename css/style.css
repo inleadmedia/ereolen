@@ -451,6 +451,11 @@ h1#page-title.title,
   padding-bottom: 0;
 }
 
+.pane-elib-block-lastloans-2 .display-book.index-7 {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
 .feed_and_compare_item:first-child {
   padding-top: 0;
 }
