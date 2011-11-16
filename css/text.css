@@ -227,3 +227,12 @@ div#sidebar-first div#block-block-12 .content h3 {
   font-size: 9px;
   vertical-align: text-top;
 }
+
+#sidebar-first #block-elib_block_lastloans-5 a {
+  color: #BE1F24;
+  text-decoration: none;
+}
+
+#sidebar-first #block-elib_block_lastloans-5 a:hover {
+  text-decoration: underline;
+}
