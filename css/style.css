@@ -799,6 +799,10 @@ div.messages,
   clear: both;
 }
 
+.feed_and_compare_item .descr p {
+  margin-bottom: 1em;
+}
+
 #sidebar-first #block-elib_block_categories-0 .content .categories-links,
 .pane-content div.bottom-bar,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer,
