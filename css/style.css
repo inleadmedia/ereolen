@@ -115,6 +115,19 @@ div.messages.error {
   line-height: 20px;
 }
 
+#sidebar-first #block-block-12 .content {
+  background-color: #677588;
+  border-color: #677588;
+}
+
+#sidebar-first #block-block-12 h3,
+#sidebar-first #block-block-12 p,
+#sidebar-first #block-block-12 a:link,
+#sidebar-first #block-block-12 a:visited,
+#sidebar-first #block-block-12 a:hover {
+  color: #FFFFFF;
+}
+
 .panel-pane .review-title,
 h1#page-title.title,
 .panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title,
