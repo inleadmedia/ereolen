@@ -492,15 +492,7 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
       $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
       $diff = $loanlimit-time();
       $days = floor($diff/86400);
-      $loanperiod_class = 'long';
-
-      if($days < 14) {
-        $loanperiod_class = 'medium';
-      }
-
-      if($days < 7) {
-        $loanperiod_class = 'short';
-      }
+      $loanperiod_class = 'short';
     }
 
     if ((int)$elib_data->loanstate == 1) {
@@ -578,13 +570,7 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
     $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
     $diff = $loanlimit-time();
     $days = floor($diff / 86400);
-    $loanperiod_class = 'long';
-    if($days < 14){
-      $loanperiod_class = 'medium';
-    }
-    if($days < 7){
-      $loanperiod_class = 'short';
-    }
+    $loanperiod_class = 'short';
     $part['loginexpire'] = '<div class="loanperiod '.$loanperiod_class.'">'.t('Lånet udløber om <div>%days',array('%days' => format_plural($days, 'en dag', '@count dage'))).'</div></div>';
   }
   
@@ -780,13 +766,7 @@ function elib_displaybook2(TingClientObject $obj,$fields,$settings='',$displaysi
     $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
     $diff = $loanlimit-time();
     $days = floor($diff/86400);
-    $loanperiod_class = 'long';
-    if($days < 15){
-      $loanperiod_class = 'medium';
-    }
-    if($days < 5){
-      $loanperiod_class = 'short';
-    }
+    $loanperiod_class = 'short';
     $part['loginexpire'] = '<div class="loanperiod '.$loanperiod_class.'">'.t('Lånet udløber om <div>%days',array('%days' => format_plural($days, 'en dag', '@count dage'))).'</div></div>';
   }
 
