@@ -11,7 +11,7 @@ $.fn.infiniteCarousel = function () {
             $single = $items.filter(':first'),
 
             singleWidth = $single.outerWidth(),
-            visible = Math.ceil($wrapper.innerWidth() / singleWidth), // note: doesn't include padding or border
+            visible = Math.floor($wrapper.innerWidth() / singleWidth), // note: doesn't include padding or border
             currentPage = 1,
             pages = Math.ceil($items.length / visible);
 
