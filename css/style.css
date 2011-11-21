@@ -28,7 +28,7 @@ input[type=submit]:hover {
 
 .node {
   border: 0;
-  line-height: 22px;
+  line-height: 18px;
 }
 
 /**
@@ -112,7 +112,20 @@ div.messages.error {
 
 #sidebar-first .block .content {
   background-color: #EDEDED;
-  line-height: 20px;
+  line-height: 18px;
+}
+
+#sidebar-first #block-block-12 .content {
+  background-color: #677588;
+  border-color: #677588;
+}
+
+#sidebar-first #block-block-12 h3,
+#sidebar-first #block-block-12 p,
+#sidebar-first #block-block-12 a:link,
+#sidebar-first #block-block-12 a:visited,
+#sidebar-first #block-block-12 a:hover {
+  color: #FFFFFF;
 }
 
 .panel-pane .review-title,
