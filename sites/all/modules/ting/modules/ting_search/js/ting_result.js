@@ -58,41 +58,49 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
       // links from the template.
       if (currentPage < 2) {
         $pager.find('a.prev').parent().remove();
+        $pager.find('a.first').parent().remove();
       }
 
       // If there's no more pages, remove the next link.
       if (!morePages) {
         $pager.find('a.next').parent().remove();
+        $pager.find('a.last').parent().remove();
       }
 
       // Update pager
       var pages = Math.ceil(result.count / result.resultsPerPage);
       $pager.find('.nav-placeholder').each(function(i, e) {
-        var page = currentPage - 2 + i;
+        var page = i + 1;
 
-        if (page <= pages) {
-          $(this).find('a').html((i == 2) ? '[' + page + ']' : page).attr('href', '#page=' + page);
-          if (page > 0) {
-             $(this).find('a').css({'visibility': 'visible'});
-          }
+        if (currentPage > 3 && currentPage <= (pages - 3)) {
+          page += currentPage - 3;
         }
+        else if (currentPage > (pages - 3)) {
+          page += pages - 5;
+        }
+
+        $(this).find('a').html((currentPage == page) ? '[' + page + ']' : page).attr('href', '#page=' + page);
       });
 
       $($pager).find('.nav-placeholder a').click(function() {
         var page = $(this).attr('href').split('=');
+        $('#ting-search-spinner').show();
         Drupal.updatePageUrl(page[1]);
         Drupal.doUrlSearch(facetBrowserElement, searchResultElement);
         return false;
       });
 
       pageNumberClasses = {
+        '.first': 1,
         '.prev': currentPage - 1,
-        '.next': currentPage + 1
+        '.next': currentPage + 1,
+        '.last': pages
       };
 
       $.each(pageNumberClasses, function(i, e) {
         var page = pageNumberClasses[i];
         $pager.find(i).click(function() {
+          $('#ting-search-spinner').show();
           Drupal.updatePageUrl(page);
           Drupal.doUrlSearch(facetBrowserElement, searchResultElement);
           return false;
@@ -137,6 +145,8 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
         //Drupal.updateFacetBrowser(Drupal.facetBrowserElement, data);
         Drupal.bindSelectEvent(Drupal.facetBrowserElement, searchResultElement);
         Drupal.updateSelectedFacetsFromUrl(Drupal.facetBrowserElement);
+
+        $('#ting-search-spinner').hide();
       });
   };
 
