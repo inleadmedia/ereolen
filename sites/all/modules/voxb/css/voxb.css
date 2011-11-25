@@ -4,8 +4,17 @@
  * General markup of the module.
  */
 
-#voxb {
+.voxb {
   clear: both;
+  background-color: #F6F6F2;
+}
+
+.voxbReview {
+  margin-bottom: 15px;
+}
+
+.addRatingContainer {
+  float: left;
 }
 
 .addReviewTextarea {
@@ -17,6 +26,28 @@
   display: none;
 }
 
+.rating {
+  width: 16px;
+  height: 16px;
+  float: left;
+}
+
+.star-on {
+	background-image: url(../img/star-on.png);
+}
+
+.star-off {
+	background-image: url(../img/star-off.png);
+}
+
+.star-black {
+  background-image: url(../img/star-black.png);
+}
+
 .userRate .ajax-progress, .tagsContainer .ajax-progress, .addReviewContainer .ajax-progress {
   display: none;
+}
+
+.recordTagHighlight div, .recordTagHighlight .tag {
+  float: left;
 }

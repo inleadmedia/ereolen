@@ -1,9 +1,8 @@
 <?php
-
 /**
  * @file
  *
- * @todo Fill out this description.
+ * Single tag template.
  */
 ?>
 

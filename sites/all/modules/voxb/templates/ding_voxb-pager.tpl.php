@@ -1,9 +1,8 @@
 <?php
-
 /**
  * @file
  *
- * @todo Fill out this description.
+ * Template for reviews pager.
  */
 
 $pages = ceil($data['count'] / variable_get('voxb_reviews_per_page', VOXB_REVIEWS_PER_PAGE));
@@ -12,7 +11,7 @@ $page_next = ($data['cur_page'] + 1 > $pages) ? $pages : $data['cur_page'] + 1;
 
 if ($data['count'] > $data['limit']) {
     echo '<ul>';
-      echo '<li class="prev_page">' . t('previous', 'voxb/ajax/seek/' . $data['faust_number'] . '/' . $page_prev) . '</li>';
+      echo '<li class="prev_page">' . l('<<', 'voxb/ajax/seek/' . $data['faust_number'] . '/' . $page_prev) . '</li>';
 
       // Draw 5 tabs/buttons/links
       for ($i = $data['cur_page'] - 1; $i < 5 + $data['cur_page'] - 1; $i++) {
@@ -32,7 +31,7 @@ if ($data['count'] > $data['limit']) {
 
         echo '</li>';
       }
-      echo '<li class="next_page">' . t('next', 'voxb/ajax/seek/' . $data['faust_number'] . '/' . $page_next) . '</li>';
+      echo '<li class="next_page">' . l('>>', 'voxb/ajax/seek/' . $data['faust_number'] . '/' . $page_next) . '</li>';
     echo '</ul>';
 
 }
