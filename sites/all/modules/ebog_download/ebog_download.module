@@ -180,7 +180,7 @@ function ebog_download_loan_initial($ting_id) {
 
               $status = array(
                 'title' => t('Fejl'),
-                'content' => theme('ebog_download_error', array('message' => t('Dit bibliotek har nået det maksimalt tilladte antal udlån af ebøger, beklager.')))
+                'content' => theme('ebog_download_error', array('message' => t('You reached the maximum amount of lendable items.')))
               );
             }
           }
