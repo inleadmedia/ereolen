@@ -56,6 +56,10 @@
   display: none;
 }
 
+#ting-result.loading {
+  display: none;
+}
+
 #ting-result #pager {
   margin-top: 20px;
 }
@@ -67,10 +71,6 @@
 
 #ting-result #pager .nav-placeholder {
   height: 20px;
-}
-
-#ting-result #pager .nav-placeholder a {
-  visibility: hidden;
 }
 
 #ting-result #pager .nav {
