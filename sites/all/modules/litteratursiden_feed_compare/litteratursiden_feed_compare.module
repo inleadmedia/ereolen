@@ -53,6 +53,8 @@ function litteratursiden_feed_compare_get_cached_feed($items) {
     cache_set('litteratursiden_feed_compare_cache', serialize($ret), 'cache', time() + $lifetime);
   }
 
+  shuffle($ret['data']);
+
   return $ret;
 
 }
