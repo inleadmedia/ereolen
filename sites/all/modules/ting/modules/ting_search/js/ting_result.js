@@ -74,6 +74,7 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
         $('#ting-search-spinner').show();
         Drupal.updatePageUrl(page[1]);
         Drupal.doUrlSearch(facetBrowserElement, searchResultElement);
+        $.scrollTo('#ting-search-results', 500);
         return false;
       });
 
@@ -90,14 +91,9 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
           $('#ting-search-spinner').show();
           Drupal.updatePageUrl(page);
           Drupal.doUrlSearch(facetBrowserElement, searchResultElement);
+          $.scrollTo('#ting-search-results', 500);
           return false;
         });
-      });
-
-      $($pager).find('ul a').click(function() {
-        Drupal.updatePageUrl($(this).text());
-        Drupal.doUrlSearch(facetBrowserElement, searchResultElement);
-        return false;
       });
 
       // Kasper: What is the purpose of this?
