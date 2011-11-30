@@ -26,6 +26,10 @@
   border-bottom: 2px solid #DBDDDA;
 }
 
+#ting-search-result ul li.display-book:last-child, div.display-book:last-child {
+  border: none;
+}
+
 #ting-search-result ul li.display-book .picture {
   width: 100px;
 }
