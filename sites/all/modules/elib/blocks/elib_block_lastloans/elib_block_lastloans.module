@@ -188,25 +188,25 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
 
           $cache = cache_get($cache_name, $cache_table);
           $out = '';
+          $pages = 0;
+          $items = 1;
 
           if (isset($cache->data)) {
             $out = $cache->data;
           }
           else {
-            $response = elib_client()->getPopularBooks(100);
-            $page = 0;
-            $items = 1;
-            
+            $response = elib_client()->getPopularBooks(5);
+
             foreach ($response->data->toplistitem as $item) {
               if ($items % 11 == 0) {
-                $page++;
+                $pages++;
                 $items = 1;
               }
               
               $isbn = trim($item->ebookid);
               $ting_object = ting_get_object_by_isbn($isbn);
               if ($ting_object) {
-                $out[$page] .= theme('elib_item', array(
+                $out[$pages] .= theme('elib_item', array(
                     'ting_obj' => $ting_object,
                     'isbn' => $isbn,
                   )
@@ -216,17 +216,19 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
               $items++;
             }
 
-            cache_set($cache_name, $out, $cache_table, strtotime('+1 day'));
+            //cache_set($cache_name, $out, $cache_table, strtotime('+1 day'));
           }
 
-          if($out == '') {
+          if ($out == '') {
             $out = '<h1>';
             $out .= t('There are currently no popular items.');
             $out .= '</h1>';
           }
           else {
+            $pager = theme('elib_popular_pager', $pages);
             $out = theme('elib_popular', array(
-              'elib_popular' => $out[0])
+              'elib_popular' => $out[0],
+              'elib_popular_pager' => $pager)
             );
           }
 
@@ -257,12 +259,17 @@ function elib_block_lastloans_theme($existing, $type, $theme, $path) {
 
   $hooks['elib_item'] = array(
     'arguments' => array('data' => NULL),
-    'template' => 'templates/elib_item',
+    'template' => 'templates/elib_popular_item',
   );
 
   $hooks['elib_popular'] = array(
     'arguments' => array('data' => NULL),
     'template' => 'templates/elib_popular',
+  );
+
+  $hooks['elib_popular_pager'] = array(
+    'arguments' => array('data' => NULL),
+    'template' => 'templates/elib_popular_pager',
   );
 
   return $hooks;

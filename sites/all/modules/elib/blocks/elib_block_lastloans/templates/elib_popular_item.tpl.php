@@ -2,7 +2,7 @@
 /**
  * @file
  *
- *   Popular loaned items page, single item template.
+ * Popular loaned items page, single item template.
  */
 ?>
 <li class="display-book ting-collection ruler-after line clear-block" id="<?php print $data['ting_obj']->id ?>">
