@@ -1,5 +1,36 @@
 <?php 
 
+function elib_block_lastloans_menu() {
+  $items = array();
+
+  $items['popular/page/%'] = array(
+    'page callback' => 'elib_block_lastloans_popular_page',
+    'page arguments' => array(2),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+function elib_block_lastloans_popular_page($page) {
+  $cache_name = 'elib_popular_books_extended_cache';
+  $cache_table = 'cache';
+
+  $cache = cache_get($cache_name, $cache_table);
+  $response = array();
+  $page = (int)$page;
+  
+  if ($cache && isset($cache->data[$page])) {
+    $response = array('status' => TRUE, 'page' => $page, 'content' => utf8_encode($cache->data[$page]));
+  }
+  else {
+    $response = array('status' => FALSE, 'page' => $page, 'content' => '');
+  }
+
+  echo json_encode($response);
+  exit(0);
+}
 
 function elib_block_lastloans_block($op = 'list', $delta = 0) {
   if ($op == 'list') {
@@ -152,7 +183,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
         case 6:
           drupal_add_css(drupal_get_path('elib_block_lastloans', 'module') . '/css/elib_popular.css', 'file');
 
-          $cache_name = 'elib_popular_books_extended_cache' . $delta;
+          $cache_name = 'elib_popular_books_extended_cache';
           $cache_table = 'cache';
 
           $cache = cache_get($cache_name, $cache_table);
@@ -162,7 +193,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             $out = $cache->data;
           }
           else {
-            $response = elib_client()->getPopularBooks(25);
+            $response = elib_client()->getPopularBooks(100);
             $page = 0;
             $items = 1;
             
@@ -185,10 +216,8 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
               $items++;
             }
 
-            //cache_set($cache_name, $out, $cache_table, strtotime('+1 day'));
+            cache_set($cache_name, $out, $cache_table, strtotime('+1 day'));
           }
-
-          //var_dump($out);
 
           if($out == '') {
             $out = '<h1>';
