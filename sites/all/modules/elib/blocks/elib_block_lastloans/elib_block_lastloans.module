@@ -162,22 +162,33 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             $out = $cache->data;
           }
           else {
-            $response = elib_client()->getPopularBooks(2);
-
+            $response = elib_client()->getPopularBooks(25);
+            $page = 0;
+            $items = 1;
+            
             foreach ($response->data->toplistitem as $item) {
+              if ($items % 11 == 0) {
+                $page++;
+                $items = 1;
+              }
+              
               $isbn = trim($item->ebookid);
               $ting_object = ting_get_object_by_isbn($isbn);
               if ($ting_object) {
-                $out .= theme('elib_item', array(
+                $out[$page] .= theme('elib_item', array(
                     'ting_obj' => $ting_object,
                     'isbn' => $isbn,
                   )
                 );
               }
+
+              $items++;
             }
 
             //cache_set($cache_name, $out, $cache_table, strtotime('+1 day'));
           }
+
+          //var_dump($out);
 
           if($out == '') {
             $out = '<h1>';
@@ -186,7 +197,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
           }
           else {
             $out = theme('elib_popular', array(
-              'elib_popular' => $out)
+              'elib_popular' => $out[0])
             );
           }
 
