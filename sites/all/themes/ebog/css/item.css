@@ -1,6 +1,7 @@
 .section-ting .pane-content,
 .page-emner .pane-content,
-.page-help .pane-content {
+.page-help .pane-content,
+.pane-elib-block-lastloans-6 .pane-content {
   border: 0 none;
   padding: 0;
 }

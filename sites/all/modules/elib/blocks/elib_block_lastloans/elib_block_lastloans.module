@@ -9,6 +9,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
 	  $blocks[3]['info'] = t('Welcome block - my page');
 	  $blocks[4]['info'] = t('dummyblock2 books');
 	  $blocks[5]['info'] = t('Logout block button');
+      $blocks[6]['info'] = t('Popular books extended');
 	  return $blocks;
   }
   elseif ($op == 'view') {
@@ -89,6 +90,9 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             $out .= t('There is currently no popular items.');
             $out .= '</h1>';
           }
+          else {
+            $out .= '<p class="popular-more"><a href="/popular">' . t('See more') . '</a></p>';
+          }
 
           $block['subject'] = t('populære bøger');
           break;
@@ -144,6 +148,49 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
     			$out = '<p>Du er logget ind: '.l('Log ud','logout',array('attributes' => array('class' => 'biglogoutbutton'))).'</p>';
     		}
     		break;
+
+        case 6:
+          drupal_add_css(drupal_get_path('elib_block_lastloans', 'module') . '/css/elib_popular.css', 'file');
+
+          $cache_name = 'elib_popular_books_extended_cache' . $delta;
+          $cache_table = 'cache';
+
+          $cache = cache_get($cache_name, $cache_table);
+          $out = '';
+
+          if (isset($cache->data)) {
+            $out = $cache->data;
+          }
+          else {
+            $response = elib_client()->getPopularBooks(2);
+
+            foreach ($response->data->toplistitem as $item) {
+              $isbn = trim($item->ebookid);
+              $ting_object = ting_get_object_by_isbn($isbn);
+              if ($ting_object) {
+                $out .= theme('elib_item', array(
+                    'ting_obj' => $ting_object,
+                    'isbn' => $isbn,
+                  )
+                );
+              }
+            }
+
+            //cache_set($cache_name, $out, $cache_table, strtotime('+1 day'));
+          }
+
+          if($out == '') {
+            $out = '<h1>';
+            $out .= t('There are currently no popular items.');
+            $out .= '</h1>';
+          }
+          else {
+            $out = theme('elib_popular', array(
+              'elib_popular' => $out)
+            );
+          }
+
+          $block['subject'] = t('100 populære bøger');
     }
     
     //krumo($books);
@@ -160,7 +207,26 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
     return $block;
   }
   
-} 
+}
+
+/**
+ * Implements hook_theme().
+ */
+function elib_block_lastloans_theme($existing, $type, $theme, $path) {
+  $hooks = array();
+
+  $hooks['elib_item'] = array(
+    'arguments' => array('data' => NULL),
+    'template' => 'templates/elib_item',
+  );
+
+  $hooks['elib_popular'] = array(
+    'arguments' => array('data' => NULL),
+    'template' => 'templates/elib_popular',
+  );
+
+  return $hooks;
+}
 
 
 
