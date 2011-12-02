@@ -3,9 +3,9 @@
 function elib_block_lastloans_menu() {
   $items = array();
 
-  $items['popular/page/%'] = array(
+  $items['popular/page'] = array(
     'page callback' => 'elib_block_lastloans_popular_page',
-    'page arguments' => array(2),
+    'page arguments' => array(),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -13,19 +13,24 @@ function elib_block_lastloans_menu() {
   return $items;
 }
 
-function elib_block_lastloans_popular_page($page) {
+function elib_block_lastloans_popular_page() {
+  $page = (int)$_REQUEST['page'];
   $cache_name = 'elib_popular_books_extended_cache';
   $cache_table = 'cache';
-
+  
   $cache = cache_get($cache_name, $cache_table);
   $response = array();
-  $page = (int)$page;
   
   if ($cache && isset($cache->data[$page])) {
-    $response = array('status' => TRUE, 'page' => $page, 'content' => utf8_encode($cache->data[$page]));
+    $response = array(
+      'status' => TRUE,
+      'page' => $page,
+      'pages' => count($cache->data),
+      'content' => utf8_encode($cache->data[$page]),
+    );
   }
   else {
-    $response = array('status' => FALSE, 'page' => $page, 'content' => '');
+    $response = array('status' => FALSE);
   }
 
   echo json_encode($response);
@@ -195,7 +200,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             $out = $cache->data;
           }
           else {
-            $response = elib_client()->getPopularBooks(5);
+            $response = elib_client()->getPopularBooks(25);
 
             foreach ($response->data->toplistitem as $item) {
               if ($items % 11 == 0) {
@@ -225,7 +230,9 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             $out .= '</h1>';
           }
           else {
-            $pager = theme('elib_popular_pager', $pages);
+            drupal_add_js(drupal_get_path('module', 'elib_block_lastloans') . '/js/popular_loans.js', 'file');
+
+            $pager = theme('elib_popular_pager', array('pages' => count($out)));
             $out = theme('elib_popular', array(
               'elib_popular' => $out[0],
               'elib_popular_pager' => $pager)
