@@ -107,7 +107,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
         if(!$library){
         	return;
         }
-        $out = '<p class="spacing-before">'.t('Velkommen! Som bruger i %library kan du låne %amount om måneden',array('%library' => $library,'%amount' => format_plural(elib_libraries_get_maxloans($u['lib']), 'en ebog', '@count ebøger'))).'</p>';
+        $out = '<p class="spacing-before">'.t('Velkommen! Som bruger i @library kan du låne @amount om måneden',array('@library' => $library,'@amount' => format_plural(elib_libraries_get_maxloans($u['lib']), 'en ebog', '@count ebøger'))).'</p>';
 
         elib_client()->setLoaner($u['cpr'],$u['pin'],$u['lib']);
         $loans = elib_client()->getLoans();
