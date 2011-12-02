@@ -54,4 +54,6 @@ jQuery(function($){
     document.location.href = "help";
   });
 
+  $('.display-book:last-child').addClass('last');
+
 });

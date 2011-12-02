@@ -26,8 +26,9 @@
   border-bottom: 2px solid #DBDDDA;
 }
 
-#ting-search-result ul li.display-book:last-child, div.display-book:last-child {
-  border: none;
+.display-book.last {
+  border: none !important;
+  padding-bottom: 0 !important;
 }
 
 #ting-search-result ul li.display-book .picture {

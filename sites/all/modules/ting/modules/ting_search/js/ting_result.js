@@ -15,6 +15,8 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
     $element.find('ul,ol').html(result.result_html);
     Drupal.tingSearch.updateSummary($('#ting-search-summary'), result);
 
+    $('.display-book:last-child').addClass('last');
+
     // If possible, look up availability from Alma.
     if (Drupal.hasOwnProperty('almaAvailability')) {
       Drupal.almaAvailability.id_list = result.alma_ids;
@@ -134,6 +136,7 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
         Drupal.updateSelectedFacetsFromUrl(Drupal.facetBrowserElement);
 
         $('#ting-search-spinner').hide();
+        
       });
   };
 
