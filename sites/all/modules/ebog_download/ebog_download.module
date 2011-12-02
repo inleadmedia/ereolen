@@ -83,7 +83,6 @@ function ebog_download_theme($existing, $type, $theme, $path) {
 function ebog_download_loan_initial($ting_id) {
   global $user;
   $status = array();
-  $error = FALSE;
 
   // Whether user authenticated in drupal
   if ($user->uid) {
