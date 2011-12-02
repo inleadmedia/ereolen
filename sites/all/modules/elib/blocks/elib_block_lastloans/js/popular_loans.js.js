@@ -7,10 +7,12 @@ jQuery(document).ready(function($) {
     $.ajax({
       type: 'post',
       url: '/popular/page',
-      data: { 'page':link },
+      data: { 'page': link },
       dataType: 'json',
       success: function(response) {
-        console.log(response);
+        if (response.status) {
+          $('#ting-search-result ul').html(response.content);
+        }
       }
     })
 
