@@ -6,8 +6,8 @@
  */
 ?>
 <div class="ebog-download-info">
-  <p><?php echo $data['message']; ?></p>
+  <p><?php print $data['message']; ?></p>
   <?php if (isset($data['link'])) { ?>
-  <p><a class="ebog-dlink" href="<?php echo $data['link']; ?>"><?php print t('Download');?></a></p>
+  <p><a class="ebog-dlink" href="<?php print $data['link']; ?>"><?php print t('Download');?></a></p>
   <?php } ?>
 </div>

@@ -29,7 +29,7 @@
           clicked.parent().find('.ajax-loader').remove();
           clicked.show();
           
-          if (response.status == 'err') {
+          if (response.status == false) {
 
             $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
               modal : true,
@@ -77,11 +77,28 @@
             button.parent().find('.ajax-loader').remove();
             $('#ting-download-popup').dialog('close');
             $('#ting-download-popup-info').remove();
-            $('<div id="ting-download-popup-info" title="' + response.title + '">' + response.content + '</div>').dialog({
-              modal : true,
-              width: 'auto',
-              height: 'auto'
-            });
+            var options = {};
+            if (response.status == false) {
+              options = {
+                modal: true,
+                width: 'auto',
+                height: 'auto',
+                buttons: {
+                  "OK" : function() {
+                    $('#ting-download-popup-info').dialog('close');
+                  }
+                }
+              }
+            }
+            else {
+              options = {
+                modal: true,
+                width: 'auto',
+                height: 'auto'
+              }
+            }
+            
+            $('<div id="ting-download-popup-info" title="' + response.title + '">' + response.content + '</div>').dialog(options);
           }
         });
       }

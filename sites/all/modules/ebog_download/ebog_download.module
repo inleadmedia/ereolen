@@ -83,131 +83,55 @@ function ebog_download_theme($existing, $type, $theme, $path) {
 function ebog_download_loan_initial($ting_id) {
   global $user;
   $status = array();
+  $error = FALSE;
 
+  // Whether user authenticated in drupal
   if ($user->uid) {
-    // Elib related ting object
     $isbn = elib_get_isbn_from_object_id($ting_id);
     $ean = convertToEAN($isbn);
 
-    // Get user info
     $userinfo = elib_user_get_cred();
+    $client = elib_client();
+    $client->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
+    
+    $book = $client->getBook($ean);
 
-    // Check user's elib data
-    if ($userinfo['cpr'] && $userinfo['pin'] && $userinfo['lib']) {
-      elib_client()->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
+    // Whether book fetched well
+    if ((int)$book->status->code == 101) {
+      $loan = elib_client()->makeLoan($ean);
+      // Whether book loaned well
+      if ((int)$loan->status->code == 101) {
+        $down_link = $loan->data->downloadurl;
 
-      // Library client
-      $client = elib_client();
-      $client->setLibrary($userinfo['lib']);
-
-      // Fetch book object
-      $elib_id = $ean;
-      $book = $client->getBook($elib_id);
-
-      // Check that this item exists in elib's db
-      if ($book->status->code == '101') {
-        // Already loaned marker
-        $loaned = FALSE;
-        // Download link
-        $down_link = '';
-        // Store the closest loan period
-        $closest_loan = '';
-        // Fetch loaned items
-        $loans = elib_client()->getLoans();
-        // Fetch loan count
-        $loan_count = 0;
-
-        // Loans are fetched w/o errors
-        if ($loans->status->code == 101) {
-          // Cleanup expired items
-          elib_user_cleanuploans($loans->data->orderitem);
-          $loan_count = count($loans->data->orderitem);
-
-          // Check if this item is on loan
-          for ($i = 0; $i < count($loans->data->orderitem); $i++) {
-            $item = $loans->data->orderitem[$i];
-
-            // Do we have a match?
-            if ($item->book['id'] == $elib_id) {
-              $loaned = TRUE;
-              $down_link = $item->data->data->downloadurl;
-
-              break;
-            }
-          }
-
-          // Whether the item is on loan
-          if ($loaned) {
-            // Display dload link
-            $status = array(
-              'title' => t('Fejl'),
-              'content' => theme('ebog_download_info', array('message' => t('You already loaned this item.'), 'link' => $down_link))
-            );
-          }
-          else {
-            // Get the closes loan time
-            if ($loans->status->LibraryExtension->userebookloansnexttime) {
-              // If user has some loans
-              $closest_loan = elib_str_to_time($loans->status->LibraryExtension->userebookloansnexttime, TRUE) - time();
-            }
-            // Get library loan limit
-            $lib_limit = elib_libraries_get_maxloans($userinfo['lib']);
-            if ($lib_limit - $loan_count > 0) {
-              // Make some loan
-              $response = elib_client()->makeLoan($elib_id);
-
-              // Check loan status
-              if ($response->status->code == 101) {
-                // Fetch loaned item dload url
-                $down_link = $response->data->downloadurl;
-
-                $status = array(
-                  'title' => t('Success'),
-                  'content' => theme('ebog_download_info', array('message' => t('Successfuly loaned this item.'), 'link' => $down_link))
-                );
-              }
-              else {
-                $status = array(
-                  'title' => t('Fejl'),
-                  'content' => theme('ebog_download_error', array('message' => t('Error occured while loaning this item.')))
-                );
-              }
-            }
-            else {
-              // Calculate remaining time before next loan, could be handy
-              $new_loan_days = floor($closest_loan / 86400);
-              $new_loan_hours = floor(($closest_loan % 86400) / 3600);
-
-              $status = array(
-                'title' => t('Fejl'),
-                'content' => theme('ebog_download_error', array('message' => t('You reached the maximum amount of lendable items.')))
-              );
-            }
-          }
-        }
-        else {
-          $status = array(
-            'title' => t('Fejl'),
-            'content' =>  theme('ebog_download_error', array('message' => t('Failed to fetch your loans.')))
-          );
-        }
+        $status = array(
+          'status' => TRUE,
+          'title' => t('Success'),
+          'content' => theme('ebog_download_info', array('message' => t('Successfuly loaned this item.'), 'link' => $down_link))
+        );
       }
       else {
         $status = array(
+          'status' => FALSE,
           'title' => t('Fejl'),
-          'content' => theme('ebog_download_error', array('message' => t('Item not found in database.')))
+          'content' => theme('ebog_download_error', array(
+            'message' => t('@message', array('@message' => $loan->status->message)))
+          )
         );
       }
     }
     else {
       $status = array(
+        'status' => FALSE,
         'title' => t('Fejl'),
-        'content' => theme('ebog_download_error', array('message' => t('Failed to fetch your personal data.')))
+        'content' => theme('ebog_download_error', array(
+          'message' => t('@message', array('@message' => $book->status->message)))
+        )
       );
     }
   }
   else {
     $status = array(
+      'status' => FALSE,
       'title' => t('Fejl'),
       'content' => theme('ebog_download_error', array('message' => t('Only authenticated users are able to loan.')))
     );
@@ -249,7 +173,7 @@ function ebog_download_loan_popup($ting_id) {
   }
   else {
     $status = array(
-      'status' => 'err',
+      'status' => FALSE,
       'title' => t('Fejl'),
       'content' => theme('ebog_download_error', array('message' => t('Only authenticated users are able to loan.')))
     );
