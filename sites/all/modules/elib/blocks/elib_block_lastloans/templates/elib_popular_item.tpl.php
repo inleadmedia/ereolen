@@ -49,7 +49,7 @@
       <?php if ($data['ting_obj']->abstract) : ?>
         <div class="abstract">
           <p>
-            <?php print substr(check_plain($data['ting_obj']->abstract),0,200) . '...'; ?>
+            <?php print drupal_substr(check_plain($data['ting_obj']->abstract),0,200) . '...'; ?>
           </p>
         </div>
       <?php endif; ?>
