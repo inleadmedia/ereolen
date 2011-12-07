@@ -9,7 +9,7 @@
   <div class="picture">
     <?php
       $image_url = elib_book_cover($data['isbn'], '80_x');
-      $alttext = t('@titel af @forfatter',array('@titel' => $data['ting_obj']->title, '@forfatter' => $data['ting_obj']->creators_string));
+      $alttext = t('@titel by @forfatter',array('@titel' => $data['ting_obj']->title, '@forfatter' => $data['ting_obj']->creators_string));
     ?>
     <?php if ($image_url) { ?>
       <?php print l(theme('image', $image_url, $alttext, $alttext, null, false), $data['ting_obj']->url, array('html' => true)); ?>
@@ -30,7 +30,7 @@
         <div id="<?php print $data['ting_obj']->objects[0]->localId ?>"></div>
         <?php if ($data['ting_obj']->date) : ?>
           <span class="publication_date">
-            <?php echo t('(%publication_date%)', array('%publication_date%' => $data['ting_obj']->date)) /* TODO: Improve date handling, localizations etc. */ ?>
+            <?php echo t('(%publication_date%)', array('%publication_date%' => $data['ting_obj']->date)) ?>
           </span>
         <?php endif; ?>
       </div>
@@ -55,11 +55,11 @@
       <?php endif; ?>
       <div class="icons">
         <ul>
-          <li><?php print l(t('Prøv'), $data['ting_obj']->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
+          <li><?php print l(t('Sample'), $data['ting_obj']->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
           <li class="seperator"></li>
-          <li><?php print l(t('Køb'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+          <li><?php print l(t('Try'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
           <li class="seperator"></li>
-          <li><?php print l(t('Lån'), $data['ting_obj']->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
+          <li><?php print l(t('Teaser'), $data['ting_obj']->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
         </ul>
       </div>
     </div>

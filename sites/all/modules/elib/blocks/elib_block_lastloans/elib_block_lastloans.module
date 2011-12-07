@@ -135,7 +135,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
 
           if($out == '') {
             $out = '<h1>';
-            $out .= t('There is currently no popular items.');
+            $out .= t('There are currently no popular items.');
             $out .= '</h1>';
           }
           else {
@@ -252,7 +252,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             );
           }
 
-          $block['subject'] = t('100 populære bøger');
+          $block['subject'] = t('Top 100 popular items.');
     }
     
     //krumo($books);
