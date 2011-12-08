@@ -13,6 +13,16 @@ function elib_block_lastloans_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/settings/elib/elib_block_lastloans'] = array(
+    'title' => 'eLIB block lastloans settings',
+    'description' => '.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('elib_block_lastloans_admin'),
+    'access arguments' => array('access administration pages'),
+    'file' => 'elib_block_lastloans.admin.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
   return $items;
 }
 
@@ -210,7 +220,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             $out = $cache->data;
           }
           else {
-            $response = elib_client()->getPopularBooks(100);
+            $response = elib_client()->getPopularBooks(variable_get('elib_popular_item_count', ELIB_POPULAR_ITEM_COUNT_DEFAULT));
 
             foreach ($response->data->toplistitem as $item) {
               if ($items % 11 == 0) {

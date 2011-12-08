@@ -49,7 +49,7 @@
       <?php if ($data['ting_obj']->abstract) : ?>
         <div class="abstract">
           <p>
-            <?php print drupal_substr(check_plain($data['ting_obj']->abstract),0,200) . '...'; ?>
+            <?php print drupal_substr(check_plain($data['ting_obj']->abstract), 0, variable_get('elib_popular_trim_length', ELIB_POPULAR_TRIM_LENGTH_DEFAULT)) . '...'; ?>
           </p>
         </div>
       <?php endif; ?>
