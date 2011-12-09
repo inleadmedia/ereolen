@@ -194,6 +194,11 @@ $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus
           ?>
          </ul>
       </div>
+      <?php
+        echo $object->voxb_rating;
+        echo $object->voxb_tags;
+        echo $object->voxb_reviews;
+      ?>
     </div>
   </div>
  </div>
