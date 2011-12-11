@@ -149,7 +149,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             $out .= '</h1>';
           }
           else {
-            $out .= '<p class="popular-more"><a href="/popular">' . t('See more') . '</a></p>';
+            $out .= '</div><div class="bottom-bar"><div class="see-more popular-more"><a href="/popular">' . t('See more popular items..') . '</a></div>';
           }
 
           $block['subject'] = t('populære bøger');
