@@ -6,7 +6,7 @@
 
 .voxb {
   clear: both;
-  background-color: #F6F6F2;
+  margin-bottom: 25px;
 }
 
 .voxbReview {
@@ -50,4 +50,21 @@
 
 .recordTagHighlight div, .recordTagHighlight .tag {
   float: left;
+}
+
+.voxb .tagsContainer .form-item {
+  margin: 0;
+  margin-right: 1em;
+  border-radius: 4px 4px 4px 4px;
+  float: left;
+}
+
+.voxb .form-item input, .voxb .form-item textarea {
+  border: 1px solid #DBDDDA;
+  border-radius: 4px 4px 4px 4px;
+  padding: 4px;
+}
+
+.voxb .resizable-textarea {
+  width: 98%;
 }
