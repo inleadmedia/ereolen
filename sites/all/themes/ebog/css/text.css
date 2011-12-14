@@ -128,7 +128,8 @@ h1#page-title.title,
 .panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title,
 .faq h2.pane-title,
 #ting-search-results #ting-search-summary,
- .pane-netsound-0 h2.pane-title {
+.pane-netsound-0 h2.pane-title,
+.pane-elib-block-lastloans-6 h2.pane-title {
   border-bottom: 2px solid #DBDDDA;
 }
 
