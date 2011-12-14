@@ -97,25 +97,49 @@ function ebog_download_loan_initial($ting_id) {
 
     // Whether book fetched well
     if ((int)$book->status->code == 101) {
-      $loan = elib_client()->makeLoan($ean);
-      // Whether book loaned well
-      if ((int)$loan->status->code == 101) {
-        $down_link = $loan->data->downloadurl;
+      if (isset($_POST['dload_only']) && (int)$_POST['dload_only'] == 1) {
 
-        $status = array(
-          'status' => TRUE,
-          'title' => t('Success'),
-          'content' => theme('ebog_download_info', array('message' => t('Successfuly loaned this item.'), 'link' => $down_link))
-        );
+        $down_link = get_download_url($client->getLoans(), $ean);
+
+        if ($down_link != '') {
+          $status = array(
+            'status' => TRUE,
+            'title' => t('Success'),
+            'content' => theme('ebog_download_info', array('message' => t('Book download url.'), 'link' => $down_link))
+          );
+        }
+        else {
+          $status = array(
+            'status' => FALSE,
+            'title' => t('Fejl'),
+            'content' => theme('ebog_download_error', array(
+              'message' => t('Failed to fetch download url.'))
+            )
+          );
+        }
+        
       }
       else {
-        $status = array(
-          'status' => FALSE,
-          'title' => t('Fejl'),
-          'content' => theme('ebog_download_error', array(
-            'message' => t('@message', array('@message' => $loan->status->message)))
-          )
-        );
+        $loan = elib_client()->makeLoan($ean);
+        // Whether book loaned well
+        if ((int)$loan->status->code == 101) {
+          $down_link = $loan->data->downloadurl;
+
+          $status = array(
+            'status' => TRUE,
+            'title' => t('Success'),
+            'content' => theme('ebog_download_info', array('message' => t('Successfuly loaned this item.'), 'link' => $down_link))
+          );
+        }
+        else {
+          $status = array(
+            'status' => FALSE,
+            'title' => t('Fejl'),
+            'content' => theme('ebog_download_error', array(
+              'message' => t('@message', array('@message' => $loan->status->message)))
+            )
+          );
+        }
       }
     }
     else {
@@ -139,6 +163,28 @@ function ebog_download_loan_initial($ting_id) {
   // Send response
   echo json_encode($status);
   exit(0);
+}
+
+/**
+ * Fetch specific book download url.
+ *
+ * @param SimpleXMLElement $loans
+ *   User loans object
+ * @param String $ean
+ *   Searched item isbn
+ * @return String
+ *   Download url
+ */
+function get_download_url($loans, $ean) {
+  if ($loans instanceof SimpleXMLElement) {
+    foreach ($loans->data->orderitem as $book) {
+      if ($book->book['id'] == $ean) {
+        return (string)$book->data->data->downloadurl;
+      }
+    }
+  }
+
+  return '';
 }
 
 /**
