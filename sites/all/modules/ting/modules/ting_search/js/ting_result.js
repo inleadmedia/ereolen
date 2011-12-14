@@ -15,7 +15,7 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
     $element.find('ul,ol').html(result.result_html);
     Drupal.tingSearch.updateSummary($('#ting-search-summary'), result);
 
-    $('.display-book:last-child').addClass('last');
+    $('.display-book:last').addClass('last');
 
     // If possible, look up availability from Alma.
     if (Drupal.hasOwnProperty('almaAvailability')) {
@@ -67,8 +67,14 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
         else if (currentPage > (pages - 3)) {
           page += pages - 5;
         }
+        
+        var link = $(this).find('a');
 
-        $(this).find('a').html((currentPage == page) ? '[' + page + ']' : page).attr('href', '#page=' + page);
+        if (page > 0 && page <= pages) {
+          link.html((currentPage == page) ? '[' + page + ']' : page).attr('href', '#page=' + page);
+        } else {
+          link.parent().css({'display': 'none'});
+        }
       });
 
       $($pager).find('.nav-placeholder a').click(function() {
