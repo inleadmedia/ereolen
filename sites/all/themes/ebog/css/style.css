@@ -78,6 +78,7 @@ div.messages.error {
 .panel-pane.pane-embedvideo .pane-content,
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
+.pane-elib-block-lastloans-2 .pane-content,
 .pane-faq-panel-pane-1 .view-content .item-list ul {
   border-bottom: 0;
 }
@@ -785,6 +786,7 @@ div.messages,
 .panel-pane.pane-embedvideo .pane-content,
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
+.pane-elib-block-lastloans-2 .pane-content,
 .pane-faq-panel-pane-1 .view-content .item-list ul {
   -webkit-border-radius: 4px 4px 0 0;
      -moz-border-radius: 4px 4px 0 0;
