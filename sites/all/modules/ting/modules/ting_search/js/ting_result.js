@@ -15,7 +15,7 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
     $element.find('ul,ol').html(result.result_html);
     Drupal.tingSearch.updateSummary($('#ting-search-summary'), result);
 
-    $('.display-book:last-child').addClass('last');
+    $('.display-book:last').addClass('last');
 
     // If possible, look up availability from Alma.
     if (Drupal.hasOwnProperty('almaAvailability')) {
