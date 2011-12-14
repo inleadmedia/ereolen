@@ -7,7 +7,7 @@
 
 global $user;
 
-if(($data['voxb_item']->getTags()->getCount() < 0) || ($user->uid != 0 && $data['able'])) {
+if(($data['voxb_item']->getTags()->getCount() > 0) || ($user->uid != 0 && $data['able'])) {
 ?>
   <div class="voxb">
     <div class="tagsContainer">
