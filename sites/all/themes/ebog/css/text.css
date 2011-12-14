@@ -229,11 +229,13 @@ div#sidebar-first div#block-block-12 .content h3 {
   vertical-align: text-top;
 }
 
-#sidebar-first #block-elib_block_lastloans-5 a {
+#sidebar-first #block-elib_block_lastloans-5 a,
+.voxb .recordTagHighlight a {
   color: #BE1F24;
   text-decoration: none;
 }
 
-#sidebar-first #block-elib_block_lastloans-5 a:hover {
+#sidebar-first #block-elib_block_lastloans-5 a:hover,
+.voxb .recordTagHighlight a:hover {
   text-decoration: underline;
 }
