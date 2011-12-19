@@ -528,13 +528,13 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
           <ul>';
             if (($downloadable) || ($reloanable)) {
               $out[] = '
-                <li>' . l(t('Hent'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-download'))) . '</li>
+                <li>' . l(t('Download'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-download'))) . '</li>
               ';
             }
             if ($reloanable) {
               $out[] = '
                 <li class="seperator"></li>
-                <li>' . l(t('Genlån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>
+                <li>' . l(t('Re-loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>
               ';
             }
         $out[] = '
