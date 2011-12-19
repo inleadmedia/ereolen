@@ -486,64 +486,61 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
       t('!creator_name', array('!creator_name' => l($object->creators_string,'ting/search/'.$object->creators_string))) .
     '</div>';
     $out[] = '<div class="rating-for-faust"><div class="'.$object->localId.'"></div></div>';
-    $loanperiod_class = '';
     
     if($elib_data->loanexpiredate) {
       $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
-      $diff = $loanlimit-time();
-      $days = floor($diff/86400);
-      $loanperiod_class = 'short';
+      $diff      = $loanlimit-time();
+      $days      = floor($diff/86400);
+      $hours     = floor($diff/3600);
+      $extra     = $hours+24;
     }
 
-    if ((int)$elib_data->loanstate == 1) {
-      $out[] = '
-        <div class="loanperiod '.$loanperiod_class.'">'.t('Lånet udløber om %days',array('%days' => format_plural($days, 'en dag', '@count dage'))).'</div>
-      ';
+    $downloadable = ((int)$elib_data->loanstate == 1);
+    $reloanable   = ((int)$elib_data->loanstate == 2);
 
-      $out[] = '
-        <div class="icons">
-        <div class="icons">
-          <ul>
-            <li>' . l(t('Hent'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-download'))) . '</li>
-          </ul>
-        </div>
-        </div>
-      ';
+    if ($days < 1) {
+      if ($extra <= 24) {
+        $out[] = '
+          <div class="loanperiod short">'.t('Loan expired. You can re-loan.').'</div>
+        ';
+      }
+      else {
+        $out[] = '
+          <div class="loanperiod short">'.t('Loan expires in %hours',array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))).'</div>
+        ';
+      }
     }
-
-    if ((int)$elib_data->loanstate == 2) {
+    else {
       $out[] = '
-        <div class="loanperiod '.$loanperiod_class.'">'.t('Lånet er udløbet, du kan genlåne').'</div>
-      ';
-      
-      $out[] = '
-        <div class="icons">
-        <div class="icons">
-          <ul>
-            <li>' . l(t('Genlån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>
-          </ul>
-        </div>
-        </div>
+        <div class="loanperiod short">'.t('Loan expires in %days',array('%days' => format_plural($days, 'one day.', '@count days'))).'</div>
       ';
     }
 
-/*
+    if ($reloanable) {
+      $out[] = '
+        <div class="loanperiod short">'.t('You can re-loan this book within %extra',array('%extra' => format_plural($extra, 'one hour.', '@count hours.'))).'</div>
+      ';
+    }
+
     $out[] = '
       <div class="icons">
-      <div class="icons">
-        <ul>
-          <li>' . l(t('Sample'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li>' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li>' . l(t('Loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-        </ul>
+        <div class="icons">
+          <ul>';
+            if (($downloadable) || ($reloanable)) {
+              $out[] = '
+                <li>' . l(t('Hent'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-download'))) . '</li>
+              ';
+            }
+            if ($reloanable) {
+              $out[] = '
+                <li class="seperator"></li>
+                <li>' . l(t('Genlån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>
+              ';
+            }
+        $out[] = '
+          </ul>
+        </div>
       </div>
-      </div>
-    ';
-*/
-
-  $out[] = '
     </div>
   ';
 
