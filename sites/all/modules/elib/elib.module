@@ -528,7 +528,7 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
           <ul>';
             if (($downloadable) || ($reloanable)) {
               $out[] = '
-                <li>' . l(t('Download'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-download'))) . '</li>
+                <li>' . l(t('Download'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
               ';
             }
             if ($reloanable) {

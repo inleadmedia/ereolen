@@ -99,7 +99,6 @@
         $.ajax({
           type : 'post',
           url : href + '/request',
-          data : {'dload_only' : clicked.hasClass('re-download') ? 1 : 0},
           dataType : 'json',
           success : function(response) {
             button.css('visibility', 'visible');
