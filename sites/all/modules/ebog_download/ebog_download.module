@@ -95,7 +95,7 @@ function ebog_download_loan_initial($ting_id) {
     
     $book = $client->getBook($ean);
     $down_link = get_download_url($client->getLoans(), $ean);
-    $download_only = ($down_link) ? TRUE : FALSE;
+    $download_only = (is_string($down_link)) ? TRUE : FALSE;
 
     // Whether book fetched well
     if ((int)$book->status->code == 101) {
@@ -183,7 +183,7 @@ function get_download_url($loans, $ean) {
     }
   }
 
-  return '';
+  return FALSE;
 }
 
 /**
