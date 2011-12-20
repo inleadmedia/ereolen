@@ -112,7 +112,6 @@ function ding_voxb_menu() {
     'page callback' => 'ding_voxb_details',
   );
 
-
   return $items;
 }
 
@@ -534,7 +533,7 @@ function ding_voxb_preprocess(&$variables, $hook) {
 }
 
 /**
- * Request ratings for multiple items
+ * Request ratings for multiple items.
  *
  * @param $items
  *   Array of faust numbers
@@ -545,21 +544,24 @@ function ding_voxb_preprocess(&$variables, $hook) {
 function ding_voxb_details() {
   require_once(VOXB_PATH . '/lib/VoxbItems.class.php');
   require_once(VOXB_PATH . '/lib/VoxbReviews.class.php');
+
   $faust_numbers = explode(',', $_REQUEST['ids']);
   $items = new VoxbItems();
   $items->fetchByFaust($faust_numbers);
+
   foreach ($faust_numbers as $faust) {
     $item = $items->getItem($faust);
     $res['faustNum'] = $faust;
+    $res['rating'] = 0;
+    $res['count'] = 0;
+
     if ($item) {
       $res['rating'] = intval($item->getRating() / 20);
       $res['count'] = $item->getRatingCount();
     }
-    else {
-      $res['rating'] = 0;
-      $res['count'] = 0;
-    }
+
     $result[$faust] = $res;
   }
+
   print json_encode($result);
 }

@@ -10,10 +10,12 @@
 function voxb_draw_rating(rating) {
   var rating_container = $('<div>').addClass('addRatingContainer');
   var tpl = $('<div>').addClass('rating');
+
   for(i = 1; i <= 5; i++) {
    var x = tpl.clone().addClass((i<=rating ? 'star-on' : 'star-off'));
    rating_container.append(x);
   }
+  
   return rating_container;
 }
 
