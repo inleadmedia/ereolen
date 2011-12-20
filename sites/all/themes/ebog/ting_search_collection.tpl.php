@@ -42,6 +42,9 @@ foreach ($collection->objects as $obj){
             </span>
           <?php endif; ?>
         </div>
+        <div class="rating-for-faust">
+          <div class="<?php print $netObj->localId; ?>"></div>
+        </div>
         <?php if ($netObj->subjects) : ?>
           <div class="subjects">
             <h4><?php echo t('Subjects:') ?></h4>
@@ -57,7 +60,7 @@ foreach ($collection->objects as $obj){
         <?php if ($netObj->abstract) : ?>
           <div class="abstract">
             <p>
-              <?php print substr(check_plain($netObj->abstract),0,200) . '...'; ?>
+              <?php print drupal_substr(check_plain($netObj->abstract), 0, 200) . '...'; ?>
             </p>
           </div>
         <?php endif; ?>

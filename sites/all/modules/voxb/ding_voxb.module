@@ -20,6 +20,7 @@ function ding_voxb_init() {
   drupal_add_js(VOXB_PATH . '/js/cyclic.fade.js');
   drupal_add_js(VOXB_PATH . '/js/voxb.item.js');
   drupal_add_js(VOXB_PATH . '/js/voxb.login.js');
+  drupal_add_js(VOXB_PATH . '/js/voxb.details.js');
 }
 
 /**
@@ -102,6 +103,15 @@ function ding_voxb_menu() {
     'page callback' => 'ding_voxb_user_create',
     'type' => MENU_CALLBACK,
   );
+
+  $items['voxb/ajax/details'] = array(
+    'title' => 'VoxB ting objects details handler',
+    'description' => '',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('search content'),
+    'page callback' => 'ding_voxb_details',
+  );
+
 
   return $items;
 }
@@ -521,4 +531,35 @@ function ding_voxb_preprocess(&$variables, $hook) {
     $voxb_rating = theme('voxb_rating', array('voxb_item' => $voxb_item, 'able' => $is_able_to_rate, 'faust_number' => $faust_number));
     $variables['object']->voxb_rating = $voxb_rating;
   }
+}
+
+/**
+ * Request ratings for multiple items
+ *
+ * @param $items
+ *   Array of faust numbers
+ * @return
+ *   JSON encoded response
+ *   in form of Object faustNum{faustNum,rating,count}
+ */
+function ding_voxb_details() {
+  require_once(VOXB_PATH . '/lib/VoxbItems.class.php');
+  require_once(VOXB_PATH . '/lib/VoxbReviews.class.php');
+  $faust_numbers = explode(',', $_REQUEST['ids']);
+  $items = new VoxbItems();
+  $items->fetchByFaust($faust_numbers);
+  foreach ($faust_numbers as $faust) {
+    $item = $items->getItem($faust);
+    $res['faustNum'] = $faust;
+    if ($item) {
+      $res['rating'] = intval($item->getRating() / 20);
+      $res['count'] = $item->getRatingCount();
+    }
+    else {
+      $res['rating'] = 0;
+      $res['count'] = 0;
+    }
+    $result[$faust] = $res;
+  }
+  print json_encode($result);
 }
