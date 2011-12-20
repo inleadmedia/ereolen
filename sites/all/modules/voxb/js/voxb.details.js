@@ -10,10 +10,10 @@
 function voxb_draw_rating(rating) {
   var rating_container = $('<div>').addClass('addRatingContainer');
   var tpl = $('<div>').addClass('rating');
-
+  
   for(i = 1; i <= 5; i++) {
-   var x = tpl.clone().addClass((i<=rating ? 'star-on' : 'star-off'));
-   rating_container.append(x);
+    var x = tpl.clone().addClass((i<=rating ? 'star-on' : 'star-off'));
+    rating_container.append(x);
   }
   
   return rating_container;
@@ -21,9 +21,11 @@ function voxb_draw_rating(rating) {
 
 $(document).ready(function(){
   var ids = new Array();
+  
   $('.rating-for-faust div').each(function(index){
     ids.push($(this).attr('class'));
   });
+  
   if (ids.length > 0) {
     $.ajax({
       url:'/voxb/ajax/details',
@@ -38,16 +40,14 @@ $(document).ready(function(){
   }
 });
 
-$(document).ajaxComplete(function(event, request, settings){
-  if(
-    settings.url.search('/ting/search/js') == 0
-  &&
-    $('#ting-search-result').length != 0
-  ){
+$(document).ajaxComplete(function(event,request, settings){
+  if(settings.url.search('/ting/search/js') == 0 && $('#ting-search-result').lenght != 0) {
     var ids = new Array();
+    
     $('#ting-search-result li.display-book').each(function(index) {
       ids.push($(this).attr('id').substring($(this).attr('id').lastIndexOf(':') + 1));
     });
+    
     if (ids.length > 0) {
       $.ajax({
         url:'/voxb/ajax/details',
@@ -55,8 +55,9 @@ $(document).ajaxComplete(function(event, request, settings){
         data: 'ids=' + ids.join(','),
         success: function(data) {
           var faust_prefix = $('#ting-search-result li.display-book:first').attr('id').substring(0, 6);
+          
           $.each(data, function(key, value) {
-            $('div .' + key).append(voxb_draw_rating(value.rating)).after('<div class="clearfix"></div>');
+            $('div#' + key).append(voxb_draw_rating(value.rating)).after('<div class="clearfix"></div>');
           });
         }
       });
