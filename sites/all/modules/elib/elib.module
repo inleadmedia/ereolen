@@ -184,9 +184,6 @@ function elib_get_lydbog($tingObjectID,$format){
   }
     
   $loans = $loans->data->orderitem;
-  if(sizeof($loans)){
-    elib_user_cleanuploans($loans);
-  }
   
   $alreadyloaned = false;
   /*$loanlimit = 1000000000000;*/
@@ -495,8 +492,25 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
       $extra     = $hours+24;
     }
 
-    $downloadable = ((int)$elib_data->loanstate == 1);
-    $reloanable   = ((int)$elib_data->loanstate == 2);
+    $NotReloanable        = ((int)$elib_data->loanstate == 1);
+    $Reloanable           = ((int)$elib_data->loanstate == 2);
+    $ExpiredButReloanable = ((int)$elib_data->loanstate == 3);
+
+    if ($NotReloanable) {
+      $out[] = '
+        <div class="loanperiod short">'.t('You can not reloan this book.').'</div>
+      ';
+    }
+    if ($Reloanable) {
+      $out[] = '
+        <div class="loanperiod short">'.t('You can reloan this book (within %extra',array('%extra' => format_plural($extra, 'one hour.', '@count hours.).'))).'</div>
+      ';
+    }
+    if ($ExpiredButReloanable) {
+      $out[] = '
+        <div class="loanperiod short">'.t('Loan expired. You can re-loan.').'</div>
+      ';
+    }
 
     if ($days < 1) {
       if ($extra <= 24) {
@@ -516,22 +530,16 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
       ';
     }
 
-    if ($reloanable) {
-      $out[] = '
-        <div class="loanperiod short">'.t('You can re-loan this book within %extra',array('%extra' => format_plural($extra, 'one hour.', '@count hours.'))).'</div>
-      ';
-    }
-
     $out[] = '
       <div class="icons">
         <div class="icons">
           <ul>';
-            if (($downloadable) || ($reloanable)) {
-              $out[] = '
-                <li>' . l(t('Download'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-download'))) . '</li>
-              ';
-            }
-            if ($reloanable) {
+          //  if ($NotReloanable) {
+          //    $out[] = '
+          //      <li>' . l(t('Download'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-download'))) . '</li>
+          //    ';
+          //  }
+            if (($Reloanable) || ($ExpiredButReloanable)) {
               $out[] = '
                 <li class="seperator"></li>
                 <li>' . l(t('Re-loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>
