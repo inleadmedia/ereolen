@@ -496,41 +496,32 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
     $Reloanable           = ((int)$elib_data->loanstate == 2);
     $ExpiredButReloanable = ((int)$elib_data->loanstate == 3);
 
-    if ($NotReloanable) {
-      $out[] = '
-        <div class="loanperiod short">'.t('You can not reloan this book.').'</div>
-      ';
+    if (($NotReloanable) || ($Reloanable)) {
+      if ($days < 1) {
+        if ($extra <= 24) {
+          $out[] = '
+            <div class="loanperiod short">'.t('Loan expired. You can re-loan.').'</div>
+          ';
+        }
+        else {
+          $out[] = '
+            <div class="loanperiod short">'.t('Loan expires in %hours',array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))).'</div>
+          ';
+        }
+      }
+      else {
+        $out[] = '
+          <div class="loanperiod short">'.t('Loan expires in %days',array('%days' => format_plural($days, 'one day.', '@count days'))).'</div>
+        ';
+      }
     }
-    if ($Reloanable) {
-      $out[] = '
-        <div class="loanperiod short">'.t('You can reloan this book (within %extra',array('%extra' => format_plural($extra, 'one hour.', '@count hours.).'))).'</div>
-      ';
-    }
-    if ($ExpiredButReloanable) {
+    elseif ($ExpiredButReloanable) {
       $out[] = '
         <div class="loanperiod short">'.t('Loan expired. You can re-loan.').'</div>
       ';
     }
 
-    if ($days < 1) {
-      if ($extra <= 24) {
         $out[] = '
-          <div class="loanperiod short">'.t('Loan expired. You can re-loan.').'</div>
-        ';
-      }
-      else {
-        $out[] = '
-          <div class="loanperiod short">'.t('Loan expires in %hours',array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))).'</div>
-        ';
-      }
-    }
-    else {
-      $out[] = '
-        <div class="loanperiod short">'.t('Loan expires in %days',array('%days' => format_plural($days, 'one day.', '@count days'))).'</div>
-      ';
-    }
-
-    $out[] = '
       <div class="icons">
         <div class="icons">
           <ul>';
