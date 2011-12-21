@@ -94,13 +94,12 @@ function ebog_download_loan_initial($ting_id) {
     $client->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
     
     $book = $client->getBook($ean);
+    $down_link = get_download_url($client->getLoans(), $ean);
+    $download_only = (is_string($down_link)) ? TRUE : FALSE;
 
     // Whether book fetched well
     if ((int)$book->status->code == 101) {
-      if (isset($_POST['dload_only']) && (int)$_POST['dload_only'] == 1) {
-
-        $down_link = get_download_url($client->getLoans(), $ean);
-
+      if ($download_only) {
         if ($down_link != '') {
           $status = array(
             'status' => TRUE,
@@ -178,13 +177,13 @@ function ebog_download_loan_initial($ting_id) {
 function get_download_url($loans, $ean) {
   if ($loans instanceof SimpleXMLElement) {
     foreach ($loans->data->orderitem as $book) {
-      if ($book->book['id'] == $ean) {
+      if ($book->book['id'] == $ean && $book->loanstate == 1) {
         return (string)$book->data->data->downloadurl;
       }
     }
   }
 
-  return '';
+  return FALSE;
 }
 
 /**
