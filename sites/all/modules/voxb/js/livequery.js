@@ -1,5 +1,5 @@
 /*! Copyright (c) 2008 Brandon Aaron (http://brandonaaron.net)
- * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
  * Version: 1.0.3
@@ -12,7 +12,7 @@
 $.extend($.fn, {
 	livequery: function(type, fn, fn2) {
 		var self = this, q;
-
+		
 		// Handle different call patterns
 		if ($.isFunction(type))
 			fn2 = fn, fn = type, type = undefined;

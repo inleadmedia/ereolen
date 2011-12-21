@@ -39,7 +39,7 @@
             <div class="descr">
               <?php echo substr(strip_tags($item['abstract']),0,150) . '...'; ?>
             </div>
-            <div class="litteratursiden" style="margin:0;padding:0;margin-top:20px;">
+            <div class="litteratursiden">
               <img src="sites/all/themes/ebog/images/litteratursiden.png" style="border:0;margin:0;padding:0;" />
             </div>
           </div>

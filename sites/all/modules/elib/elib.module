@@ -184,9 +184,6 @@ function elib_get_lydbog($tingObjectID,$format){
   }
     
   $loans = $loans->data->orderitem;
-  if(sizeof($loans)){
-    elib_user_cleanuploans($loans);
-  }
   
   $alreadyloaned = false;
   /*$loanlimit = 1000000000000;*/
@@ -458,7 +455,6 @@ function elib_login_validate($form, &$form_state) {
 
 
 function elib_displaybook(TingClientObject $object,$elib_data = false){
-
   $isbn = convertToEAN($object->record['dc:identifier']['dkdcplus:ISBN'][0]);
   $image_url = elib_book_cover($isbn, '65_x');
 
@@ -484,47 +480,75 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
       l($object->title, $object->url, array('attributes' => array('class' =>'title'))) . 
     '</h3>';
     $out[] = '<div class="author">' .
-      t('By %creator_name%', array('%creator_name%' => $object->creators_string)) . 
+      t('!creator_name', array('!creator_name' => l($object->creators_string,'ting/search/'.$object->creators_string))) .
     '</div>';
     $out[] = '<div class="rating-for-faust"><div class="'.$object->localId.'"></div></div>';
-
+    
     if($elib_data->loanexpiredate) {
-    $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
-    $diff = $loanlimit-time();
-    $days = floor($diff/86400);
-    $loanperiod_class = 'long';
-
-    if($days < 14){
-      $loanperiod_class = 'medium';
+      $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
+      $diff      = $loanlimit-time();
+      $days      = floor($diff/86400);
+      $hours     = floor($diff/3600);
+      $extra     = $hours+24;
     }
 
-    if($days < 7){
-      $loanperiod_class = 'short';
+    $NotReloanable        = ((int)$elib_data->loanstate == 1);
+    $Reloanable           = ((int)$elib_data->loanstate == 2);
+    $ExpiredButReloanable = ((int)$elib_data->loanstate == 3);
+
+    if ($NotReloanable) {
+      $out[] = '
+        <div class="loanperiod short">'.t('You can not reloan this book.').'</div>
+      ';
+    }
+    if ($Reloanable) {
+      $out[] = '
+        <div class="loanperiod short">'.t('You can reloan this book (within %extra',array('%extra' => format_plural($extra, 'one hour.', '@count hours.).'))).'</div>
+      ';
+    }
+    if ($ExpiredButReloanable) {
+      $out[] = '
+        <div class="loanperiod short">'.t('Loan expired. You can re-loan.').'</div>
+      ';
+    }
+
+    if ($days < 1) {
+      if ($extra <= 24) {
+        $out[] = '
+          <div class="loanperiod short">'.t('Loan expired. You can re-loan.').'</div>
+        ';
+      }
+      else {
+        $out[] = '
+          <div class="loanperiod short">'.t('Loan expires in %hours',array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))).'</div>
+        ';
+      }
+    }
+    else {
+      $out[] = '
+        <div class="loanperiod short">'.t('Loan expires in %days',array('%days' => format_plural($days, 'one day.', '@count days'))).'</div>
+      ';
     }
 
     $out[] = '
-      <div class="loanperiod '.$loanperiod_class.'">'.t('Lånet udløber om %days',array('%days' => format_plural($days, 'en dag', '@count dage'))).'</div>
-    ';
-
-    }
-
-/*
-    $out[] = '
       <div class="icons">
-      <div class="icons">
-        <ul>
-          <li>' . l(t('Prøv'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li>' . l(t('Køb'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li>' . l(t('Lån'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-        </ul>
+        <div class="icons">
+          <ul>';
+          //  if ($NotReloanable) {
+          //    $out[] = '
+          //      <li>' . l(t('Download'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          //    ';
+          //  }
+            if (($Reloanable) || ($ExpiredButReloanable)) {
+              $out[] = '
+                <li class="seperator"></li>
+                <li>' . l(t('Re-loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>
+              ';
+            }
+        $out[] = '
+          </ul>
+        </div>
       </div>
-      </div>
-    ';
-*/
-
-  $out[] = '
     </div>
   ';
 
@@ -561,13 +585,7 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
     $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
     $diff = $loanlimit-time();
     $days = floor($diff / 86400);
-    $loanperiod_class = 'long';
-    if($days < 14){
-      $loanperiod_class = 'medium';
-    }
-    if($days < 7){
-      $loanperiod_class = 'short';
-    }
+    $loanperiod_class = 'short';
     $part['loginexpire'] = '<div class="loanperiod '.$loanperiod_class.'">'.t('Lånet udløber om <div>%days',array('%days' => format_plural($days, 'en dag', '@count dage'))).'</div></div>';
   }
   
@@ -577,11 +595,11 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   $part['icons'] = '
     <div class="icons">
       <ul>
-        <li>' . l(t('Prøv'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li>' . l(t('Sample'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
         <li class="seperator"></li>
-        <li>' . l(t('Køb'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li>' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
         <li class="seperator"></li>
-        <li>' . l(t('Lån'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li>' . l(t('Loan'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
       </ul>
     </div>
   ';
@@ -594,11 +612,11 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   	$part['icons'] = '
       <div class="icons">
         <ul>
-          <li>' . l(t('Prøv'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Sample'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           <li class="seperator"></li>
-          <li>' . l(t('Køb'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           <li class="seperator"></li>
-          <li>' . l(t('Lån'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Loan'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
         </ul>
       </div>
     ';
@@ -669,11 +687,11 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
     $part['icons'] = '
       <div class="icons">
         <ul>
-          <li>' . l(t('Prøv'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Sample'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           <li class="seperator"></li>
-          <li>' . l(t('Køb'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           <li class="seperator"></li>
-          <li>' . l(t('Lån'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Loan'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
         </ul>
       </div>
     ';
@@ -684,11 +702,11 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
     $part['icons'] = '
       <div class="icons">
         <ul>
-          <li>' . l(t('Prøv'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Sample'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           <li class="seperator"></li>
-          <li>' . l(t('Køb'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           <li class="seperator"></li>
-          <li>' . l(t('Lån'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Loan'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           <li class="seperator"></li>
           <li>' . l(t('Fjern'), $obj->url.'/huskeliste/fjern?'.drupal_get_destination(), array('html' => true)) . '</li>
         </ul>
@@ -763,13 +781,7 @@ function elib_displaybook2(TingClientObject $obj,$fields,$settings='',$displaysi
     $loanlimit = elib_str_to_time($elib_data->loanexpiredate,true);
     $diff = $loanlimit-time();
     $days = floor($diff/86400);
-    $loanperiod_class = 'long';
-    if($days < 15){
-      $loanperiod_class = 'medium';
-    }
-    if($days < 5){
-      $loanperiod_class = 'short';
-    }
+    $loanperiod_class = 'short';
     $part['loginexpire'] = '<div class="loanperiod '.$loanperiod_class.'">'.t('Lånet udløber om <div>%days',array('%days' => format_plural($days, 'en dag', '@count dage'))).'</div></div>';
   }
 
@@ -778,11 +790,11 @@ function elib_displaybook2(TingClientObject $obj,$fields,$settings='',$displaysi
   $part['icons'] = '
     <div class="icons">
       <ul>
-        <li>' . l(t('Prøv'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li>' . l(t('Sample'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
         <li class="seperator"></li>
-        <li>' . l(t('Køb'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li>' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
         <li class="seperator"></li>
-        <li>' . l(t('Lån'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+        <li>' . l(t('Loan'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
       </ul>
     </div>
   ';
@@ -795,11 +807,11 @@ function elib_displaybook2(TingClientObject $obj,$fields,$settings='',$displaysi
     $part['icons'] = '
       <div class="iconsnoheight">
         <ul>
-          <li>' . l(t('Prøv'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Sample'), $obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           <li class="seperator"></li>
-          <li>' . l(t('Køb'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
           <li class="seperator"></li>
-          <li>' . l(t('Lån'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
+          <li>' . l(t('Loan'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
         </ul>
       </div>
     ';

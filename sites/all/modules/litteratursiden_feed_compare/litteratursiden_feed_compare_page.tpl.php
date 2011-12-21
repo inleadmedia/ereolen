@@ -35,7 +35,7 @@ true));
             <?php echo l($item['author'], 'ting/search/' . urlencode($item['author']), array('html' => true)); ?>
           </div>
           <div class="descr">
-            <?php echo strip_tags($item['abstract']); ?>
+            <?php echo $item['abstract']; ?>
           </div>
         </div>
       </div>

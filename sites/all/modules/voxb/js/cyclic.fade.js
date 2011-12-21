@@ -101,4 +101,4 @@ or send email to:
 		});
 	};
 
-})(jQuery);
+})(jQuery); 

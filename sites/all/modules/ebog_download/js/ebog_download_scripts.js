@@ -6,6 +6,9 @@
   var href = '';
   var clicked = null;
   var button = null;
+  var ok_button = Drupal.t('Ok');
+  var cancel_button = Drupal.t('Cancel');
+  var download_button = Drupal.t('Proceed to download');
 
   // Handle clicked loan link, those matching 'ting/object/%/download' pattern
   $(document).ready(function() {
@@ -20,6 +23,36 @@
       clicked.hide();
       clicked.parent().append('<div class="ajax-loader"></div>');
 
+      if (clicked.hasClass('re-loan')) {
+        $('#ting-download-popup').remove();
+        $('<div id="ting-download-popup" title="' + Drupal.t('Confirm reloan') + '">' + Drupal.t('Are you sure you want to reloan this item?') + '</div>').dialog({
+          modal : true,
+          width: 'auto',
+          height: 'auto',
+          buttons: {
+            ok_button : function() {
+              button = $('#ting-download-popup').parents('.ui-dialog:first').find('button');
+              button.css('visibility', 'hidden');
+              button.parent().append('<div class="ajax-loader"></div>');
+              process_loan();
+            },
+            cancel_button : function() {
+              $('#ting-download-popup').dialog('close');
+              clicked.parent().find('.ajax-loader').remove();
+              clicked.show();
+            }
+          }
+        });
+      }
+      else {
+        process_loan();
+      }
+
+      return false;
+    });
+
+    // Process loan/reloan/download
+    var process_loan = function() {
       $.ajax({
         type : 'post',
         url : href + '/popup',
@@ -28,15 +61,15 @@
           $('#ting-download-popup').remove();
           clicked.parent().find('.ajax-loader').remove();
           clicked.show();
-          
-          if (response.status == 'err') {
+
+          if (response.status == false) {
 
             $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
               modal : true,
               width: 'auto',
               height: 'auto',
               buttons: {
-                "OK" : function() {
+                ok_button : function() {
                   $('#ting-download-popup').dialog('close');
                 }
               }
@@ -44,13 +77,13 @@
 
             return;
           }
-          
+
           $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
             modal : true,
             width: 'auto',
             height: 'auto',
             buttons: {
-              "Videre til download" : function() {
+              download_button : function() {
                 button = $('#ting-download-popup').parents('.ui-dialog:first').find('button');
                 button.css('visibility', 'hidden');
                 button.parent().append('<div class="ajax-loader"></div>');
@@ -60,9 +93,7 @@
           });
         }
       });
-
-      return false;
-    });
+    }
 
     // Check those checkboxes
     var check_rules = function() {
@@ -77,11 +108,28 @@
             button.parent().find('.ajax-loader').remove();
             $('#ting-download-popup').dialog('close');
             $('#ting-download-popup-info').remove();
-            $('<div id="ting-download-popup-info" title="' + response.title + '">' + response.content + '</div>').dialog({
-              modal : true,
-              width: 'auto',
-              height: 'auto'
-            });
+            var options = {};
+            if (response.status == false) {
+              options = {
+                modal: true,
+                width: 'auto',
+                height: 'auto',
+                buttons: {
+                  ok_button : function() {
+                    $('#ting-download-popup-info').dialog('close');
+                  }
+                }
+              }
+            }
+            else {
+              options = {
+                modal: true,
+                width: 'auto',
+                height: 'auto'
+              }
+            }
+            
+            $('<div id="ting-download-popup-info" title="' + response.title + '">' + response.content + '</div>').dialog(options);
           }
         });
       }
@@ -89,12 +137,12 @@
         button.css('visibility', 'visible');
         button.parent().find('.ajax-loader').remove();
         $('#ting-download-popup-error').remove();
-        $('<div id="ting-download-popup-error" title="' + Drupal.t('Fejl') + '"><p>' + Drupal.t('Check all checkboxes') + '</p></div>').dialog({
+        $('<div id="ting-download-popup-error" title="' + Drupal.t('Error') + '"><p>' + Drupal.t('Check all checkboxes') + '</p></div>').dialog({
           modal : true,
           width: 'auto',
           height: 'auto',
           buttons: {
-            "OK" : function() { $(this).dialog('close'); }
+            ok_button : function() { $(this).dialog('close'); }
           }
         });
 
