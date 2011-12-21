@@ -25,7 +25,7 @@
 
       if (clicked.hasClass('re-loan')) {
         $('#ting-download-popup').remove();
-        $('<div id="ting-download-popup" title="' + Drupal.t('Confirm reloan') + '">' + Drupal.t('Are you sure you want to reloan this item?') + '</div>').dialog({
+        $('<div id="ting-download-popup" title="' + Drupal.t('Confirm reloan') + '">' + Drupal.t('Are you sure you want to reloan this item') + ' (<a href=' + '"' + '/faq/generelt-0#31n128' + '">' + Drupal.t('read more') + '</a>)?' + '</div>').dialog({
           modal : true,
           width: 'auto',
           height: 'auto',
