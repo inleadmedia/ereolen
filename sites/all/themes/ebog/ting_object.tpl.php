@@ -12,6 +12,7 @@ module_load_include('isbn_static_func.inc', 'elib');
 
 $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus:ISBN'][0]);
 
+if (module_exists('ding_voxb')) {
   drupal_add_css(VOXB_PATH . '/css/voxb-pager.css');
   drupal_add_css(VOXB_PATH . '/css/voxb.css');
   drupal_add_css(VOXB_PATH . '/css/jqModal.css');
@@ -30,6 +31,7 @@ $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus
   $voxb_item->addReviewHandler('review', new VoxbReviews());
   $voxb_item->fetchByFaust($faust_number);
   $profile = unserialize($_SESSION['voxb']['profile']);
+}
 ?>
 
 <!-- ting_object.tpl -->
@@ -51,6 +53,7 @@ $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus
     <div class="inner">
       <h1 class="book-title"><?php print check_plain($object->record['dc:title'][''][0]); ?></h1>
       <div class="author"><?php echo t('By !creator_name', array('!creator_name' => l($object->creators_string,'ting/search/'.$object->creators_string,array('html' => true)))) ?></div>
+      <?php if (module_exists('ding_voxb')) { ?>
       <div class="ratingsContainer">
         <?php
           $rating = $voxb_item->getRating();
@@ -71,6 +74,7 @@ $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus
         <img src="/<?php echo VOXB_PATH . '/img/ajax-loader.gif'; ?>" alt="" class="ajax_anim" />
         <div class="clearfix"></div>
       </div>
+      <?php } ?>
       <div class="facebook-like">
         <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fereolen.dk%2Fting%2Fobject%2F150028%3A<?php echo $isbn; ?>&amp;send=false&amp;layout=box_count&amp;width=130&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=75" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:130px; height:75px;" allowTransparency="true"></iframe>
       </div>
@@ -195,15 +199,19 @@ $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus
          </ul>
       </div>
       <?php
+      if (module_exists('ding_voxb')) {
         echo $object->voxb_tags;
         echo $object->voxb_reviews;
+      }
       ?>
     </div>
   </div>
  </div>
+<?php if (module_exists('ding_voxb')) { ?>
 <div class="jqmWindow" id="dialog">
   <a href="#" class="jqmClose">Close</a>
   <hr>
   <p class="ajax_message">Service unavailable.</p>
 </div>
 <span class="ajaxLoaderTpl"><img src="/<?php echo VOXB_PATH . '/img/ajax-loader.gif'; ?>" alt="in progress.." class="ajax_anim" /></span>
+<?php } ?>
