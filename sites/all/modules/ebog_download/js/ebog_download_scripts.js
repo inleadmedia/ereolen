@@ -24,7 +24,7 @@
       clicked.hide();
       clicked.parent().append('<div class="ajax-loader"></div>');
 
-      if (/*clicked.hasClass('re-loan')*/1) {
+      if (clicked.hasClass('re-loan')) {
         $('#ting-download-popup').remove();
 
         popup_buttons = {};
