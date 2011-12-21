@@ -138,7 +138,7 @@
         button.css('visibility', 'visible');
         button.parent().find('.ajax-loader').remove();
         $('#ting-download-popup-error').remove();
-        $('<div id="ting-download-popup-error" title="' + Drupal.t('Fail') + '"><p>' + Drupal.t('Check all checkboxes') + '</p></div>').dialog({
+        $('<div id="ting-download-popup-error" title="' + Drupal.t('Error') + '"><p>' + Drupal.t('Check all checkboxes') + '</p></div>').dialog({
           modal : true,
           width: 'auto',
           height: 'auto',

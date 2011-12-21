@@ -111,7 +111,7 @@ function ebog_download_loan_initial($ting_id) {
         else {
           $status = array(
             'status' => FALSE,
-            'title' => t('Fail'),
+            'title' => t('Error'),
             'content' => theme('ebog_download_error', array(
               'message' => t('Failed to fetch download url.'))
             )
@@ -134,7 +134,7 @@ function ebog_download_loan_initial($ting_id) {
         else {
           $status = array(
             'status' => FALSE,
-            'title' => t('Fail'),
+            'title' => t('Error'),
             'content' => theme('ebog_download_error', array(
               'message' => t('@message', array('@message' => $loan->status->message)))
             )
@@ -145,7 +145,7 @@ function ebog_download_loan_initial($ting_id) {
     else {
       $status = array(
         'status' => FALSE,
-        'title' => t('Fail'),
+        'title' => t('Error'),
         'content' => theme('ebog_download_error', array(
           'message' => t('@message', array('@message' => $book->status->message)))
         )
@@ -155,7 +155,7 @@ function ebog_download_loan_initial($ting_id) {
   else {
     $status = array(
       'status' => FALSE,
-      'title' => t('Fail'),
+      'title' => t('Error'),
       'content' => theme('ebog_download_error', array('message' => t('Only authenticated users are able to loan.')))
     );
   }
@@ -219,7 +219,7 @@ function ebog_download_loan_popup($ting_id) {
   else {
     $status = array(
       'status' => FALSE,
-      'title' => t('Fail'),
+      'title' => t('Error'),
       'content' => theme('ebog_download_error', array('message' => t('Only authenticated users are able to loan.')))
     );
   }
