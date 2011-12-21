@@ -72,7 +72,8 @@ h1#page-title.title,
 .feed-and-compare-page h3.title a,
 .feed-and-compare-page .author a,
 #footer a,
-.page-anmeldelser .feed-and-compare-page h3.title a:hover {
+.page-anmeldelser .feed-and-compare-page h3.title a:hover,
+.pane-faq-panel-pane-1 ul li a {
   color: #5B6574;
   text-decoration: none;
 }
@@ -96,7 +97,8 @@ h1#page-title.title,
 .page-emner #main-content ul li a:hover
 .feed-and-compare-page h3.title a:hover,
 .feed-and-compare-page .author a:hover,
-#footer a:hover {
+#footer a:hover,
+.pane-faq-panel-pane-1 ul li a:hover {
   color: #BE1F24;
   text-decoration: underline;
 }

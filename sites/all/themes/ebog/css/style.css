@@ -78,8 +78,7 @@ div.messages.error {
 .panel-pane.pane-embedvideo .pane-content,
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
-.pane-elib-block-lastloans-2 .pane-content,
-.pane-faq-panel-pane-1 .view-content .item-list ul {
+.pane-elib-block-lastloans-2 .pane-content {
   border-bottom: 0;
 }
 
@@ -194,8 +193,7 @@ h1#page-title.title,
 .pane-front .bottom-bar .see-more a,
 .pane-embedvideo .bottom-bar .see-more a,
 .pane-elib-block-lastloans-2 .bottom-bar .see-more a,
-#sidebar-first #block-views-latest_news-block_1 .content .view-footer a,
-#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content a {
+#sidebar-first #block-views-latest_news-block_1 .content .view-footer a {
   padding: 3px 7px;
 }
 
@@ -204,8 +202,7 @@ h1#page-title.title,
 .pane-embedvideo .bottom-bar .see-more a:hover,
 .pane-elib-block-lastloans-2 .bottom-bar .see-more a:hover,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer a:hover,
-#main-content .icons ul li a:hover,
-#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content a:hover {
+#main-content .icons ul li a:hover {
   padding: 2px 6px;
   border: 1px solid #b41a67;
 }
@@ -741,7 +738,6 @@ input[type=submit],
 .pane-content div.bottom-bar,
 .pane-elib-block-lastloans-2 .bottom-bar,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer,
-#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid,
 .display-book .icons .icons,
 #ting-object .inner .icons,
 #ting-search-result .record .icons,
@@ -787,8 +783,7 @@ div.messages,
 .panel-pane.pane-embedvideo .pane-content,
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
-.pane-elib-block-lastloans-2 .pane-content,
-.pane-faq-panel-pane-1 .view-content .item-list ul {
+.pane-elib-block-lastloans-2 .pane-content {
   -webkit-border-radius: 4px 4px 0 0;
      -moz-border-radius: 4px 4px 0 0;
           border-radius: 4px 4px 0 0;
