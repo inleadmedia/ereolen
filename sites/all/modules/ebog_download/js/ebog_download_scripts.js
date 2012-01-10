@@ -26,6 +26,8 @@
 
       if (clicked.hasClass('re-loan')) {
         $('#ting-download-popup').remove();
+        clicked.parent().find('.ajax-loader').remove();
+        clicked.show();
 
         popup_buttons = {};
         popup_buttons[ok_button] = function() {
@@ -34,10 +36,9 @@
           button.parent().append('<div class="ajax-loader"></div>');
           process_loan();
         }
+
         popup_buttons[cancel_button] = function() {
-          $('#ting-download-popup').dialog('close');
-          clicked.parent().find('.ajax-loader').remove();
-          clicked.show();
+          $('#ting-download-popup').dialog('close');  
         }
 
         $('<div id="ting-download-popup" title="' + Drupal.t('Confirm reloan') + '">' + Drupal.t('Are you sure you want to reloan this item') + ' (<a href=' + '"' + '/faq/generelt-0#31n128' + '">' + Drupal.t('read more') + '</a>)?' + '</div>').dialog({
