@@ -73,9 +73,9 @@ function elib_form_alter(&$form, $form_state, $form_id) {
   switch ($form_id) {
     case 'user_login':
     case 'user_login_block':
-    	$form['name']['#prefix'] = '<h1>Velkommen til eReolen.dk</h1><p>Vi kan se at du ikke er logget ind endnu.</p><p>Indtast derfor dit CPR nummer + din pinkode for at logge ind</p>';
-    	$form['name']['#title'] = 'CPR-nr. / lånerkortnr.';
-    	$form['pass']['#title'] = 'Pinkode';
+	$form['name']['#prefix'] = '<h1>' . t('Welcome to eReolen.dk') . '</h1><p>' . t('We noticed that you are not logged in.') . '</p><p>' . t('Please fill in your CPR number + pincode to login.') . '</p>';
+	$form['name']['#title'] = t('CPR number');
+	$form['pass']['#title'] = t('Pincode');
     	$form['name']['#type'] = 'password';
     	unset($form['name']['#description']);
     	unset($form['pass']['#description']);
