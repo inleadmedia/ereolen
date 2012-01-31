@@ -19,7 +19,7 @@
     },
     // show ajax loader
     hideAjaxLoader: function(container, el) {
-      container.find('.ajaxLoaderTpl').remove()
+      container.find('.ajaxLoaderTpl').remove();
       el.show();
     },
 

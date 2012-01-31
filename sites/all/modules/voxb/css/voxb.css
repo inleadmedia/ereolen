@@ -22,7 +22,7 @@
   height: 100px;
 }
 
-#edit-rating, img.ajax_anim, #voxbItem {
+#edit-rating, .ajax_anim, #voxbItem {
   display: none;
 }
 
@@ -49,6 +49,11 @@
 }
 
 .recordTagHighlight div, .recordTagHighlight .tag {
+  float: left;
+}
+
+.voxb-terms {
+  margin: 1px 3px 0 0;
   float: left;
 }
 
