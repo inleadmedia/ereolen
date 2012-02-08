@@ -1,5 +1,4 @@
 <?php
-// $Id: ting_reference.module,v 1.91.2.36 2009/07/18 01:18:07 markuspetrux Exp $
 
 /**
  * @file
@@ -11,12 +10,16 @@
  */
 function ting_reference_theme() {
   return array(
-    'ting_reference_formatter_default' => array('arguments' => array('element' => NULL)),
+    'ting_reference_formatter_default' => array(
+      'arguments' => array('element' => NULL)
+    ),
+    'ting_reference_formatter_plain' => array(
+      'arguments' => array('element' => NULL)
+    ),
     'ting_reference_preview' => array(
       'arguments' => array('collection' => NULL),
       'template' => 'ting_reference_preview'
     ),
-  
   );
 }
 
@@ -35,6 +38,7 @@ function ting_reference_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'ting_reference.pages.inc',
   );
+
   $items['ting_reference/autocomplete/object/js'] = array(
     'title' => 'Ting reference object autocomplete',
     'description' => 'Returns a list of objects to use for autocompletion',
@@ -43,6 +47,7 @@ function ting_reference_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'ting_reference.pages.inc',
   );
+
   $items['ting_reference/preview/js/%/%'] = array(
     'title' => 'Ting reference collection',
     'description' => 'Returns a Ting collection as a javascript object',
@@ -52,7 +57,7 @@ function ting_reference_menu() {
     'type' => MENU_CALLBACK,
     'file' => 'ting_reference.pages.inc',
   );
-  
+
   return $items;
 }
 
@@ -75,8 +80,8 @@ function ting_reference_field_settings($op, $field) {
   switch ($op) {
     case 'database columns':
      return array(
-       'ting_object_id' => array('type' => 'varchar', 'length' => 50, 'not null' => TRUE, 'index' => TRUE),
-       'ting_ref_type' => array('type' => 'varchar', 'length' => 20, 'not null' => TRUE),
+       'ting_object_id' => array('type' => 'varchar', 'length' => 50, 'index' => TRUE),
+       'ting_ref_type' => array('type' => 'varchar', 'length' => 20),
        'description' => array('type' => 'text'),
      );
   }
@@ -111,7 +116,7 @@ function ting_reference_field($op, &$node, $field, &$items, $teaser, $page) {
           }
         }
       }
-      return $items;
+      break;
   }
 }
 
@@ -119,7 +124,7 @@ function ting_reference_field($op, &$node, $field, &$items, $teaser, $page) {
  * Implementation of hook_content_is_empty().
  */
 function ting_reference_content_is_empty($item, $field) {
-  return empty($item['ting_object_id']) && empty($item['description']);
+  return (empty($item['ting_object_id']) && empty($item['description']));
 }
 
 /**
@@ -132,19 +137,46 @@ function ting_reference_field_formatter_info() {
       'field types' => array('ting_reference'),
       'multiple values' => CONTENT_HANDLE_CORE,
     ),
+    'plain' => array(
+      'label' => t('Plain link and image'),
+      'field types' => array('ting_reference'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
   );
 }
 
 /**
- * Theme function for 'default' userreference field formatter.
+ * Theme function for 'default' Ting reference field formatter.
  */
 function theme_ting_reference_formatter_default($element) {
+  // Don’t render empty fields.
+  if (ting_reference_content_is_empty($element['#item'], array())) {
+    return;
+  }
+
   $collection = _ting_reference_get_collection($element['#item']['ting_ref_type'], $element['#item']['ting_object_id'], $element['#item']['description']);
   if (!$collection) {
     return t('Object not found.');
   }
 
   return theme('ting_search_collection', $collection);
+}
+
+/**
+ * Theme function for 'plain' Ting reference field formatter.
+ */
+function theme_ting_reference_formatter_plain($element) {
+  // Don’t render empty fields.
+  if (ting_reference_content_is_empty($element['#item'], array())) {
+    return;
+  }
+
+  $collection = _ting_reference_get_collection($element['#item']['ting_ref_type'], $element['#item']['ting_object_id'], $element['#item']['description']);
+  if (!$collection) {
+    return t('Object not found.');
+  }
+
+  return theme('ting_reference_preview', $collection);
 }
 
 /**
@@ -169,49 +201,50 @@ function ting_reference_widget_info() {
 function ting_reference_widget(&$form, &$form_state, $field, $items, $delta = 0) {
   _ting_reference_add_css_js();
 
-  $element['#prefix'] = '<div class="form-item form-ting-reference">';
-  $element['#suffix'] = '</div>';
+  // Start out with creating a new element, wrapped in a div.
+  $element = array(
+    '#prefix' => '<div class="form-item form-ting-reference">',
+    '#suffix' => '</div>',
+  );
 
   $ting_object_id = isset($items[$delta]['ting_object_id']) ? $items[$delta]['ting_object_id'] : '';
-  $ting_ref_type = !empty($items[$delta]['ting_ref_type']) ? $items[$delta]['ting_ref_type'] : 'object';
+  $ting_ref_type = !empty($items[$delta]['ting_ref_type']) ? $items[$delta]['ting_ref_type'] : 'collection';
 
   $element['ting_ref_type'] = array (
     '#type' => 'radios',
-    '#title' => 'Reference type',
+    '#title' => t('Reference type'),
     '#default_value' => $ting_ref_type,
     '#options' => array('collection' => t('Ting collection'), 'object' => t('Ting object')),
-    '#attributes' => array('class' => 'ting-reference-type-radio'),
-    '#prefix' => '<div style="display:none">',
-    '#suffix' => '</div>',
-	);
+    '#attributes' => array('class' => 'ting-reference-type-radio clear-block'),
+  );
 
   $element['search'] = array (
     '#type' => 'textfield',
     '#title' => t('Search'),
     '#maxlength' => NULL,
+    '#description' => t('Enter a query to search for objects or collections to reference'),
     '#attributes' => array('class' => 'form-autocomplete ting-reference-autocomplete')
   );
+
   $collection = _ting_reference_get_collection($ting_ref_type, $ting_object_id);
   $element['preview'] = array (
     '#value' => '<div class="ting-reference-preview">' . ($collection ? theme('ting_reference_preview', $collection) : t('Object not found.')) . '</div>',
   );
-  $element['reset'] = array (
-    '#type' => 'button',
-    '#value' => t('Reset'),
-  	'#attributes' => array('class' => 'ting-reference-reset'),
-  );
+
   $element['ting_object_id'] = array (
     '#type' => 'hidden',
     '#title' => 'Ting object id',
     '#default_value' => $ting_object_id,
-  	'#attributes' => array('class' => 'ting-object-id')
+    '#attributes' => array('class' => 'ting-object-id')
   );
+
   $element['description'] = array (
-    '#type' => 'hidden',
-    '#title' => 'Description',
+    '#type' => 'textarea',
+    '#title' => t('Description'),
     '#rows' => 2,
     '#default_value' => isset($items[$delta]['description']) ? $items[$delta]['description'] : '',
   );
+
   return $element;
 }
 
@@ -232,7 +265,7 @@ function _ting_reference_add_css_js() {
     drupal_add_js(array(
       'tingReference' => array(
         'autocomplete' => array(
-          'collection' => url('ting_reference/autocomplete/collection/js'), 
+          'collection' => url('ting_reference/autocomplete/collection/js'),
           'object' => url('ting_reference/autocomplete/object/js'),
         ),
         'previewUrl' => url('ting_reference/preview/js'),
@@ -253,6 +286,9 @@ function _ting_reference_add_css_js() {
  */
 function ting_reference_form_alter(&$form, $form_state, $form_id) {
   if ($form['#id'] == 'node-form') {
+    // If node type has no CCK fields, just bail right away.
+    if (!isset($form['#field_info'])) { return; }
+
     foreach ($form['#field_info'] as $name => $field) {
       if ($field['type'] == 'flexifield') {
         _ting_reference_add_css_js();
@@ -335,6 +371,24 @@ function ting_reference_nodes($object_or_collection) {
   foreach (array_unique($nids) as $nid) {
     $nodes[] = node_load($nid);
   }
-	return $nodes;
+  return $nodes;
+}
+
+/**
+ * TODO: Document this.
+ */
+function ting_reference_ting_tabs_alter(&$tabs, $type, $object) {
+  $referenced_nodes = ting_reference_nodes($object);
+  if ($referenced_nodes) {
+    $content = '<h3>'.t('Mentions on this site').'</h3>';
+    foreach ($referenced_nodes as $node) {
+      $content .= node_view($node, TRUE);
+    }
+
+    $tabs['reference'] = array(
+      'title' => t('On this site'),
+      'content' => $content,
+    );
+  }
 }
 

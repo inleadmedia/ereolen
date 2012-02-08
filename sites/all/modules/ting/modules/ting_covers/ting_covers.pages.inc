@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * Return the URL for the cover of an object
@@ -10,13 +9,14 @@ function ting_covers_object($preset, $object_id) {
   // $path is without the file_directory_path() prefix.
   $path = ting_covers_object_path($object_id);
 
-  if (!file_exists(file_create_path($path))) {
+  if (!ting_covers_cache_is_valid($path, $preset)) {
     $object = ting_get_object_by_id($object_id, true);
-    
+
     if (!$object) {
+      cache_set('ting_covers:' . $path, TRUE, 'cache', $_SERVER['REQUEST_TIME'] + TING_COVERS_CACHE_LIFETIME);
       ting_covers_goto_default($preset);
     }
-  
+
     if ($object->additionalInformation->detailUrl) {
       $source_url = $object->additionalInformation->detailUrl;
     }
@@ -24,9 +24,10 @@ function ting_covers_object($preset, $object_id) {
       $source_url = $object->additionalInformation->thumbnailUrl;
     }
     else {
+      cache_set('ting_covers:' . $path, TRUE, 'cache', $_SERVER['REQUEST_TIME'] + TING_COVERS_CACHE_LIFETIME);
       ting_covers_goto_default($preset);
     }
-    
+
     $path = _ting_covers_pages_fetch_or_redirect($path, $source_url, $preset);
   }
 
@@ -42,12 +43,13 @@ function ting_covers_collection($preset, $object_id) {
   //$path is without the file_directory_path() prefix.
   $path = ting_covers_collection_path($object_id);
 
-  if (!file_exists(file_create_path($path))) {
+  if (!ting_covers_cache_is_valid($path, $preset)) {
     $collection = ting_get_collection_by_id($object_id, true);
     if (!$collection) {
+      cache_set('ting_covers:' . $path, TRUE, 'cache', $_SERVER['REQUEST_TIME'] + TING_COVERS_CACHE_LIFETIME);
       ting_covers_goto_default($preset);
     }
-    
+
     //go through the objects in the collection looking for the first object with a cover
     $source_url = false;
     foreach ($collection->objects as $object) {
@@ -59,7 +61,7 @@ function ting_covers_collection($preset, $object_id) {
 	      $source_url =$object->additionalInformation->thumbnailUrl;
 	    }
     }
-        
+
     $path = _ting_covers_pages_fetch_or_redirect($path, $source_url, $preset);
   }
 
@@ -75,7 +77,7 @@ function ting_covers_faust($preset, $faust_number) {
   //$path is without the file_directory_path() prefix.
   $path = ting_covers_faust_path($faust_number);
 
-  if (!file_exists(file_create_path($path))) {
+  if (!ting_covers_cache_is_valid($path, $preset)) {
     $info = ting_get_additional_info(array($faust_number));
 
     if (is_object($info[$faust_number])) {
@@ -114,6 +116,7 @@ function _ting_covers_pages_fetch_or_redirect($path, $source_url, $preset) {
     }
   }
 
+  cache_set('ting_covers:' . $path, TRUE, 'cache', $_SERVER['REQUEST_TIME'] + TING_COVERS_CACHE_LIFETIME);
   ting_covers_goto_default($preset);
 }
 

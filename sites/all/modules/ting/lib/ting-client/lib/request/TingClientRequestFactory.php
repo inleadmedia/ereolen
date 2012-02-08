@@ -1,42 +1,54 @@
 <?php
 
-require_once dirname(__FILE__).'/base/TingClientSearchRequest.php';
-require_once dirname(__FILE__).'/base/TingClientScanRequest.php';
-require_once dirname(__FILE__).'/base/TingClientObjectRequest.php';
-require_once dirname(__FILE__).'/base/TingClientCollectionRequest.php';
-require_once dirname(__FILE__).'/base/TingClientObjectRecommendationRequest.php';
-require_once dirname(__FILE__).'/base/TingClientSpellRequest.php';
+$path = drupal_get_path('module', 'ting') . '/lib/';
+require_once($path . 'ting-client/lib/request/TingClientSearchRequest.php');
+require_once($path . 'ting-client/lib/request/TingClientObjectRequest.php');
 
-interface TingClientRequestFactory {
-	
+class TingClientRequestFactory {
+	public function __construct($urls) {
+		$this->urls = $urls;
+	}
+
 	/**
 	 * @return TingClientSearchRequest
 	 */
-	function getSearchRequest();
-	
+	public function getSearchRequest() {
+		return new TingClientSearchRequest($this->urls['search']);
+	}
+
 	/**
 	 * @return TingClientScanRequest
 	 */
-	function getScanRequest();
-	
+	public function getScanRequest() {
+		return new TingClientScanRequest($this->urls['scan']);
+	}
+
 	/**
 	 * @return TingClientCollectionRequest
 	 */
-	function getCollectionRequest();
-	
+	public function getCollectionRequest() {
+		return new TingClientCollectionRequest($this->urls['collection']);
+	}
+
 	/**
 	 * @return TingClientObjectRequest
 	 */
-	function getObjectRequest();
-	
+	public function getObjectRequest() {
+		return new TingClientObjectRequest($this->urls['object']);
+	}
+
 	/**
 	 * @return TingClientSpellRequest
 	 */
-	function getSpellRequest();
-	
+	public function getSpellRequest() {
+		return new TingClientSpellRequest($this->urls['spell']);
+	}
+
 	/**
 	 * @return TingClientObjectRecommendationRequest
 	 */
-	function getObjectRecommendationRequest();
-	
+	function getObjectRecommendationRequest() {
+		return new TingClientObjectRecommendationRequest($this->urls['recommendation']);
+	}
 }
+
