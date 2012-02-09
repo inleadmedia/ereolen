@@ -14,6 +14,8 @@
             html += '<p>' + Drupal.t('Please provide a username used in your reviews.') + '</p>';
             html += '<br />';
             html += '<p><input type="text" name="alias-name" value="" /></p>';
+            html += '<br />';
+            html += '<p><input type="checkbox" id="voxb-terms" class="voxb-terms" /><label for="voxb-terms">' + Drupal.t('I accept to provide my certain credentials to 3-rd party services, such as VoxB.') + '</label></p>';
             html += '</div>';
             $('body').append(html);
 
@@ -35,25 +37,11 @@
 
     create_user = function(alias_name) {
       $('#voxb-user-create-message').remove();
-      
-      if (alias_name != '') {
-        $.ajax({
-          async: false,
-          type: 'post',
-          url: '/voxb/ajax/user/create',
-          data: { 'alias_name' : alias_name },
-          dataType: 'json',
-          success: function(msg) {
-            if (msg.status) {
-              $('#voxb-user-create').dialog('close');
-            }
-          }
-        });
-      }
-      else {
-        var html = '<div id="voxb-user-create-message" style="text-align: center;"><p>' + Drupal.t('Please, fill in a name.') + '</p></div>';
-        $('body').append(html);
 
+      if ($('#voxb-terms:checked').length == 0) {
+        var html = '<div id="voxb-user-create-message" style="text-align: center;"><p>' + Drupal.t('Please, accept the terms is you wish to continue.') + '</p></div>';
+        $('body').append(html);
+        
         $('#voxb-user-create-message').dialog({
           title : Drupal.t('Error'),
           modal : true,
@@ -66,6 +54,39 @@
           }
         });
       }
+      else {
+        if (alias_name != '') {
+          $.ajax({
+            async: false,
+            type: 'post',
+            url: '/voxb/ajax/user/create',
+            data: { 'alias_name' : alias_name },
+            dataType: 'json',
+            success: function(msg) {
+              if (msg.status) {
+                $('#voxb-user-create').dialog('close');
+              }
+            }
+          });
+        }
+        else {
+          var html = '<div id="voxb-user-create-message" style="text-align: center;"><p>' + Drupal.t('Please, fill in a name.') + '</p></div>';
+          $('body').append(html);
+
+          $('#voxb-user-create-message').dialog({
+            title : Drupal.t('Error'),
+            modal : true,
+            width: 'auto',
+            height: 'auto',
+            buttons: {
+              "OK" : function() {
+                $(this).dialog('close');
+              }
+            }
+          });
+        }
+      }
     }
+
   });
 })(jQuery);

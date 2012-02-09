@@ -3,6 +3,10 @@
  * @file
  *
  * Template for reviews pager.
+ *
+ * @todo An template file should not be one big PHP statement, think that this
+ *   should be rewrite. Maybe some of the calculation should be moved to
+ *   a preprocess function.
  */
 
 $pages = ceil($data['count'] / variable_get('voxb_reviews_per_page', VOXB_REVIEWS_PER_PAGE));
