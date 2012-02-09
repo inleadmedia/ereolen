@@ -1,6 +1,10 @@
 VoxB module
 ==========
 
+### Version 1.1:
+
+* New: Render the different elements (tag, rating, review) through ting object.
+
 ### Version 1.0:
 
 * Hotfixes.
@@ -26,4 +30,4 @@ VoxB module
 [ding_popup]: https://github.com/ding2/ding_popup
 [js_compatibility]: http://drupal.org/node/224333#javascript_compatibility
 [drupal_set_session]: http://drupal.org/node/224333#drupal_set_session
-[updateMyRequest]: https://voxb.addi.dk/1.0/doc/voxb.html#Link51
+[updateMyRequest]: https://voxb.addi.dk/1.0/doc/voxb.html#Link51 

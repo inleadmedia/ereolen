@@ -15,11 +15,13 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
     $element.find('ul,ol').html(result.result_html);
     Drupal.tingSearch.updateSummary($('#ting-search-summary'), result);
 
+    $('.display-book:last').addClass('last');
+
     // If possible, look up availability from Alma.
     if (Drupal.hasOwnProperty('almaAvailability')) {
       Drupal.almaAvailability.id_list = result.alma_ids;
       Drupal.almaAvailability.get_availability(function (data, textStatus) {
-        if (!data) { return; }
+        if (!data) {return;}
         var $list = $element.find('ul.ting-search-collection-types');
 
         // For each Alma ID, find the associated type indicators and set
@@ -54,37 +56,52 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
     if (morePages || currentPage > 1) {
       $pager = $(Drupal.settings.tingResult.pagerTemplate);
 
-      // If we're on the first page, remove the previous  and first page
-      // links from the template.
-      if (currentPage < 2) {
-        $pager.find('a.prev').parent().remove();
-        $pager.find('a.first').parent().remove();
-      }
+      // Update pager
+      var pages = Math.ceil(result.count / result.resultsPerPage);
+      $pager.find('.nav-placeholder').each(function(i, e) {
+        var page = i + 1;
 
-      // If there's no more pages, remove the next link.
-      if (!morePages) {
-        $pager.find('a.next').parent().remove();
-      }
+        if (currentPage > 3 && currentPage <= (pages - 3)) {
+          page += currentPage - 3;
+        }
+        else if (currentPage > (pages - 3)) {
+          page += pages - 5;
+        }
+        
+        var link = $(this).find('a');
+
+        if (page > 0 && page <= pages) {
+          link.html((currentPage == page) ? '[' + page + ']' : page).attr('href', '#page=' + page);
+        } else {
+          link.parent().css({'display': 'none'});
+        }
+      });
+
+      $($pager).find('.nav-placeholder a').click(function() {
+        var page = $(this).attr('href').split('=');
+        $('#ting-search-spinner').show();
+        Drupal.updatePageUrl(page[1]);
+        Drupal.doUrlSearch(facetBrowserElement, searchResultElement);
+        $.scrollTo('#ting-search-results', 500);
+        return false;
+      });
 
       pageNumberClasses = {
         '.first': 1,
-        '.prev': currentPage - 1,
-        '.next': currentPage + 1
+        '.prev': (currentPage > 1) ? currentPage - 1 : 1,
+        '.next': (currentPage < pages) ? currentPage + 1 : pages,
+        '.last': pages
       };
 
       $.each(pageNumberClasses, function(i, e) {
         var page = pageNumberClasses[i];
         $pager.find(i).click(function() {
+          $('#ting-search-spinner').show();
           Drupal.updatePageUrl(page);
           Drupal.doUrlSearch(facetBrowserElement, searchResultElement);
+          $.scrollTo('#ting-search-results', 500);
           return false;
         });
-      });
-
-      $($pager).find('ul a').click(function() {
-        Drupal.updatePageUrl($(this).text());
-        Drupal.doUrlSearch(facetBrowserElement, searchResultElement);
-        return false;
       });
 
       // Kasper: What is the purpose of this?
@@ -110,7 +127,7 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
 
       $.getJSON(Drupal.settings.tingSearch.ting_url, vars, function(data) {
         //Update tabs now that we have the result
-        Drupal.tingSearch.summary.ting = { count: data.count, page: data.page };
+        Drupal.tingSearch.summary.ting = {count: data.count, page: data.page};
         Drupal.tingSearch.updateTabs('ting');
 
         //Update search result and facet browser
@@ -119,6 +136,9 @@ Drupal.tingResult = function (searchResultElement, facetBrowserElement, result) 
         //Drupal.updateFacetBrowser(Drupal.facetBrowserElement, data);
         Drupal.bindSelectEvent(Drupal.facetBrowserElement, searchResultElement);
         Drupal.updateSelectedFacetsFromUrl(Drupal.facetBrowserElement);
+
+        $('#ting-search-spinner').hide();
+        
       });
   };
 

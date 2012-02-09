@@ -6,5 +6,5 @@
  */
 ?>
 <div class="ebog-download-error">
-  <p><?php echo $data['message']; ?></p>
+  <p><?php print $data['message']; ?></p>
 </div>
