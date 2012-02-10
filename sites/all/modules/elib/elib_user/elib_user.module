@@ -123,7 +123,7 @@ if ($op == 'list') {
 
     if ($loans->orderitem) {
       foreach ($loans->orderitem as $book) {
-        $object = ting_get_object_by_isbn(trim($book->book->attributes()->id));
+        $object = elib_get_ting_object_by_isbn(trim($book->book->attributes()->id));
         $bookdisplay[elib_str_to_time((string)$book->loanexpiredate[0], TRUE)] = elib_displaybook($object,$book);
       }
 
