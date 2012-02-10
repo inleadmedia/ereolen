@@ -987,6 +987,16 @@ function elib_init_cover_path($isbn) {
   return 'elib/covers/' . md5($isbn) . '.jpg';
 }
 
+/**
+ * Fetch single ting object by isbn.
+ *
+ * @param String $isbn
+ *   Item isbn number.
+ * @param Boolean $enrich
+ *   Whether to add additional info to the response.
+ * @return Object
+ *   Ting item object
+ */
 function elib_get_ting_object_by_isbn($isbn, $enrich = FALSE) {
   $request = ting_get_request_factory()->getSearchRequest();
   $request->setQuery('(dc.identifier=' . $isbn . ')');
