@@ -52,6 +52,11 @@
   float: left;
 }
 
+.voxb-terms {
+  margin: 1px 3px 0 0;
+  float: left;
+}
+
 .voxb .tagsContainer .form-item {
   margin: 0;
   margin-right: 1em;

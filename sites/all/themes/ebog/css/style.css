@@ -443,7 +443,8 @@ h1#page-title.title,
 }
 
 .display-book,
-.view-anmeldelser .views-row {
+.view-anmeldelser .views-row,
+.view-user-reviews .views-row {
   display: inline-block;
   zoom: 1; /* ie7 hack for display:inline-block */
   *display: inline;
@@ -457,7 +458,8 @@ h1#page-title.title,
 
 .display-book:first-child,
 .view-anmeldelser .views-row-first,
-.pane-elib-user-account .pane-content .display-book.biglist:first-child {
+.pane-elib-user-account .pane-content .display-book.biglist:first-child,
+.view-user-reviews .views-row-first {
   padding-top: 0;
 }
 
@@ -567,13 +569,16 @@ h1#page-title.title,
 }
 
 #voxb textarea,
-#user-login .form-item input {
+#user-login .form-item input,
+#comment-form textarea,
+#comment-form input {
   width: 500px;
   border: 1px solid #DBDDDA;
 }
 
 #voxb input[type="submit"],
-#user-login input#edit-submit {
+#user-login input#edit-submit,
+#comment-form input[type="submit"] {
   float: right;
   width: auto;
   line-height: 100%;
@@ -596,7 +601,8 @@ h1#page-title.title,
   width: 500px;
 }
 
-#user-login .form-item input {
+#user-login .form-item input,
+#comment-form #edit-elib-username-wrapper input {
   width: 490px;
   padding: 4px;
 }
@@ -607,7 +613,8 @@ h1#page-title.title,
 }
 
 #user-login #edit-name-wrapper label,
-#user-login #edit-pass-wrapper label {
+#user-login #edit-pass-wrapper label,
+#comment-form label {
   color: #8C938B;
 }
 

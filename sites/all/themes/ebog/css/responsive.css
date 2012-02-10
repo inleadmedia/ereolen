@@ -199,6 +199,7 @@
     height: 32px;
     float: left;
     background: none;
+    margin: 0;
   }
 
   #site-menu ul.menu li a {
@@ -372,5 +373,9 @@
     position: inherit;
     clear: both;
     float: left;
+  }
+
+  #ting-object h1.book-title {
+    width: 100%;
   }
 }
