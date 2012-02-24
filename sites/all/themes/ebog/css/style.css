@@ -78,7 +78,8 @@ div.messages.error {
 .panel-pane.pane-embedvideo .pane-content,
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
-.pane-elib-block-lastloans-2 .pane-content {
+.pane-elib-block-lastloans-2 .pane-content,
+.pane-node-content .pane-content {
   border-bottom: 0;
 }
 
