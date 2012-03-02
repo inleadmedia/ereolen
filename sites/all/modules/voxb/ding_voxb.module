@@ -134,6 +134,7 @@ function ding_voxb_menu() {
  * @global $user
  *   Logged in user.
  */
+
 function ding_voxb_user_login() {
   require_once VOXB_PATH . '/lib/VoxbLogin.class.php';
   global $user;
