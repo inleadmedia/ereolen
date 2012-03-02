@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file object_id.inc
@@ -44,7 +43,7 @@ function ting_object_id_context($arg = NULL, $conf = NULL, $empty = FALSE) {
   }
 
   module_load_include('client.inc', 'ting');
-  $object = ting_get_object_by_id($arg, FALSE);
+  $object = ting_get_object_by_id($arg, TRUE);
   if (!($object instanceOf TingClientObject)) {
     return FALSE;
   }

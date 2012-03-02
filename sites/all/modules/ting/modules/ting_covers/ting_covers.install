@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file ting_covers.install
@@ -10,7 +9,6 @@
  * Implementation of hook_install().
  */
 function ting_covers_install() {
-  
 	//recursively generate the necessary subdirectories as calls to file_create_path fails for files 
 	//in noexistant subdirectories of files and file_check_directory can not create directories recursively
 	foreach(ting_covers_paths() as $path)

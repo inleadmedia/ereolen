@@ -7,8 +7,10 @@
  */
 
 module_load_include('isbn_static_func.inc', 'elib');
-foreach ($collection->objects as $obj){
-	if($obj->type == 'Netdokument') {
+foreach ($collection->objects as $obj) {
+    // @todo
+    // Skip elib check
+	if(TRUE/*$obj->type == 'Netdokument'*/) {
 		$netObj = $obj;
 
   $isbn = convertToEAN($obj->record['dc:identifier']['dkdcplus:ISBN'][0]);

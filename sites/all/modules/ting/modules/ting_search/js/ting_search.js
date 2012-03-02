@@ -1,4 +1,3 @@
-/* $Id$ */
 
 /**
  * @file ting_search.js
@@ -40,6 +39,7 @@ Drupal.tingSearch = {
 Drupal.tingSearch.getTingData = function(url, keys) {
   var vars = Drupal.getAnchorVars();
   vars.query = keys;
+
   $.getJSON(url, vars, function (result) {
     if (result.count > 0) {
       Drupal.tingSearch.summary.ting = { count: result.count, page: result.page };
@@ -50,11 +50,10 @@ Drupal.tingSearch.getTingData = function(url, keys) {
 
       // Pass the data on to the result and facet browser handlers.
       Drupal.tingResult("#ting-search-result", "#ting-facet-browser", result);
-//      Drupal.tingFacetBrowser("#ting-facet-browser", "#ting-search-result", result);
+      Drupal.tingFacetBrowser("#ting-facet-browser", "#ting-search-result", result);
     }
     else {
-//      Drupal.tingSearch.summary.ting = { count: 0, page: 0 };
-      location.href = '/nulsoegning/'+vars.query;
+      Drupal.tingSearch.summary.ting = { count: 0, page: 0 };
     }
     Drupal.tingSearch.updateTabs("ting");
   });
@@ -79,6 +78,15 @@ Drupal.tingSearch.getContentData = function(url, keys, show) {
 
     if (data.count) {
       $("#content-search-result").html(Drupal.tingSearch.contentData.result_html);
+      if (data.feed_icon) {
+        if ($("#content-search-result .feed_icon").size() > 0) {
+          $("#content-search-result .feed_icon").replaceWith(data.feed_icon);
+        }
+        else {
+          $("#content-search-result").append(data.feed_icon);
+        }
+      }
+
       // Redo the click event bindings for the contentPager, since we'll
       // have a new pager from the result HTML.
       Drupal.tingSearch.contentPager();
@@ -86,7 +94,17 @@ Drupal.tingSearch.getContentData = function(url, keys, show) {
 
       // If the show parameter is specified, show our results.
       if (show) {
-        $("#content-result").show("fast");
+
+        $("#content-result").show("fast", function() {
+          //jQuery.show adds style="display:block" after transition.
+          //This conflicts with jQuery.tabs as it overrides styles from
+          //classes and makes content results appear in other tabs even
+          //if that tab is not selected.
+          //Strip the entire style attribute to fix.
+          //Note: This may cause problems if other code adds inline styles
+          //without causing problems
+          $(this).removeAttr('style');
+        });
       }
     }
   });

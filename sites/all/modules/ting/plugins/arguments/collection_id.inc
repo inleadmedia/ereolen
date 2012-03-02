@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file collection_id.inc
@@ -44,7 +43,7 @@ function ting_collection_id_context($arg = NULL, $conf = NULL, $empty = FALSE) {
   }
 
   module_load_include('client.inc', 'ting');
-  $collection = ting_get_collection_by_id($arg, FALSE);
+  $collection = ting_get_collection_by_id($arg, TRUE);
   if (!($collection instanceOf TingClientObjectCollection) || empty($collection->objects)) {
     return FALSE;
   }

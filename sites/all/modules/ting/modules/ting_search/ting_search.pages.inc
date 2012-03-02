@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * Search result page.
@@ -8,6 +7,7 @@ function ting_search_pages_redirect() {
   if (isset($_POST['keys'])) {
     return drupal_goto('ting/search/' . $_POST['keys']);
   }
+
   $keys = search_get_keys();
   if (strlen($keys) > 0) {
     // Redirect to the new Panels based search.
@@ -17,30 +17,17 @@ function ting_search_pages_redirect() {
 }
 
 /**
- * Redirect to object view based on local ID (used by bibliotek.dk).
- */
-function ting_search_pages_object_redirect($local_id) {
-  module_load_include('client.inc', 'ting');
-
-  $object = ting_get_object_by_local_id($local_id);
-  if (!$object) {
-    return drupal_not_found();
-  }
-  drupal_goto($object->url);
-}
-
-/**
  * JSON callback to search Ting.
  */
 function ting_search_pages_ting_js() {
   module_load_include('client.inc', 'ting');
-  
+
   //Get users base query
   $query = $_REQUEST['query'];
   if (!$query) {
     return drupal_not_found();
   }
-  
+
   //Wrap base query
   $query = '('.$query.')';
 
@@ -59,13 +46,8 @@ function ting_search_pages_ting_js() {
     $query .= ' AND '.implode(' AND ', $facetArray);
   }
 
-  $options = array(
-    'allObjects' => TRUE,
-  );
-
-  if (isset($_GET['sort'])) {
-    $options['sort'] = $_GET['sort'];
-  }
+  //Set sort method
+  $options['sort'] = (isset($_GET['sort'])) ? $_GET['sort'] : NULL;
 
   try {
     $page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
@@ -79,14 +61,17 @@ function ting_search_pages_ting_js() {
       'collectionCount' => (integer) $searchResult->numTotalCollections,
       'result_html' => '',
       'facets' => $searchResult->facets,
-      'alma_ids' => array(),
+      'local_ids' => array(),
+      'feed_icon' => theme('feed_icon', url('ting/search/feed/' . $_REQUEST['query'])),
     );
 
-    foreach ($searchResult->collections as &$collection) {
-      $result['result_html'] .= theme('ting_search_collection', $collection);
+    if (isset($searchResult->collections)) {
+      foreach ($searchResult->collections as &$collection) {
+        $result['result_html'] .= theme('ting_search_collection', $collection);
 
-      foreach ($collection->objects as $object) {
-        $result['alma_ids'][] = $object->localId;
+        foreach ($collection->objects as $object) {
+          $result['local_ids'][] = $object->localId;
+        }
       }
     }
   }
@@ -113,7 +98,11 @@ function ting_search_pages_content_js() {
     $element = 0;
     $query = trim($_REQUEST['query']);
 
-    $search_result = do_search($query, 'node');
+    // Stolen from node_search(). Needed to respect access and status.
+    list($join1, $where1) = _db_rewrite_sql();
+    $arguments1 = array();
+    $conditions1 = 'n.status = 1';
+    $search_result = do_search($query, 'node', 'INNER JOIN {node} n ON n.nid = i.sid' . $join1, $conditions1 . (empty($where1) ? '' : ' AND '. $where1), $arguments1);
 
     $result = array(
       // do_search() calls pager_query() that populates these globals.
@@ -122,6 +111,8 @@ function ting_search_pages_content_js() {
       'page' => $search_result ? $GLOBALS['pager_page_array'][$element] + 1 : 0,
       'resultsPerPage' => $max_results,
       'result_html' => '',
+      'feed_icon' => theme('feed_icon', url('ting/search/content/feed/' . $_REQUEST['query'])),
+
     );
     foreach ($search_result as $item) {
       if ($item->type == 'node') {
@@ -133,6 +124,11 @@ function ting_search_pages_content_js() {
       $result['result_html'] .= theme('pager', NULL, $max_results, $element);
     }
   }
+
+  // Kill any messages set during searching. As the result is returned as
+  // JSON they will not be shown in the current context. Chances are
+  // they will not be relevant in the subsequent page view.
+  drupal_get_messages(NULL, true);
 
   drupal_json($result);
   exit;

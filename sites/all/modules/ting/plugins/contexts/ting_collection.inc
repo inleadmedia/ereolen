@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * @file ting_collection.inc
@@ -20,7 +19,7 @@ function ting_ting_collection_ctools_contexts() {
     'keyword' => 'ting_collection',
     'context name' => 'ting_collection',
     'convert list' => 'ting_ting_collection_convert_list',
-    'convert' => 'ting_ting_collection_convert', 
+    'convert' => 'ting_ting_collection_convert',
     'placeholder form' => array(
       '#type' => 'textfield',
       '#description' => t('Enter the collection ID for this context'),
@@ -45,7 +44,7 @@ function ting_ting_collection_create($empty, $data = NULL, $conf = FALSE) {
     $collection_id = is_array($data) && isset($data['object_id']) ? $data['object_id'] : (is_object($data) ? $data->id : 0);
 
     module_load_include('client.inc', 'ting');
-    $data = ting_get_collection_by_id($collection_id);
+    $data = ting_get_collection_by_id($collection_id, TRUE);
   }
 
   if (!empty($data)) {
