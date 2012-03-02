@@ -85,7 +85,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
 		    
 		    
 		    foreach($response as $isbn){
-		      $out .= elib_displaybookNEW(ting_get_object_by_isbn($isbn),'','small'); 
+		      $out .= elib_displaybookNEW(elib_get_ting_object_by_isbn($isbn),'','small');
 		    }
 		    $block['subject'] = t('Seneste Lån');	
     		break;
@@ -103,7 +103,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
 	    		  
 	    		  //krumo(array($isbn,$title));
 	    		  
-	    		  if(ting_get_object_by_isbn($isbn)){
+	    		  if(elib_get_ting_object_by_isbn($isbn)){
 	    		    $toplist[] = $isbn;
 	    		  //  krumo('hurray'.$isbn);
 	    		  }
@@ -113,7 +113,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
 	    		}
 	    		if(is_array($toplist)){  
   	    		foreach($toplist as $isbn){
-  	    		 	$out .= elib_displaybookNEW(ting_get_object_by_isbn($isbn),'','small'); 
+  	    		 	$out .= elib_displaybookNEW(elib_get_ting_object_by_isbn($isbn),'','small');
   	    		}
 	    		}
     		  $block['subject'] = t('Nyeste bøger');
@@ -134,8 +134,8 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
 
             foreach ($response->data->toplistitem as $item) {
               //print $item['ebookid'].'--';
-              if (ting_get_object_by_isbn(trim($item->ebookid))) {
-                $out .= elib_displaybookNEW(ting_get_object_by_isbn(trim($item->ebookid)), array('popular' => 1), 'small', $index, $item);
+              if (elib_get_ting_object_by_isbn(trim($item->ebookid))) {
+                $out .= elib_displaybookNEW(elib_get_ting_object_by_isbn(trim($item->ebookid)), array('popular' => 1), 'small', $index, $item);
                 $index++;
               }
             }
@@ -229,7 +229,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
               }
               
               $isbn = trim($item->ebookid);
-              $ting_object = ting_get_object_by_isbn($isbn);
+              $ting_object = elib_get_ting_object_by_isbn($isbn);
               if ($ting_object) {
                 $out[$pages] .= theme('elib_item', array(
                     'ting_obj' => $ting_object,
