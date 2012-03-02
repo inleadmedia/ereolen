@@ -78,7 +78,8 @@ div.messages.error {
 .panel-pane.pane-embedvideo .pane-content,
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
-.pane-elib-block-lastloans-2 .pane-content {
+.pane-elib-block-lastloans-2 .pane-content,
+.pane-node-content .pane-content {
   border-bottom: 0;
 }
 
@@ -133,7 +134,8 @@ h1#page-title.title,
 .panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 h2.pane-title,
 #ting-search-results #ting-search-summary,
 .pane-netsound-0 h2.pane-title,
-.pane-elib-block-lastloans-6 h2.pane-title {
+.pane-elib-block-lastloans-6 h2.pane-title,
+voxb h3 {
   margin-bottom: 12px;
 }
 
@@ -443,7 +445,8 @@ h1#page-title.title,
 }
 
 .display-book,
-.view-anmeldelser .views-row {
+.view-anmeldelser .views-row,
+.view-user-reviews .views-row {
   display: inline-block;
   zoom: 1; /* ie7 hack for display:inline-block */
   *display: inline;
@@ -457,7 +460,8 @@ h1#page-title.title,
 
 .display-book:first-child,
 .view-anmeldelser .views-row-first,
-.pane-elib-user-account .pane-content .display-book.biglist:first-child {
+.pane-elib-user-account .pane-content .display-book.biglist:first-child,
+.view-user-reviews .views-row-first {
   padding-top: 0;
 }
 
@@ -566,24 +570,27 @@ h1#page-title.title,
   display: block;
 }
 
-#voxb textarea,
-#user-login .form-item input {
+.voxb textarea,
+#user-login .form-item input,
+#comment-form textarea,
+#comment-form input {
   width: 500px;
   border: 1px solid #DBDDDA;
 }
 
-#voxb input[type="submit"],
-#user-login input#edit-submit {
+.voxb input[type="submit"],
+#user-login input#edit-submit,
+#comment-form input[type="submit"] {
   float: right;
   width: auto;
   line-height: 100%;
 }
 
-#voxb .voxbReview {
+.voxb .voxbReview {
   margin-bottom: 20px;
 }
 
-#voxb .voxbReview .views-field-uid {
+.voxb .voxbReview .views-field-uid {
   font-weight: bold;
   text-transform: capitalize;
   font-style: normal;
@@ -596,7 +603,8 @@ h1#page-title.title,
   width: 500px;
 }
 
-#user-login .form-item input {
+#user-login .form-item input,
+#comment-form #edit-elib-username-wrapper input {
   width: 490px;
   padding: 4px;
 }
@@ -607,7 +615,8 @@ h1#page-title.title,
 }
 
 #user-login #edit-name-wrapper label,
-#user-login #edit-pass-wrapper label {
+#user-login #edit-pass-wrapper label,
+#comment-form label {
   color: #8C938B;
 }
 
@@ -766,7 +775,7 @@ div.messages,
 .display-book .icons .icons,
 #ting-object .inner .icons,
 #ting-search-result .record .icons,
-#voxb textarea,
+.voxb textarea,
 #user-login .form-item input,
 .section-faq div.panel-pane.pane-contact,
 #ting-search-form input.form-submit {
@@ -885,4 +894,14 @@ input[type=submit]:hover {
 
 .view-latest-news .views-field-created {
   margin: 0 0 5px 0;
+}
+
+.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 .views-field-created {
+  display: none;
+}
+
+.panel-pane.pane-views-panes.pane-user-reviews-panel-pane-1 .views-field-uid a {
+  text-decoration: none;
+  color: #000000;
+  font-style: italic;
 }

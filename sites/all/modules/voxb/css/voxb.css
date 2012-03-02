@@ -73,3 +73,7 @@
 .voxb .resizable-textarea {
   width: 98%;
 }
+
+.voxb .addReviewContainer {
+  clear: both;
+}
