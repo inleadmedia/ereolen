@@ -551,7 +551,16 @@ function ting_add_relations($request, $type = 'full') {
 }
 
 function ting_get_object_by_isbn($isbn, $enrich = FALSE) {
-        
+  var_dump($isbn);
+  $request = ting_get_request_factory()->getSearchRequest();
+  $request->setQuery('(dc.identifier=9788702124620)');
+  $request->setNumResults(10);
 
+  // Add agency and profile
+  $request = ting_add_agency($request);
+  $request = ting_add_profile($request);
+
+  $r = ting_execute($request);
+  //var_dump($r);
   return FALSE;
 }
