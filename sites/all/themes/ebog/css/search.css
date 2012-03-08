@@ -26,7 +26,8 @@
   border-bottom: 2px solid #DBDDDA;
 }
 
-.display-book.last {
+.display-book.last,
+.view-user-reviews .views-row-last {
   border: none !important;
   padding-bottom: 0 !important;
 }
@@ -94,4 +95,8 @@
 #ting-result #ting-sort-by {
   float: right;
   margin-bottom: 15px;
+}
+
+.feed-icon {
+  display: none;
 }
