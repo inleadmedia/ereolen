@@ -3,6 +3,7 @@
 $path = drupal_get_path('module', 'ting') . '/lib/';
 require_once($path . 'ting-client/lib/request/TingClientSearchRequest.php');
 require_once($path . 'ting-client/lib/request/TingClientObjectRequest.php');
+require_once($path . 'ting-client/lib/request/TingClientObjectRecommendationRequest.php');
 
 class TingClientRequestFactory {
 	public function __construct($urls) {

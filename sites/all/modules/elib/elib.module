@@ -1,5 +1,8 @@
 <?php 
 
+define('PLATFORM_GENERIC', 1);
+define('PLATFORM_IOS', 2);
+
 function elib_menu() {
   $path  = drupal_get_path('module', 'elib') . '/includes';
   $items = array();
@@ -215,7 +218,7 @@ function elib_get_lydbog($tingObjectID,$format){
 	}*/
 	if($alreadyloaned){
 		
-		$pretext = '<h1>Din ebog afspilles nu nedenfor</h1>';
+    $pretext = '<h1>Din lydbog afspilles nu nedenfor</h1>';
 		$src = $response->data->downloadurl;
 		if($format != 'stream'){
 			
@@ -225,7 +228,7 @@ function elib_get_lydbog($tingObjectID,$format){
 			  // ok ready for download
 			  $src = $filesrc;
         global $base_root;
-      	$pretext = '<h1>Vi er ved at generere din ebog.<br/> Vent venligst...</h1><div class="loader"></div><p>Vi er ved at pakke din ebog til en fil</p><p>Problemer med download? Hent filen via <a href="'.$src.'">direkte link</a><p>Når du har gemt filen, tryk næste</p>'.l('Næste',$base_root.request_uri(),array('query'=> 'downloaded=1','attributes' => array('class' => 'nextknap knap')));
+        $pretext = '<h1>Vi er ved at generere din lydbog.<br/> Vent venligst...</h1><div class="loader"></div><p>Vi er ved at pakke din lydbog til en fil</p><p>Problemer med download? Hent filen via <a href="'.$src.'">direkte link</a><p>Når du har gemt filen, tryk næste</p>'.l('Næste',$base_root.request_uri(),array('query'=> 'downloaded=1','attributes' => array('class' => 'nextknap knap')));
 			  
 			}
 			else
@@ -248,15 +251,16 @@ function elib_get_lydbog($tingObjectID,$format){
              array('@message' => $src, '@response' => var_export($response,true)
                    , WATCHDOG_DEBUG));
 
+    $content = $pretext;
 
+    $platform = elib_check_platform();
 
-
-	
-		$content = $pretext;
-		
+    if ($platform == PLATFORM_GENERIC) {
     $content .= '<iframe src="'.$src.'" class="audioplayer-'.$format.'" frameborder="0" scrolling="no"></iframe>';
+    } elseif($platform == PLATFORM_IOS) {
+      $content .= t('<p>You are running iOS. We currently do not have a iOS stream for this item.</p>');
 	}
-	else{
+  } else {
 		
 	  $loaned = $nob;
     $max = elib_libraries_get_maxloans($userinfo['lib'])-$nob;
@@ -274,7 +278,7 @@ function elib_get_lydbog($tingObjectID,$format){
       
       $content  = t('<h1>Max grænse for lån opnået</h1>');
       $content .= t("<p>Du har allerede lånt %books og har derfor nået dit maximum</p><p>Læs mere om <a href='!link' target='_top'>antal af lån</a> om måneden</p>",array('%books' => format_plural($nob, 'en bog', '@count bøger'),'!link' => '/node/5175'));
-      $content .= t('<p>Du kan låne en ebog igen om</p><div class="timeleft"> %dage og %time</div>', array('%dage' => format_plural($days, 'en dag', '@count dage'),'%time' => format_plural($hours, 'en time', '@count timer')));
+      $content .= t('<p>Du kan låne en lydbog igen om</p><div class="timeleft"> %dage og %time</div>', array('%dage' => format_plural($days, 'en dag', '@count dage'),'%time' => format_plural($hours, 'en time', '@count timer')));
       $content .= '<p>'.netsound_cart_add_link($tingObjectID).'</p>';
       
 			
@@ -330,7 +334,13 @@ function elib_get_lydbog($tingObjectID,$format){
       }
       
         $content = $pretext;
+        $platform = elib_check_platform();
+
+        if ($platform == PLATFORM_GENERIC) {
 			 $content .= '<iframe src="'.$src.'" class="audioplayer-'.$format.'" scrolling="no"></iframe>';
+        } elseif($platform == PLATFORM_IOS) {
+          $content .= '<h4>You are running iOS.</h4>';
+        }
 			}
 			
 			
@@ -524,12 +534,8 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
         $out[] = '
       <div class="icons">
         <div class="icons">
-          <ul>';
-          //  if ($NotReloanable) {
-          //    $out[] = '
-          //      <li>' . l(t('Download'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          //    ';
-          //  }
+          <ul>
+          ';
             if (($Reloanable) || ($ExpiredButReloanable)) {
               $out[] = '
                 <li class="seperator"></li>
@@ -599,7 +605,7 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   if($displaysize == 'review'){
   	
   	$u = elib_user_get_cred($elib[1]);
-  	$part['text'] = '<div class="spacing-before" style="text-transform:uppercase;">Anmelder</div><div>'.$u['user'].'</div><div class="text"  style="margin-left:80px;"><p class="spacing-before">'.truncate_utf8($elib[0],400,true,true).' '.l('LÆS MERE →',$obj->url).'</p>';
+    $part['text'] = '<div class="clearfix"></div><div class="text">'.truncate_utf8($elib[0],400,true,true).' '.l('LÆS MERE →',$obj->url).'</div>';
   	
   	$part['icons'] = '
       <div class="icons">
@@ -645,7 +651,7 @@ function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1
   	return '
       <div class="display-book '.$displaysize.' line">'.
         $part['picture'].
-        '<div class="main size1of2">'.
+        '<div class="right">'.
         $part['loginexpire'].
         $part['title'].
         $part['author'].
@@ -795,7 +801,7 @@ function elib_displaybook2(TingClientObject $obj,$fields,$settings='',$displaysi
     
     $u = elib_user_get_cred($elib[1]);
     
-    $part['text'] = '<div class="spacing-before" style="text-transform:uppercase;">Anmelder</div><div>'.$u['user'].'</div><div class="text"  style="margin-left:80px;"><p class="spacing-before">'.truncate_utf8($elib[0],400,true,true).' '.l('LÆS MERE →',$obj->url).'</p>';
+    $part['text'] = '<div class="clearfix"></div><div class="text">'.truncate_utf8($elib[0],400,true,true).'</div>';
     $part['icons'] = '
       <div class="iconsnoheight">
         <ul>
@@ -863,7 +869,11 @@ function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
     return;
   }
 
-  if (!empty($book->data->product->teaser->link)) {
+  $teasersamplelink = $book->data->product->teaser->link;
+
+  if (!empty($teasersamplelink)) {
+    // change to an https link
+    $teasersamplelink = str_replace("http://","https://",$teasersamplelink);
 
     $javascript = '
       AudioPlayer.setup("' . url(drupal_get_path('theme', 'netsound2') . '/js/audio-player/player.swf', array('absolute' => TRUE)) .'", {
@@ -879,12 +889,15 @@ function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
     ';
 
     $title = $is_ajax ? 'Du lytter nu til en smagsprøve på bogen:<br />- ' . $book->data->product->title : 'Hør smagsprøve';
+    $html = '';
+    $platform = elib_check_platform();
+    if ($platform == PLATFORM_GENERIC) {
     $html = '
       <h4>'.$title.'</h4>
-      <div id="audio-player">Da din browser ikke understøtter flash kan vi ikke afspille smagsprøven for dig, men du kan downloade det ' .l('her', $book->data->product->teaser->link) . ' og selv afspille det på din computer.</div>
+        <div id="audio-player">Da din browser ikke understøtter flash kan vi ikke afspille smagsprøven for dig, men du kan downloade det ' .l('her', $teasersamplelink) . ' og selv afspille det på din computer.</div>
       <script type="text/javascript">
         AudioPlayer.embed("audio-player", {
-          soundFile: "' . $book->data->product->teaser->link . '",
+            soundFile: "' . $teasersamplelink . '",
           titles: "' . $book->data->product->title . '",
           artists: "' . $book->data->product->contributors->contributor[0]->first_name . ' ' . $book->data->product->contributors->contributor[0]->family_name . '"
         });
@@ -904,6 +917,16 @@ function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
 
     drupal_add_js('sites/all/themes/netsound2/js/audio-player/audio-player.js');
     drupal_add_js($javascript, 'inline');
+    }
+    elseif ($platform == PLATFORM_IOS) {
+      $html = '
+        <h4> ' . $title . ' </h4>
+        <iframe src="' . $book->data->product->teaser->link . '" style="display: none;"></iframe>';
+
+      if ($is_ajax) {
+        die($html);
+      }
+    }
 
     return $html;
   }
@@ -933,10 +956,11 @@ function elib_book_cover($isbn, $presetname) {
       $book = $c->getBook($isbn);
     } catch (Exception $e) { }
     // store cover from elib in drupal
-    if ((string)$book->data->coverimage == '') {
+    $cover = (string)$book->data->coverimage;
+    if (empty($cover)) {
       _elib_covers_default_image();
     }
-    $path = _elib_covers_fetch_or_redirect($path, (string)$book->data->coverimage);
+    $path = _elib_covers_fetch_or_redirect($path, $cover);
     return imagecache_create_url($presetname, $path);
   }
 }
@@ -985,6 +1009,23 @@ function _elib_covers_pages_fetch_image($path, $image_url) {
 */
 function elib_init_cover_path($isbn) {
   return 'elib/covers/' . md5($isbn) . '.jpg';
+}
+
+/**
+ * Check for visitor platform.
+ *
+ * @return int
+ *   1 for generic platform, 2 for ios devices.
+ */
+function elib_check_platform() {
+  $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+  if (preg_match('/(iPod)|(iPad)|(iPhone)/i', $user_agent)) {
+    return PLATFORM_IOS;
+  }
+  else {
+    return PLATFORM_GENERIC;
+  }
 }
 
 /**
