@@ -132,7 +132,7 @@ class eLibClient{
    * Function to get the latest loans.
    * @param int $type the type of items to fetch: 1- ebook, 2- audiobook. Defaults to audiobook for test purposes only
    */
-  public function getLatestLoans($type = '2') {
+  public function getLatestLoans($type = '1') {
     
     // We set only the listtype parameter, the other 2 will be inserted
     // automatically when executing the soap call
@@ -155,7 +155,7 @@ class eLibClient{
       }
   	}
   	
-  	return array_slice(array_reverse($ids),0,5);
+  	return array_slice(array_reverse($ids),0,7);
   }
 
   public function makeLoan($ebookid){
