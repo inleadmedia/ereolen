@@ -232,6 +232,14 @@ div#sidebar-first div#block-block-12 .content h3 {
   color: #FFFFFF;
 }
 
+#main-content .icons ul li.deactivated a {
+  color: #677588;
+}
+
+#main-content .icons ul li.deactivated a:hover {
+  color: #FFFFFF;
+}
+
 #sidebar-first #block-elib_block_categories-0 .content .categories-link a:hover,
 .pane-front .bottom-bar .see-more a:hover,
 .pane-embedvideo .bottom-bar .see-more a:hover,

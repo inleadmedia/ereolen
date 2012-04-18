@@ -209,6 +209,10 @@ voxb h3 {
   border: 1px solid #b41a67;
 }
 
+#main-content .icons ul li.deactivated a:hover {
+  background-color: #677588;
+}
+
 .clear-fix {
   clear: both;
 }

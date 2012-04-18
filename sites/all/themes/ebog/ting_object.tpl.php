@@ -185,8 +185,6 @@ if (module_exists('ding_voxb')) {
         <ul>
           <li><?php print l(t('Sample'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
           <li class="seperator"></li>
-          <li><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
-          <li class="seperator"></li>
           <li><?php print l(t('Loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]', 'class' => 'ting-object-loan'))) ?></li>
           <?php 
             if($user->uid){
@@ -196,6 +194,8 @@ if (module_exists('ding_voxb')) {
               print '</li>';
             }
           ?>
+          <li class="seperator"></li>
+          <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
          </ul>
       </div>
       <?php

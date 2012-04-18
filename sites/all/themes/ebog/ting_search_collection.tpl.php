@@ -70,9 +70,9 @@ foreach ($collection->objects as $obj) {
           <ul>
             <li><?php print l(t('Sample'), $Obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
             <li class="seperator"></li>
-            <li><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
-            <li class="seperator"></li>
             <li><?php print l(t('Loan'), $Obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
+            <li class="seperator"></li>
+            <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
           </ul>
         </div>
       </div>
