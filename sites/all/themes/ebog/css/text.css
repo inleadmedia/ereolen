@@ -232,6 +232,35 @@ div#sidebar-first div#block-block-12 .content h3 {
   color: #FFFFFF;
 }
 
+#main-content .icons ul li.deactivated a {
+  color: #FFFFFF;
+  background-color: #677588;
+  padding: 5px 10px 3px 11px;
+
+  -webkit-border-radius-topright: 3px;
+  -webkit-border-radius-bottomright: 3px;
+     -moz-border-radius-topright: 3px;
+     -moz-border-radius-bottomright: 3px;
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+}
+
+#main-content .icons ul li.deactivated a:hover {
+  text-decoration: none;
+  border: none;
+  color: #FFFFFF;
+  background-color: #677588;
+  padding: 5px 10px 3px 11px;
+
+  -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+          box-shadow: none;
+}
+
+#main-content .icons ul li.deactivated {
+  margin: 0;
+}
+
 #sidebar-first #block-elib_block_categories-0 .content .categories-link a:hover,
 .pane-front .bottom-bar .see-more a:hover,
 .pane-embedvideo .bottom-bar .see-more a:hover,
