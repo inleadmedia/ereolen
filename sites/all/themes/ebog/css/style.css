@@ -31,6 +31,14 @@ input[type=submit]:hover {
   line-height: 18px;
 }
 
+.node a {
+  color: #5B6574;
+  text-decoration: none;
+}
+
+.node a:hover {
+  text-decoration: underline;
+}
 /**
  * MESSAGES
  */
