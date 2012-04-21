@@ -464,7 +464,7 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
 
   $out[] = '
       <div class="picture">' . 
-        l(theme('image', $image_url, '', '', null, false), $object->url, array('html' => true)) . '
+        l(theme('image', $image_url, '', '', null, false), $object->record['dc:identifier']["dcterms:URI"][0], array('html' => true)) . '
       </div>
   ';
 
@@ -476,11 +476,10 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
     <div class="right">
   ';
 
-    $out[] = '<h3 class="title">' . 
-      l($object->title, $object->url, array('attributes' => array('class' =>'title'))) . 
+    $out[] = '<h3 class="title">' . l($object->record['dc:title'][''][0], $object->record['dc:identifier']["dcterms:URI"][0], array('attributes' => array('class' =>'title'))) .
     '</h3>';
     $out[] = '<div class="author">' .
-      t('!creator_name', array('!creator_name' => l($object->creators_string,'ting/search/'.$object->creators_string))) .
+      t('!creator_name', array('!creator_name' => l($object->record["dc:creator"]["dkdcplus:aut"][0],'ting/search/'.$object->record["dc:creator"]["dkdcplus:aut"][0]))) .
     '</div>';
     $out[] = '<div class="rating-for-faust"><div class="'.$object->localId.'"></div></div>';
     
@@ -889,28 +888,20 @@ function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
     $html = '
       <h4>'.$title.'</h4>
       <div id="audio-player">Da din browser ikke understøtter flash kan vi ikke afspille smagsprøven for dig, men du kan downloade det ' .l('her', $book->data->product->teaser->link) . ' og selv afspille det på din computer.</div>
-      <script type="text/javascript">
-        AudioPlayer.embed("audio-player", {
-          soundFile: "' . $book->data->product->teaser->link . '",
-          titles: "' . $book->data->product->title . '",
-          artists: "' . $book->data->product->contributors->contributor[0]->first_name . ' ' . $book->data->product->contributors->contributor[0]->family_name . '"
-        });
-      </script>
     ';
 
     if ($is_ajax) {
       $out = '
         <script type="text/javascript" src="/sites/all/themes/netsound2/js/audio-player/audio-player.js"></script>
         <script type="text/javascript">
-        ' . $javascript . '
         </script>
         ' . $html . ''
       ;
       die($out);
     }
 
-    drupal_add_js('sites/all/themes/netsound2/js/audio-player/audio-player.js');
-    drupal_add_js($javascript, 'inline');
+//    drupal_add_js('sites/all/themes/netsound2/js/audio-player/audio-player.js');
+ //   drupal_add_js($javascript, 'inline');
 
     return $html;
   }
