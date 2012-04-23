@@ -917,3 +917,7 @@ input[type=submit]:hover {
   color: #000000;
   font-style: italic;
 }
+
+.panel-region-separator {
+  height: 25px;
+}
