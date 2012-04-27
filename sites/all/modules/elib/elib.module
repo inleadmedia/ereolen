@@ -533,7 +533,7 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
             if (($Reloanable) || ($ExpiredButReloanable)) {
               $out[] = '
                 <li class="seperator"></li>
-                <li>' . l(t('Re-loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>
+                <li>' . l(t('Re-loan'), $item_url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>
               ';
             }
         $out[] = '
