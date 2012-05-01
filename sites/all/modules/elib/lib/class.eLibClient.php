@@ -196,11 +196,15 @@ class eLibClient {
    * @return SimpleXMLElement
    */
   public function getBook($isbn) {
+    // Convert TingClientObject into ISBN.
+    if ($isbn instanceof TingClientObject) {
+      $isbn = isset($isbn->record['dc:identifier']['dkdcplus:ISBN'][0]) ? $isbn->record['dc:identifier']['dkdcplus:ISBN'][0] : '';
+    }
     if (preg_match('/^[0-9]+(X)?$/', $isbn)) {
       $response = $this->soapCall($this->base_url . 'getproduct.asmx?WSDL', 'GetProduct', array('ebookid' => $isbn));
       return simplexml_load_string($response->GetProductResult->any);
     } else {
-      throw new Exception('the isbn need to be int: "' . $isbn . '" send');
+      throw new Exception('The number passed is not an ISBN: "' . $isbn);
     }
   }
 
