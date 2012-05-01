@@ -518,7 +518,6 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
     return;
   }
   // fetch cover from elib
-  elib_book_cover($obj);
   $isbn = convertToEAN($obj->record['dc:identifier']['dkdcplus:ISBN'][0]);
   $obj->url = 'ting/object/' . $obj->id;
 
