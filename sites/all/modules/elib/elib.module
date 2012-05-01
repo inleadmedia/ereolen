@@ -548,7 +548,7 @@ function elib_displaybook(TingClientObject $object,$elib_data = false){
     
 }
 
-function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1, $item){
+function elib_displaybookNEW($obj, $elib='',$displaysize=false, $block_index = 1){
 	if(!is_a($obj,'TingClientObject')){
 		return;
 	}
