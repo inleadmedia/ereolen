@@ -69,10 +69,9 @@ class eLibClient {
       if ($xml->status->code == '101') {
         return true;
       } else {
-        watchdog('elib', 'eLib login: “@message” (code: @code)', array(
-            '@message' => (string) $xml->status->message,
-            '@code' => (string) $xml->status->code
-                ), WATCHDOG_ERROR);
+        $this->doLog('eLib user validate: "@message" (code: @code)', array(
+          '@message' => (string) $xml->status->message,
+          '@code' => (string) $xml->status->code), WATCHDOG_ERROR);
         return false;
       }
     } else {
@@ -161,7 +160,7 @@ class eLibClient {
       $params['format'] = '230';
       $params['mobipocketid'] = '';
 
-      //watchdog('elib', 'eLib SOAP (makeLoan): “@message”', array('@message' => var_export($params,true), WATCHDOG_DEBUG));
+      $this->doLog('eLib (makeLoan): “@message”', array('@message' => var_export($params,true)), WATCHDOG_DEBUG);
       $response = $this->soapCall($this->base_url . 'createloan.asmx?WSDL', 'CreateLoan', $params);
 
       $xml = simplexml_load_string($response->CreateLoanResult->any);
@@ -226,18 +225,34 @@ class eLibClient {
       $request = new SoapClient($wsdl, $this->sc_params);
       $response = $request->$func($params);
       // var_dump($request->__getLastRequest());
-      watchdog('elib', 'eLib soapCall: “@message” [REQUEST]: @request [RESPONSE]: @response', array('@message' => $func . " (" . $wsdl . ")",
-          '@request' => var_export($request->__getLastRequest(), true),
-          '@response' => var_export($request->__getLastResponse(), true)
-          , WATCHDOG_DEBUG));
+      $this->doLog('eLib soapCall: “@message” [REQUEST]: @request [RESPONSE]: @response', array(
+        '@message' => $func . " (" . $wsdl . ")",
+        '@request' => var_export($request->__getLastRequest(), true),
+        '@response' => var_export($request->__getLastResponse(), true)), WATCHDOG_DEBUG);
       return $response;
     } catch (Exception $e) {
       elib_display_error($e);
-      //print ('Der er sket en fejl i forbindelsen med eLib: '. $e->getMessage());
-      //watchdog('elib', 'eLib SOAP: “@message”', array('@message' => $e->getMessage(), WATCHDOG_ERROR));
+      $this->doLog('eLib error in soapCall: “@message”', array('@message' => $e->getMessage()), WATCHDOG_ERROR);
     }
   }
 
+  /**
+   * Log message if logging is enabled in the elib administration interface or
+   * if the severity is WATCHDOG_ERROR.
+   *
+   * @param string $message
+   *   Message to log.
+   * @param array $vars
+   *   Variables to replace in the message See @watchdog.
+   * @param string $severity
+   *   The messages severity in form of watchdog severity levels.
+   */
+  private function doLog($message, $vars, $severity) {
+    $logging = variable_get(elib_enable_logging, FALSE);
+    if ($logging || $severity == WATCHDOG_ERROR) {
+      watchdog('elib', $message, $vars, $severity);
+    }
+  }
 }
 
 class loaner {
