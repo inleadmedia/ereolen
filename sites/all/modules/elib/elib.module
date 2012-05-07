@@ -228,15 +228,15 @@ function elib_get_lydbog($tingObjectID, $format) {
       }
     }
 
-    watchdog('elib', 'eLib DOWNLOAD src: @message - @response', array('@message' => $src, '@response' => var_export($response, true)
-        , WATCHDOG_DEBUG));
-
-
-
-
+    // Check if debug message should be logged.
+    $logging = variable_get(elib_enable_logging, FALSE);
+    if ($logging) {
+      watchdog('elib', 'eLib download src: @src - @response', array(
+        '@src' => $src,
+        '@response' => var_export($response, true), WATCHDOG_DEBUG));
+    }
 
     $content = $pretext;
-
     $content .= '<iframe src="' . $src . '" class="audioplayer-' . $format . '" frameborder="0" scrolling="no"></iframe>';
   } else {
 
