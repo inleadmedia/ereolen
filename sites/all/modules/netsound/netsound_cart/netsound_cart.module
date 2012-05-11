@@ -1,102 +1,134 @@
 <?php
 
-/*
- * implementation of hook_menu();
+/**
+ * Implements hook_menu().
  */
-
 function netsound_cart_menu() {
   $items = array();
 
   $items['ting/object/%/huskeliste'] = array(
-      'title' => t('Tilføj til huskeliste'),
-      'page callback' => 'netsound_cart_modify',
-      'page arguments' => array(2, 'add'),
-      'access arguments' => array('access content'),
+    'title' => t('Tilføj til huskeliste'),
+    'page callback' => 'netsound_cart_modify',
+    'page arguments' => array(2, 'add'),
+    'access arguments' => array('access content'),
   );
+  
   $items['ting/object/%/huskeliste/fjern'] = array(
-      'title' => t('Fjern fra huskeliste'),
-      'page callback' => 'netsound_cart_modify',
-      'page arguments' => array(2, 'rm'),
-      'access arguments' => array('access content'),
+    'title' => t('Fjern fra huskeliste'),
+    'page callback' => 'netsound_cart_modify',
+    'page arguments' => array(2, 'delete'),
+    'access arguments' => array('access content'),
   );
 
   return $items;
 }
 
-/*
- * page callback used in hook_menu();
+/**
+ * Modify the contents of a given users netsound cart.
+ * 
+ * @global object $user
+ *  Currently logged in global user object.
+ * @param type $ting_object_id
+ *  Ting datawall object id.
+ * @param type $op 
+ *  Operation to preform on the cart. 
+ *  
  */
-
-function netsound_cart_modify($tingid, $mode) {
+function netsound_cart_modify($ting_object_id, $op) {
   global $user;
 
+  // If the current user is valid and logged in.
   if ($user->uid != 0) {
+    // Load the ting client to make request to the datawell.
     module_load_include('client.inc', 'ting');
-    $tingObj = ting_get_object_by_id($tingid);
-
-    if (is_a($tingObj, 'TingClientObject')) {
+    $object = ting_get_object_by_id($ting_object_id);
+    
+    // Check that we got a ting object
+    if ($object instanceof TingClientObject) {
       $params = array(
-          'tstamp' => time(),
           'uid' => $user->uid,
-          'ting_object_id' => $tingObj->id,
+          'ting_object_id' => $object->id,
       );
-      switch ($mode) {
+      switch ($op) {
         case 'add':
+          $params['tstamp'] = time();
           drupal_write_record('netsound_cart', $params);
-          drupal_set_message(t('!book er nu tilføjet din huskeliste', array('!book' => l($tingObj->title, 'ting/object/' . $tingObj->id))));
+          drupal_set_message(t('!book er nu tilføjet din huskeliste', array('!book' => l($object->title, 'ting/object/' . $object->id))));
           break;
-        case 'rm':
-          unset($params['tstamp']);
-          db_query('DELETE from {netsound_cart} WHERE uid = %s AND ting_object_id = "%s"', $user->uid, $tingObj->id);
-          drupal_set_message(t('!book er nu fjernet fra din huskeliste', array('!book' => l($tingObj->title, 'ting/object/' . $tingObj->id))));
+        
+        case 'delete':
+          db_query('DELETE FROM {netsound_cart} 
+                          WHERE uid = %s 
+                            AND ting_object_id = "%s"', $user->uid, $object->id);
+          drupal_set_message(t('!book er nu fjernet fra din huskeliste', array('!book' => l($object->title, 'ting/object/' . $object->id))));
           break;
       }
+      
       drupal_goto();
     }
+    
+    // @TODO: What if its not an ting object ?  
   }
 }
 
-/*
- * sadd to cart link
+/**
+ * Creates a add to cart link.
+ * 
+ * @param type $ting_object_id
+ * @return type 
  */
-
-function netsound_cart_add_link($tingid) {
-  return l(t('Tilføj til huskeliste'), 'ting/object/' . $tingid . '/huskeliste', array('query' => drupal_get_destination(), 'attributes' => array('class' => 'addtocart')));
+function netsound_cart_add_link($ting_object_id) {
+  $uri = 'ting/object/' . $ting_object_id . '/huskeliste';
+  $options = array(
+    'query' => drupal_get_destination(), 
+    'attributes' => array(
+      'class' => 'addtocart'
+    )
+  );
+  return l(t('Tilføj til huskeliste'), uri, $options);
 }
 
-/*
- * Implementation of hook_block();
+/**
+ * Implements hook_block().
+ * 
+ * Provides the "My lists" block with information about the books placed in the
+ * cart.
+ * 
+ * @TODO implement cache for this list.
  */
-
 function netsound_cart_block($op = 'list', $delta = 0, $edit = array()) {
-  if ($op == 'list') {
-    $blocks[0]['info'] = t('What\'s in my cart?');
-    return $blocks;
-  } elseif ($op == 'view') {
-    switch ($delta) {
-      case 0:
-        global $user;
-        $rows = array();
-        module_load_include('client.inc', 'ting');
+  switch ($op) {
+    case 'list':
+      $blocks[0]['info'] = t('What\'s in my cart?');
+      break;
 
+    case 'view':
+      // Get current logged in user. 
+      global $user;
 
-        $block['subject'] = t('Min huskeliste');
-        $res = db_query('SELECT DISTINCT ting_object_id, uid FROM {netsound_cart} WHERE uid = %d', array('%d' => $user->uid));
-        while ($row = db_fetch_array($res)) {
-          $rows[] = elib_displaybookNEW(ting_get_object_by_id($row['ting_object_id']), '', 'small_rm');
-        }
-        //var_dump($rows);
+      // Set default block title.
+      $block['subject'] = t('Min huskeliste');
 
+      // Load the ting client.
+      module_load_include('client.inc', 'ting');
 
-
+      $rows = array();
+      $result = db_query('SELECT DISTINCT ting_object_id 
+                                     FROM {netsound_cart} 
+                                    WHERE uid = %d', array('%d' => $user->uid));
+      while ($row = db_fetch_array($result)) {
+        $object = ting_get_object_by_id($row['ting_object_id']);
+        $rows[] = elib_displaybookNEW($object, '', 'small_rm');
+      }
+      
+      if (empty($rows)) {
+        $block['content'] = t('Der er ingen bøger på din huskeliste');
+      }
+      else {
         $block['content'] = implode($rows);
-
-        if ($block['content'] == '') {
-          $block['content'] = t('Der er ingen bøger på din huskeliste');
-        }
-
-        break;
-    }
-    return $block;
+      }
+      
+      break;
   }
+  return $blocks;
 }
