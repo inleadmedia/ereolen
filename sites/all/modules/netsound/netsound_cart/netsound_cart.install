@@ -44,6 +44,9 @@ function netsound_cart_schema() {
         'type' => 'text',
       ),
     ),
+    'indexes' => array(
+      'uid' => array('uid'),
+    ),
   );
 
   $schema['cache_netsound_cart'] = drupal_get_schema_unprocessed('system', 'cache');
