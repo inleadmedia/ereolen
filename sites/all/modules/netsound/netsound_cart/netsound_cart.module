@@ -106,10 +106,11 @@ function netsound_cart_block($op = 'list', $delta = 0, $edit = array()) {
       // Get current logged in user.
       global $user;
 
+      // Set default block title.
+      $blocks['subject'] = t('Min huskeliste');
+
       $content = _netsound_cart_cache_get($user->uid);
       if ($content == FALSE) {
-        // Set default block title.
-        $blocks['subject'] = t('Min huskeliste');
 
         // Load the ting client.
         module_load_include('client.inc', 'ting');
