@@ -176,13 +176,14 @@ function ebog_download_loan_initial($ting_id) {
  */
 function get_download_url($loans, $ean) {
   if ($loans instanceof SimpleXMLElement) {
-    foreach ($loans->data->orderitem as $book) {
-      if ($book->book['id'] == $ean && $book->loanstate == 1) {
-        return (string)$book->data->data->downloadurl;
+    if (isset($loans->data)) {
+      foreach ($loans->data->orderitem as $book) {
+        if ($book->book['id'] == $ean && $book->loanstate == 1) {
+          return (string)$book->data->data->downloadurl;
+        }
       }
     }
   }
-
   return FALSE;
 }
 

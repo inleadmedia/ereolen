@@ -921,3 +921,7 @@ input[type=submit]:hover {
 .panel-region-separator {
   height: 25px;
 }
+
+.page-min-side #main-content .panel-region-separator {
+  display: none;
+}

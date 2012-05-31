@@ -23,8 +23,7 @@
             <?php
               $alttext = t('@titel af @forfatter',array('@titel' => $item['title'], '@forfatter' => $item['author']));
               $cover = elib_book_cover($item['isbn'], '120_x');
-              echo l(theme('image', $cover, $alttext, $alttext, array('width' => '170px'), false), $item['url'], array('html' => 
-true));
+              echo l(theme('image', $cover, $alttext, $alttext, array('width' => '170px'), false), $item['url'], array('html' => true));
             ?>
         </div>
         <div class="record right">
