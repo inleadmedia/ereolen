@@ -197,7 +197,12 @@ class eLibClient {
   public function getBook($isbn) {
     // Convert TingClientObject into ISBN.
     if ($isbn instanceof TingClientObject) {
-      $isbn = isset($isbn->record['dc:identifier']['dkdcplus:ISBN'][0]) ? $isbn->record['dc:identifier']['dkdcplus:ISBN'][0] : '';
+      $object = $isbn;
+      foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
+        if (preg_match('/[^0-9]{13}/', $isbn, $matches)) {
+          break;
+        }
+      }
     }
     if (preg_match('/^[0-9]+(X)?$/', $isbn)) {
       $response = $this->soapCall($this->base_url . 'getproduct.asmx?WSDL', 'GetProduct', array('ebookid' => $isbn));
