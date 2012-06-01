@@ -875,7 +875,7 @@ function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
  * @return string
  */
 function elib_book_cover($isbn, $presetname) {
-  if (!$isbn || $isbn == '') {
+  if (isset($isbn)) {
     _elib_covers_default_image();
   }
   $path = elib_init_cover_path($isbn);
