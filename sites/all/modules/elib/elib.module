@@ -877,7 +877,7 @@ function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
 function elib_book_cover($isbns, $presetname) {
   // Look in the ISBNs to find if image have been downloaded.
   foreach ($isbns as $isbn) {
-    if (preg_match('/[^0-9]{13}/', $isbn, $matches)) {
+    if (preg_match('/^([0-9]{13})/', $isbn, $matches)) {
       $path = elib_init_cover_path($isbn);
       if (file_exists(file_create_path($path))) {
         return imagecache_create_url($presetname, $path);
