@@ -11,7 +11,7 @@ $includes = array(
   'ting-client/lib/adapter/TingClientRequestAdapter.php',
   'ting-client/lib/request/TingClientRequestFactory.php',
   'ting-client/lib/log/TingClientDrupalWatchDogLogger.php'
-  
+
 );
 
 $path = drupal_get_path('module', 'ting') . '/lib/';
@@ -437,6 +437,19 @@ function ting_add_object_info(TingClientObject $object) {
       foreach ($object->record['dc:identifier']['dcterms:URI'] as $url) {
         $object->online_url = ting_proxy_rewrite_download_url($url);
       }
+    }
+  }
+
+  // HACK HACK -- Remove old ebog uri and ISBN10
+  foreach ($object->record['dc:identifier']['dcterms:URI'] as $i => $uri) {
+    if (preg_match('/ebog\.dk/', $uri, $matches)) {
+      unset($object->record['dc:identifier']['dcterms:URI'][$i]);
+    }
+  }
+  foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $j => $isbn) {
+    $tmp = str_replace('-', '', $isbn);
+    if (strlen(str_replace('-', '', $isbn)) == 10) {
+      unset($object->record['dc:identifier']['dkdcplus:ISBN'][$j]);
     }
   }
 

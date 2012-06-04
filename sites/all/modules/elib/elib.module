@@ -86,16 +86,16 @@ function elib_form_alter(&$form, $form_state, $form_id) {
   }
 }
 
-function elib_get_isbn_from_object_id($oid) {
+function elib_get_isbn_from_object_id($object_id) {
   module_load_include('client.inc', 'ting');
   module_load_include('isbn_static_func.inc', 'elib');
   try {
-    $object = ting_get_object_by_id($oid);
-    $isbn = convertFromIsbn13ToIsbn10($object->record['dc:identifier']['dkdcplus:ISBN'][0]);
-
-    /* $eliburl = $object->record['dc:identifier']['dcterms:URI'][0];
-      $first = substr($eliburl,strpos($eliburl,'&id=')+4);
-      $isbn = trim(substr($first,0,strpos($first,'&lib'))); */
+    $object = ting_get_object_by_id($object_id);
+    foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
+      if (preg_match('/[^0-9]{13}/', $isbn, $matches)) {
+          break;
+      }
+    }
   } catch (TingClientException $e) {
     // If the specified object id does not exist, an exception is throw.
   }
@@ -424,8 +424,7 @@ function elib_login_validate($form, &$form_state) {
 }
 
 function elib_displaybook(TingClientObject $object, $elib_data = false) {
-  $isbn = convertToEAN($object->record['dc:identifier']['dkdcplus:ISBN'][0]);
-  $image_url = elib_book_cover($isbn, '65_x');
+  $image_url = elib_book_cover($object->record['dc:identifier']['dkdcplus:ISBN'], '65_x');
   $item_url = 'ting/object/' . (string) $object->id;
 
   $out[] = '
@@ -518,7 +517,6 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
     return;
   }
   // fetch cover from elib
-  $isbn = convertToEAN($obj->record['dc:identifier']['dkdcplus:ISBN'][0]);
   $obj->url = 'ting/object/' . $obj->id;
 
   switch ($displaysize) {
@@ -526,11 +524,11 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
     case 'small_rm':
     case 'lorem':
     case 'review':
-      $image_url = elib_book_cover($isbn, '65_x');
+      $image_url = elib_book_cover($obj->record['dc:identifier']['dkdcplus:ISBN'], '65_x');
       break;
     case 'medium':
     case 'textright':
-      $image_url = elib_book_cover($isbn, '170_x');
+      $image_url = elib_book_cover($obj->record['dc:identifier']['dkdcplus:ISBN'], '170_x');
       break;
   }
 
@@ -810,13 +808,15 @@ function elib_get_sample($tingObjectID) {
  */
 function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
   module_load_include('isbn_static_func.inc', 'elib');
-  $isbn = preg_replace('/[^0-9]+/', '', $object->record['dc:identifier']['dkdcplus:ISBN'][0]);
-  // NOTE: We don't need isbn 10 any more
-  //$isbn = convertFromIsbn13ToIsbn10($isbn);
-
+  foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
+    if (preg_match('/[^0-9]{13}/', $isbn, $matches)) {
+      break;
+    }
+  }
+  
   $c = elib_client();
   $c->setLibrary(variable_get('elib_retailer_id', ''));
-  try {
+  try {    
     $book = $c->getBook($isbn);
   } catch (Exception $e) {
     error_log(__FILE__ . ' +' . __LINE__ . ' ' . print_r($e, 1));
@@ -870,34 +870,39 @@ function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
 /**
  * Getting a cover form eLib WS by ISBN
  *
- * @param string $isbn
+ * @param array $isbns
  * @param string $presetname
  * @return string
  */
-function elib_book_cover($isbn, $presetname) {
-  if (!$isbn || $isbn == '') {
-    _elib_covers_default_image();
+function elib_book_cover($isbns, $presetname) {
+  // Look in the ISBNs to find if image have been downloaded.
+  foreach ($isbns as $isbn) {
+    if (preg_match('/^([0-9]{13})/', $isbn, $matches)) {
+      $path = elib_init_cover_path($isbn);
+      if (file_exists(file_create_path($path))) {
+        return imagecache_create_url($presetname, $path);
+      }
+    }
   }
-  $path = elib_init_cover_path($isbn);
-  if (file_exists(file_create_path($path))) {
-    return imagecache_create_url($presetname, $path);
-  } else {
-    // init elib client
-    $c = elib_client();
-    $c->setLibrary(variable_get('elib_retailer_id', ''));
-    // fetch book from elib by isbn
-    try {
+  
+  // No image found try elib client and featch one.  
+  $c = elib_client();
+  $c->setLibrary(variable_get('elib_retailer_id', ''));
+  // fetch book from elib by isbn
+  try {
+    foreach ($isbns as $isbn) {
       $book = $c->getBook($isbn);
-    } catch (Exception $e) {
-
+      if (isset($book->data->coverimage)) {
+        $path = elib_init_cover_path($isbn);
+        $path = _elib_covers_fetch_or_redirect($path, (string) $book->data->coverimage);
+        return imagecache_create_url($presetname, $path);
+      }
     }
-    // store cover from elib in drupal
-    if ((string) $book->data->coverimage == '') {
-      _elib_covers_default_image();
-    }
-    $path = _elib_covers_fetch_or_redirect($path, (string) $book->data->coverimage);
-    return imagecache_create_url($presetname, $path);
+  } catch (Exception $e) {
+    // @todo: ERROR
   }
+  
+  return imagecache_create_url($presetname, _elib_covers_default_image());
 }
 
 /**

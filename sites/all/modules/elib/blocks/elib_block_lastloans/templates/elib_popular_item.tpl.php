@@ -8,7 +8,7 @@
 <li class="display-book ting-collection ruler-after line clear-block" id="<?php print $data['ting_obj']->id ?>">
   <div class="picture">
     <?php
-      $image_url = elib_book_cover($data['isbn'], '80_x');
+      $image_url = elib_book_cover(array($data['isbn']), '80_x');
       $alttext = t('@titel by @forfatter',array('@titel' => $data['ting_obj']->title, '@forfatter' => $data['ting_obj']->creators_string));
     ?>
     <?php if ($image_url) { ?>
