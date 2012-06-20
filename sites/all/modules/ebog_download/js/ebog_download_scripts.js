@@ -2,7 +2,7 @@
   $('.ebog-dlink').live('click', function() {
     $('#ting-download-popup-info').dialog('close');
   });
-  
+
   var href = '';
   var clicked = null;
   var button = null;
@@ -39,7 +39,7 @@
         }
 
         popup_buttons[cancel_button] = function() {
-          $('#ting-download-popup').dialog('close');  
+          $('#ting-download-popup').dialog('close');
         }
 
         $('<div id="ting-download-popup" title="' + Drupal.t('Confirm reloan') + '">' + Drupal.t('Are you sure you want to reloan this item') + ' (<a href=' + '"' + '/faq/generelt-0#31n128' + '">' + Drupal.t('read more') + '</a>)?' + '</div>').dialog({
@@ -63,6 +63,14 @@
         url : href + '/popup',
         dataType : 'json',
         success : function(response) {
+          // Check if login dialog is open, if it is close it.
+          var login_dialog = $('#ting-login-popup');
+          if (login_dialog.length) {
+            $('#ting-login-popup').dialog('close');
+            $('#ting-login-popup').remove();
+          }
+
+          // Remove ajax loader
           $('#ting-download-popup').remove();
           clicked.parent().find('.ajax-loader').remove();
           clicked.show();
@@ -207,7 +215,7 @@
                 height: 'auto'
               }
             }
-            
+
             $('<div id="ting-download-popup-info" title="' + response.title + '">' + response.content + '</div>').dialog(options);
           }
         });
@@ -216,7 +224,7 @@
         button.css('visibility', 'visible');
         button.parent().find('.ajax-loader').remove();
         $('#ting-download-popup-error').remove();
-        
+
         popup_buttons = {};
         popup_buttons[ok_button] = function() {
           $('#ting-download-popup-error').dialog('close');
