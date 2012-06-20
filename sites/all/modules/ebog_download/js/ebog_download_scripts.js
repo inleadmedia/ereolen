@@ -171,6 +171,14 @@
             check_rules();
           }
 
+          popup_buttons[cancel_button] = function() {
+            // Close the form an remove it from the dom or close will not work
+            // if displayed once more.
+            $('#ting-download-popup').dialog('close');
+            $('#ting-download-popup').remove();
+          }
+
+
           $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
             modal : true,
             width: 'auto',
