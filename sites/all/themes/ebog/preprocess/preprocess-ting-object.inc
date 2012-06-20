@@ -16,8 +16,8 @@ $head .= '<meta property="og:url"               content="' . $base_url .'/ting/o
 $head .= '<meta property="og:type"              content="book" />' . "\n";
 $head .= '<meta property="og:title"             content="' . $vars['object']->title .'" />' . "\n";
 $head .= '<meta property="og:description"       content="Lån `' . $vars['object']->title . '` på eReolen.dk: ' . $vars['object']->abstract .'" />' . "\n";
-$head .= '<meta property="og:image"             content="' . elib_book_cover($vars['object']->record['dc:identifier']['dkdcplus:ISBN'], '170_x') . '" />' . "\n";
-$head .= '<meta property="og:image:secure_url"  content="' . elib_book_cover($vars['object']->record['dc:identifier']['dkdcplus:ISBN'], '170_x') . '" />' . "\n";
+$head .= '<meta property="og:image"             content="' . elib_book_cover(array($vars['object']->record['dc:identifier']['dkdcplus:ISBN']), '170_x') . '" />' . "\n";
+$head .= '<meta property="og:image:secure_url"  content="' . elib_book_cover(array($vars['object']->record['dc:identifier']['dkdcplus:ISBN']), '170_x') . '" />' . "\n";
 $head .= '<meta property="og:site_name"         content="eReolen.dk" />' . "\n";
 $head .= '<meta property="og:locale"            content="da_DK" />' . "\n";
 $head .= '<meta property="fb:admins"            content="694811338" />' . "\n";

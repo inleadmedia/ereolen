@@ -41,7 +41,7 @@ if (module_exists('ding_voxb')) {
 <div id="ting-object" class="line rulerafter">
 
   <div class="picture unit grid-3 alpha">
-    <?php $image_url = elib_book_cover($object->record['dc:identifier']['dkdcplus:ISBN'], '170_x'); ?>
+    <?php $image_url = elib_book_cover(array($object->record['dc:identifier']['dkdcplus:ISBN']), '170_x'); ?>
     <?php if (strpos($image_url,'imagecache')): ?>
       <div class="inner left" style="margin-bottom:10px;">
         <?php print theme('image', $image_url, $object->title, $object->title, null, false); ?>

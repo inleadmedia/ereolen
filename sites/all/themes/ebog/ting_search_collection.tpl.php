@@ -24,7 +24,7 @@ foreach ($collection->objects as $obj) {
   <li class="display-book ting-collection ruler-after line clear-block" id="<?php print $Obj->id ?>">
 
     <div class="picture">
-      <?php $image_url = elib_book_cover($obj->record['dc:identifier']['dkdcplus:ISBN'], '80_x'); ?>
+      <?php $image_url = elib_book_cover(array($obj->record['dc:identifier']['dkdcplus:ISBN']), '80_x'); ?>
       <?php if ($image_url) { ?>
         <?php print l(theme('image', $image_url, $alttext, $alttext, null, false), $Obj->url, array('html' => true)); ?>
       <?php } ?>
