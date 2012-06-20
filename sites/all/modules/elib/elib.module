@@ -413,7 +413,7 @@ function elib_client() {
 }
 
 function elib_displaybook(TingClientObject $object, $elib_data = false) {
-  $image_url = elib_book_cover(array($object->record['dc:identifier']['dkdcplus:ISBN']), '65_x');
+  $image_url = elib_book_cover($object->record['dc:identifier']['dkdcplus:ISBN'], '65_x');
   $item_url = 'ting/object/' . (string) $object->id;
 
   $out[] = '
@@ -513,11 +513,11 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
     case 'small_rm':
     case 'lorem':
     case 'review':
-      $image_url = elib_book_cover(array($obj->record['dc:identifier']['dkdcplus:ISBN']), '65_x');
+      $image_url = elib_book_cover($obj->record['dc:identifier']['dkdcplus:ISBN'], '65_x');
       break;
     case 'medium':
     case 'textright':
-      $image_url = elib_book_cover(array($obj->record['dc:identifier']['dkdcplus:ISBN']), '170_x');
+      $image_url = elib_book_cover($obj->record['dc:identifier']['dkdcplus:ISBN'], '170_x');
       break;
   }
 
