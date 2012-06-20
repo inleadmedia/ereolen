@@ -8,6 +8,7 @@
   var button = null;
   var popup_buttons = null;
   var ok_button = Drupal.t('Ok');
+  var login_button = Drupal.t('Login');
   var cancel_button = Drupal.t('Cancel');
   var download_button = Drupal.t('Proceed to download');
 
@@ -78,6 +79,78 @@
               height: 'auto',
               buttons: popup_buttons
             });
+
+            return;
+          }
+          else if (response.status === 'login') {
+            // Login is required, so display login form.
+            popup_buttons = {};
+
+            // Hide login button from the form.
+            var content = $(response.content);
+            $('#edit-submit', content).remove();
+
+            // Add action to the login dialog button.
+            popup_buttons[login_button] = function() {
+              // Add ajax loader to replace buttons.
+              button = $('#ting-login-popup').parents('.ui-dialog:first').find('button');
+              button.css('visibility', 'hidden');
+              button.parent().append('<div class="ajax-loader"></div>');
+
+              // Collect form values.
+              var data = $('#elib-popup-login-form').formSerialize();
+
+              // Make login ajax callback.
+              $.ajax({
+                type : 'POST',
+                url : $('#elib-popup-login-form').attr('action'),
+                dataType : 'json',
+                data: data,
+                success : function(response) {
+                  // If not logged in handle errors.
+                  if (response.status !== 'loggedin') {
+
+                    // Display error message.
+                    if ($('#ting-login-popup .messages').length) {
+                      $('#ting-login-popup .messages').fadeOut('fast', function () {
+                        $(this).remove();
+                        $('#elib-popup-login-form #edit-name-wrapper').prepend(response.content);
+                      });
+                    }
+                    else {
+                      $('#elib-popup-login-form #edit-name-wrapper').prepend(response.content);
+                    }
+
+                    // Enable login buttons and remove ajax loader.
+                    button.css('visibility', 'visible');
+                    button.parent().find('.ajax-loader').remove();
+                    return;
+                  }
+                  else {
+                    // Try to process the loan once more.
+                    process_loan();
+                  }
+                }
+              });
+              return false;
+
+            }
+
+            popup_buttons[cancel_button] = function() {
+              // Close the form an remove it from the dom or close will not work
+              // if displayed once more.
+              $('#ting-login-popup').dialog('close');
+              $('#ting-login-popup').remove();
+            }
+
+            options = {
+              modal: true,
+              width: 'auto',
+              height: 'auto',
+              buttons: popup_buttons
+            }
+
+            $('<div id="ting-login-popup" title="' + response.title + '">' + content[0].outerHTML + '</div>').dialog(options);
 
             return;
           }
