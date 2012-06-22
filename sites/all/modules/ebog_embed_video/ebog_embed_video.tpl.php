@@ -10,15 +10,16 @@
 		<?php if ($conf['type'] == 'youtube') { ?>
 			<div class="ebog_embed_youtube">
 				<object style="width:207px;height:144px;">
-					<param name="movie" value="http://www.youtube.com/v/<?php echo $conf['embed_code']; ?>">
-					<param name="allowFullScreen" value="true">
-					<param name="allowScriptAccess" value="always">
+					<param name="movie" value="http://www.youtube.com/v/<?php echo $conf['embed_code']; ?>" />
+					<param name="allowFullScreen" value="true" />
+					<param name="allowScriptAccess" value="always" />
           <param name="wmode" value="transparent" />
 					<embed
 						src="https://www.youtube.com/v/<?php echo $conf['embed_code']; ?>"
 						type="application/x-shockwave-flash"
 						allowfullscreen="true"
 						allowScriptAccess="always"
+            wmode=”transparent”
 						width="207"
 						height="144"
 					>
@@ -33,6 +34,7 @@
 					width="207"
 					height="144"
 					frameborder="0"
+          wmode=”transparent”
 					webkitAllowFullScreen
 					allowFullScreen
 				>
