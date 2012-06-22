@@ -1,80 +1,122 @@
 <?php
 
-function elib_user_elib_id($cardno) {
+/**
+ * @file
+ * Handles login to the library systems, to ensure that the user has permisson
+ * to download or stream a given book.
+ *
+ */
 
-  // @todo: check for distinct/unique
-  //return $cardno
-  return md5($cardno + 'f4ds56fs');
+/**
+ * Creates a unique identifier for a given user based on the input parameter.
+ *
+ * @param string $cardno
+ * @return string MD5 seeded value of the input parameter.
+ */
+function elib_user_elib_id($cardno){
+  /**
+   * @todo: Moved seed value into settings.php and upgraded to SHA function.
+   *
+   */
+	return md5($cardno+'f4ds56fs');
 }
 
-function elib_user_get_elib_info() {
-  return array(
-    'cardno',
-    'pin',
-    'retailerid'
-  );
+function elib_user_get_elib_info(){
+	return array(
+	 'cardno',
+	 'pin',
+	 'retailerid'
+	);
 }
 
-function elib_check_credentials($cardno, $pin, $library) {
-  elib_client()->setLoaner($cardno, $pin, $library);
-  if (!elib_client()->validateUser()) {
-    return false;
+/**
+ * Validate the user against the librarys sytems and creates the user if he/her
+ * do no exists in Drupal.
+ *
+ * @param string $cardno
+ * @param string $pin
+ * @param string $lib
+ * @return object $user if success or FALSE on failur.
+ */
+function elib_check_credentials($cardno, $pin, $lib) {
+  // Get elib client for communication with the library system.
+  $client = elib_client();
+
+  // Set credentials in the client.
+  $client->setLoaner($cardno, $pin, $lib);
+
+  // Validate the user.
+  if($client->validateUser()){
+    /**
+     *  @todo: do something else here preferably.
+     */
+    $_SESSION['ssn'] = $cardno;
+    $_SESSION['pin'] = $pin;
+
+    // Create identifier for this user.
+    $elib_id = elib_user_elib_id($cardno);
+
+    // Check if user exists.
+    $uid = db_result(db_query("SELECT uid FROM {elib_user} WHERE elib_id = '%s'", $elib_id));
+    if ($uid) {
+      db_query("UPDATE {elib_user} SET elib_library = %d WHERE elib_id = '%s'", $lib, $elib_id);
+      $account = user_load(array('uid' => $uid));
+    }
+    else {
+      $random_name = $_SERVER['REQUEST_TIME'] . mt_rand();
+      // User data to pass to user_save().
+      $user_data = array(
+        'name' => $random_name,
+        'display_name' => 'unknown',
+        'mail' => $random_name . '@mail.invalid',
+        'pass' => microtime(TRUE) . mt_rand(), // Login via Drupal's standard login should not be possible.
+        'status' => 1,
+      );
+
+      // If no e-mail was set in the XML, we need to generate a
+      // random, invalid address,  since Drupal has a unique
+      // constraint on the mail column in the users table.
+      // Set the initial e-mail to the same e-mail-address.
+      $user_data['init'] = $user_data['mail'];
+
+      // Saves the user and returns the user UID.
+      $account = user_save(NULL, $user_data);
+
+      // Store user reference in our own table.
+      db_query("INSERT INTO {elib_user} (uid, elib_id, elib_library) VALUES (%d, '%s', '%s');", $account->uid, $elib_id, $lib);
+    }
+
+    // Return the user account (loaded or newly created).
+    return $account;
   }
-
-  // @todo: do something else here preferably
-  $_SESSION['ssn'] = $cardno;
-  $_SESSION['pin'] = $pin;
-
-  $elib_id = elib_user_elib_id($cardno);
-
-  // Check if user exists.
-  $uid = db_result(db_query("SELECT uid FROM {elib_user} WHERE elib_id='%s';", $elib_id));
-  if ($uid) {
-    db_query("UPDATE {elib_user} SET elib_library = %d WHERE elib_id='%s';", $library, $elib_id);
-    return $uid;
-  }
-  else {
-    // User do not exists so create a new user.
-    $random_name = $_SERVER['REQUEST_TIME'] . mt_rand();
-    // User data to pass to user_save().
-    $data = array(
-      'name' => $random_name,
-      'display_name' => 'unknown',
-      'mail' => $random_name . '@mail.invalid',
-      // Login via Drupal's standard login should not be possible.
-      'pass' => microtime(TRUE) . mt_rand(),
-      'status' => 1,
-    );
-
-    // If no e-mail was set in the XML, we need to generate a
-    // random, invalid address,  since Drupal has a unique
-    // constraint on the mail column in the users table.
-    // Set the initial e-mail to the same e-mail-address.
-    $data['init'] = $data['mail'];
-
-    // Saves the user and returns the user UID.
-    $user = user_save(NULL, $data);
-
-    // Store Alma user reference in our own table.
-    db_query("INSERT INTO {elib_user} (uid, elib_id, elib_library) VALUES (%d, '%s', '%s');", $user->uid, $elib_id, $library);
-
-    return($user->uid);
-  }
+  return false;
 }
 
-function elib_user_get_cred($uid = false) {
-  if (!$uid) {
-    global $user;
-    $uid = $user->uid;
-  }
-
+/**
+ * Fetch the current logged in users library credentials or for the uid parsed
+ * to the function.
+ *
+ * @global object $user
+ * @param string $uid user identifier
+ * @return array user credentials (ssn, pin, lib, user name)
+ */
+function elib_user_get_cred($uid = false){
+	if(!$uid){
+	  global $user;
+	  $uid = $user->uid;
+	}
   $elibuser = db_fetch_array(db_query('SELECT * FROM {elib_user} WHERE uid = %d', $uid));
-  return array(
-    'cpr' => $_SESSION['ssn'],
-    'pin' => $_SESSION['pin'],
-    'lib' => $elibuser['elib_library'],
-    'user' => $elibuser['elib_username'],
-  );
+
+  /**
+   * @todo: Why not save every ting in the session ?
+   */
+
+	return array(
+	 'cpr' => $_SESSION['ssn'],
+	 'pin' => $_SESSION['pin'],
+	 'lib' => $elibuser['elib_library'],
+	 'user' => $elibuser['elib_username'],
+	);
 }
 
 function elib_user_block($op = 'list', $delta = 0) {
