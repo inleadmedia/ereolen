@@ -249,7 +249,7 @@ function ting_do_search($query, $page = 1, $resultsPerPage = 10, $options = arra
   }
 
   $searchResult = ting_execute($request);
-
+  
   //Decorate search result with additional information
   if (is_array($searchResult->collections)) {
     foreach ($searchResult->collections as &$collection) {
@@ -437,19 +437,6 @@ function ting_add_object_info(TingClientObject $object) {
       foreach ($object->record['dc:identifier']['dcterms:URI'] as $url) {
         $object->online_url = ting_proxy_rewrite_download_url($url);
       }
-    }
-  }
-
-  // HACK HACK -- Remove old ebog uri and ISBN10
-  foreach ($object->record['dc:identifier']['dcterms:URI'] as $i => $uri) {
-    if (preg_match('/ebog\.dk/', $uri, $matches)) {
-      unset($object->record['dc:identifier']['dcterms:URI'][$i]);
-    }
-  }
-  foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $j => $isbn) {
-    $tmp = str_replace('-', '', $isbn);
-    if (strlen(str_replace('-', '', $isbn)) == 10) {
-      unset($object->record['dc:identifier']['dkdcplus:ISBN'][$j]);
     }
   }
 
