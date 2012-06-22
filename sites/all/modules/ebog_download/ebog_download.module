@@ -16,6 +16,7 @@ function ebog_download_init() {
   }
 
   drupal_add_js(EBOG_DOWNLOAD_PATH . '/js/ebog_download_scripts.js', 'file');
+  drupal_add_js(EBOG_DOWNLOAD_PATH . '/js/jquery.form.js', 'file');
   drupal_add_css(EBOG_DOWNLOAD_PATH . '/css/ebog_download_style.css', 'file');
   jquery_ui_add(array('ui.dialog', 'ui.draggable'));
   jquery_ui_theme_load();
@@ -160,7 +161,7 @@ function ebog_download_loan_initial($ting_id) {
   }
 
   // Send response
-  echo json_encode($status);
+  drupal_json($status);
   exit(0);
 }
 
@@ -217,13 +218,80 @@ function ebog_download_loan_popup($ting_id) {
     );
   }
   else {
+     // User was not logged in, so present login form.
+    $form = drupal_get_form('elib_popup_login_form');
     $status = array(
-      'status' => FALSE,
-      'title' => t('Error'),
-      'content' => theme('ebog_download_error', array('message' => t('Only authenticated users are able to loan.')))
+      'status' => 'login',
+      'title' => t('Login'),
+      'content' => $form,
     );
   }
 
-  echo json_encode($status);
+  drupal_json($status);
+  exit(0);
+}
+
+/**
+ * Build popup login form based on the user_login in form used to login normally
+ * and overrides the validation functions.
+ *
+ * @return array $form.
+ */
+function elib_popup_login_form() {
+  $form_id = 'user_login';
+  $form_state = array();
+
+  // Get user login form.
+  $form = call_user_func_array('drupal_retrieve_form', array($form_id));
+
+  // Run hook_form_alter functions.
+  $hook = 'form_alter';
+  foreach (module_implements($hook) as $module) {
+    $function = $module . '_' . $hook;
+    $function($form, $form_state, $form_id);
+  }
+
+  // Override validate function.
+  $form['#validate'][0] = 'elib_popup_login_form_validate';
+
+  return $form;
+}
+
+/**
+ * Form validation for popup login form, which returns json.
+ */
+function elib_popup_login_form_validate($form, &$form_state) {
+  // Default status message.
+  $status = array(
+    'status' => FALSE,
+    'title' => t('Error'),
+    'content' => '<div class="messages error">' . t('Sorry, unrecognized username or password. <a href="@password">Have you forgotten your password?</a>', array('@password' => url('user/password'))) . '</div>',
+  );
+
+  // If no credentials are presented, return.
+  if (empty($form_state['values']['name']) || empty($form_state['values']['pass'])) {
+    drupal_json($status);
+    exit(0);
+  }
+
+  // The user may use both borrower card / cpr number to login, so we have to
+  // remove anything thats not an number form the user name.
+  $card = preg_replace('/\D+/', '', $form_state['values']['name']);
+
+  // Try to login to the library, this will create the user if login succeed
+  // and the user do not exists in Drupal.
+  $account = elib_check_credentials($card, $form_state['values']['pass'], $form_state['values']['library']);
+  if ($account) {
+    global $user;
+    $user = $account;
+    user_authenticate_finalize($form_state['values']);
+    $status = array(
+      'status' => 'loggedin',
+      'title' => t('Login'),
+      'content' => t('You are now logged in an can procceed'),
+    );
+  }
+
+  drupal_json($status);
   exit(0);
 }

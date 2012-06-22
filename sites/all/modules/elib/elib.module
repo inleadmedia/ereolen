@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * @file
+ * This module handles communikation witht the eLib web-service (now known as
+ * publizon).
+ *
+ */
+
+/**
+ * Implements hook_menu().
+ */
 function elib_menu() {
   $path = drupal_get_path('module', 'elib') . '/includes';
   $items = array();
@@ -12,20 +22,9 @@ function elib_menu() {
       'page arguments' => array('ting_admin_settings_form_elib'),
       'file' => 'elib.admin.inc',
       'file path' => $path,
-      //  'type'             => MENU_LOCAL_TASK,
       'weight' => 2,
   );
-  /* $items['user/elib_login'] = array(
-    //'title'            => 'eLib settings',
-    //'description'      => 'settings for eLib SOAP webservice',
-    'access arguments' => array('access content'),
-    'page callback'    => 'elib_loginform',
-    //'page arguments'   => array(''),
-    //'file'             => 'elib.admin.inc',
-    //'file path'        => $path,
-    //  'type'             => MENU_LOCAL_TASK,
-    // 'weight'           => 2,
-    ); */
+
   $items['admin/settings/elib/main'] = array(
       'title' => 'eLib',
       'type' => MENU_DEFAULT_LOCAL_TASK,
@@ -49,40 +48,69 @@ function elib_menu() {
       'page arguments' => array(2, 3),
       'access arguments' => array('access content'),
   );
+
   return $items;
 }
 
+/**
+ * Implements hook_theme().
+ */
 function elib_theme() {
   return array(
-      'page' => array(
-          'template' => 'page-clean',
-          'arguments' => array(
-              'content' => NULL,
-              'show_blocks' => TRUE,
-              'show_messages' => TRUE,
-          ),
+    'page' => array(
+      'template' => 'page-clean',
+      'arguments' => array(
+        'content' => NULL,
+        'show_blocks' => TRUE,
+        'show_messages' => TRUE,
       ),
+    ),
   );
 }
 
+/**
+ * Implement hook_form_alter().
+ *
+ * Adds elib user validation to the login form.
+ */
 function elib_form_alter(&$form, $form_state, $form_id) {
-  switch ($form_id) {
-    case 'user_login':
-    case 'user_login_block':
-      $form['name']['#prefix'] = '<h1>' . t('Welcome to eReolen.dk') . '</h1><p>' . t('We noticed that you are not logged in.') . '</p><p>' . t('Please fill in your CPR number + pincode to login.') . '</p>';
+  if ($form_id == 'user_login' || $form_id == 'user_login_block') {
+      // Login form found, so change labels and description.
+      $form['name']['#prefix'] = '<h1>' . t('Welcome to Netlydbog.dk') . '</h1><p>' . t('We noticed that you are not logged in.') . '</p><p>' . t('Please fill in your CPR number + pincode to login.') . '</p>';
       $form['name']['#title'] = t('CPR number');
       $form['pass']['#title'] = t('Pincode');
       $form['name']['#type'] = 'password';
+
+      // Remove default descriptions.
       unset($form['name']['#description']);
       unset($form['pass']['#description']);
-      //unset($form['name']['#description']);
+
+      // Add validation function to the front of validation form array.
       array_unshift($form['#validate'], 'elib_login_validate');
-      //$form['#submit'][] = 'elib_login_submit';
-      //  var_dump($form);
-      break;
-    case 'collection_node_form':
-      //dsm($form);
-      break;
+  }
+}
+
+/**
+ * Login validation form that handles login into the library.
+ */
+function elib_login_validate($form, &$form_state) {
+  // If no credentials are presented, return.
+  if (empty($form_state['values']['name']) || empty($form_state['values']['pass'])) {
+    return;
+  }
+
+  // The user may use both borrower card / cpr number to login, so we have to
+  // remove anything thats not an number form the user name.
+  $card = preg_replace('/\D+/', '', $form_state['values']['name']);
+
+  // Try to login to the library, this will create the user if login succeed
+  // and the user do not exists in Drupal.
+  $account = elib_check_credentials($card, $form_state['values']['pass'], $form_state['values']['library']);
+  if ($account) {
+    global $user;
+    $user = $account;
+    user_authenticate_finalize($form_state['values']);
+    drupal_goto('min_side');
   }
 }
 
@@ -382,45 +410,6 @@ function elib_client() {
     $client->base_url = variable_get('elib_base_url_wsdl', '');
   }
   return $client;
-}
-
-function elib_login_validate($form, &$form_state) {
-  if (empty($form_state['values']['name']) || empty($form_state['values']['pass'])) {
-    // empty user name or password makes little sense to try and validate.
-    return;
-  }
-
-  // Remove everything from numbers from the “name” field to try and
-  // validate it as a library/borrower card.
-  $card = preg_replace('/\D+/', '', $form_state['values']['name']);
-
-  // if local user exists and no elibuser things exists then ask elib
-
-  $account = user_authenticate($form_state['values']);
-  if (is_object($account)) {
-    $elib = elib_user_get_cred($account->uid);
-  }
-  $localuser = false;
-
-  if ($account && !($elib['user'])) {
-    $localuser = true;
-  }
-
-  if (!$localuser) {
-    $uid = elib_check_credentials($card, $form_state['values']['pass'], $form_state['values']['library']);
-
-    if ($uid && $account = user_load($uid)) {
-      global $user;
-      $user = $account;
-      user_authenticate_finalize($form_state['values']);
-
-      // If we have Alma credentials and a user was logged in, cache the
-      // credentials in our own cache bin.
-      //alma_user_cache_credentials($user, $form_state['values']['name'], $form_state['values']['pass']);
-      // TODO: find propper way of redirecting...
-      echo '<script type="text/javascript">window.location = "/min_side"</script>';
-    }
-  }
 }
 
 function elib_displaybook(TingClientObject $object, $elib_data = false) {
@@ -813,10 +802,10 @@ function elib_book_teaser(TingClientObject $object, $is_ajax = false) {
       break;
     }
   }
-  
+
   $c = elib_client();
   $c->setLibrary(variable_get('elib_retailer_id', ''));
-  try {    
+  try {
     $book = $c->getBook($isbn);
   } catch (Exception $e) {
     error_log(__FILE__ . ' +' . __LINE__ . ' ' . print_r($e, 1));
@@ -884,8 +873,8 @@ function elib_book_cover($isbns, $presetname) {
       }
     }
   }
-  
-  // No image found try elib client and featch one.  
+
+  // No image found try elib client and featch one.
   $c = elib_client();
   $c->setLibrary(variable_get('elib_retailer_id', ''));
   // fetch book from elib by isbn
@@ -901,7 +890,7 @@ function elib_book_cover($isbns, $presetname) {
   } catch (Exception $e) {
     // @todo: ERROR
   }
-  
+
   return imagecache_create_url($presetname, _elib_covers_default_image());
 }
 
