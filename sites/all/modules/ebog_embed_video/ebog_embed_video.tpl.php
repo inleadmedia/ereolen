@@ -19,7 +19,7 @@
 						type="application/x-shockwave-flash"
 						allowfullscreen="true"
 						allowScriptAccess="always"
-            wmode=”opaque”
+            wmode="opaque"
 						width="207"
 						height="144"
 					>
@@ -34,7 +34,7 @@
 					width="207"
 					height="144"
 					frameborder="0"
-          wmode=”opaque”
+          wmode="opaque"
 					webkitAllowFullScreen
 					allowfullscreen="true"
 				>
