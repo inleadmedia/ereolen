@@ -33,6 +33,7 @@ function ereolen_admin_ting_client_response_alter(&$response) {
 
           // Remove collection
           unset($response->collections[$i]);
+          watchdog('ISBN', 'Missing ISBN for object "%obj"', array('%obj' => $object[0]->id), WATCHDOG_CRITICAL);
         }
         else {
           // Fix ISBN 10 vs 13 issue.
