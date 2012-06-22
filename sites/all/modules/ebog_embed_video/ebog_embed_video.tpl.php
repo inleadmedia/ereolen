@@ -13,6 +13,7 @@
 					<param name="movie" value="http://www.youtube.com/v/<?php echo $conf['embed_code']; ?>">
 					<param name="allowFullScreen" value="true">
 					<param name="allowScriptAccess" value="always">
+          <param name="wmode" value="transparent" />
 					<embed
 						src="https://www.youtube.com/v/<?php echo $conf['embed_code']; ?>"
 						type="application/x-shockwave-flash"
