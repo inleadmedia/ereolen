@@ -930,6 +930,3 @@ input[type=submit]:hover {
   width: 380px;
   margin-right: 0px; 
 }
-.ui-dialog {
-  z-index: 9999;
-}
