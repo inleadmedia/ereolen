@@ -13,13 +13,13 @@
 					<param name="movie" value="http://www.youtube.com/v/<?php echo $conf['embed_code']; ?>" />
 					<param name="allowFullScreen" value="true" />
 					<param name="allowScriptAccess" value="always" />
-          <param name="wmode" value="transparent" />
+          <param name="wmode" value="opaque" />
 					<embed
 						src="https://www.youtube.com/v/<?php echo $conf['embed_code']; ?>"
 						type="application/x-shockwave-flash"
 						allowfullscreen="true"
 						allowScriptAccess="always"
-            wmode=”transparent”
+            wmode=”opaque”
 						width="207"
 						height="144"
 					>
@@ -34,9 +34,9 @@
 					width="207"
 					height="144"
 					frameborder="0"
-          wmode=”transparent”
+          wmode=”opaque”
 					webkitAllowFullScreen
-					allowFullScreen
+					allowfullscreen="true"
 				>
 				</iframe>
 			</div>
