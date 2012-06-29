@@ -21,7 +21,9 @@ function ereolen_admin_init(){
 }
 
 function ereolen_admin_ting_client_request_alter(&$request) {
-  $request->setQuery('( ' . $request->getQuery() . ' ) AND (dc.identifier=978*)');
+  if (is_a($request, 'TingClientSearchRequest')) {
+    $request->setQuery('( ' . $request->getQuery() . ' ) AND (dc.identifier=978*)');
+  }
 }
 
 function ereolen_admin_ting_client_response_alter(&$response) {
