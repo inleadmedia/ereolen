@@ -27,6 +27,7 @@ function netsound_block($op = 'list', $delta = 0, $edit = array()) {
     $blocks[4]['info'] = t('Shortcut menu');
     $blocks[5]['info'] = t('Contact ELIB');
     $blocks[6]['info'] = t('Contact NETLYD');
+    $blocks[7]['info'] = t('Form: Error in ebook title');
     return $blocks;
   }
   elseif ($op == 'view') {
@@ -72,9 +73,97 @@ function netsound_block($op = 'list', $delta = 0, $edit = array()) {
       case 6:
         $block['content'] = drupal_get_form('netsound_contact_netlyd_form');
         break;
+      case 7:
+        $block['content'] = drupal_get_form('netsound_contact_error_form');
+        break;
     }
     return $block;
   }
+}
+
+function netsound_contact_error_form($form_state) {
+  $form = array();
+  $form['contact_library'] = array(
+    '#type' => 'select',
+    '#title' => t('Vælg dit bibliotek'),
+    '#options' => elib_libraries_get_libraries(),
+    '#required' => true
+  );
+  
+  global $user;
+  $userinfo = elib_user_get_cred($user->uid);
+  if($userinfo['lib']){
+    $form['contact_library']['#default_value'] = $userinfo['lib'];
+    $form['contact_library']['#disabled'] = true;
+  }
+  
+  $form['contact_login_number'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Det nummer du bruger til at logge ind. Dvs. enten CPR nr. eller lånerkortnummer.'),
+    '#required' => true
+  );
+  
+  $form['contact_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Navnet på titlen, hvis du oplever problemer med en given titel fra eReolen.dk.'),
+    '#required' => true
+  );
+  
+  $form['contact_time'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Hvilket tidspunkt eller klokkeslæt du oplevede problemet.'),
+    '#required' => true
+  );
+  
+  $form['contact_unittype'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Hvilken enhedstype og evt. modelnummer du bruger (fx PC, tablet, smartphone, ebogslæser).'),
+    '#required' => true
+  );
+  
+  $form['contact_browser'] = array(
+    '#type' => 'select',
+    '#title' => t('Vælg din browser'),
+    '#options' => array(
+      'ie11' => 'Internet Explorer 11',
+      'ie10' => 'Internet Explorer 10',
+      'ie9' => 'Internet Explorer 9',
+      'ie8' => 'Internet Explorer 8',
+      'ie7' => 'Internet Explorer 7 eller ældre',
+      'ff' => 'Mozilla Firefox',
+      'safari' => 'Safari',
+      'chrome' => 'Google Chrome',
+      'opera' => 'Opera',
+      'netscape' => 'Netscape',
+      'anden' => 'Anden'
+    ),
+    '#required' => true
+  );
+  
+  $form['contact_os'] = array(
+    '#type' => 'select',
+    '#title' => t('Vælg dit operativ system'),
+    '#required' => true,
+    '#options' => array(
+      'win8' => 'Windows 8',
+      'win7' => 'Windows 7',
+      'vista' => 'Windows Vista',
+      'winxp' => 'Windows XP',
+      'win2k' => 'Windows 2000 eller ældre',
+      'osx' => 'MacOS 10 eller nyere',
+      'os9' => 'MACOS 9 eller ældre',
+      'linux' => 'Linux'
+    )
+  );
+  
+  $form['contact_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Rapporter Fejl')
+  );
+  
+  $form['#submit'][] = 'netsound_contact_form_submit';
+  
+  return $form;
 }
 
 function netsound_contact_netlyd_form($form_state){
@@ -115,7 +204,6 @@ function netsound_contact_netlyd_form($form_state){
   return $form;
   
 }
-
 
 function netsound_contact_elib_form($form_state){
   $form = array();
@@ -200,7 +288,6 @@ function netsound_contact_elib_form($form_state){
   return $form;
 }
 
-
 function netsound_shortcutmenu_form($form_state){
   $form  = array();
   
@@ -252,11 +339,14 @@ function netsound_contact_form_submit($form, &$form_state){
   $params['subject'] = t('Support besked fra eReolen.dk');
   $params['body'] = $out;
   
+  
   $mail = variable_get('netsound_elibmail', '');
   if($form_state['values']['form_id'] == 'netsound_contact_netlyd_form'){
     $mail = variable_get('netsound_supportmail', '');
   }
-  
+  else if($form_state['values']['form_id'] == 'netsound_contact_error_form'){
+    $mail = variable_get('netsound_publizonmail', '');
+  }  
   
   drupal_mail('netsound','somekey',$mail,language_default(),$params,$form_state['values']['contact_mail'],true);
   
@@ -274,7 +364,6 @@ function netsound_shortcutmenu_form_submit($form, &$form_state){
   }
   drupal_goto($options[$form_state['values']['shortcut']]);
 }
-
 
 function netsound_get_genres_from_categories($tid){
   $sql = '
@@ -297,6 +386,7 @@ function netsound_get_genres_from_categories($tid){
   }
   return $rows;
 }
+
 function netsound_form_alter(&$form, $form_state, $form_id) {
 
   if($form_id == 'contact_mail_page'){
