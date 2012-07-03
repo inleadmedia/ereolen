@@ -18,6 +18,7 @@ function ting_search_result_ctools_content_types() {
     'description' => t('The search results for a search against the Ting system'),
     'required context' => new ctools_context_required(t('Search keys'), 'string'),
     'category' => t('Ting'),
+    'icon' => 'icon_node.png',
   );
 }
 

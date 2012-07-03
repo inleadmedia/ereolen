@@ -14,6 +14,7 @@ function ebog_embed_video_embedvideo_ctools_content_types() {
     'description' => t('Ebog Embed video description.'),
     'single' => TRUE,
     'category' => array('INLEAD'),
+    'icon' => '',
     //'no title override' => TRUE,
   );
 }

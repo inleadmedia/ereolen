@@ -18,6 +18,7 @@ function ting_object_view_ctools_content_types() {
     'description' => t('Provides the full display of a Ting object.'),
     'required context' => new ctools_context_optional(t('Ting object'), 'ting_object'),
     'category' => t('Ting'),
+    'icon' => '',
   );
 }
 
