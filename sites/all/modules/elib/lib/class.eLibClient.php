@@ -201,11 +201,12 @@ class eLibClient {
     if ($isbn instanceof TingClientObject) {
       $object = $isbn;
       foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
-        if (preg_match('/[^0-9]{13}/', $isbn, $matches)) {
+        if (preg_match('/^[0-9]{13}/', $isbn, $matches)) {
           break;
         }
       }
     }
+    
     if (preg_match('/^[0-9]+(X)?$/', $isbn)) {
       if (!isset($books[$isbn]) || $reset) {
         $response = $this->soapCall($this->base_url . 'getproduct.asmx?WSDL', 'GetProduct', array('ebookid' => $isbn));

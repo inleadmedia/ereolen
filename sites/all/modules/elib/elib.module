@@ -123,7 +123,7 @@ function elib_get_isbn_from_object_id($object_id) {
   try {
     $object = ting_get_object_by_id($object_id);
     foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
-      if (preg_match('/[^0-9]{13}/', $isbn, $matches)) {
+      if (preg_match('/^[0-9]{13}/', $isbn, $matches)) {
           break;
       }
     }
@@ -419,29 +419,16 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
   $image_url = elib_book_cover($object->record['dc:identifier']['dkdcplus:ISBN'], '65_x');
   $item_url = 'ting/object/' . (string) $object->id;
 
-  $out[] = '
-    <div class="left">
-  ';
+  $out = array();
+  $out[] = '<div class="left">';
+  $out[] = '<div class="picture">' . l(theme('image', $image_url, '', '', null, false), $item_url, array('html' => true)) . '</div>';
 
-  $out[] = '
-      <div class="picture">' .
-          l(theme('image', $image_url, '', '', null, false), $item_url, array('html' => true)) . '
-      </div>
-  ';
+  $out[] = '</div>';
 
-  $out[] = '
-    </div>
-  ';
+  $out[] = '<div class="right">';
 
-  $out[] = '
-    <div class="right">
-  ';
-
-  $out[] = '<h3 class="title">' . l($object->record['dc:title'][''][0], $item_url, array('attributes' => array('class' => 'title'))) .
-          '</h3>';
-  $out[] = '<div class="author">' .
-          t('!creator_name', array('!creator_name' => l($object->record["dc:creator"]["dkdcplus:aut"][0], 'ting/search/' . $object->record["dc:creator"]["dkdcplus:aut"][0]))) .
-          '</div>';
+  $out[] = '<h3 class="title">' . l($object->record['dc:title'][''][0], $item_url, array('attributes' => array('class' => 'title'))) . '</h3>';
+  $out[] = '<div class="author">' . t('!creator_name', array('!creator_name' => l($object->record["dc:creator"]["dkdcplus:aut"][0], 'ting/search/' . $object->record["dc:creator"]["dkdcplus:aut"][0]))) . '</div>';
   $out[] = '<div class="rating-for-faust"><div class="' . $object->localId . '"></div></div>';
 
   if ($elib_data->loanexpiredate) {
@@ -459,47 +446,29 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
   if (($NotReloanable) || ($Reloanable)) {
     if ($days < 1) {
       if ($extra <= 24) {
-        $out[] = '
-            <div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>
-          ';
-      } else {
-        $out[] = '
-            <div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>
-          ';
+        $out[] = '<div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>';
       }
-    } else {
-      $out[] = '
-          <div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>
-        ';
+      else {
+        $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
+      }
     }
-  } elseif ($ExpiredButReloanable) {
-    $out[] = '
-        <div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>
-      ';
+    else {
+      $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
+    }
+  }
+  else if ($ExpiredButReloanable) {
+    $out[] = '<div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>';
   }
 
   $out[] = '
       <div class="icons">
         <div class="icons">
           <ul>';
-  //  if ($NotReloanable) {
-  //    $out[] = '
-  //      <li>' . l(t('Download'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-  //    ';
-  //  }
   if (($Reloanable) || ($ExpiredButReloanable)) {
-    $out[] = '
-                <li class="seperator"></li>
-                <li>' . l(t('Re-loan'), $item_url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>
-              ';
+    $out[] = '<li class="seperator"></li>
+              <li>' . l(t('Re-loan'), $item_url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>';
   }
-  $out[] = '
-          </ul>
-        </div>
-      </div>
-    </div>
-  ';
-
+  $out[] = '</ul></div></div></div>';
 
   return implode($out);
 }
@@ -511,8 +480,13 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
   $obj->url = 'ting/object/' . $obj->id;
 
   // Get book information form elib, such as sample link etc.
-  $book = elib_client()->getBook($obj);
-  
+  $client = elib_client();
+  $client->setLibrary(variable_get('elib_retailer_id', ''));
+  $book = $client->getBook($obj);
+  if ($book->status->code == 101 && isset($book->data->teaser->link)) {
+    $elib_sample_link = (string)$book->data->teaser->link;
+  }
+
   switch ($displaysize) {
     case 'small':
     case 'small_rm':
@@ -526,7 +500,21 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
       break;
   }
 
-  
+  // Default action links.  
+  $action_links = array();
+  $action_classes = array();
+  if (isset($elib_sample_link)) {
+    $action_links[] = l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('action' => 'sample')));
+    $action_classes[] = 'sample';
+    $action_links[] = l(t('Loan'), $obj->url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe')));
+    $action_classes[] = 'loan';
+  }
+  if ($displaysize == 'small_rm') {
+    $action_links[] = l(t('Remove'), $obj->url . '/huskeliste/fjern', array('html' => true, 'query' => drupal_get_destination()));
+    $action_classes[] = 'remove';
+  }
+  $action_links[] = l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('action' => 'deactivated')));
+  $action_classes[] = 'deactivated';
   
   $alttext = t('@titel af @forfatter', array('@titel' => $obj->record['dc:title'][''][0], '@forfatter' => $obj->record["dc:creator"]["dkdcplus:aut"][0]));
   $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
@@ -541,34 +529,12 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
   $part['rating'] = '<div class="rating-for-faust"><div class="' . $obj->localId . '"></div></div>';
   $part['title'] = '<h3 class="title">' . l($obj->record['dc:title'][''][0], $obj->url, array('attributes' => array('class' => 'title'))) . '</h3>';
   $part['author'] = '<div class="author">' . t('!creator_name', array('!creator_name' => l($obj->record["dc:creator"]["dkdcplus:aut"][0], 'ting/search/' . $obj->record["dc:creator"]["dkdcplus:aut"][0]))) . '</div>';
-  $part['icons'] = '
-    <div class="icons">
-      <ul>
-        <li>' . l(t('Sample'), $obj->url . '/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-        <li class="seperator"></li>
-        <li>' . l(t('Loan'), $obj->url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-        <li class="seperator"></li>
-        <li class="deactivated">' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-      </ul>
-    </div>
-  ';
+  $part['icons'] = elib_create_icons($action_links, $action_classes);
 
   if ($displaysize == 'review') {
-
     $u = elib_user_get_cred($elib[1]);
     $part['text'] = '<div class="spacing-before" style="text-transform:uppercase;">Anmelder</div><div>' . $u['user'] . '</div><div class="text"  style="margin-left:80px;"><p class="spacing-before">' . truncate_utf8($elib[0], 400, true, true) . ' ' . l('LÆS MERE →', $obj->url) . '</p>';
-
-    $part['icons'] = '
-      <div class="icons">
-        <ul>
-          <li>' . l(t('Sample'), $obj->url . '/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li>' . l(t('Loan'), $obj->url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li class="deactivated">' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-        </ul>
-      </div>
-    ';
+    $part['icons'] = elib_create_icons($action_links, $action_classes);
     $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
     $displaysize = 'small';
   }
@@ -606,40 +572,13 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
       foreach ($obj->record["dc:subject"]["dkdcplus:DBCF"] as $subject) {
         $subs[] = l($subject, 'ting/search/' . $subject);
       }
-      //     $extras .= theme('item_list', $subs, t('Subjects'), 'span', array('class' => 'subject'));
     }
-    if (!empty($obj->record['dcterms:extent'][''])) {
-      //$extras .= theme('item_list', $obj->record['dcterms:extent'][''], t('Extent'), 'span', array('class' => 'version'));
-    }
-
-    $part['icons'] = '
-      <div class="icons">
-        <ul>
-          <li>' . l(t('Sample'), $obj->url . '/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li>' . l(t('Loan'), $obj->url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li class="deactivated">' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-        </ul>
-      </div>
-    ';
+    $part['icons'] = $part['icons'] = elib_create_icons($action_links, $action_classes);   
   }
 
   if ($displaysize == 'small_rm') {
     $displaysize = 'small';
-    $part['icons'] = '
-      <div class="icons">
-        <ul>
-          <li>' . l(t('Sample'), $obj->url . '/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li>' . l(t('Loan'), $obj->url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-          <li class="seperator"></li>
-          <li>' . l(t('Fjern'), $obj->url . '/huskeliste/fjern', array('html' => true, 'query' => drupal_get_destination())) . '</li>
-          <li class="seperator"></li>
-          <li class="deactivated">' . l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) . '</li>
-        </ul>
-      </div>
-    ';
+    $part['icons'] = elib_create_icons($action_links, $action_classes);
   }
 
   $part['icons'] = '<div class="icons">' . $part['icons'] . '</div>';
@@ -657,6 +596,29 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
           '<div class="extras" style="margin-left:80px;">' . $extras . '</div>
     </div>
   </div>';
+}
+
+/**
+ * Helper function to create action links.
+ * 
+ * @todo: this should be moved to theme function.
+ * 
+ * @param array $links 
+ */
+function elib_create_icons(array $links, array $classes) {
+  $output = '<div class="icons"><ul>';
+  $count = count($links);
+  for ($i = 0; $i < $count; $i++) {
+    $output .= '<li class="' . $classes[$i] . '">' . $links[$i] . '</li>';
+    
+    // Add seperator except for the last one.
+    if ($i != count($links) - 1) {
+      $output .= '<li class="seperator"></li>';
+    }
+  }
+  $output .= '</ul></div>';
+  
+  return $output;
 }
 
 function dummy_lorem($numberofwords = 100) {

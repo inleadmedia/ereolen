@@ -8,54 +8,48 @@
 
 module_load_include('isbn_static_func.inc', 'elib');
 foreach ($collection->objects as $obj) {
-    // @todo
-    // Skip elib check
-	if(TRUE/*$obj->type == 'Netdokument'*/) {
-		$Obj = $obj;
-
   foreach ($obj->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
-    if (preg_match('/[^0-9]{13}/', $isbn, $matches)) {
+    if (preg_match('/^[0-9]{13}/', $isbn, $matches)) {
       break;
     }
   }
-  $alttext = t('@titel af @forfatter',array('@titel' => $Obj->title, '@forfatter' => $Obj->creators_string));
-
+  $alttext = t('@titel af @forfatter',array('@titel' => $obj->title, '@forfatter' => $obj->creators_string));
 ?>
-  <li class="display-book ting-collection ruler-after line clear-block" id="<?php print $Obj->id ?>">
+
+  <li class="display-book ting-collection ruler-after line clear-block" id="<?php print $obj->id ?>">
 
     <div class="picture">
-      <?php $image_url = elib_book_cover($obj->record['dc:identifier']['dkdcplus:ISBN'], '80_x'); ?>
-      <?php if ($image_url) { ?>
-        <?php print l(theme('image', $image_url, $alttext, $alttext, null, false), $Obj->url, array('html' => true)); ?>
+      <?php if ($elib[$isbn]['elib_book_cover']) { ?>
+        <?php print l(theme('image', $elib[$isbn]['elib_book_cover'], $alttext, $alttext, null, false), $obj->url, array('html' => true)); ?>
       <?php } ?>
     </div>
 
     <div class="record">
       <div class="left">
         <h3>
-          <?php print l($Obj->title, $Obj->url, array('attributes' => array('class' =>'title'))) ;?> 
+          <?php print l($obj->title, $obj->url, array('attributes' => array('class' =>'title'))) ;?>
         </h3>
         <div class="meta">
-          <?php if ($Obj->creators_string) : ?>
+          <?php if ($obj->creators_string) : ?>
             <span class="creator">
-              <?php echo t('By !creator_name', array('!creator_name' => l($Obj->creators_string,'ting/search/'.$Obj->creators_string,array('html' => true)))); ?>
+              <?php echo t('By !creator_name', array('!creator_name' => l($obj->creators_string,'ting/search/'.$obj->creators_string,array('html' => true)))); ?>
             </span>
           <?php endif; ?>
-          <div id="<?php print $Obj->objects[0]->localId ?>"></div>
-          <?php if ($Obj->date) : ?>
+          <div id="<?php print $obj->objects[0]->localId ?>"></div>
+          <?php if ($obj->date) : ?>
             <span class="publication_date">
-              <?php echo t('(%publication_date%)', array('%publication_date%' => $Obj->date)) /* TODO: Improve date handling, localizations etc. */ ?>
+              <?php echo t('(%publication_date%)', array('%publication_date%' => $obj->date)) /* TODO: Improve date handling, localizations etc. */ ?>
             </span>
           <?php endif; ?>
         </div>
         <div class="rating-for-faust">
-          <div class="<?php print $Obj->localId; ?>"></div>
+          <div class="<?php print $obj->localId; ?>"></div>
         </div>
-        <?php if ($Obj->subjects) : ?>
+        <?php if ($obj->subjects) : ?>
           <div class="subjects">
             <h4><?php echo t('Subjects:') ?></h4>
             <ul>
-              <?php foreach ($Obj->subjects as $subject) : ?>
+              <?php foreach ($obj->subjects as $subject) : ?>
                 <li><?php echo $subject ?></li>
               <?php endforeach; ?>
             </ul>
@@ -63,19 +57,21 @@ foreach ($collection->objects as $obj) {
         <?php endif; ?>
       </div>
       <div class="right">
-        <?php if ($Obj->abstract) : ?>
+        <?php if ($obj->abstract) : ?>
           <div class="abstract">
             <p>
-              <?php print drupal_substr(check_plain($Obj->abstract), 0, 200) . '...'; ?>
+              <?php print drupal_substr(check_plain($obj->abstract), 0, 200) . '...'; ?>
             </p>
           </div>
         <?php endif; ?>
         <div class="icons">
           <ul>
-            <li><?php print l(t('Sample'), $Obj->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
-            <li class="seperator"></li>
-            <li><?php print l(t('Loan'), $Obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
-            <li class="seperator"></li>
+            <?php if (isset($elib[$isbn]['elib_sample_link'])) { ?>
+              <li><?php print l(t('Sample'), $elib[$isbn]['elib_sample_link'], array('html' => true, 'attributes' => array('action' => 'sample'))) ?></li>
+              <li class="seperator"></li>
+              <li><?php print l(t('Loan'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
+              <li class="seperator"></li>
+            <?php } ?>          
             <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
           </ul>
         </div>
@@ -83,7 +79,6 @@ foreach ($collection->objects as $obj) {
     </div>
 
   </li>
-
 <?php
-	}
 }
+?>

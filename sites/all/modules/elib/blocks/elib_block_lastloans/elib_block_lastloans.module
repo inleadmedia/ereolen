@@ -226,11 +226,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
             $isbn = trim($item->ebookid);
             $ting_object = elib_get_ting_object_by_isbn($isbn);
             if ($ting_object) {
-              $out[$pages] .= theme('elib_item', array(
-                  'ting_obj' => $ting_object,
-                  'isbn' => $isbn,
-                      )
-              );
+              $out[$pages] .= theme('elib_item', array('ting_obj' => $ting_object, 'isbn' => $isbn));
             }
 
             $items++;
@@ -259,16 +255,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
         $block['subject'] = t('100 most popular items');
     }
 
-    //krumo($books);
-    //$response = elib_client()->getNewBooks();
-
-
-
-
     $block['content'] = $out;
-
-
-
     return $block;
   }
 }
