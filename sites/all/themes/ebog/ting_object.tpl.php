@@ -8,14 +8,6 @@
  * - $object: The TingClientObject instance we're rendering.
  */
 
-module_load_include('isbn_static_func.inc', 'elib');
-
-foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
-  if (preg_match('/[^0-9]{13}/', $isbn, $matches)) {
-    break;
-  }
-}
-
 if (module_exists('ding_voxb')) {
   drupal_add_css(VOXB_PATH . '/css/voxb-pager.css');
   drupal_add_css(VOXB_PATH . '/css/voxb.css');
@@ -41,21 +33,20 @@ if (module_exists('ding_voxb')) {
 <div id="ting-object" class="line rulerafter">
 
   <div class="picture unit grid-3 alpha">
-    <?php $image_url = elib_book_cover($object->record['dc:identifier']['dkdcplus:ISBN'], '170_x'); ?>
-    <?php if (strpos($image_url,'imagecache')): ?>
+    <?php if (strpos($elib_book_cover, 'imagecache')): ?>
       <div class="inner left" style="margin-bottom:10px;">
-        <?php print theme('image', $image_url, $object->title, $object->title, null, false); ?>
+        <?php print theme('image', $elib_book_cover, $object->title, $object->title, null, false); ?>
       </div>
     <?php else: ?>
       <div class="inner left nopicture" style="height:270px;margin-bottom:10px;">
-        <?php print theme('image', $image_url, $object->title, $object->title, null, false); ?>
+        <?php print theme('image', $elib_book_cover, $object->title, $object->title, null, false); ?>
       </div>
     <?php endif;?>
   </div>
   <div class="meta unit grid-9 omega">
     <div class="inner">
       <h1 class="book-title"><?php print check_plain($object->record['dc:title'][''][0]); ?></h1>
-      <div class="author"><?php echo t('By !creator_name', array('!creator_name' => l($object->creators_string,'ting/search/'.$object->creators_string,array('html' => true)))) ?></div>
+      <div class="author"><?php echo t('By !creator_name', array('!creator_name' => l($object->creators_string, 'ting/search/' . $object->creators_string, array('html' => true)))); ?></div>
       <?php if (module_exists('ding_voxb')) { ?>
       <div class="ratingsContainer">
         <?php
@@ -79,13 +70,12 @@ if (module_exists('ding_voxb')) {
       </div>
       <?php } ?>
       <div class="facebook-like">
-        <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fereolen.dk%2Fting%2Fobject%2F150028%3A<?php echo $isbn; ?>&amp;send=false&amp;layout=box_count&amp;width=130&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=75" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:130px; height:75px;" allowTransparency="true"></iframe>
+        <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fereolen.dk%2Fting%2Fobject%2F150028%3A<?php echo $elib_isbn; ?>&amp;send=false&amp;layout=box_count&amp;width=130&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=75" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:130px; height:75px;" allowTransparency="true"></iframe>
       </div>
       <div class="abstract"><?php print check_plain($object->record['dcterms:abstract'][''][0]); ?></div>
       <div class="description">
       <?php if (!empty($object->record['dc:description'])): ?>
         <?php foreach ($object->record['dc:description'] as $type => $dc_description): ?>
-          <?php //print theme('item_list', $dc_description, t('Description'), 'span', array('class' => 'description'));?>
         <?php endforeach; ?>
       <?php endif; ?>
       </div>
@@ -157,7 +147,6 @@ if (module_exists('ding_voxb')) {
           <?php } ?>
           <?php if (!empty($object->record['dc:description'])) { ?>
             <?php foreach ($object->record['dc:description'] as $type => $dc_description) { ?>
-              <?php #print theme('item_list', $dc_description, t('Description'), 'span', array('class' => 'description'));?>
             <?php } ?>
           <?php } ?>
           <?php if (!empty($object->record['dcterms:replaces'][''])) { ?>
@@ -172,7 +161,6 @@ if (module_exists('ding_voxb')) {
               foreach ($object->record['dc:identifier']['dcterms:URI'] as $uri) {
                 $uris[] = l($uri, $uri);
               }
-              #print theme('item_list', $uris, t('Host publication'), 'span', array('class' => 'identifier'));                
             }
           ?>
           <?php if (!empty($object->record['dcterms:extent'][''])) { ?>
@@ -180,25 +168,33 @@ if (module_exists('ding_voxb')) {
           <?php } ?>
           <?php if (!empty($object->record['dc:rights'][''])) { ?>
             <?php print theme('item_list', $object->record['dc:rights'][''], t('Rights'), 'span', array('class' => 'rights'));?>
-          <?php } ?>
-          <?php print elib_book_teaser($object) ?>
+          <?php } ?>          
         </div>
       </div>
       <div class="icons">
         <ul>
-          <li><?php print l(t('Sample'), $object->url.'/sample', array('html' => true, 'attributes' => array('rel' => 'lightframe'))) ?></li>
-          <li class="seperator"></li>
-          <li><?php print l(t('Loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]', 'class' => 'ting-object-loan'))) ?></li>
+          <?php if (isset($elib_sample_link)) { ?>
+            <li><?php print l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('action' => 'sample', 'target' => '_blank'))) ?></li>
+            <li class="seperator"></li>
+            <li><?php print l(t('Loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]', 'class' => 'ting-object-loan'))) ?></li>
           <?php 
             if($user->uid){
               print '<li class="seperator"></li>';
               print '<li>';
-              print l(t('Husk'), $object->url.'/huskeliste?'.drupal_get_destination(), array('html' => true));
+              print l(t('Husk'), $object->url . '/huskeliste?' . drupal_get_destination(), array('html' => true));
               print '</li>';
             }
           ?>
-          <li class="seperator"></li>
-          <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+            <li class="seperator"></li>
+            <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+          <?php 
+            }
+            else {
+          ?>
+            <li class="unavailable"><span><?php echo t('Unavailable') ?></span></li>
+          <?php
+            }  
+          ?>
          </ul>
       </div>
       <?php
@@ -210,10 +206,10 @@ if (module_exists('ding_voxb')) {
   </div>
  </div>
 <?php if (module_exists('ding_voxb')) { ?>
-<div class="jqmWindow" id="dialog">
-  <a href="#" class="jqmClose">Close</a>
-  <hr>
-  <p class="ajax_message">Service unavailable.</p>
-</div>
-<span class="ajaxLoaderTpl"><img src="/<?php echo VOXB_PATH . '/img/ajax-loader.gif'; ?>" alt="in progress.." class="ajax_anim" /></span>
+  <div class="jqmWindow" id="dialog">
+    <a href="#" class="jqmClose">Close</a>
+    <hr>
+    <p class="ajax_message">Service unavailable.</p>
+  </div>
+  <span class="ajaxLoaderTpl"><img src="/<?php echo VOXB_PATH . '/img/ajax-loader.gif'; ?>" alt="in progress.." class="ajax_anim" /></span>
 <?php } ?>

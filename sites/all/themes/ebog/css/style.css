@@ -384,8 +384,14 @@ voxb h3 {
   margin-top: 3px;
 }
 
-#main-content .icons ul li a {
+#main-content .icons ul li a,
+#main-content .icons ul li span {
   padding: 4px 7px;
+}
+
+#main-content .icons ul li span {
+  display: block;
+  color: #FFF;
 }
 
 #main-content .feed-and-compare-page ul {

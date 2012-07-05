@@ -20,6 +20,7 @@ function ting_collection_view_ctools_content_types() {
                                 new ctools_context_optional(t('Query arguments'), 'string'),
                                 ),
     'category' => t('Ting'),
+    'icon' => '',
   );
 }
 
