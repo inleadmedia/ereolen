@@ -128,7 +128,6 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
           $index = 1;
 
           foreach ($response->data->toplistitem as $item) {
-            //print $item['ebookid'].'--';
             if (elib_get_ting_object_by_isbn(trim($item->ebookid))) {
               $out .= elib_displaybookNEW(elib_get_ting_object_by_isbn(trim($item->ebookid)), array('popular' => 1), 'small', $index, $item);
               $index++;

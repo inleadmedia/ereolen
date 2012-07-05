@@ -31,7 +31,7 @@ function ebog_preprocess_ting_object(&$vars) {
   $client = elib_client();
   $client->setLibrary(variable_get('elib_retailer_id', ''));
   $book = $client->getBook($isbn);
-  if ($book->status->code == 101) {
+  if ($book->status->code == 101 && isset($book->data->teaser->link)) {
     $vars['elib_sample_link'] = (string)$book->data->teaser->link;
   }
 }

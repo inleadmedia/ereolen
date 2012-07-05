@@ -500,21 +500,27 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
       break;
   }
 
-  // Default action links.  
+  // Default action links.
   $action_links = array();
   $action_classes = array();
   if (isset($elib_sample_link)) {
-    $action_links[] = l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('action' => 'sample')));
+    $action_links[] = l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('target' => '_blank', 'action' => 'sample')));
     $action_classes[] = 'sample';
     $action_links[] = l(t('Loan'), $obj->url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe')));
     $action_classes[] = 'loan';
+  }
+  else {
+    $action_links[] = '<span>' . t('Unavaliable') . '</span>';
+    $action_classes[] = 'unavaliable';
   }
   if ($displaysize == 'small_rm') {
     $action_links[] = l(t('Remove'), $obj->url . '/huskeliste/fjern', array('html' => true, 'query' => drupal_get_destination()));
     $action_classes[] = 'remove';
   }
-  $action_links[] = l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('action' => 'deactivated')));
-  $action_classes[] = 'deactivated';
+  if (isset($elib_sample_link)) {
+    $action_links[] = l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('action' => 'deactivated')));
+    $action_classes[] = 'deactivated';
+  }
   
   $alttext = t('@titel af @forfatter', array('@titel' => $obj->record['dc:title'][''][0], '@forfatter' => $obj->record["dc:creator"]["dkdcplus:aut"][0]));
   $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
