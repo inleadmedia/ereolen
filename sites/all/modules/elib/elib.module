@@ -510,8 +510,8 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
     $action_classes[] = 'loan';
   }
   else {
-    $action_links[] = '<span>' . t('Unavaliable') . '</span>';
-    $action_classes[] = 'unavaliable';
+    $action_links[] = '<span>' . t('Unavailable') . '</span>';
+    $action_classes[] = 'unavailable';
   }
   if ($displaysize == 'small_rm') {
     $action_links[] = l(t('Remove'), $obj->url . '/huskeliste/fjern', array('html' => true, 'query' => drupal_get_destination()));

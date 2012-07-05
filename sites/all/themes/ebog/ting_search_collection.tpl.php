@@ -78,7 +78,7 @@ foreach ($collection->objects as $obj) {
               }
               else {
             ?>
-              <li class="unavaliable"><span><?php echo t('Unavaliable') ?></span></li>
+              <li class="unavailable"><span><?php echo t('Unavailable') ?></span></li>
             <?php
               }  
             ?>
