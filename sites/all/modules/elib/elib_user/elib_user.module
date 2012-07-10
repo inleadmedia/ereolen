@@ -108,7 +108,7 @@ function elib_check_user($cardno, $lib) {
     return user_load(array('uid' => $uid));
   }
 
-  return isset($account) ? $account : FALSE;
+  return FALSE;
 }
 
 /**
