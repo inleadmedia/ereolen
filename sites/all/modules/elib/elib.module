@@ -521,7 +521,7 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
     $action_links[] = l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('action' => 'deactivated')));
     $action_classes[] = 'deactivated';
   }
-  
+
   $alttext = t('@titel af @forfatter', array('@titel' => $obj->record['dc:title'][''][0], '@forfatter' => $obj->record["dc:creator"]["dkdcplus:aut"][0]));
   $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
   if ($elib_data->loanexpiredate) {
@@ -579,7 +579,7 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
         $subs[] = l($subject, 'ting/search/' . $subject);
       }
     }
-    $part['icons'] = $part['icons'] = elib_create_icons($action_links, $action_classes);   
+    $part['icons'] = $part['icons'] = elib_create_icons($action_links, $action_classes);
   }
 
   if ($displaysize == 'small_rm') {
@@ -606,24 +606,24 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
 
 /**
  * Helper function to create action links.
- * 
+ *
  * @todo: this should be moved to theme function.
- * 
- * @param array $links 
+ *
+ * @param array $links
  */
 function elib_create_icons(array $links, array $classes) {
   $output = '<div class="icons"><ul>';
   $count = count($links);
   for ($i = 0; $i < $count; $i++) {
     $output .= '<li class="' . $classes[$i] . '">' . $links[$i] . '</li>';
-    
+
     // Add seperator except for the last one.
     if ($i != count($links) - 1) {
       $output .= '<li class="seperator"></li>';
     }
   }
   $output .= '</ul></div>';
-  
+
   return $output;
 }
 
@@ -668,8 +668,8 @@ function elib_book_cover($isbns, $presetname) {
   // Look in the ISBNs to find if image have been downloaded.
   foreach ($isbns as $isbn) {
     if (preg_match('/^([0-9]{13})/', $isbn, $matches)) {
-      $path = elib_init_cover_path($isbn);
-      if (file_exists(file_create_path($path))) {
+      $path = _elib_cover_cache_get($isbn);
+      if ($path) {
         return imagecache_create_url($presetname, $path);
       }
     }
@@ -685,11 +685,12 @@ function elib_book_cover($isbns, $presetname) {
       if (isset($book->data->coverimage)) {
         $path = elib_init_cover_path($isbn);
         $path = _elib_covers_fetch_or_redirect($path, (string) $book->data->coverimage);
+        _elib_cover_cache_set($path, $isbn);
         return imagecache_create_url($presetname, $path);
       }
     }
   } catch (Exception $e) {
-    // @todo: ERROR
+    // Default image will be returned below.
   }
 
   return imagecache_create_url($presetname, _elib_covers_default_image());
@@ -726,8 +727,7 @@ function _elib_covers_pages_fetch_image($path, $image_url) {
     // get the folder for the final location of this preset...
     $dir = file_directory_path() . '/' . dirname($path);
     // Build the destination folder tree if it doesn't already exists.
-    if (!file_check_directory($dir, FILE_CREATE_DIRECTORY) &&
-            !mkdir($dir, 0775, TRUE)) {
+    if (!file_check_directory($dir, FILE_CREATE_DIRECTORY) && !mkdir($dir, 0775, TRUE)) {
       return 0;
     }
     return file_save_data($result->data, $path, FILE_EXISTS_REPLACE);
@@ -763,4 +763,38 @@ function elib_get_ting_object_by_isbn($isbn, $enrich = FALSE) {
   $object = isset($r->collections[0]->objects[0]) ? $r->collections[0]->objects[0] : FALSE;
 
   return $object;
+}
+
+/**
+ * Implements hook_flush_caches().
+ *
+ * Flush local cover cache, which will be rebuild base on local file system and
+ * covers fetch from the web-service.
+ */
+function elib_flush_caches() {
+  return array('cache_elib_cover');
+}
+
+/**
+ * Helper function to store rendered "remember" lists based on user ID.
+ *
+ * @param type $data
+ * @param type $isbn
+ */
+function _elib_cover_cache_set($data, $isbn) {
+  cache_set($isbn,  $data, 'cache_elib_cover');
+}
+
+/**
+ * Helper function to retrive rendered "remember" lists based on user ID.
+ *
+ * @param type $isbn
+ * @param type $reset
+ * @return boolean
+ */
+function _elib_cover_cache_get($isbn, $reset = FALSE) {
+  if (!$reset && ($cache = cache_get($isbn, 'cache_elib_cover')) && !empty($cache->data)) {
+    return $cache->data;
+  }
+  return FALSE;
 }

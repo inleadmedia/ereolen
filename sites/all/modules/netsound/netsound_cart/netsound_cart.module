@@ -143,7 +143,7 @@ function netsound_cart_block($op = 'list', $delta = 0, $edit = array()) {
 }
 
 /**
- * Implements hook_fludh_caches().
+ * Implements hook_flush_caches().
  */
 function netsound_cart_flush_caches() {
   return array('cache_netsound_cart');
