@@ -238,7 +238,6 @@ class eLibClient {
     try {
       $request = new SoapClient($wsdl, $this->sc_params);
       $response = $request->$func($params);
-      // var_dump($request->__getLastRequest());
       $this->doLog('eLib soapCall: “@message” [REQUEST]: @request [RESPONSE]: @response', array(
         '@message' => $func . " (" . $wsdl . ")",
         '@request' => var_export($request->__getLastRequest(), true),

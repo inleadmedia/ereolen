@@ -8,6 +8,61 @@
  */
 
 /**
+ * Implements hook_perm();
+ */
+function elib_user_perm() {
+  return array('administer elib users');
+}
+
+/**
+ * Implements hook_menu().
+ */
+function elib_user_menu() {
+  $item = array();
+
+  $item['admin/user/elib/search'] = array(
+    'title' => 'User search',
+    'description' => 'Search elib users',
+    'page callback' => 'elib_user_search',
+    'access arguments' => array('administer elib users'),
+    'file' => 'includes/elib_user_search.inc',  
+  );
+  
+  $item['admin/user/elib/search/%uid'] = array(
+    'title' => 'User search',
+    'description' => 'Search elib users',
+    'page callback' => 'elib_user_search',
+    'page arguments' => array(3),
+    'access arguments' => array('administer elib users'),
+    'file' => 'includes/elib_user_search.inc',  
+  );
+  
+  $item['admin/user/elib/search/%uid/delete'] = array(
+    'title' => 'Delete user',
+    'description' => 'Delete elib user',
+    'page callback' => 'elib_user_search_delete',
+    'page arguments' => array(3),
+    'access arguments' => array('administer elib users'),
+    'file' => 'includes/elib_user_search.inc',  
+  );
+  
+  return $item;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function elib_user_theme($existing, $type, $theme, $path) {
+  return array(
+    'elib_user_search' => array(
+      'arguments' => array('uid' => NULL, 'info' => NULL),
+      'path' => $path . '/templates',
+      'template' => 'elib_user_search',
+    ),
+  );
+}
+
+/**
  * Creates a unique identifier for a given user based on the input parameter.
  *
  * @param string $cardno
