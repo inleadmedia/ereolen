@@ -45,6 +45,11 @@ function elib_user_search($uid = FALSE) {
   return $output;
 }
 
+/**
+ * Search form for elib user.
+ * 
+ * @return string 
+ */
 function elib_user_search_form() {
   $form = array();
   
@@ -64,6 +69,10 @@ function elib_user_search_form() {
   return $form;
 }
 
+/**
+ * Validation for the elib search form. It checkes that the number enter is 
+ * either a library card no. or a CPR no. 
+ */
 function elib_user_search_form_validate($form, $form_state) {
   // Check if card number or cpr was entered.
   if (!preg_match('/^\d{6}-?\d{4}$/', $form_state['values']['cardno'])) {
@@ -83,8 +92,11 @@ function elib_user_search_form_submit($form, $form_state) {
   }
 }
 
+/**
+ * Menu callback that deletes a user.
+ */
 function elib_user_search_delete($uid) {
-  if (isset($uid)) {
+  if (isset($uid)) {   
     $statement = "DELETE FROM {elib_user} WHERE elib_id = '%s'";
     db_query($statement, elib_user_elib_id($_SESSION['elib_user_search_cardno']));
     unset($_SESSION['elib_user_search_cardno']);
