@@ -9,9 +9,9 @@
   <div class="form-item">
     <ul>
       <li><strong>UID</strong>: <?php echo $uid ?></li>
-      <li><strong>Created</strong>: <?php echo date_format_date($info['user']->created, 'short') ?></li>
-      <li><strong>Accessed</strong>: <?php echo date_format_date($info['user']->access, 'short') ?></li>
-      <li><strong>Login</strong>: <?php echo date_format_date($info['user']->login, 'short') ?></li>
+      <li><strong>Created</strong>: <?php echo date_format_date(date_make_date($info['user']->created, NULL, DATE_UNIX), 'custom', 'd/m/y - H:i:s') ?></li>
+      <li><strong>Accessed</strong>: <?php echo date_format_date(date_make_date($info['user']->access, NULL, DATE_UNIX), 'custom', 'd/m/y - H:i:s') ?></li>
+      <li><strong>Login</strong>: <?php echo date_format_date(date_make_date($info['user']->login, NULL, DATE_UNIX), 'custom', 'd/m/y - H:i:s') ?></li>
     </ul>  
   </div>
   <h2><?php echo t('Netsound cart information') ?></h2>
