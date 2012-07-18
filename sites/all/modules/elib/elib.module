@@ -681,12 +681,14 @@ function elib_book_cover($isbns, $presetname) {
   // fetch book from elib by isbn
   try {
     foreach ($isbns as $isbn) {
-      $book = $c->getBook($isbn);
-      if (isset($book->data->coverimage)) {
-        $path = elib_init_cover_path($isbn);
-        $path = _elib_covers_fetch_or_redirect($path, (string) $book->data->coverimage);
-        _elib_cover_cache_set($path, $isbn);
-        return imagecache_create_url($presetname, $path);
+      if (preg_match('/^[0-9]{13}/', $isbn)) {
+        $book = $c->getBook($isbn);
+        if (isset($book->data->coverimage)) {
+          $path = elib_init_cover_path($isbn);
+          $path = _elib_covers_fetch_or_redirect($path, (string) $book->data->coverimage);
+          _elib_cover_cache_set($path, $isbn);
+          return imagecache_create_url($presetname, $path);
+        }
       }
     }
   } catch (Exception $e) {
