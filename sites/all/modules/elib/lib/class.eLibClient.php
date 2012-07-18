@@ -2,7 +2,7 @@
 
 /**
  * Adapter for eLib webservices
- * 
+ *
  * @author troelslenda
  *
  */
@@ -190,13 +190,16 @@ class eLibClient {
   }
 
   /**
-   * 
+   *
    * @param int $isbn
    * @return SimpleXMLElement
    */
   public function getBook($isbn, $reset = FALSE) {
-    static $books = array();
-        
+    static $books;
+    if (!isset($books) || $reset) {
+      $books = array();
+    }
+
     // Convert TingClientObject into ISBN.
     if ($isbn instanceof TingClientObject) {
       $object = $isbn;
@@ -206,9 +209,9 @@ class eLibClient {
         }
       }
     }
-    
+
     if (preg_match('/^[0-9]+(X)?$/', $isbn)) {
-      if (!isset($books[$isbn]) || $reset) {
+      if (!isset($books[$isbn])) {
         $response = $this->soapCall($this->base_url . 'getproduct.asmx?WSDL', 'GetProduct', array('ebookid' => $isbn));
         $books[$isbn] = $response;
       }
