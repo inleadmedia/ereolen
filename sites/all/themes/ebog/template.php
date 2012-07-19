@@ -101,7 +101,7 @@ function ebog_preprocess_page(&$vars, $hook) {
     drupal_goto('user', drupal_get_destination());
   }
 
-  if(arg(3) == 'stream' || arg(3) == 'download' || $_GET['clean'] == 1 ){
+  if(arg(3) == 'stream' || arg(3) == 'download' || (isset($_GET['clean']) && $_GET['clean'] == 1)){
     $vars['template_files'] = array('page-clean');
     $vars['css']['all']['theme']['sites/all/themes/ebog/css/style.css'] = false;
   }

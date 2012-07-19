@@ -32,7 +32,7 @@ function elib_user_menu() {
     'title' => 'User search',
     'description' => 'Search elib users',
     'page callback' => 'elib_user_search',
-    'page arguments' => array(3),
+    'page arguments' => array(4),
     'access arguments' => array('administer elib users'),
     'file' => 'includes/elib_user_search.inc',  
   );
@@ -41,7 +41,7 @@ function elib_user_menu() {
     'title' => 'Delete user',
     'description' => 'Delete elib user',
     'page callback' => 'elib_user_search_delete',
-    'page arguments' => array(3),
+    'page arguments' => array(4),
     'access arguments' => array('administer elib users'),
     'file' => 'includes/elib_user_search.inc',  
   );
@@ -222,9 +222,9 @@ function elib_user_block($op = 'list', $delta = 0) {
 
         $out = array();
         module_load_include('client.inc', 'ting');
-        $loans = $loans->data;
+        $loans = isset($loans->data) ? $loans->data : FALSE;
 
-        if ($loans->orderitem) {
+        if ($loans && isset($loans->orderitem)) {
           foreach ($loans->orderitem as $book) {
             $object = elib_get_ting_object_by_isbn(trim($book->book->attributes()->id));
             $bookdisplay[elib_str_to_time((string)$book->loanexpiredate[0], TRUE)] = elib_displaybook($object, $book);

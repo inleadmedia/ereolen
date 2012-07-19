@@ -8,10 +8,11 @@
   <h2><?php echo t('User information') ?></h2>
   <div class="form-item">
     <ul>
-      <li><strong>UID</strong>: <?php echo $uid ?></li>
-      <li><strong>Created</strong>: <?php echo date_format_date(date_make_date($info['user']->created, NULL, DATE_UNIX), 'custom', 'd/m/y - H:i:s') ?></li>
-      <li><strong>Accessed</strong>: <?php echo date_format_date(date_make_date($info['user']->access, NULL, DATE_UNIX), 'custom', 'd/m/y - H:i:s') ?></li>
-      <li><strong>Login</strong>: <?php echo date_format_date(date_make_date($info['user']->login, NULL, DATE_UNIX), 'custom', 'd/m/y - H:i:s') ?></li>
+      <li><strong><?php echo t('UID') ?></strong>: <?php echo $uid ?></li>
+      <li><strong><?php echo t('ID') ?></strong>: <?php echo $info['elib_id'] ?></li>
+      <li><strong><?php echo t('Created') ?></strong>: <?php echo date_format_date(date_make_date($info['user']->created, NULL, DATE_UNIX), 'custom', 'd/m/y - H:i:s') ?></li>
+      <li><strong><?php echo t('Login') ?></strong>: <?php echo date_format_date(date_make_date($info['user']->login, NULL, DATE_UNIX), 'custom', 'd/m/y - H:i:s') ?></li>
+      <li><strong><?php echo t('Active') ?></strong>: <?php echo $info['user']->status ?></li>      
     </ul>  
   </div>
   <h2><?php echo t('Netsound cart information') ?></h2>

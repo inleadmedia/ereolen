@@ -91,6 +91,7 @@ function elib_infinite_carousel_block($op = 'list', $delta = 0, $edit = array())
     module_load_include('isbn_static_func.inc', 'elib');
     $limit = variable_get('elib_infinite_carousel_block_items', 49);
     $count = 0;
+    $item = '';
     foreach ($books as $object) {
       if ($count >= $limit) {
         break;
@@ -101,7 +102,7 @@ function elib_infinite_carousel_block($op = 'list', $delta = 0, $edit = array())
 
       $image = theme('image', $image_url, $alttext, $alttext, null, false);
 
-      $list .= '
+      $item .= '
         <li>
           <a href="' . $object->url . '" title="' . $alttext . '">
             ' . $image . '
@@ -117,7 +118,7 @@ function elib_infinite_carousel_block($op = 'list', $delta = 0, $edit = array())
       <div class="infiniteCarousel">
         <div class="wrapper">
           <ul>
-          '.$list.'
+          ' . $item .'
           </ul>
         </div>
       </div>
