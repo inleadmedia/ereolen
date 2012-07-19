@@ -179,7 +179,6 @@ class eLibClient {
   }
 
   public function getLoans() {
-
     if (is_a($this->elibUsr, 'loaner')) {
       $response = $this->soapCall($this->base_url . 'getlibraryuserorderlist.asmx?WSDL', 'GetLibraryUserOrderList', array('cardnumber' => $this->elibUsr->getId()));
       $xml = simplexml_load_string($response->GetLibraryUserOrderListResult->any);

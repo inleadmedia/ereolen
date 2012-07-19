@@ -16,8 +16,15 @@ function elib_user_search($uid = FALSE) {
   $output = drupal_get_form('elib_user_search_form');
   $info = array();
   
-  if ($uid) {
-    $uid = check_plain($uid);
+  // Check the supplied user id.
+  $uid = check_plain($uid);
+  
+  // If set and is a number load extra information about the user.
+  if ($uid && is_numeric($uid)) {
+    $info['elib_id'] = elib_user_elib_id($_SESSION['elib_user_search_cardno']);
+    
+    // Load user account.
+    $info['user'] = user_load(array('uid' => $uid));
     
     // Load the ting client and use it to get more information about the books 
     // the user may have request in the cart etc,
@@ -33,9 +40,6 @@ function elib_user_search($uid = FALSE) {
         $info['cart'][] = ting_get_object_by_id($row['ting_object_id']);
       }
     }
-    
-    // Load user account.
-    $info['user'] = user_load(array('uid' => $uid));
     
     // Add information to the output.
     $output .= theme('elib_user_search', $uid, $info);    
@@ -95,13 +99,17 @@ function elib_user_search_form_submit($form, $form_state) {
 /**
  * Menu callback that deletes a user.
  */
-function elib_user_search_delete($uid) {
-  if (isset($uid)) {   
+function elib_user_search_delete($uid = FALSE) {
+  if ($uid && is_numeric($uid)) {   
     $statement = "DELETE FROM {elib_user} WHERE elib_id = '%s'";
     db_query($statement, elib_user_elib_id($_SESSION['elib_user_search_cardno']));
     unset($_SESSION['elib_user_search_cardno']);
     user_delete(array(), $uid);
     drupal_set_message(t('The user have been deleted'));
+    drupal_goto('admin/user/elib/search');
+  }
+  else {
+    drupal_set_message(t('You are not allowed to delete this user'));
     drupal_goto('admin/user/elib/search');
   }
 }
