@@ -208,80 +208,112 @@ function netsound_contact_netlyd_form($form_state){
 function netsound_contact_elib_form($form_state){
   $form = array();
   
-  $form['contact_name'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Navn'),
-  );
-  $form['contact_ssn'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Lånerkortnr./CPR'),
-  );  
-  $form['contact_mail'] = array(
-    '#type' => 'textfield',
-    '#title' => t('E-mail'),
-    '#required' => true
-  );
   $form['contact_library'] = array(
     '#type' => 'select',
-    '#title' => t('Vælg dit bibliotek'),
+    '#title' => t('Vælg dit lokalbibliotek'),
     '#options' => elib_libraries_get_libraries(),
   	'#required' => true
   );
+  
   global $user;
   $userinfo = elib_user_get_cred($user->uid); 
   if($userinfo['lib']){
     $form['contact_library']['#default_value'] = $userinfo['lib'];
     $form['contact_library']['#disabled'] = true;
   }
+  
+  
+  $form['contact_ssn'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Det nummer du benytter ved login (Lånerkortnr. / CPR)'),
+    '#required' => true,
+  );
+  
+  $form['contact_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Navn'),
+    '#required' => true,
+  );
+    
+  $form['contact_mail'] = array(
+    '#type' => 'textfield',
+    '#title' => t('E-mail'),
+    '#required' => true
+  );
+  
+  $form['problem'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Uddybende beskrivelse af det problem du oplever'),
+    '#required' => true,
+  );
+    
   $form['book_title'] = array(
     '#type' => 'textfield',
-    '#title' => t('Bogtitel'),
+    '#title' => t('Hvilken titel eller hvilke titler drejer det sig om?'),
+    '#required' => true,
   );
-  $form['mp3player'] = array(
+  
+  $form['error_time'] = array(
+    '#type' => 'date',
+    '#title' => t('Hvornår oplevede du problemet?'),
+    '#required' => true,
+    
+  );
+  
+  $form['tablet'] = array(
+    '#type' => 'select',
+    '#title' => t('Hvilken enhedstype bruger du?'),
+    '#options' => array(
+        'pc' => 'PC',
+        'smartphone' => 'SmartPhone',
+        'tablet' => 'Tablet',
+        'ebookreader' => 'Ebogslæser',
+    ),
+    '#required' => true,
+  );
+  
+  $form['tablet_model'] = array(
     '#type' => 'textfield',
-    '#title' => t('MP3 Afspiller'),
+    '#title' => t('Indtast evt. modelnummer'),
   );
-  $form['wmp_version'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Version af Windows Media Player'),
-  );
+  
   $form['os'] = array(
     '#type' => 'select',
-    '#title' => t('Mit styresystem er'),
+    '#title' => t('Hvilken browser anvender du?'),
     '#options' => array(
-      'win7' => 'Windows 7',
-      'vista' => 'Windows Vista',
-      'winxp' => 'Windows XP',
-      'win2k' => 'Windows 2000',
-      'winnt' => 'Windows NT',
-      'win98' => 'Windows 98',
-      'osx' => 'MacOS 10 eller nyere',
-      'os9' => 'MACOS 9 eller ældre',
-      'linux' => 'Linux'
-    ),
-  );
-  $form['browser'] = array(
-    '#type' => 'select',
-    '#title' => t('Mit internetprogram er'),
-    '#options' => array(
+      'ie11' => 'Internet Explorer 11',
+      'ie10' => 'Internet Explorer 10',
+      'ie9' => 'Internet Explorer 9',
       'ie8' => 'Internet Explorer 8',
-      'ie7' => 'Internet Explorer 7',
-      'ie6' => 'Internet Explorer 6 eller ældre',
+      'ie7' => 'Internet Explorer 7 eller ældre',
       'ff' => 'Mozilla Firefox',
       'safari' => 'Safari',
       'chrome' => 'Google Chrome',
       'opera' => 'Opera',
       'netscape' => 'Netscape',
+      'anden' => 'Anden'
     ),
   );
-  $form['problem'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Problem beskrivelse')
+  
+  $form['contact_os'] = array(
+    '#type' => 'select',
+    '#title' => t('Hvilket operativ system anvender du?'),
+    '#required' => true,
+    '#options' => array(
+      'win8' => 'Windows 8',
+      'win7' => 'Windows 7',
+      'vista' => 'Windows Vista',
+      'winxp' => 'Windows XP',
+      'win2k' => 'Windows 2000 eller ældre',
+      'osx' => 'MacOS 10 eller nyere',
+      'os9' => 'MACOS 9 eller ældre',
+      'linux' => 'Linux'
+    )
   );
+  
   $form['submit'] = array(
-    '#prefix' => '<p>'.t('OBS tekst!').'</p>',
     '#type' => 'submit',
-    '#value' => t('Send besked')
+    '#value' => t('Send spørgsmål')
   );
   $form['#submit'][] = 'netsound_contact_form_submit';
   
