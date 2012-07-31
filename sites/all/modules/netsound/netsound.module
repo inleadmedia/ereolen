@@ -99,31 +99,48 @@ function netsound_contact_error_form($form_state) {
   
   $form['contact_login_number'] = array(
     '#type' => 'textfield',
-    '#title' => t('Det nummer du bruger til at logge ind. Dvs. enten CPR nr. eller lånerkortnummer.'),
+    '#title' => t('Det nummer du benytter ved login (Lånerkortnr. / CPR)'),
     '#required' => true
   );
   
   $form['contact_title'] = array(
     '#type' => 'textfield',
-    '#title' => t('Navnet på titlen, hvis du oplever problemer med en given titel fra eReolen.dk.'),
+    '#title' => t('Hvilken titel/titler drejer det sig om?'),
     '#required' => true
   );
   
   $form['contact_time'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Hvilket tidspunkt eller klokkeslæt du oplevede problemet.'),
+    '#type' => 'date',
+    '#title' => t('Hvornår oplevede du problemet?'),
     '#required' => true
   );
   
-  $form['contact_unittype'] = array(
+  $form['contact_error'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Uddybende beskrivelse af det problem du oplever'),
+    '#required' => true,
+  );
+  
+  $form['tablet'] = array(
+    '#type' => 'select',
+    '#title' => t('Hvilken enhedstype bruger du?'),
+    '#options' => array(
+        'pc' => 'PC',
+        'smartphone' => 'SmartPhone',
+        'tablet' => 'Tablet',
+        'ebookreader' => 'Ebogslæser',
+    ),
+    '#required' => true,
+  );
+  
+  $form['tablet_model'] = array(
     '#type' => 'textfield',
-    '#title' => t('Hvilken enhedstype og evt. modelnummer du bruger (fx PC, tablet, smartphone, ebogslæser).'),
-    '#required' => true
+    '#title' => t('Indtast evt. modelnummer'),
   );
   
   $form['contact_browser'] = array(
     '#type' => 'select',
-    '#title' => t('Vælg din browser'),
+    '#title' => t('Hvilken browser anvender du?'),
     '#options' => array(
       'ie11' => 'Internet Explorer 11',
       'ie10' => 'Internet Explorer 10',
@@ -142,7 +159,7 @@ function netsound_contact_error_form($form_state) {
   
   $form['contact_os'] = array(
     '#type' => 'select',
-    '#title' => t('Vælg dit operativ system'),
+    '#title' => t('Hvilket operativsystem anvender du?'),
     '#required' => true,
     '#options' => array(
       'win8' => 'Windows 8',
@@ -249,7 +266,7 @@ function netsound_contact_elib_form($form_state){
     
   $form['book_title'] = array(
     '#type' => 'textfield',
-    '#title' => t('Hvilken titel eller hvilke titler drejer det sig om?'),
+    '#title' => t('Hvilken titel/titler drejer det sig om?'),
     '#required' => true,
   );
   
@@ -297,7 +314,7 @@ function netsound_contact_elib_form($form_state){
   
   $form['contact_os'] = array(
     '#type' => 'select',
-    '#title' => t('Hvilket operativ system anvender du?'),
+    '#title' => t('Hvilket operativsystem anvender du?'),
     '#required' => true,
     '#options' => array(
       'win8' => 'Windows 8',
