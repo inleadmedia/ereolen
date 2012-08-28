@@ -397,7 +397,8 @@ function netsound_contact_form_submit($form, &$form_state){
     $mail = variable_get('netsound_publizonmail', '');
   }  
   
-  drupal_mail('netsound','somekey',$mail,language_default(),$params,$form_state['values']['contact_mail'],true);
+  $mail_from = $form_state['values']['contact_mail'] == null ? "support@ereolen.dk" : $form_state['values']['contact_mail'];
+  drupal_mail('netsound','somekey',$mail,language_default(),$params,$mail_from,true);
   
   drupal_set_message(t('Tak for din henvendelse. Vi stræber på at behandle den hurtigst muligt.'));
   drupal_goto(); // frontpage
