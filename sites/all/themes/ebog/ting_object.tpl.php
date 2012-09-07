@@ -95,8 +95,8 @@ if (module_exists('ding_voxb')) {
           <?php if (!empty($object->record['dc:source'][''])) { ?>
             <?php print theme('item_list', $object->record['dc:source'][''], t('Original title').t(':&nbsp;'), 'span', array('class' => 'titles'));?>
           <?php } ?>
-          <?php if (!empty($object->record['dc:identifier']['dkdcplus:ISBN'])) { ?>
-            <?php print theme('item_list', $object->record['dc:identifier']['dkdcplus:ISBN'], t('ISBN').t(':&nbsp;'), 'span', array('class' => 'identifier'));?>
+          <?php if (!empty($object->record['dc:identifier']['oss:PROVIDER-ID'])) { ?>
+            <?php print theme('item_list', $object->record['dc:identifier']['oss:PROVIDER-ID'], t('ISBN').t(':&nbsp;'), 'span', array('class' => 'identifier'));?>
           <?php } ?>
           <?php if (!empty($object->record['dc:publisher'][''])) { ?>
             <?php print theme('item_list', $object->record['dc:publisher'][''], t('Publisher'.t(':&nbsp;')), 'span', array('class' => 'publisher'));?>
@@ -168,7 +168,7 @@ if (module_exists('ding_voxb')) {
           <?php } ?>
           <?php if (!empty($object->record['dc:rights'][''])) { ?>
             <?php print theme('item_list', $object->record['dc:rights'][''], t('Rights'), 'span', array('class' => 'rights'));?>
-          <?php } ?>          
+          <?php } ?>
         </div>
       </div>
       <div class="icons">
@@ -177,7 +177,7 @@ if (module_exists('ding_voxb')) {
             <li><?php print l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('action' => 'sample', 'target' => '_blank'))) ?></li>
             <li class="seperator"></li>
             <li><?php print l(t('Loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]', 'class' => 'ting-object-loan'))) ?></li>
-          <?php 
+          <?php
             if($user->uid){
               print '<li class="seperator"></li>';
               print '<li>';
@@ -187,13 +187,13 @@ if (module_exists('ding_voxb')) {
           ?>
             <li class="seperator"></li>
             <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
-          <?php 
+          <?php
             }
             else {
           ?>
             <li class="unavailable"><span><?php echo t('Unavailable') ?></span></li>
           <?php
-            }  
+            }
           ?>
          </ul>
       </div>

@@ -8,7 +8,7 @@
 
 module_load_include('isbn_static_func.inc', 'elib');
 foreach ($collection->objects as $obj) {
-  foreach ($obj->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
+  foreach ($obj->record['dc:identifier']['oss:PROVIDER-ID'] as $isbn) {
     if (preg_match('/^[0-9]{13}/', $isbn, $matches)) {
       break;
     }
@@ -66,23 +66,23 @@ foreach ($collection->objects as $obj) {
         <?php endif; ?>
         <div class="icons">
           <ul>
-            <?php 
-              if (isset($elib[$isbn]['elib_sample_link'])) { 
+            <?php
+              if (isset($elib[$isbn]['elib_sample_link'])) {
             ?>
               <li><?php print l(t('Sample'), $elib[$isbn]['elib_sample_link'], array('html' => true, 'attributes' => array('target' => '_blank','action' => 'sample'))) ?></li>
               <li class="seperator"></li>
               <li><?php print l(t('Loan'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
               <li class="seperator"></li>
               <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
-            <?php 
+            <?php
               }
               else {
             ?>
               <li class="unavailable"><span><?php echo t('Unavailable') ?></span></li>
             <?php
-              }  
+              }
             ?>
-            
+
           </ul>
         </div>
       </div>

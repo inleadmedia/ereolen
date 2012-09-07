@@ -2,13 +2,13 @@
 
 /**
  * @file
- * This module is used to make alterations that is not possible to do form 
+ * This module is used to make alterations that is not possible to do form
  * inside the theme. Such as chaning cacheing header etc.
- * 
+ *
  */
 
 /**
- * Set max-age for pages that are cacheable, when not in external cache 
+ * Set max-age for pages that are cacheable, when not in external cache
  * mode. This allows us to cache pages in varnish at the same time use
  * Drupal pages cache for https requests.
  */
@@ -31,7 +31,7 @@ function ereolen_admin_ting_client_response_alter(&$response) {
     foreach ($response->collections as $i => &$collection) {
       foreach ($collection as &$object) {
         // Remove results, that do not have an ISBN.
-        if (!isset($object[0]->record['dc:identifier']['dkdcplus:ISBN'])) {
+        if (!isset($object[0]->record['dc:identifier']['oss:PROVIDER-ID'])) {
           // Update number of results returned.
           $response->numTotalCollections = intval($response->numTotalCollections) - 1;
           $response->numTotalObjects = intval($response->numTotalObjects) - count($response->numTotalObjects);
@@ -42,10 +42,10 @@ function ereolen_admin_ting_client_response_alter(&$response) {
         }
         else {
           // Fix ISBN 10 vs 13 issue.
-          foreach ($object[0]->record['dc:identifier']['dkdcplus:ISBN'] as $j => $isbn) {
+          foreach ($object[0]->record['dc:identifier']['oss:PROVIDER-ID'] as $j => $isbn) {
             $tmp = str_replace('-', '', $isbn);
             if (strlen(str_replace('-', '', $isbn)) == 10) {
-              unset($object[0]->record['dc:identifier']['dkdcplus:ISBN'][$j]);
+              unset($object[0]->record['dc:identifier']['oss:PROVIDER-ID'][$j]);
             }
           }
         }

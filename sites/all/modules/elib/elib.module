@@ -122,7 +122,7 @@ function elib_get_isbn_from_object_id($object_id) {
   $isbn = NULL;
   try {
     $object = ting_get_object_by_id($object_id);
-    foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
+    foreach ($object->record['dc:identifier']['oss:PROVIDER-ID'] as $isbn) {
       if (preg_match('/^[0-9]{13}/', $isbn, $matches)) {
           break;
       }
@@ -416,7 +416,7 @@ function elib_client() {
 }
 
 function elib_displaybook(TingClientObject $object, $elib_data = false) {
-  $image_url = elib_book_cover($object->record['dc:identifier']['dkdcplus:ISBN'], '65_x');
+  $image_url = elib_book_cover($object->record['dc:identifier']['oss:PROVIDER-ID'], '65_x');
   $item_url = 'ting/object/' . (string) $object->id;
 
   $out = array();
@@ -492,11 +492,11 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
     case 'small_rm':
     case 'lorem':
     case 'review':
-      $image_url = elib_book_cover($obj->record['dc:identifier']['dkdcplus:ISBN'], '65_x');
+      $image_url = elib_book_cover($obj->record['dc:identifier']['oss:PROVIDER-ID'], '65_x');
       break;
     case 'medium':
     case 'textright':
-      $image_url = elib_book_cover($obj->record['dc:identifier']['dkdcplus:ISBN'], '170_x');
+      $image_url = elib_book_cover($obj->record['dc:identifier']['oss:PROVIDER-ID'], '170_x');
       break;
   }
 
@@ -625,14 +625,6 @@ function elib_create_icons(array $links, array $classes) {
   $output .= '</ul></div>';
 
   return $output;
-}
-
-function dummy_lorem($numberofwords = 100) {
-  $words = explode(' ', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam aliquet risus vitae purus rutrum tincidunt. Vivamus consectetur enim quam, ac viverra felis. Cras vitae urna id tortor suscipit rutrum quis vel metus. Nullam vulputate rhoncus diam, ultricies bibendum nulla aliquam sit amet.');
-  for ($i = 0; $i < $numberofwords; $i++) {
-    $new[] = $words[array_rand($words)];
-  }
-  return implode(' ', $new);
 }
 
 function elib_display_error($error) {
