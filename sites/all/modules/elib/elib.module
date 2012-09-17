@@ -119,18 +119,13 @@ function elib_login_validate($form, &$form_state) {
 function elib_get_isbn_from_object_id($object_id) {
   module_load_include('client.inc', 'ting');
   module_load_include('isbn_static_func.inc', 'elib');
-  $isbn = NULL;
   try {
     $object = ting_get_object_by_id($object_id);
-    foreach ($object->record['dc:identifier']['oss:PROVIDER-ID'] as $isbn) {
-      if (preg_match('/^[0-9]{13}/', $isbn, $matches)) {
-          break;
-      }
-    }
   } catch (TingClientException $e) {
     // If the specified object id does not exist, an exception is throw.
+    return NULL;
   }
-  return $isbn;
+  return $object->record['dc:identifier']['oss:PROVIDER-ID'][0];
 }
 
 function elib_get_lydbog($tingObjectID, $format) {
@@ -659,11 +654,9 @@ function elib_get_rating($objectid) {
 function elib_book_cover($isbns, $presetname) {
   // Look in the ISBNs to find if image have been downloaded.
   foreach ($isbns as $isbn) {
-    if (preg_match('/^([0-9]{13})/', $isbn, $matches)) {
-      $path = _elib_cover_cache_get($isbn);
-      if ($path) {
-        return imagecache_create_url($presetname, $path);
-      }
+    $path = _elib_cover_cache_get($isbn);
+    if ($path) {
+      return imagecache_create_url($presetname, $path);
     }
   }
 

@@ -25,39 +25,3 @@ function ereolen_admin_ting_client_request_alter(&$request) {
     $request->setQuery('( ' . $request->getQuery() . ' ) AND (dc.identifier=978*)');
   }
 }
-
-function ereolen_admin_ting_client_response_alter(&$response) {
-  if (property_exists($response, 'collections') && is_array($response->collections)) {
-    foreach ($response->collections as $i => &$collection) {
-      foreach ($collection as &$object) {
-        // Remove results, that do not have an ISBN.
-        if (!isset($object[0]->record['dc:identifier']['oss:PROVIDER-ID'])) {
-          // Update number of results returned.
-          $response->numTotalCollections = intval($response->numTotalCollections) - 1;
-          $response->numTotalObjects = intval($response->numTotalObjects) - count($response->numTotalObjects);
-
-          // Remove collection
-          unset($response->collections[$i]);
-          watchdog('ISBN', 'Missing ISBN for object "%obj"', array('%obj' => $object[0]->id), WATCHDOG_CRITICAL);
-        }
-        else {
-          // Fix ISBN 10 vs 13 issue.
-          foreach ($object[0]->record['dc:identifier']['oss:PROVIDER-ID'] as $j => $isbn) {
-            $tmp = str_replace('-', '', $isbn);
-            if (strlen(str_replace('-', '', $isbn)) == 10) {
-              unset($object[0]->record['dc:identifier']['oss:PROVIDER-ID'][$j]);
-            }
-          }
-        }
-        // Remove old ebog links.
-        if (isset($object[0]->record['dc:identifier']['dcterms:URI'])) {
-          foreach ($object[0]->record['dc:identifier']['dcterms:URI'] as $i => $uri) {
-            if (preg_match('/ebog\.dk/', $uri, $matches)) {
-              unset($object[0]->record['dc:identifier']['dcterms:URI'][$i]);
-            }
-          }
-        }
-      }
-    }
-  }
-}
