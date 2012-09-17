@@ -202,11 +202,12 @@ class eLibClient {
     // Convert TingClientObject into ISBN.
     if ($isbn instanceof TingClientObject) {
       $object = $isbn;
-      foreach ($object->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
-        if (preg_match('/^[0-9]{13}/', $isbn, $matches)) {
-          break;
-        }
-      }
+      $isbn = $object->record['dc:identifier']['oss:PROVIDER-ID'][0];
+    }
+
+    // Lagacy fix.
+    if (is_array($isbn)) {
+      $isbn = $isbn[0];
     }
 
     if (preg_match('/^[0-9]+(X)?$/', $isbn)) {

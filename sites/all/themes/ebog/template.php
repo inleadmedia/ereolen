@@ -14,18 +14,13 @@ function ebog_theme(&$existing, $type, $theme, $path) {
  * Add extra information form elib to the ting object.
  */
 function ebog_preprocess_ting_object(&$vars) {
-  // Find valide ISBN 13, there may be more than one.
-  foreach ($vars[object]->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
-    if (preg_match('/^[0-9]{13}/', $isbn, $matches)) {
-      $vars['elib_isbn'] = $isbn;
-    }
-  }
+  $isbn = $vars[object]->record['dc:identifier']['oss:PROVIDER-ID'];
 
   // Override ting object page title.
   drupal_set_title(check_plain($vars['object']->title . ' ' . t('af') . ' ' . $vars['object']->creators_string));
 
   // Get cover image.
-  $vars['elib_book_cover'] = elib_book_cover($vars['object']->record['dc:identifier']['dkdcplus:ISBN'], '170_x');
+  $vars['elib_book_cover'] = elib_book_cover($isbn, '170_x');
 
   // Get ebook sample link.
   $client = elib_client();
@@ -47,19 +42,16 @@ function ebog_preprocess_ting_search_collection(&$vars) {
   $client->setLibrary(variable_get('elib_retailer_id', ''));
 
   foreach ($vars['collection']->objects as $obj) {
-    foreach ($obj->record['dc:identifier']['dkdcplus:ISBN'] as $isbn) {
-      if (preg_match('/^[0-9]{13}/', $isbn, $matches)) {
-        if (isset($vars['elib'])) {
-          $vars['elib'][$isbn] = array();
-        }
-        else {
-          $vars['elib'] = array();
-        }
-      }
+    $isbn = $obj->record['dc:identifier']['oss:PROVIDER-ID'][0];
+    if (isset($vars['elib'])) {
+      $vars['elib'][$isbn] = array();
+    }
+    else {
+      $vars['elib'] = array();
     }
 
     // Get cover image.
-    $vars['elib'][$isbn]['elib_book_cover'] = elib_book_cover($obj->record['dc:identifier']['dkdcplus:ISBN'], '170_x');
+    $vars['elib'][$isbn]['elib_book_cover'] = elib_book_cover($isbn, '170_x');
 
     // Get ebook sample link.
     $book = $client->getBook($isbn);

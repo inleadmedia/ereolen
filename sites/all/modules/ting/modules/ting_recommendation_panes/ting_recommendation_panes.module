@@ -136,8 +136,8 @@ function ting_recommendation_panes_extract_identifers($objects) {
     //if passing a single value then extract ids depending on type
     switch (get_class($objects)) {
       case 'TingClientObject':
-        if (!empty($objects->record['dc:identifier']['dkdcplus:ISBN'])) {
-          return $objects->record['dc:identifier']['dkdcplus:ISBN'];
+        if (!empty($objects->record['dc:identifier']['oss:PROVIDER-ID'])) {
+          return $objects->record['dc:identifier']['oss:PROVIDER-ID'];
         }
         else {
           return array();
