@@ -662,10 +662,11 @@ function elib_book_cover($isbns, $presetname) {
     }
   }
   else {
-    $path = _elib_cover_cache_get($isbns);
+    $path = _elib_cover_cache_get($isbn);
     if ($path) {
       return imagecache_create_url($presetname, $path);
     }
+    $isbns = array($isbns);
   }
 
   // No image found try elib client and featch one.
