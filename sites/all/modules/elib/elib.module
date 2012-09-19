@@ -423,7 +423,7 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
   $out[] = '<div class="right">';
 
   $out[] = '<h3 class="title">' . l($object->record['dc:title'][''][0], $item_url, array('attributes' => array('class' => 'title'))) . '</h3>';
-  $out[] = '<div class="author">' . t('!creator_name', array('!creator_name' => l($object->record["dc:creator"]["dkdcplus:aut"][0], 'ting/search/' . $object->record["dc:creator"]["dkdcplus:aut"][0]))) . '</div>';
+  $out[] = '<div class="author">' . t('!author', array('!author' => _elib_get_author($object))) . '</div>';
   $out[] = '<div class="rating-for-faust"><div class="' . $object->localId . '"></div></div>';
 
   if ($elib_data->loanexpiredate) {
@@ -517,7 +517,7 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
     $action_classes[] = 'deactivated';
   }
 
-  $alttext = t('@titel af @forfatter', array('@titel' => $obj->record['dc:title'][''][0], '@forfatter' => $obj->record["dc:creator"]["dkdcplus:aut"][0]));
+  $alttext = t('@titel af @forfatter', array('@titel' => $obj->record['dc:title'][''][0], '@forfatter' => _elib_get_author($obj, FALSE)));
   $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
   if ($elib_data->loanexpiredate) {
     $loanlimit = elib_str_to_time($elib_data->loanexpiredate, true);
@@ -529,7 +529,7 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
 
   $part['rating'] = '<div class="rating-for-faust"><div class="' . $obj->localId . '"></div></div>';
   $part['title'] = '<h3 class="title">' . l($obj->record['dc:title'][''][0], $obj->url, array('attributes' => array('class' => 'title'))) . '</h3>';
-  $part['author'] = '<div class="author">' . t('!creator_name', array('!creator_name' => l($obj->record["dc:creator"]["dkdcplus:aut"][0], 'ting/search/' . $obj->record["dc:creator"]["dkdcplus:aut"][0]))) . '</div>';
+  $part['author'] = '<div class="author">' . t('!author', array('!author' => _elib_get_author($obj))) . '</div>';
   $part['icons'] = elib_create_icons($action_links, $action_classes);
 
   if ($displaysize == 'review') {
@@ -543,7 +543,7 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
   if ($displaysize == 'textright') {
     #error_log(__FILE__ . ' +' . __LINE__ . ' ' . print_r($obj->record, 1));
     $part['picture'] = '<div class="picture main size1of2">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
-    $part['author'] = '<div class="author">' . t('By !creator_name', array('!creator_name' => l($obj->record["dc:creator"]["dkdcplus:aut"][0], 'ting/search/' . $obj->record["dc:creator"]["dkdcplus:aut"][0]))) . '</div>';
+    $part['author'] = '<div class="author">' . t('By !author', array('!author' => _elib_get_author($obj))) . '</div>';
 
     return '
       <div class="display-book ' . $displaysize . ' line">' .
@@ -793,4 +793,29 @@ function _elib_cover_cache_get($isbn, $reset = FALSE) {
     return $cache->data;
   }
   return FALSE;
+}
+
+function _elib_get_author($ting_object, $link = TRUE) {
+  $authors = '';
+  if (isset($ting_object->record["dc:creator"]["dkdcplus:aut"][0])) {
+    if ($link) {
+      $authors = l($ting_object->record["dc:creator"]["dkdcplus:aut"][0], 'ting/search/' . $ting_object->record["dc:creator"]["dkdcplus:aut"][0]);
+    }
+    else {
+      $authors = $ting_object->record["dc:creator"]["dkdcplus:aut"][0];
+    }
+  }
+  else {
+    foreach ($ting_object->record['dc:contributor']['dkdcplus:edt'] as $contributor) {
+      if ($link) {
+        $authors = l($contributor, 'ting/search/' . $contributor) . ', ';
+      }
+      else {
+        $authors = $contributor . ', ';
+      }
+    }
+    $authors = substr($authors, 0, -2);
+  }
+
+  return $authors;
 }
