@@ -795,6 +795,16 @@ function _elib_cover_cache_get($isbn, $reset = FALSE) {
   return FALSE;
 }
 
+/**
+ * Extract the name(s) of the author on a ting object.
+ *
+ * @param object $ting_object
+ * @param bool $link
+ *  If the parameter is true the authors returned is search links else plain
+ *  text.
+ * @return string
+ *  The authors found and the empty string if non is found.
+ */
 function _elib_get_author($ting_object, $link = TRUE) {
   $authors = '';
   if (isset($ting_object->record["dc:creator"]["dkdcplus:aut"][0])) {
