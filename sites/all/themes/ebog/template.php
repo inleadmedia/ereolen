@@ -53,6 +53,9 @@ function ebog_preprocess_ting_search_collection(&$vars) {
       $vars['elib'] = array();
     }
 
+    // Get authors.
+    $vars['elib'][$isbn]['author'] = _elib_get_author($obj);
+
     // Get cover image.
     $vars['elib'][$isbn]['elib_book_cover'] = elib_book_cover($isbn, '170_x');
 

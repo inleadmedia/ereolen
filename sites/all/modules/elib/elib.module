@@ -816,12 +816,23 @@ function _elib_get_author($ting_object, $link = TRUE) {
     }
   }
   else {
-    foreach ($ting_object->record['dc:contributor']['dkdcplus:edt'] as $contributor) {
+    // Find all authors involed.
+    $contributors = array();
+    if (isset($ting_object->record['dc:contributor']['dkdcplus:edt'])) {
+      $contributors = array_merge($contributors, $ting_object->record['dc:contributor']['dkdcplus:edt']);
+    }
+    if (isset($ting_object->record['dc:contributor']['dkdcplus:aut'])) {
+      $contributors = array_merge($contributors, $ting_object->record['dc:contributor']['dkdcplus:aut']);
+    }
+
+    // Loop over the authors and create the string.
+    sort($contributors);
+    foreach ($contributors as $contributor) {
       if ($link) {
-        $authors = l($contributor, 'ting/search/' . $contributor) . ', ';
+        $authors .= l($contributor, 'ting/search/' . $contributor) . ', ';
       }
       else {
-        $authors = $contributor . ', ';
+        $authors .= $authors . ', ';
       }
     }
     $authors = substr($authors, 0, -2);
