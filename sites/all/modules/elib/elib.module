@@ -468,6 +468,66 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
   return implode($out);
 }
 
+/**
+ * Render book display when not ting object is avaliable. It is mainly used by
+ * the loans list when object is loaned but not in the data well any more.
+ *
+ * @return string
+ */
+function elib_displaybook_loan($loan = false) {
+  $image_url = elib_book_cover((int)$loan->book->attributes()->id, '65_x');
+
+  $out = array();
+  $out[] = '<div class="left">';
+  $out[] = '<div class="picture">' . theme('image', $image_url, '', '', null, false) . '</div>';
+
+  $out[] = '</div>';
+
+  $out[] = '<div class="right">';
+
+  $out[] = '<h3 class="title">' . check_plain((string)$loan->book->title) . '</h3>';
+
+  $author = check_plain((string)$loan->book->authors->author[0]->attributes()->name);
+  $out[] = '<div class="author">' . t('!author', array('!author' => l($author, 'ting/search/' . $author))) . '</div>';
+
+  if ($loan->loanexpiredate) {
+    $loanlimit = elib_str_to_time($loan->loanexpiredate, true);
+    $diff = $loanlimit - time();
+    $days = floor($diff / 86400);
+    $hours = floor($diff / 3600);
+    $extra = $hours + 24;
+  }
+
+  $NotReloanable = ((int) $loan->loanstate == 1);
+  $Reloanable = ((int) $loan->loanstate == 2);
+  $ExpiredButReloanable = ((int) $loan->loanstate == 3);
+
+  if (($NotReloanable) || ($Reloanable)) {
+    if ($days < 1) {
+      if ($extra <= 24) {
+        $out[] = '<div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>';
+      }
+      else {
+        $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
+      }
+    }
+    else {
+      $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
+    }
+  }
+  else if ($ExpiredButReloanable) {
+    $out[] = '<div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>';
+  }
+
+  $out[] = '<div class="book-not-available">';
+  $out[] = t('This book is no longer available and can not be downloaded.');
+  $out[] = '</div>';
+
+  $out[] = '</div>';
+
+  return implode($out);
+}
+
 function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_index = 1) {
   if (!is_a($obj, 'TingClientObject')) {
     return;
