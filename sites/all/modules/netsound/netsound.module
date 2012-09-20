@@ -108,7 +108,7 @@ function netsound_contact_error_form($form_state) {
   $form['contact_library'] = array(
     '#type' => 'select',
     '#title' => t('Vælg dit bibliotek'),
-    '#options' => get_libaries_without_id(),
+    '#options' => elib_libraries_get_libraries(),
     '#required' => true
   );
 
@@ -221,7 +221,7 @@ function netsound_contact_netlyd_form($form_state){
   $form['contact_library'] = array(
     '#type' => 'select',
     '#title' => t('Vælg dit bibliotek'),
-    '#options' => get_libaries_without_id(),
+    '#options' => elib_libraries_get_libraries(),
   	'#required' => true,
   );
   global $user;
@@ -250,7 +250,7 @@ function netsound_contact_elib_form($form_state){
   $form['contact_library'] = array(
     '#type' => 'select',
     '#title' => t('Vælg dit lokalbibliotek2'),
-    '#options' => get_libaries_without_id(),
+    '#options' => elib_libraries_get_libraries(),
   	'#required' => true
   );
 
@@ -389,7 +389,13 @@ function netsound_contact_form_submit($form, &$form_state){
   $header = array('Form Key', 'Value');
   $rows = array();
 
+  $libraries = elib_libraries_get_libraries();
+
   foreach($form_state['values'] as $key => $value){
+    // Change library id with real name.
+    if ($key == 'contact_library') {
+      $value = $libraries[$value];
+    }
     $rows[] = array(
       array(
       	'data' => t('mailkey_'.$key),
@@ -403,7 +409,6 @@ function netsound_contact_form_submit($form, &$form_state){
   array_pop($rows);
   array_pop($rows);
   array_pop($rows);
-  //array_pop($rows);
 
   $out = theme('table', $header, $rows, $table_attributes);
 
@@ -498,14 +503,3 @@ function netsound_mail($key, &$message, $params) {
   $message['subject'] = $params['subject'];
   $message['body'] = $params['body'];
 }
-
-function get_libaries_without_id(){
-  $libraries = array();
-
-  foreach(elib_libraries_get_libraries() as $key => $value){
-    $libraries[$value] = $value;
-  }
-
-  return $libraries;
-}
-?>
