@@ -8,77 +8,99 @@ function netsound_menu_alter(&$items){
 function netsound_menu(){
   $items = array();
   $items['admin/settings/netsound'] = array(
-    'title'            => 'Netsound settings',
-    'description'      => 'settings for Netsound',
+    'title' => 'Netsound settings',
+    'description' => 'settings for Netsound',
     'access arguments' => array('access administration pages'),
-    'page callback'    => 'drupal_get_form',
-    'page arguments'   => array('netsound_settings_form'),
-    'file'             => 'netsound.admin.inc',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('netsound_settings_form'),
+    'file' => 'netsound.admin.inc',
   );
   return $items;
 }
 
 function netsound_block($op = 'list', $delta = 0, $edit = array()) {
+  $blocks = array();
   if ($op == 'list') {
-    $blocks[0]['info'] = t('Genre: Keywords');
-    $blocks[1]['info'] = t('Genre: Categories');
-    $blocks[2]['info'] = t('FAQ BLOCK');
-    $blocks[3]['info'] = t('Zero Search top');
-    $blocks[4]['info'] = t('Shortcut menu');
-    $blocks[5]['info'] = t('Contact ELIB');
-    $blocks[6]['info'] = t('Contact NETLYD');
-    $blocks[7]['info'] = t('Form: Error in ebook title');
-    return $blocks;
+    $blocks[0] = array(
+      'info' => t('Genre: Keywords'),
+      'cache' => BLOCK_NO_CACHE,
+    );
+    $blocks[1] = array(
+      'info' => t('Genre: Categories'),
+      'cache' => BLOCK_NO_CACHE,
+    );
+    $blocks[2] = array(
+      'info' => t('FAQ BLOCK'),
+      'cache' => BLOCK_NO_CACHE,
+    );
+    $blocks[3] = array(
+      'info' => t('Zero Search top'),
+      'cache' => BLOCK_NO_CACHE,
+    );
+    $blocks[4] = array(
+      'info' => t('Shortcut menu'),
+      'cache' => BLOCK_NO_CACHE,
+    );
+    $blocks[5] = array(
+      'info' => t('Contact ELIB'),
+      'cache' => BLOCK_NO_CACHE,
+    );
+    $blocks[6] = array(
+      'info' => t('Contact NETLYD'),
+      'cache' => BLOCK_NO_CACHE,
+    );
+    $blocks[7] = array(
+      'info' => t('Form: Error in ebook title'),
+      'cache' => BLOCK_NO_CACHE,
+    );
   }
   elseif ($op == 'view') {
     switch($delta){
       case 0:
-        $block['subject'] = t('Keywords');
-
-
+        $blocks['subject'] = t('Keywords');
         $keywords = explode(',',variable_get('netsound_keywords', ''));
         if(is_array($keywords)){
           foreach($keywords as $keyword){
             $keyword = trim($keyword);
             $linked[] = l($keyword,'ting/search/'.$keyword);
           }
-          $block['content'] = '<ul><li> '. implode("</li><li>",$linked) .'</li></ul>';
+          $blocks['content'] = '<ul><li> '. implode("</li><li>",$linked) .'</li></ul>';
         }
         break;
+
       case 1:
         //$block['subject'] = t('Categories');
         //$block['content'] = 'dflksæfd';
         break;
+
       case 2:
-
-
         $content .= faq_page(arg(1));
-
-        $block['content'] = $content;
+        $blocks['content'] = $content;
         break;
+
       case 3:
-
         drupal_set_message('<p style="strong">'.t('Din søgning på <strong>!query</strong> gav ingen resultater. ',array('!query' => strip_tags(arg(1)))).'</p><p>'.t('Hjælp til søgning:<br />- Prøv at bruge synonymer. Du søger måske efter noget, der bruger andre ord. - Gør søgningen mere generel. Prøv mere generelle udtryk i stedet for konkrete udtryk. - Du kan trunkere i eReolen.dk med "". Skriver du "hund", får du resultat på ord som begynder på "hund", altså hund, hundene, hundens osv.').'</p>');
-
-
-        //<p>'.t('Prøv evt din søgning på <a href="http://bibliotek.dk/vis.php?origin=sogning&field1=fritekst&term1=!query&ma=lb">bibliotek.dk</a>',array('!query' => strip_tags(arg(1)))).'</p>');
-
         break;
+
       case 4:
-        $block['content'] = drupal_get_form('netsound_shortcutmenu_form');
+        $blocks['content'] = drupal_get_form('netsound_shortcutmenu_form');
         break;
+
       case 5:
-        $block['content'] = drupal_get_form('netsound_contact_elib_form');
+        $blocks['content'] = drupal_get_form('netsound_contact_elib_form');
         break;
+
       case 6:
-        $block['content'] = drupal_get_form('netsound_contact_netlyd_form');
+        $blocks['content'] = drupal_get_form('netsound_contact_netlyd_form');
         break;
+
       case 7:
-        $block['content'] = drupal_get_form('netsound_contact_error_form');
+        $blocks['content'] = drupal_get_form('netsound_contact_error_form');
         break;
     }
-    return $block;
   }
+
+  return $blocks;
 }
 
 function netsound_contact_error_form($form_state) {
