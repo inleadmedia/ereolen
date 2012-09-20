@@ -26,9 +26,9 @@ foreach ($collection->objects as $obj) {
           <?php print l($obj->title, $obj->url, array('attributes' => array('class' =>'title'))) ;?>
         </h3>
         <div class="meta">
-          <?php if ($obj->creators_string) : ?>
+          <?php if (isset($elib[$isbn]['author'])) : ?>
             <span class="creator">
-              <?php echo t('By !creator_name', array('!creator_name' => l($obj->creators_string,'ting/search/'.$obj->creators_string,array('html' => true)))); ?>
+              <?php echo t('By !creator_name', array('!creator_name' => $elib[$isbn]['author'])); ?>
             </span>
           <?php endif; ?>
           <div id="<?php print $obj->objects[0]->localId ?>"></div>

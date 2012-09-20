@@ -19,6 +19,9 @@ function ebog_preprocess_ting_object(&$vars) {
   // Override ting object page title.
   drupal_set_title(check_plain($vars['object']->title . ' ' . t('af') . ' ' . $vars['object']->creators_string));
 
+  // Create the author field
+  $vars['author'] = _elib_get_author($vars['object']);
+
   // Get cover image.
   $vars['elib_book_cover'] = elib_book_cover($isbn, '170_x');
 
@@ -49,6 +52,9 @@ function ebog_preprocess_ting_search_collection(&$vars) {
     else {
       $vars['elib'] = array();
     }
+
+    // Get authors.
+    $vars['elib'][$isbn]['author'] = _elib_get_author($obj);
 
     // Get cover image.
     $vars['elib'][$isbn]['elib_book_cover'] = elib_book_cover($isbn, '170_x');
