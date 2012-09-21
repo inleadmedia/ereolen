@@ -95,52 +95,54 @@ function litteratursiden_feed_compare_get_feed($items) {
     $feed_url = $feed_main_url . '?count=20&offset=' . $i*25;
     $feed_json_data = _litteratursiden_feed_compare_file_get_contents_curl($feed_url);
     $feed = json_decode($feed_json_data, TRUE);
-    foreach ($feed as $key => $val) {
-      if (is_numeric($key)) {
-        $a = explode(' af ', $val['title']);
-        $query = $a[0];
-        $search = ting_do_search($query, 1, 25);
-        if ($search->numTotalObjects > 0) {
-          foreach ($search->collections as $collection) {
-            foreach ($collection->objects as $object) {
-              $isbn = $object->record['dc:identifier']['oss:PROVIDER-ID'][0];
-              $litteratursiden_item = litteratursiden_feed_compare_get_litteratursiden_item($object->title, $object->creators[0]);
-              if (!empty($isbn) && !$litteratursiden_item['error'] && $litteratursiden_item['nid'] == $val['nid']) {
-                // Title from feed consists of title+author.
-                // Combine title and author from TING to perform reasonable search.
-                try {
-                  $book = $c->getBook($isbn);
-                }
-                catch (Exception $e) {
-                  $ret['status'] = 'error';
-                  $ret['message'] = $e;
-                  return $ret;
-                }
-                if (!empty($book->data)) {
-                  $ret['data'][] = array(
-                    'title' => (string)$book->data->title,
-                    'isbn' => (string)$book->data->external_ids->id,
-                    'author' => (string)$book->data->contributors->first_name . ' ' . (string)$book->data->contributors->family_name,
-                    'abstract' => (string)$litteratursiden_item['description'],
-                    'image' => (string)$book->data->coverimage,
-                    'url' => $object->url
-                  );
-                  $amo++;
+    if (is_array($feed)) {
+      foreach ($feed as $key => $val) {
+        if (is_numeric($key)) {
+          $a = explode(' af ', $val['title']);
+          $query = $a[0];
+          $search = ting_do_search($query, 1, 25);
+          if ($search && $search->numTotalObjects > 0) {
+            foreach ($search->collections as $collection) {
+              foreach ($collection->objects as $object) {
+                $isbn = $object->record['dc:identifier']['oss:PROVIDER-ID'][0];
+                $litteratursiden_item = litteratursiden_feed_compare_get_litteratursiden_item($object->title, $object->creators[0]);
+                if (!empty($isbn) && !$litteratursiden_item['error'] && $litteratursiden_item['nid'] == $val['nid']) {
+                  // Title from feed consists of title+author.
+                  // Combine title and author from TING to perform reasonable search.
+                  try {
+                    $book = $c->getBook($isbn);
+                  }
+                  catch (Exception $e) {
+                    $ret['status'] = 'error';
+                    $ret['message'] = $e;
+                    return $ret;
+                  }
+                  if (!empty($book->data)) {
+                    $ret['data'][] = array(
+                      'title' => (string)$book->data->title,
+                      'isbn' => (string)$book->data->external_ids->id,
+                      'author' => (string)$book->data->contributors->first_name . ' ' . (string)$book->data->contributors->family_name,
+                      'abstract' => (string)$litteratursiden_item['description'],
+                      'image' => (string)$book->data->coverimage,
+                      'url' => $object->url
+                    );
+                    $amo++;
+                  }
                 }
               }
             }
           }
         }
-      }
-      if ($amo != $items && $amo > 0) {
-        $ret['status'] = 'notfull';
-      }
-      elseif ($amo == $items) {
-        $ret['status'] = 'ok';
-        break 2;
-      }
-      else {
-        $ret['status'] = 'empty';
+        if ($amo != $items && $amo > 0) {
+          $ret['status'] = 'notfull';
+        }
+        elseif ($amo == $items) {
+          $ret['status'] = 'ok';
+          break 2;
+        }
+        else {
+          $ret['status'] = 'empty';
+        }
       }
     }
     $i++;
