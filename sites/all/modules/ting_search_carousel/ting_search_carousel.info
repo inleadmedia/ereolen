@@ -1,9 +1,6 @@
-name = Ting search carousel
-description = Show Ting search results in a carousel
+name = Search carousel (backport)
+description = Provides a Infinite Carousel block with latest added books
 package = Ding!
-version = "7.x-0.3"
-core = "7.x"
+core = 6.x
+dependencies[] = elib
 dependencies[] = ting
-dependencies[] = ting_search
-dependencies[] = ting_covers
-configure = admin/config/ting_search_carousel

@@ -74,7 +74,7 @@ function ting_search_carousel_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
       $blocks[0] = array(
-        'info' => t('Search carousel'),
+        'info' => 'Search carousel (backport)',
         'cache' => BLOCK_NO_CACHE,
       );
       break;
