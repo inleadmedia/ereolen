@@ -18,20 +18,20 @@ function ting_search_carousel_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['admin/settings/ting/ting_search_carousel'] = array(
+    $items['admin/settings/ting_search_carousel'] = array(
     'title' => 'Ting search carousel',
-    'description' => 'Manage content for frontpage carousel.',
-  	'page callback' => 'ting_search_carousel_admin_page',
-    'page arguments' => array(),
-    'access arguments' => array('access administration pages'),
+    'page callback' => 'ting_search_carousel_admin_page',
+    'access arguments' => array('administer search carousel'),
     'file' => 'ting_search_carousel.admin.inc',
   );
 
-  $items['admin/settings/ting/ting_search_carousel/settings'] = array(
-    'title' => 'Content',
-    'description' => 'Manage content for frontpage carousel.',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -10,
+  $items['admin/settings/ting_search_carousel/form/ahah'] = array(
+    'title' => 'Edit search carousels',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ting_search_carousel_form_ahah'),
+    'access arguments' => array('administer search carousel'),
+  	'file' => 'ting_search_carousel.admin.inc',
+    'type' => MENU_CALLBACK,
   );
 
   $items['admin/settings/ting/ting_search_carousel/frontend_settings'] = array(

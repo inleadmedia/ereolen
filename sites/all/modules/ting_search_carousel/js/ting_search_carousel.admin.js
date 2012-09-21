@@ -1,11 +1,13 @@
-(function ($) {
-  Drupal.behaviors.tingSearchCarousel = {
-    attach: function(context) {
-      $('.search-carousel-query .remove').click(function () {
-        $(this).parents('tr').remove();
+Drupal.behaviors.tingSearchCarouselAdmin = function(context)
+{
+	Drupal.tingSearchCarouselAdmin.remove();
+};
 
-        return false;
-      });
-    }
-  }
-})(jQuery);
+Drupal.tingSearchCarouselAdmin = {};
+
+Drupal.tingSearchCarouselAdmin.remove = function () {
+  $('.ting-search-carousel-search-wrap .remove').click(function () {
+    $(this).parents('tr').remove();
+    return false;
+  });
+};
