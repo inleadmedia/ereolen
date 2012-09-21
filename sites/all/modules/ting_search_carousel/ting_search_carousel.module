@@ -18,7 +18,7 @@ function ting_search_carousel_menu() {
     'type' => MENU_CALLBACK,
   );
 
-  $items['admin/config/ting/ting_search_carousel'] = array(
+  $items['admin/settings/ting/ting_search_carousel'] = array(
     'title' => 'Ting search carousel',
     'description' => 'Manage content for frontpage carousel.',
   	'page callback' => 'ting_search_carousel_admin_page',
@@ -27,14 +27,14 @@ function ting_search_carousel_menu() {
     'file' => 'ting_search_carousel.admin.inc',
   );
 
-  $items['admin/config/ting/ting_search_carousel/settings'] = array(
+  $items['admin/settings/ting/ting_search_carousel/settings'] = array(
     'title' => 'Content',
     'description' => 'Manage content for frontpage carousel.',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
   );
 
-  $items['admin/config/ting/ting_search_carousel/frontend_settings'] = array(
+  $items['admin/settings/ting/ting_search_carousel/frontend_settings'] = array(
     'title' => 'Frontend settings',
     'description' => 'Manage settings for the display of frontpage carousel',
     'page callback' => 'drupal_get_form',
@@ -51,7 +51,7 @@ function ting_search_carousel_menu() {
 /**
  * Implements hook_theme().
  */
-function ting_search_carousel_theme($existing, $type, $theme, $path) {
+function ting_search_carousel_theme() {
   return array(
     'ting_search_carousel' => array(
       'variables' => array('searches' => NULL, 'tab_position' => NULL),
@@ -68,28 +68,30 @@ function ting_search_carousel_theme($existing, $type, $theme, $path) {
   );
 }
 
-/**
- * Implements hook_block_info().
- */
-function ting_search_carousel_block_info() {
-  return array(
-    'ting_search_carousel' => array(
-      'info' => 'Ting search carousel, block'
-  ));
-}
+function ting_search_carousel_block($op = 'list', $delta = 0, $edit = array()) {
+  $blocks = array();
 
-/**
- * Implements hook_block_view().
- *
- * We ignore delta in this block view, as we only have one block.
- */
-function ting_search_carousel_block_view($delta) {
-  return array(
-    'content' => theme('ting_search_carousel', array(
-        'searches' => variable_get('ting_carousel_search_queries', array()),
-        'tab_position' => variable_get('ting_search_carousel_tabs_position'),
-    )),
-  );
+  switch ($op) {
+    case 'list':
+      $blocks[0] = array(
+        'info' => t('Search carousel'),
+        'cache' => BLOCK_NO_CACHE,
+      );
+      break;
+
+    case 'view':
+      if ($delta == 0) {
+        $blocks = array(
+          'content' => theme('ting_search_carousel', array(
+            'searches' => variable_get('ting_carousel_search_queries', array()),
+            'tab_position' => variable_get('ting_search_carousel_tabs_position'),
+          )),
+        );
+      }
+      break;
+  }
+
+  return $blocks;
 }
 
 /**
@@ -273,37 +275,13 @@ function _ting_search_carousel_set_cache($index, $items) {
 }
 
 /**
- * Implements hook_image_default_styles().
- */
-function ting_search_carousel_image_default_styles() {
-  return array(
-    'ting_search_carousel' => array(
-      'name' => 'ting_search_carousel',
-      'effects' => array(
-        array(
-          'label' => 'Scale and crop',
-          'effect callback' => 'image_scale_and_crop_effect',
-          'dimensions callback' => 'image_scale_dimensions',
-          'module' => 'image',
-          'name' => 'image_scale_and_crop',
-          'data' => array(
-            'width' => '90',
-            'height' => '130',
-          ),
-          'weight' => '1',
-        ),
-      ),
-    ),
-  );
-}
-
-/**
  * Wrapper function that adds the modules JavaScript.
  */
 function _ting_search_carousel_add_javascript() {
   $path = drupal_get_path('module', 'ting_search_carousel');
 
   drupal_add_library('system', 'ui.widget');
+
   drupal_add_js($path . '/js/jquery.rs.carousel.js');
   drupal_add_js($path . '/js/ting_search_carousel.js');
 }
