@@ -50,6 +50,7 @@ function ting_search_carousel_theme() {
     'ting_search_carousel_collection' => array(
       'arguments' => array('collection' => NULL),
       'template' => 'templates/ting_search_carousel_collection',
+      'file' => 'ting_search_carousel.theme.inc',
     ),
     'ting_search_carousel_search' => array(
       'arguments' => array('element' => NULL),
@@ -114,7 +115,7 @@ function ting_search_carousel_do_request($index) {
     $result = NULL;
     $page = 1;
     $collections = array();
-    while ($result = ting_do_search($query['query'], $page++, 50, array('facets' => array(), 'enrich' => TRUE, 'allObjects' => FALSE))) {
+    while ($result = ting_do_search($query['query'], $page++, 50, array('facets' => array(), 'enrich' => FALSE, 'allObjects' => FALSE))) {
       $collections[] = $result;
 
       if (!$result->more) {
@@ -129,69 +130,28 @@ function ting_search_carousel_do_request($index) {
   $objects = array();
   foreach ($collections as $collection) {
     foreach ($collection->collections as $ting_collection) {
-      foreach ($ting_collection->reply->objects as $object) {
+      foreach ($ting_collection->objects as $object) {
         $local_ids[] = $object->localId;
         $objects[$object->localId] = array(
           'id' => $object->id,
+          'isbn' => isset($object->record['dc:identifier']['oss:PROVIDER-ID'][0]) ? $object->record['dc:identifier']['oss:PROVIDER-ID'][0] : '',
           'title' => isset($object->record['dc:title'][''][0]) ? $object->record['dc:title'][''][0] : '',
-          'creator' => isset($object->record['dc:creator']['oss:aut'][0]) ? $object->record['dc:creator']['oss:aut'][0] : '',
+          'creator' => _elib_get_author($object, FALSE),
         );
       }
     }
   }
 
-  // Load helper function form the covers module.
-  module_load_include('pages.inc', 'ting_covers');
-
-  // Get cover service client.
-  $service = new AdditionalInformationService(
-          variable_get('addi_wsdl_url'),
-          variable_get('addi_username'),
-          variable_get('addi_group'),
-          variable_get('addi_password'));
-
-  // Initialize items array.
   $items = array();
+  foreach ($local_ids as $id) {
+    // Build object with the information collected.
+    $item = new stdClass();
+    $item->id = $objects[$id]['id'];
+    $item->title = $objects[$id]['title'];
+    $item->creator = $objects[$id]['creator'];
+    $item->image =  elib_book_cover($objects[$id]['isbn'], '120_x');;
 
-  // The cover service have a limit on the number of id's in one request, so we
-  // split it up into 45 id's per chunk. It's faster to ask the service with as
-  // many id's as possible at once as the look-up-time is the same for a single
-  // and multiply id's.
-  $covers = array();
-  $local_ids = array_chunk($local_ids, 45);
-  foreach ($local_ids as $ids) {
-    // Get covers for the ids.
-    $covers = $service->getByFaustNumber($ids);
-
-    // Loop over the fetched covers and build items.
-    foreach ($covers as $local_id => $cover) {
-      // Build cover filename.
-      $filename = 'public://ting_search_carousel/' . md5($local_id) . '.jpg';
-
-      // Check if file have been downloaded.
-      if (!file_exists($filename)) {
-        // Extract the image source url.
-        $source_url = FALSE;
-        if ($cover->detailUrl) {
-          $source_url = $cover->detailUrl;
-        } elseif ($cover->thumbnailUrl) {
-          $source_url = $cover->thumbnailUrl;
-        }
-
-        // Download the cover image and get local uri.
-        $file = _ting_covers_pages_fetch_image($filename, $source_url);
-        $filename = isset($file->uri) ? $file->uri : $filename;
-      }
-
-      // Build object with the information collected.
-      $item = new stdClass();
-      $item->id = $objects[$local_id]['id'];
-      $item->title = $objects[$local_id]['title'];
-      $item->creator = $objects[$local_id]['creator'];
-      $item->image = image_style_url('ting_search_carousel', $filename);
-
-      $items[] = $item;
-    }
+    $items[] = $item;
   }
 
   // Update the cache with the fetched items.
@@ -295,7 +255,7 @@ function ting_search_carousel_search_element_validate($element, &$form_state) {
  */
 function _ting_search_carousel_get_content($index, $search = TRUE) {
   // Utilize the static cache.
-  $static = &drupal_static(__FUNCTION__);
+  static $static;
   if (isset($static[$index]) && !empty($static[$index])) {
     return $static[$index];
   }

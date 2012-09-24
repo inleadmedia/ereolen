@@ -18,6 +18,13 @@ function template_preprocess_ting_search_carousel(&$vars, $hook) {
 }
 
 /**
+ * Implements default preprocess function for the search carsousel collection.
+ */
+function template_preprocess_ting_search_carousel_collection(&$vars, $hook) {
+  $vars['collection'] = $vars['collection']['collection'];
+}
+
+/**
  * Theme function for the admin form, enables drag and drop of form elements.
  *
  * @param array $form

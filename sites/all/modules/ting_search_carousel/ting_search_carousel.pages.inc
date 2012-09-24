@@ -31,6 +31,6 @@ function ting_search_carousel_result($index) {
   }
 
   // Return JSON output.
-  drupal_json_output(array('subtitle' => $subtitle, 'content' => $content, 'index' => $index));
+  drupal_json(array('subtitle' => $subtitle, 'content' => $content, 'index' => $index));
   exit();
 }
