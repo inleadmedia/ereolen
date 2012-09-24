@@ -43,7 +43,7 @@ function ting_search_carousel_menu() {
 function ting_search_carousel_theme() {
   return array(
     'ting_search_carousel' => array(
-      'arguments' => array('searches' => NULL, 'tab_position' => NULL),
+      'arguments' => array('searches' => NULL),
       'template' => 'templates/ting_search_carousel',
       'file' => 'ting_search_carousel.theme.inc',
     ),
@@ -74,14 +74,11 @@ function ting_search_carousel_block($op = 'list', $delta = 0, $edit = array()) {
       break;
 
     case 'view':
-      if ($delta == 0) {
-        $blocks = array(
-          'content' => theme('ting_search_carousel', array(
-            'searches' => variable_get('ting_carousel_search_queries', array()),
-            'tab_position' => variable_get('ting_search_carousel_tabs_position'),
-          )),
-        );
-      }
+      $blocks = array(
+        'content' => theme('ting_search_carousel', array(
+          'searches' => variable_get('ting_carousel_search_queries', array()),
+        )),
+      );
       break;
   }
 

@@ -13,9 +13,8 @@ function template_preprocess_ting_search_carousel(&$vars, $hook) {
   _ting_search_carousel_add_javascript();
   _ting_search_carousel_add_css();
 
-  // Load toggle configuration.
-  $toggle = variable_get('ting_search_carousel_description_toggle', FALSE);
-  $vars['toggle_description'] = $toggle ? 'rs-carousel-wide' : 'rs-carousel-compact';
+  // Fixes the naming from the administration interface.
+  $vars['searches'] = $vars['searches']['searches'];
 }
 
 /**
