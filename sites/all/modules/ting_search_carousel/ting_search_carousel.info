@@ -4,3 +4,4 @@ package = Ding!
 core = 6.x
 dependencies[] = elib
 dependencies[] = ting
+dependencies[] = libraries

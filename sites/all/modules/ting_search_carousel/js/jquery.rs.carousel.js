@@ -13,7 +13,7 @@
  *  jquery.ui.widget.js v1.8+
  *
  */
- 
+
 (function ($, undefined) {
 
     var _super = $.Widget.prototype,
@@ -27,7 +27,7 @@
             pos2: 'bottom',
             dim: 'height'
         };
-    
+
     $.widget('rs.carousel', {
 
         options: {
@@ -167,9 +167,9 @@
             if (!this.isHorizontal) {
                 return;
             }
-            
+
             var self = this;
-            
+
             this.elements.runner.width(function () {
                 return self._getItemDim() * self.getNoOfItems();
             });
@@ -187,9 +187,9 @@
         },
 
         getNoOfItems: function () {
-            
+
             return this.elements.items.length;
-             
+
         },
 
         // adds next and prev links
@@ -202,7 +202,7 @@
             var self = this,
                 elems = this.elements,
                 opts = this.options;
-                
+
             this._removeNextPrevActions();
 
             elems.prevAction = opts.insertPrevAction.apply(this.element[0])
@@ -216,25 +216,25 @@
                     e.preventDefault();
                     self.next();
                 });
-            
+
             return;
         },
 
         _removeNextPrevActions: function () {
-        
+
             var elems = this.elements;
-        
+
             if (elems.nextAction) {
                 elems.nextAction.remove();
                 elems.nextAction = undefined;
-            }   
-            
+            }
+
             if (elems.prevAction) {
                 elems.prevAction.remove();
                 elems.prevAction = undefined;
             }
-            
-            return; 
+
+            return;
         },
 
         // adds pagination links and binds associated events
@@ -252,7 +252,7 @@
                 links = [],
                 noOfPages = this.getNoOfPages(),
                 i;
-                
+
             this._removePagination();
 
             for (i = 1; i <= noOfPages; i++) {
@@ -265,19 +265,19 @@
                     e.preventDefault();
                     self.goToPage(parseInt(this.hash.split('-')[1], 10));
                 });
-            
+
             this.elements.pagination = this.options.insertPagination.call(this.element[0], pagination);
-            
+
             return;
         },
 
         _removePagination: function () {
-        
+
             if (this.elements.pagination) {
                 this.elements.pagination.remove();
                 this.elements.pagination = undefined;
             }
-            
+
             return;
         },
 
@@ -287,11 +287,11 @@
             var index = 1,
                 page = 0,
                 noOfPages = this.getNoOfPages();
-                
+
             this.pages = [];
-            
+
             while (page < noOfPages) {
-                
+
                 // if index is greater than total number of items just go to last
                 if (index > this.getNoOfItems()) {
                     index = this.getNoOfItems();
@@ -306,7 +306,7 @@
         },
 
         getPages: function () {
-            
+
             return this.pages;
 
         },
@@ -332,7 +332,7 @@
             if (typeof this.options.itemsPerPage === 'number') {
                 return this.options.itemsPerPage;
             }
-            
+
             return Math.floor(this._getMaskDim() / this._getItemDim());
 
         },
@@ -344,11 +344,11 @@
             }
 
             return this.getItemsPerPage();
-            
+
         },
 
         _getMaskDim: function () {
-            
+
             return this.elements.mask[this.helperStr.dim]();
 
         },
@@ -360,7 +360,7 @@
             if (this.options.loop && page > this.getNoOfPages()) {
                 page = 1;
             }
-            
+
             this.goToPage(page, animate);
 
             return;
@@ -373,7 +373,7 @@
             if (this.options.loop && page < 1) {
                 page = this.getNoOfPages();
             }
-            
+
             this.goToPage(page, animate);
 
             return;
@@ -387,23 +387,23 @@
                 this.page = page;
                 this._go(animate);
             }
-            
+
             return;
         },
 
         // returns true if page index is valid, false if not
         _isValid: function (page) {
-            
+
             if (page <= this.getNoOfPages() && page >= 1) {
                 return true;
             }
-            
+
             return false;
         },
 
         // returns valid page index
         _makeValid: function (page) {
-                
+
             if (page < 1) {
                 page = 1;
             }
@@ -416,7 +416,7 @@
 
         // abstract _slide to easily override within extensions
         _go: function (animate) {
-            
+
             this._slide(animate);
 
             return;
@@ -449,14 +449,14 @@
             this.elements.runner
                 .stop()
                 .animate(animateProps, speed, this.options.easing, function () {
-                    
+
                     self._trigger('after', null, {
                         elements: self.elements,
                         animate: animate
                     });
 
                 });
-                
+
             this._updateUi();
 
             return;
@@ -464,9 +464,9 @@
 
         // gets lastPos to ensure runner doesn't move beyond mask (allowing mask to be any width and the use of margins)
         _getAbsoluteLastPos: function () {
-            
+
             var lastItem = this.elements.items.eq(this.getNoOfItems() - 1);
-            
+
             return lastItem.position()[this.helperStr.pos] + this._getItemDim() -
                     this._getMaskDim() - parseInt(lastItem.css('margin-' + this.helperStr.pos2), 10);
 
@@ -487,7 +487,7 @@
         },
 
         _updatePagination: function () {
-            
+
             var baseClass = this.widgetBaseClass,
                 activeClass = baseClass + '-pagination-link-active';
 
@@ -501,7 +501,7 @@
         },
 
         _updateNextPrevActions: function () {
-            
+
             var elems = this.elements,
                 page = this.page,
                 disabledClass = this.widgetBaseClass + '-action-disabled';
@@ -511,7 +511,7 @@
                     .removeClass(disabledClass);
 
             if (!this.options.loop) {
-                
+
                 if (page === this.getNoOfPages()) {
                     elems.nextAction.addClass(disabledClass);
                 }
@@ -535,7 +535,7 @@
         },
 
         remove: function (selector) {
-            
+
             if (this.getNoOfItems() > 0) {
 
                 this.elements.items
@@ -555,14 +555,14 @@
                 'itemsPerPage',
                 'itemsPerTransition',
                 'orientation'
-            ];      
+            ];
 
             _super._setOption.apply(this, arguments);
 
             switch (option) {
 
             case 'orientation':
-            
+
                 this.elements.runner
                     .css(this.helperStr.pos, '')
                     .width('');
@@ -606,12 +606,12 @@
                 this.refresh();
             }
 
-            return;
+            return 0;
         },
 
         // if no of items is less than items per page we disable carousel
         _checkDisabled: function () {
-            
+
             if (this.getNoOfItems() <= this.getItemsPerPage()) {
                 this.elements.runner.css(this.helperStr.pos, '');
                 this.disable();
@@ -662,7 +662,7 @@
             this.element
                 .removeClass()
                 .addClass(this.oldClass);
-            
+
             if (this.maskAdded) {
                 elems.runner
                     .unwrap('.' + this.widgetBaseClass + '-mask');
@@ -671,23 +671,23 @@
             cssProps[this.helperStr.pos] = '';
             cssProps[this.helperStr.dim] = '';
             elems.runner.css(cssProps);
-            
+
             this._removePagination();
             this._removeNextPrevActions();
-            
+
             _super.destroy.apply(this, arguments);
 
             return;
         },
 
         getPage: function () {
-            
+
             return this.page;
 
         },
 
         getPrevPage: function () {
-            
+
             return this.prevPage;
 
         },
@@ -708,7 +708,7 @@
         }
 
     });
-    
+
     $.rs.carousel.version = '0.8.6';
 
 })(jQuery);

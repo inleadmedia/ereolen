@@ -280,7 +280,9 @@ function _ting_search_carousel_set_cache($index, $items) {
 function _ting_search_carousel_add_javascript() {
   $path = drupal_get_path('module', 'ting_search_carousel');
 
-  drupal_add_library('system', 'ui.widget');
+  // Load jquery UI dialog and styling.
+  jquery_ui_add(array('ui.widget'));
+  drupal_add_css(libraries_get_path('jquery.ui') . '/themes/base/ui.all.css');
 
   drupal_add_js($path . '/js/jquery.rs.carousel.js');
   drupal_add_js($path . '/js/ting_search_carousel.js');
