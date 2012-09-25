@@ -90,10 +90,10 @@
 }
 .carousel-wrapper .ajax-loader {
   background: transparent url("../images/ajax-loader.gif") no-repeat right top;
-  left: 50%;
+  left: 41%;
   height: 20px;
   position: absolute;
-  top: 34%;
+  top: 40%;
   width: 220px;
 }
 

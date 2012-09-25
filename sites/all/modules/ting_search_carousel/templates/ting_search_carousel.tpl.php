@@ -11,6 +11,7 @@
 
 <div class="carousel-outer">
   <div id="carousel" class="carousel-wrapper">
+    <div class="ajax-loader"></div>
     <div class="carousel-inner">
       <ul class="carousel-runner">
       </ul>

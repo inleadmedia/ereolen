@@ -56,17 +56,18 @@
 
   function carousel_activate() {
     carousel.elastislide({
-      imageW 	  : 120,
-      minItems	: 4,
-      margin    : 10
+      imageW : 120,
+      minItems : 4,
+      margin : 10
     });
   }
 
   // Updated the carousel content.
   function carousel_update_content(index) {
     var data = carousel_cache[index];
-    $('.carousel-inner .ajax-loader').hide();
+    $('.carousel-wrapper .ajax-loader').hide();
     $('.carousel-inner .carousel-runner').html(data.content);
+    $('.carousel-wrapper .es-nav').show();
   }
 
   $(document).ready(function() {
@@ -108,7 +109,8 @@
 
       // Remove current content and show spinner.
       $('.carousel-inner .carousel-runner').html('');
-      $('.carousel-inner .ajax-loader').show();
+      $('.carousel-wrapper .ajax-loader').show();
+      $('.carousel-wrapper .es-nav').hide();
 
       // Hide navigation arrows.
       $('.carousel-action-prev').hide();
