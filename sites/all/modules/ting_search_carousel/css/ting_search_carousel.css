@@ -89,7 +89,7 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#1A000000,endColorstr=#1A000000);
   text-align: center;
   position: relative;
-  min-height: 170px;
+  min-height: 188px;
   padding: 20px;
 }
 .carousel-wrapper .ajax-loader {

@@ -31,18 +31,15 @@
             // Check that the AJAX call is still validate (on the same tab).
             if (carousel_current_index == data.index) {
               if (!carousel) {
+                carousel = $('#carousel');
                 carousel_update_content(index);
-                $('#carousel').elastislide({
-                  imageW 	: 120,
-                  minItems	: 4,
-                  margin      : 10
-                });
-//                carousel = $('.rs-carousel').carousel();
+                carousel_activate();
               }
               else {
-//                carousel.carousel('destroy');
-                carousel_update_content(index);
-//                carousel.carousel();
+                carousel.elastislide( 'destroy', function() {
+                  carousel_update_content(index);
+                  carousel_activate();
+                });
               }
             }
           }
@@ -50,11 +47,20 @@
       }
     }
     else {
-//      carousel.carousel('destroy');
-      carousel_update_content(index);
-//      carousel.carousel();
+      carousel.elastislide( 'destroy', function() {
+        carousel_update_content(index);
+        carousel_activate();
+      });
     }
   };
+
+  function carousel_activate() {
+    carousel.elastislide({
+      imageW 	  : 120,
+      minItems	: 4,
+      margin    : 10
+    });
+  }
 
   // Updated the carousel content.
   function carousel_update_content(index) {
