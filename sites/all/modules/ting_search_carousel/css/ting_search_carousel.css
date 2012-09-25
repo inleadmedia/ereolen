@@ -22,18 +22,28 @@
    ========================================================================== */
 .es-nav-prev,
 .es-nav-next {
-  background-image: url("../images/arrows.png");
-  height: 41px;
+  background-image: url("/sites/all/themes/ebog/images/cycle.png");
+  height: 36px;
   overflow: hidden;
   position: absolute;
   text-indent: -9999px;
-  top: 30%;
-  width: 41px;
+  top: 38%;
+  width: 36px;
 }
 
 .es-nav-next {
-  background-position: right 0;
+  background-position: -36px 0;
   right: 20px;
+}
+.es-nav-next:hover {
+  background-position: -36px -36px;
+}
+
+.es-nav-prev {
+  background-position: 0 0;
+}
+.es-nav-prev:hover {
+  background-position: 0 -36px;
 }
 
 .carousel-action-disabled {
@@ -80,10 +90,7 @@
   text-align: center;
   position: relative;
   min-height: 170px;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 20px;
 }
 .carousel-wrapper .ajax-loader {
   background: transparent url("../images/ajax-loader.gif") no-repeat right top;
@@ -117,7 +124,7 @@
 .carousel-tabs ul li a {
   background-color: white;
   display: block;
-  padding: 20px 40px;
+  padding: 10px;
 }
 
 .carousel-tabs ul li.active {

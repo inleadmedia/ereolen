@@ -47,22 +47,33 @@ $tabs-active-text-color:        #fff;
 
 /* Previous and next buttons
    ========================================================================== */
-
 .es-nav-prev,
 .es-nav-next {
-  background-image: url('../images/arrows.png');
-  height: 41px;
+  background-image: url('/sites/all/themes/ebog/images/cycle.png');
+  height: 36px;
   overflow: hidden;
   position: absolute;
   text-indent: -9999px;
-  top: 30%;
-  width: 41px;
+  top: 38%;
+  width: 36px;
 }
 
 .es-nav-next {
-  background-position: right 0;
+  background-position: -36px 0;
   right: $default-spacing;
+
+  &:hover {
+    background-position: -36px -36px;
+  }
 }
+
+.es-nav-prev {
+  background-position: 0 0;
+  &:hover {
+    background-position: 0 -36px;
+  }
+}
+
 
 .carousel-action-disabled {
   @include opacity(.25);
@@ -107,10 +118,7 @@ $tabs-active-text-color:        #fff;
   text-align: center;
   position: relative;
   min-height: 170px;
-  padding-top: $default-spacing * 2;
-  padding-bottom: $default-spacing * 2;
-  padding-left: $default-spacing;
-  padding-right: $default-spacing;
+  padding: $default-spacing;
 
   .ajax-loader {
     background: transparent url('../images/ajax-loader.gif') no-repeat right top;
@@ -145,7 +153,7 @@ $tabs-active-text-color:        #fff;
 .carousel-tabs ul li a {
   background-color: $tabs-background-color;
   display: block;
-  padding: $default-spacing $default-spacing * 2;
+  padding: $default-spacing / 2;
 }
 
 .carousel-tabs ul li.active {
