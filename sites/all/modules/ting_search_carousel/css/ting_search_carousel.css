@@ -13,11 +13,6 @@
 /* Colors */
 /* Text */
 /* Tabs */
-.ui-state-disabled {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-}
-
 /* Previous and next buttons
    ========================================================================== */
 .es-nav-prev,
@@ -41,6 +36,7 @@
 
 .es-nav-prev {
   background-position: 0 0;
+  left: 20px;
 }
 .es-nav-prev:hover {
   background-position: 0 -36px;
@@ -111,9 +107,7 @@
 }
 
 .carousel-tabs ul li {
-  border-top: 1px solid #cccccc;
-  border-right: 1px solid #cccccc;
-  border-bottom: 1px solid #cccccc;
+  border: 1px solid #cccccc;
   display: table-cell;
   min-width: 10%;
   /* Appearantly this make them have equal width in Firefox */

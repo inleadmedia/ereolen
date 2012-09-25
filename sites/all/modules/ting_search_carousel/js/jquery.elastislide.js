@@ -1,7 +1,6 @@
 (function( window, $, undefined ) {
-
 	// http://www.netcu.de/jquery-touchwipe-iphone-ipad-library
-	$.fn.touchwipe 				= function(settings) {
+	$.fn.touchwipe = function(settings) {
 
 		var config = {
 			min_move_x: 20,
@@ -13,7 +12,7 @@
 			preventDefaultEvents: true
 		};
 
-		if (settings) $.extend(config, settings);
+		if (settings) { $.extend(config, settings); }
 
 		this.each(function() {
 			var startX;
@@ -58,7 +57,7 @@
 
 			function onTouchStart(e)
 			{
-				if (e.touches.length == 1) {
+				if (e.touches.length === 1) {
 					startX = e.touches[0].pageX;
 					startY = e.touches[0].pageY;
 					isMoving = true;
@@ -73,41 +72,41 @@
 		return this;
 	};
 
-	$.elastislide 				= function( options, element ) {
+	$.elastislide = function( options, element ) {
 		this.$el	= $( element );
 		this._init( options );
 	};
 
-	$.elastislide.defaults 		= {
-		speed		: 450,	// animation speed
-		easing		: '',	// animation easing effect
-		imageW		: 190,	// the images width
-		margin		: 3,	// image margin right
-		border		: 2,	// image border
-		minItems	: 1,	// the minimum number of items to show.
+	$.elastislide.defaults = {
+		speed : 450,	// animation speed
+		easing : '',	// animation easing effect
+		imageW : 190,	// the images width
+		margin : 3,	// image margin right
+		border : 2,	// image border
+		minItems : 1,	// the minimum number of items to show.
 							// when we resize the window, this will make sure minItems are always shown
 							// (unless of course minItems is higher than the total number of elements)
-		current		: 0,	// index of the current item
+		current : 0,	// index of the current item
 							// when we resize the window, the carousel will make sure this item is visible
-		onClick		: function() { return false; } // click item callback
-    };
+		onClick : function() { return false; } // click item callback
+  };
 
-	$.elastislide.prototype 	= {
-		_init 				: function( options ) {
+	$.elastislide.prototype = {
+		_init : function( options ) {
 
-			this.options 		= $.extend( true, {}, $.elastislide.defaults, options );
+			this.options = $.extend( true, {}, $.elastislide.defaults, options );
 
 			// <ul>
-			this.$slider		= this.$el.find('ul');
+			this.$slider = this.$el.find('ul');
 
 			// <li>
-			this.$items			= this.$slider.children('li');
+			this.$items = this.$slider.children('li');
 
 			// total number of elements / images
-			this.itemsCount		= this.$items.length;
+			this.itemsCount = this.$items.length;
 
 			// cache the <ul>'s parent, since we will eventually need to recalculate its width on window resize
-			this.$esCarousel	= this.$slider.parent();
+			this.$esCarousel = this.$slider.parent();
 
 			// validate options
 			this._validateOptions();
@@ -130,17 +129,21 @@
 		},
 		_validateOptions	: function() {
 
-			if( this.options.speed < 0 )
+			if( this.options.speed < 0 ) {
 				this.options.speed = 450;
-			if( this.options.margin < 0 )
+      }
+			if( this.options.margin < 0 ) {
 				this.options.margin = 4;
-			if( this.options.border < 0 )
+      }
+			if( this.options.border < 0 ) {
 				this.options.border = 1;
-			if( this.options.minItems < 1 || this.options.minItems > this.itemsCount )
+      }
+			if( this.options.minItems < 1 || this.options.minItems > this.itemsCount ) {
 				this.options.minItems = 1;
-			if( this.options.current > this.itemsCount - 1 )
+      }
+			if( this.options.current > this.itemsCount - 1 ) {
 				this.options.current = 0;
-
+      }
 		},
 		_configure			: function() {
 
@@ -195,7 +198,7 @@
 			this.fitCount		= Math.floor( this.visibleWidth / this.itemW );
 
 		},
-		_addControls		: function() {
+		_addControls : function() {
 
 			this.$navNext	= $('<span class="es-nav-next">Next</span>');
 			this.$navPrev	= $('<span class="es-nav-prev">Previous</span>');
@@ -203,22 +206,21 @@
 			.append( this.$navPrev )
 			.append( this.$navNext )
 			.appendTo( this.$el );
-
 			//this._toggleControls();
-
 		},
-		_toggleControls		: function( dir, status ) {
+		_toggleControls : function( dir, status ) {
 
 			// show / hide navigation buttons
 			if( dir && status ) {
-				if( status === 1 )
-					( dir === 'right' ) ? this.$navNext.show() : this.$navPrev.show();
-				else
-					( dir === 'right' ) ? this.$navNext.hide() : this.$navPrev.hide();
+				if( status === 1 ) {
+					( dir === 'right' ) ? this.$navNext.removeClass('carousel-action-disabled') : this.$navPrev.removeClass('carousel-action-disabled');
+        } else {
+					( dir === 'right' ) ? this.$navNext.addClass('carousel-action-disabled') : this.$navPrev.addClass('carousel-action-disabled');
+        }
 			}
-			else if( this.current === this.itemsCount - 1 || this.fitCount >= this.itemsCount )
-					this.$navNext.hide();
-
+			else if( this.current === this.itemsCount - 1 || this.fitCount >= this.itemsCount ) {
+					this.$navNext.addClass('carousel-action-disabled');
+      }
 		},
 		_initEvents			: function() {
 
@@ -279,14 +281,15 @@
 			});
 
 		},
-		_slide				: function( dir, val, anim, callback ) {
+		_slide : function( dir, val, anim, callback ) {
 
 			// if animating return
-			if( this.$slider.is(':animated') )
+			if( this.$slider.is(':animated') ) {
 				return false;
+      }
 
 			// current margin left
-			var ml		= parseFloat( this.$slider.css('margin-left') );
+			var ml = parseFloat( this.$slider.css('margin-left') );
 
 			// val is just passed when we want an exact value for the margin left (used in the _slideToCurrent function)
 			if( val === undefined ) {
@@ -294,7 +297,7 @@
 				// how much to slide?
 				var amount	= this.fitCount * this.itemW, val;
 
-				if( amount < 0 ) return false;
+				if( amount < 0 ) { return false; }
 
 				// make sure not to leave a space between the last item / first item and the end / beggining of the slider available width
 				if( dir === 'right' && this.sliderW - ( Math.abs( ml ) + amount ) < this.visibleWidth ) {
@@ -311,50 +314,46 @@
 				}
 				else {
 					var fml; // future margin left
-					( dir === 'right' )
-						? fml = Math.abs( ml ) + this.options.margin + Math.abs( amount )
-						: fml = Math.abs( ml ) - this.options.margin - Math.abs( amount );
+					( dir === 'right' ) ? fml = Math.abs( ml ) + this.options.margin + Math.abs( amount ) : fml = Math.abs( ml ) - this.options.margin - Math.abs( amount );
 
 					// show / hide navigation buttons
-					if( fml > 0 )
+					if( fml > 0 ) {
 						this._toggleControls( 'left', 1 );
-					else
+          } else {
 						this._toggleControls( 'left', -1 );
-
-					if( fml < this.sliderW - this.visibleWidth )
+          }
+					if( fml < this.sliderW - this.visibleWidth ) {
 						this._toggleControls( 'right', 1 );
-					else
+          } else {
 						this._toggleControls( 'right', -1 );
-
+          }
 				}
-
-				( dir === 'right' ) ? val = '-=' + amount : val = '+=' + amount
-
+				( dir === 'right' ) ? val = '-=' + amount : val = '+=' + amount;
 			}
 			else {
-				var fml		= Math.abs( val ); // future margin left
-
+				var fml = Math.abs( val ); // future margin left
 				if( Math.max( this.sliderW, this.visibleWidth ) - fml < this.visibleWidth ) {
 					val	= - ( Math.max( this.sliderW, this.visibleWidth ) - this.visibleWidth );
-					if( val !== 0 )
+					if( val !== 0 ) {
 						val += this.options.margin;	// decrease the margin left if not on the first position
-
+          }
 					// show / hide navigation buttons
 					this._toggleControls( 'right', -1 );
 					fml	= Math.abs( val );
 				}
 
 				// show / hide navigation buttons
-				if( fml > 0 )
+				if( fml > 0 ) {
 					this._toggleControls( 'left', 1 );
-				else
+        } else {
 					this._toggleControls( 'left', -1 );
+        }
 
-				if( Math.max( this.sliderW, this.visibleWidth ) - this.visibleWidth > fml + this.options.margin )
+				if( Math.max( this.sliderW, this.visibleWidth ) - this.visibleWidth > fml + this.options.margin ) {
 					this._toggleControls( 'right', 1 );
-				else
+        } else {
 					this._toggleControls( 'right', -1 );
-
+        }
 			}
 
 			$.fn.applyStyle = ( anim === undefined ) ? $.fn.animate : $.fn.css;
@@ -364,22 +363,20 @@
 			var instance	= this;
 
 			this.$slider.applyStyle( sliderCSS, $.extend( true, [], { duration : this.options.speed, easing : this.options.easing, complete : function() {
-				if( callback ) callback.call();
-			} } ) );
+				if( callback ) { callback.call(); }
+			}}));
 
 		},
-		_slideToCurrent		: function( anim ) {
-
+		_slideToCurrent	: function( anim ) {
 			// how much to slide?
 			var amount	= this.current * this.itemW;
 			this._slide('', -amount, anim );
 
 		},
-		add					: function( $newelems, callback ) {
-
+		add : function( $newelems, callback ) {
 			// adds new items to the carousel
-			this.$items 		= this.$items.add( $newelems );
-			this.itemsCount		= this.$items.length;
+			this.$items = this.$items.add( $newelems );
+			this.itemsCount = this.$items.length;
 			this._setDim();
 			this._setCurrentValues();
 			this.$slider.css({
@@ -387,30 +384,29 @@
 			});
 			this._slideToCurrent();
 
-			if ( callback ) callback.call( $newelems );
-
+			if ( callback ) { callback.call( $newelems ); }
 		},
-		destroy				: function( callback ) {
+		destroy : function( callback ) {
 			this._destroy( callback );
 		},
-    _removeControls :function(){
+    _removeControls : function(){
       this.$el.find('.es-nav').remove();
     },
-		_destroy 			: function( callback ) {
+		_destroy : function( callback ) {
       this._removeControls();
 			this.$el.unbind('.elastislide').removeData('elastislide');
 			$(window).unbind('.elastislide');
-			if ( callback ) callback.call();
+			if ( callback ) { callback.call(); }
 		}
 	};
 
-	var logError 				= function( message ) {
+	var logError = function( message ) {
 		if ( this.console ) {
 			console.error( message );
 		}
 	};
 
-	$.fn.elastislide 				= function( options ) {
+	$.fn.elastislide = function( options ) {
 		if ( typeof options === 'string' ) {
 			var args = Array.prototype.slice.call( arguments, 1 );
 
