@@ -23,9 +23,9 @@
         <div class="feed_and_compare_item display-book">
           <div class="left">
             <?php
-            $alttext = t('@titel af @forfatter',array('@titel' => $item['title'], '@forfatter' => $item['author']));
-            $cover = elib_book_cover(array($item['isbn']), '120_x');
-	    echo l(theme('image', $cover, $alttext, $alttext, array('width' => '120px'), false), $item['url'], array('html' => true));
+             $alttext = t('@titel af @forfatter',array('@titel' => $item['title'], '@forfatter' => $item['author']));
+             $cover = elib_book_cover(array($item['isbn']), '120_x');
+	           echo l(theme('image', $cover, $alttext, $alttext, array('width' => '120px'), false), $item['url'], array('html' => true));
             ?>
           </div>
           <div class="record right">
