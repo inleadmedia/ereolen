@@ -13,34 +13,15 @@
 /* Colors */
 /* Text */
 /* Tabs */
-.rs-carousel {
-  margin-bottom: 20px;
-}
-
-.rs-carousel,
-.rs-carousel-mask,
-.rs-carousel-runner {
-  position: relative;
-}
-
-.rs-carousel-mask,
-.rs-carousel-runner {
-  overflow: hidden;
-}
-
 .ui-state-disabled {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1;
 }
 
-/* Pagination and previous and next buttons
+/* Previous and next buttons
    ========================================================================== */
-.rs-carousel-pagination {
-  display: none;
-}
-
-.rs-carousel-action-prev,
-.rs-carousel-action-next {
+.es-nav-prev,
+.es-nav-next {
   background-image: url("../images/arrows.png");
   height: 41px;
   overflow: hidden;
@@ -50,124 +31,79 @@
   width: 41px;
 }
 
-.rs-carousel-action-prev {
-  left: 25%;
-}
-
-.rs-carousel-action-next {
+.es-nav-next {
   background-position: right 0;
   right: 20px;
 }
 
-.rs-carousel-action-disabled {
+.carousel-action-disabled {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=25);
   opacity: 0.25;
 }
 
-.rs-carousel-disabled .rs-carousel-action-prev,
-.rs-carousel-disabled .rs-carousel-action-next {
+.carousel-disabled .carousel-action-prev,
+.carousel-disabled .carousel-action-next {
   display: none;
 }
 
 /* Carousel content, mask, title etc.
    ========================================================================== */
-.rs-carousel-inner {
+.carousel-outer {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.carousel-inner {
+  overflow: hidden;
+  width: 88%;
+  margin: 0 auto;
+}
+
+.carousel-inner ul {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  list-style: none outside none;
+}
+
+.carousel-inner ul li {
+  float: left;
+  padding: 0;
+  margin: 0;
+  vertical-align: top;
+}
+
+.carousel-wrapper {
   background-color: rgba(0, 0, 0, 0.1);
   zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#1A000000,endColorstr=#1A000000);
+  text-align: center;
+  position: relative;
   min-height: 170px;
   padding-top: 40px;
   padding-bottom: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
-.rs-carousel-inner .ajax-loader {
+.carousel-wrapper .ajax-loader {
   background: transparent url("../images/ajax-loader.gif") no-repeat right top;
-  left: 53%;
+  left: 50%;
   height: 20px;
   position: absolute;
   top: 34%;
   width: 220px;
 }
 
-.rs-carousel-title,
-.rs-carousel-mask,
-.rs-carousel-mask ul {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.rs-carousel-title {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  font-size: 30px;
-  line-height: 100%;
-  max-width: 30%;
-  padding-top: 40px;
-  padding-left: 40px;
-  padding-right: 70px;
-}
-
-.rs-carousel-mask {
-  max-height: 185px;
-  max-width: 70%;
-  position: absolute;
-  right: 3%;
-}
-
-.rs-carousel-mask ul {
-  margin: 0;
-  list-style: none;
-}
-
-.rs-carousel-mask ul li {
-  float: left;
-  max-width: 100px;
-  padding-right: 20px;
-  text-align: center;
-}
-
-.rs-carousel-item-image {
-  background-color: rgba(0, 0, 0, 0.1);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#1A000000,endColorstr=#1A000000);
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  display: block;
-}
-
-.rs-carousel-item-image img {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 5px;
-}
-
-.rs-carousel-item-title {
-  display: block;
-  padding-top: 5px;
-}
-
-/* If description is not displayed make sure the mask and prev button a
-   positioned correct */
-.rs-carousel-compact .rs-carousel-mask {
-  max-width: 94%;
-}
-.rs-carousel-compact .rs-carousel-action-prev {
-  left: 2%;
-}
-
 /* Carousel tabs
    ========================================================================== */
-.rs-carousel-tabs ul {
+.carousel-tabs ul {
   margin: 0;
+  padding: 0;
   position: relative;
   text-align: center;
 }
 
-.rs-carousel-tabs ul li {
+.carousel-tabs ul li {
   border-top: 1px solid #cccccc;
   border-right: 1px solid #cccccc;
   border-bottom: 1px solid #cccccc;
@@ -178,17 +114,17 @@
   text-align: center;
 }
 
-.rs-carousel-tabs ul li a {
+.carousel-tabs ul li a {
   background-color: white;
   display: block;
   padding: 20px 40px;
 }
 
-.rs-carousel-tabs ul li.active {
+.carousel-tabs ul li.active {
   border-color: #404040;
 }
 
-.rs-carousel-tabs ul li.active a {
+.carousel-tabs ul li.active a {
   background-color: rgba(0, 0, 0, 0.75);
   zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#BF000000,endColorstr=#BF000000);
@@ -197,7 +133,7 @@
 }
 
 /* Create the active arrow using a pseudo element */
-.rs-carousel-tabs ul li.active a:before {
+.carousel-tabs ul li.active a:before {
   content: "";
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
@@ -212,47 +148,28 @@
 
 /* Mediaqueries
    ========================================================================== */
-@media screen and (max-width: 960px) {
-  .rs-carousel-inner {
+/*@media screen and (max-width: 960px) {
+
+  .carousel-inner {
     min-height: 250px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
-  .rs-carousel-inner .ajax-loader {
-    left: 35%;
+    padding-top: $default-spacing;
+    padding-bottom: $default-spacing;
+
+    .ajax-loader {
+      left: 35%;
+    }
   }
 
-  .rs-carousel-title {
-    display: block;
-    padding-top: 0;
-    padding-right: 20px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-    max-width: 94%;
+  .carousel-action-prev {
+    left: $default-spacing;
   }
 
-  .rs-carousel-mask {
-    max-width: 94%;
-  }
-
-  .rs-carousel-action-prev {
-    left: 20px;
-  }
-
-  .rs-carousel-action-prev,
-  .rs-carousel-action-next {
+  .carousel-action-prev,
+  .carousel-action-next {
     top: 35%;
   }
 
-  .rs-carousel-tabs ul li a {
-    padding: 20px 10px;
+  .carousel-tabs ul li a {
+    padding: $default-spacing $default-spacing / 2;
   }
-
-  .rs-carousel-compact .rs-carousel-inner {
-    min-height: 200px;
-  }
-  .rs-carousel-compact .rs-carousel-action-prev,
-  .rs-carousel-compact .rs-carousel-action-next {
-    top: 25%;
-  }
-}
+}*/
