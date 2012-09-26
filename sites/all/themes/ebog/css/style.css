@@ -937,6 +937,10 @@ input[type=submit]:hover {
 
 /* Nice menus */
 
+.preface {
+  *margin-top: 30px; /* IE 7 */
+}
+
 .block-nice_menus {
   position: relative;
 }
@@ -953,7 +957,6 @@ input[type=submit]:hover {
 ul.nice-menu-down,
 ul.nice-menu-down ul {
   background: #000; /* for non-css3 browsers */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d3d3d', endColorstr='#000000'); /* for IE */
   background: -webkit-gradient(linear, left top, left bottom, from(#3d3d3d), to(#000)); /* for webkit browsers */
   background: -moz-linear-gradient(top,  #3d3d3d,  #000); /* for firefox 3.6+ */
   border: 0;

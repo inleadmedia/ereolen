@@ -145,6 +145,7 @@ $tabs-active-text-color:        #fff;
 .carousel-tabs ul li {
   border: 1px solid lighten(#000, 80%);
   display: table-cell;
+  *float: right; /* IE 7 */
   min-width: 10%; /* Appearantly this make them have equal width in Firefox */
   vertical-align: top;
   text-align: center;

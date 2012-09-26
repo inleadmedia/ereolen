@@ -108,6 +108,8 @@
 .carousel-tabs ul li {
   border: 1px solid #cccccc;
   display: table-cell;
+  *float: right;
+  /* IE 7 */
   min-width: 10%;
   /* Appearantly this make them have equal width in Firefox */
   vertical-align: top;
