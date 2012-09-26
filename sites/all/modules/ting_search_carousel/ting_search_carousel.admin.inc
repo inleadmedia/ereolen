@@ -118,6 +118,9 @@ function ting_search_carousel_search_submit($form, &$form_state) {
 
   // Return control to system settings form submit.
   system_settings_form_submit($form, &$form_state);
+
+  // Clear search cache for the carousel.
+  cache_clear_all('ting_search_carousel_result', 'cache');
 }
 
 /**
