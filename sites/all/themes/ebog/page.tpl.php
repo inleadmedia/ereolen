@@ -8,7 +8,7 @@
 <head>
   <title><?php print $head_title; ?></title>
   <?php print $head; ?>
-  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=0.5, 
+  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=0.5,
 maximum-scale=3.0" />
   <?php print $styles; ?>
   <?php print $scripts; ?>
@@ -18,7 +18,7 @@ maximum-scale=3.0" />
 <body class="<?php print $body_classes; ?>">
   <?php if (!empty($admin)) print $admin; ?>
   <div id="page" class="clearfix">
-    <div id="header">
+    <div id="header" class="clearfix">
       <div id="site-header" class="container-<?php print $branding_wrapper_width; ?> clearfix">
         <div id="branding" class="grid-<?php print $header_logo_width; ?>">
           <?php if ($linked_logo_img): ?>
