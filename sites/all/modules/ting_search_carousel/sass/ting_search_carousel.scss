@@ -19,6 +19,12 @@
   filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$ie-hex-str},endColorstr=#{$ie-hex-str});
 }
 
+@mixin gradient-bg($color1, $color2) {
+  background-color: $color1;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#{$color1}, endColorstr=#{$color2});
+  background-image: -moz-linear-gradient(center top, $color1, $color2);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from($color1), to($color2));
+}
 
 /* Variables
    ========================================================================== */
@@ -31,6 +37,8 @@ $image-max-height:  185px;
 
 /* Colors */
 $background-color: #000;
+$gradient-color-start: #BE1F24;
+$gradient-color-stop: #E82A30;
 
 /* Text */
 $title-font-size: 30px;
@@ -147,14 +155,20 @@ $tabs-active-text-color:        #fff;
   background-color: $tabs-background-color;
   display: block;
   padding: $default-spacing / 2;
+  color: #000;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .carousel-tabs ul li.active {
-  border-color: lighten(#000, 25%);
+  border-color: $gradient-color-start;
 }
 
 .carousel-tabs ul li.active a {
-  @include rgba-background($tabs-active-background-color, .75);
+  @include gradient-bg($gradient-color-start, $gradient-color-stop);
   color: $tabs-active-text-color;
   position: relative;
 }
@@ -164,7 +178,7 @@ $tabs-active-text-color:        #fff;
   content: "";
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 8px solid lighten(#000, 25%);
+  border-bottom: 8px solid $gradient-color-start;
   height: 0;
   margin-left: -4px;
   left: 50%;

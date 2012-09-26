@@ -90,10 +90,10 @@
 }
 .carousel-wrapper .ajax-loader {
   background: transparent url("../images/ajax-loader.gif") no-repeat right top;
-  left: 41%;
+  left: 50%;
   height: 20px;
   position: absolute;
-  top: 40%;
+  top: 34%;
   width: 220px;
 }
 
@@ -119,16 +119,22 @@
   background-color: white;
   display: block;
   padding: 10px;
+  color: #000;
+  text-decoration: none;
+}
+.carousel-tabs ul li a:hover {
+  text-decoration: underline;
 }
 
 .carousel-tabs ul li.active {
-  border-color: #404040;
+  border-color: #be1f24;
 }
 
 .carousel-tabs ul li.active a {
-  background-color: rgba(0, 0, 0, 0.75);
-  zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#BF000000,endColorstr=#BF000000);
+  background-color: #be1f24;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#be1f24, endColorstr=#e82a30);
+  background-image: -moz-linear-gradient(center top, #be1f24, #e82a30);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#be1f24), to(#e82a30));
   color: white;
   position: relative;
 }
@@ -138,7 +144,7 @@
   content: "";
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 8px solid #404040;
+  border-bottom: 8px solid #be1f24;
   height: 0;
   margin-left: -4px;
   left: 50%;
