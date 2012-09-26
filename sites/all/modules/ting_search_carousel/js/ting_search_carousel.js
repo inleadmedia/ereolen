@@ -58,7 +58,11 @@
     carousel.elastislide({
       imageW : 120,
       minItems : 4,
-      margin : 10
+      margin : 10,
+      onClick : function(item) {
+        var url = item.find('.carousel-item-image').attr('href');
+        window.location = url;
+      }
     });
   }
 
