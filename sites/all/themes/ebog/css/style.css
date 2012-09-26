@@ -71,8 +71,10 @@ div.messages.error {
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
 .pane-faq-panel-pane-1 .view-content .item-list ul,
-.panel-pane.pane-latest-news .pane-content .view-content .views-row,
-.section-faq div.panel-pane.pane-contact {
+/*.panel-pane.pane-latest-news .pane-content .view-content .views-row,*/
+.panel-panel .pane-latest-news .view-content,
+.section-faq div.panel-pane.pane-contact,
+.pane-latest-news .pane-content {
   border: 2px solid #DBDDDA;
   /*
    *display: inline-block;
@@ -119,7 +121,8 @@ div.messages.error {
   border: 1px solid #d5661e;
 }
 
-#sidebar-first .block .content {
+#sidebar-first .block .content,
+.pane-latest-news .pane-content {
   background-color: #EDEDED;
   line-height: 18px;
 }
@@ -177,6 +180,7 @@ voxb h3 {
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
 #sidebar-first #block-views-latest_news-block_1 .content .view-content,
+.panel-pane.pane-latest-news .pane-content .view-content,
 .pane-faq-panel-pane-1 .view-content .item-list ul {
   padding: 10px;
 }
@@ -186,7 +190,8 @@ voxb h3 {
 .pane-embedvideo .bottom-bar .see-more,
 .pane-elib-block-lastloans-2 .bottom-bar .see-more,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer p,
-#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content {
+#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid span.field-content,
+.panel-panel .pane-latest-news .view-footer p {
   float: left;
   margin-left: 10px;
 }
@@ -195,6 +200,7 @@ voxb h3 {
 .pane-content .bottom-bar,
 .pane-elib-block-lastloans-2 .bottom-bar,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer,
+.panel-pane.pane-latest-news .pane-content .view-footer,
 #main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid {
   height: 26px;
 }
@@ -763,6 +769,7 @@ input[type=submit],
 .pane-content div.bottom-bar,
 .pane-elib-block-lastloans-2 .bottom-bar,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer,
+.panel-pane.pane-latest-news .pane-content .view-footer,
 .display-book .icons .icons,
 #ting-object .inner .icons,
 #ting-search-result .record .icons,
@@ -805,6 +812,7 @@ div.messages,
 
 #sidebar-first #block-elib_block_categories-0 .content .categories,
 #sidebar-first #block-views-latest_news-block_1 .content .view-content,
+.panel-panel .pane-latest-news .view-content,
 .panel-pane.pane-embedvideo .pane-content,
 .pane-embedvideo .ebog_embed_video,
 .pane-front .feed-and-compare-front,
@@ -843,7 +851,8 @@ div.messages,
 .pane-content div.bottom-bar,
 .pane-elib-block-lastloans-2 .bottom-bar,
 #sidebar-first #block-views-latest_news-block_1 .content .view-footer,
-#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid {
+#main-content .pane-faq-panel-pane-1 .view-content .item-list .views-field-tid,
+.panel-panel .pane-latest-news .view-footer {
   -webkit-border-radius: 0 0 4px 4px;
      -moz-border-radius: 0 0 4px 4px;
           border-radius: 0 0 4px 4px;
