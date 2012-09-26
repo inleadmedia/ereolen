@@ -1,0 +1,15 @@
+<?php
+
+/**
+ *@file
+ * Handles update function for the module
+ */
+
+/**
+ * Remove block cache from netsound block, such as contact forms.
+ */
+function netsound_update_6001() {
+  $ret = array();
+  $ret[] = db_query("UPDATE blocks SET cache = -1 WHERE module = 'netsound'");
+  return $ret;
+}
