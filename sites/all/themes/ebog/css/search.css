@@ -32,16 +32,20 @@
   padding-bottom: 0 !important;
 }
 
+#ting-search-result ul li.display-book {
+  width: 100%;
+}
+
 #ting-search-result ul li.display-book .picture {
   width: 100px;
 }
 
 #ting-search-result ul li.display-book .record {
-  width: 600px;
+  width: 540px;
 }
 
 #ting-search-result ul li.display-book .record .left {
-  width: 260px;
+  width: 200px;
   float: left;
 }
 
