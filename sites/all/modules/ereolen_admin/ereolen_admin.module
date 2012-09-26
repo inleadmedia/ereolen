@@ -42,49 +42,46 @@ function ereolen_admin_ting_client_request_alter(&$request) {
  */
 function ereolen_admin_ting_client_response_alter(&$reponse) {
   if (is_a($reponse, 'TingClientObject')) {
-    if (!empty($reponse->relationsData)) {
-      foreach ($reponse->relationsData as $relation) {
-        if ($relation->relationType == 'dbcaddi:hasDescriptionFromPublisher') {
-          $request = ting_get_request_factory()->getObjectRequest();
-          $request->setObjectId($relation->relationUri);
-          $request->setProfile(variable_get('ting_profile', 'opac'));
-          $request->setFormat('docbook');
-          $request->setObjectFormat('docbook');
-          $request->setOutputType('xml');
-          $xml_string = ting_execute($request);
-
-          // Get docbook description from publisher and store it in the
-          // response.
-          $xml = simplexml_load_string($xml_string);
-          $xml_object = $xml->result->searchResult->collection->object;
-          $namespaces = $xml_object->getNameSpaces(true);
-          $docbook = $xml_object->children($namespaces['docbook']);
-          $description = (string)$docbook->article->section->para;
-
-          // Make some filtering to make the description usable.
-          $reponse->publisherDescription = _filter_autop($description);
-
-          /**
-           * @TODO: Cache the result as it almost never changes.
-           */
-        }
+    $reponse->publisherDescription = ereolen_admin_get_relations($reponse);
+  }
+  if (is_a($reponse, 'TingClientSearchResult') && $reponse->numTotalObjects > 0) {
+    foreach ($reponse->collections as &$collection) {
+      foreach ($collection->objects as &$object) {
+        $object->publisherDescription = ereolen_admin_get_relations($object);
       }
     }
   }
-//  if (empty($object_id)) {
-//    return FALSE;
-//  }
-//  module_load_include('client.inc', 'ting');
-//  //$xml = ting_cache_get($object_id . ':FULLTEXT');
-//  if( !$xml ) {
-//    $request = ting_get_request_factory()->getObjectRequest();
-//    $request->setObjectId('150028:29310564');
-//    $request->setProfile('ereol');
-//    $request->setFormat('docbook');
-//    $request->setObjectFormat('docbook');
-//    $request->setOutputType('xml');
-//    $xml = ting_execute($request);
-//    ting_cache_set($object_id . ':FULLTEXT', $xml);
-//  }
-//  return $xml;
+}
+
+function ereolen_admin_get_relations(TingClientObject $object) {
+  if (!empty($object->relationsData)) {
+    foreach ($object->relationsData as $relation) {
+      if ($relation->relationType == 'dbcaddi:hasDescriptionFromPublisher') {
+        $request = ting_get_request_factory()->getObjectRequest();
+        $request->setObjectId($relation->relationUri);
+        $request->setProfile(variable_get('ting_profile', 'opac'));
+        $request->setFormat('docbook');
+        $request->setObjectFormat('docbook');
+        $request->setOutputType('xml');
+        $xml_string = ting_execute($request);
+
+        // Get docbook description from publisher and store it in the
+        // response.
+        $xml = simplexml_load_string($xml_string);
+        $xml_object = $xml->result->searchResult->collection->object;
+        $namespaces = $xml_object->getNameSpaces(true);
+        $docbook = $xml_object->children($namespaces['docbook']);
+        $description = (string)$docbook->article->section->para;
+
+        // Make some filtering to make the description usable.
+        return _filter_autop($description);
+
+        /**
+          * @TODO: Cache the result as it almost never changes.
+          */
+      }
+    }
+  }
+
+  return NULL;
 }
