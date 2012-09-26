@@ -20,13 +20,57 @@ function ereolen_admin_init(){
   }
 }
 
+/**
+ * Implments hook_ting_client_request_alter().
+ *
+ * Make sure that we get all relations and that we only get valided e-books.
+ */
 function ereolen_admin_ting_client_request_alter(&$request) {
   if (is_a($request, 'TingClientSearchRequest')) {
     $request->setQuery('( ' . $request->getQuery() . ' ) AND (dc.identifier=978*)');
+    $request->setAllRelations(TRUE);
+    $request->setRelationData('full');
   }
 }
 
+/**
+ * Implments hook_ting_client_reponse_alter().
+ *
+ * Get publisher description for the object being viewed. A better solution
+ * would be to modify the ting client to enrich the object with relations. But
+ * to use a clean client we load it in this alter function.
+ */
 function ereolen_admin_ting_client_response_alter(&$reponse) {
+  if (is_a($reponse, 'TingClientObject')) {
+    if (!empty($reponse->relationsData)) {
+      foreach ($reponse->relationsData as $relation) {
+        if ($relation->relationType == 'dbcaddi:hasDescriptionFromPublisher') {
+          $request = ting_get_request_factory()->getObjectRequest();
+          $request->setObjectId($relation->relationUri);
+          $request->setProfile(variable_get('ting_profile', 'opac'));
+          $request->setFormat('docbook');
+          $request->setObjectFormat('docbook');
+          $request->setOutputType('xml');
+          $xml_string = ting_execute($request);
+
+          // Get docbook description from publisher and store it in the
+          // response.
+          $xml = simplexml_load_string($xml_string);
+          $xml_object = $xml->result->searchResult->collection->object;
+          $namespaces = $xml_object->getNameSpaces(true);
+          $docbook = $xml_object->children($namespaces['docbook']);
+          $description = (string)$docbook->article->section->para;
+
+          // Make some filtering to make the description usable.
+          $reponse->publisherDescription = _filter_autop($description);
+
+          /**
+           * @TODO: Cache the result as it almost never changes.
+           */
+        }
+      }
+    }
+  }
 //  if (empty($object_id)) {
 //    return FALSE;
 //  }

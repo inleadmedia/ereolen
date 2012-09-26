@@ -73,12 +73,17 @@ if (module_exists('ding_voxb')) {
         <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fereolen.dk%2Fting%2Fobject%2F150028%3A<?php echo $elib_isbn; ?>&amp;send=false&amp;layout=box_count&amp;width=130&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=75" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:130px; height:75px;" allowTransparency="true"></iframe>
       </div>
       <div class="abstract"><?php print check_plain($object->record['dcterms:abstract'][''][0]); ?></div>
-      <div class="description">
       <?php if (!empty($object->record['dc:description'])): ?>
-        <?php foreach ($object->record['dc:description'] as $type => $dc_description): ?>
-        <?php endforeach; ?>
+        <div class="description">
+          <?php foreach ($object->record['dc:description'] as $type => $dc_description): ?>
+          <?php endforeach; ?>
+        </div>
       <?php endif; ?>
-      </div>
+      <?php if (isset($object->publisherDescription)) { ?>
+        <div class="description publisherDescription">
+          <?php echo $object->publisherDescription; ?>
+        </div>
+      <?php } ?>
       <div class="details">
         <div class="left grid-4 omega alpha">
           <?php if (!empty($object->language)) { ?>
