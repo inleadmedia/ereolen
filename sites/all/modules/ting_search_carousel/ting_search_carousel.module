@@ -38,6 +38,13 @@ function ting_search_carousel_menu() {
 }
 
 /**
+ * Implements hook_prem().
+ */
+function ting_search_carousel_perm() {
+  return array('administer search carousel');
+}
+
+/**
  * Implements hook_theme().
  */
 function ting_search_carousel_theme() {
