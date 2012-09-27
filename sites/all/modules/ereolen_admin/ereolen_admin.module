@@ -20,8 +20,76 @@ function ereolen_admin_init(){
   }
 }
 
+/**
+ * Implments hook_ting_client_request_alter().
+ *
+ * Make sure that we get all relations and that we only get valided e-books.
+ */
 function ereolen_admin_ting_client_request_alter(&$request) {
   if (is_a($request, 'TingClientSearchRequest')) {
     $request->setQuery('( ' . $request->getQuery() . ' ) AND (dc.identifier=978*)');
+    $request->setAllRelations(TRUE);
+    $request->setRelationData('full');
   }
+}
+
+/**
+ * Implments hook_ting_client_reponse_alter().
+ *
+ * Get publisher description for the object being viewed. A better solution
+ * would be to modify the ting client to enrich the object with relations. But
+ * to use a clean client we load it in this alter function.
+ */
+function ereolen_admin_ting_client_response_alter(&$reponse) {
+  if (is_a($reponse, 'TingClientObject')) {
+    $reponse->publisherDescription = ereolen_admin_get_relations($reponse);
+  }
+  if (is_a($reponse, 'TingClientSearchResult') && $reponse->numTotalObjects > 0) {
+    foreach ($reponse->collections as &$collection) {
+      foreach ($collection->objects as &$object) {
+        $object->publisherDescription = ereolen_admin_get_relations($object);
+      }
+    }
+  }
+}
+
+function ereolen_admin_get_relations(TingClientObject $object, $reset = FALSE) {
+  if (!empty($object->relationsData)) {
+    foreach ($object->relationsData as $relation) {
+      if ($relation->relationType == 'dbcaddi:hasDescriptionFromPublisher') {
+        // Check if cached description is available.
+        if (!$reset && $cache = cache_get($object->id . ':PUBDESC', 'cache')) {
+          return $cache->data;
+        }
+
+        // No cached description found, so search the data well for a publisher
+        // description.
+        $request = ting_get_request_factory()->getObjectRequest();
+        $request->setObjectId($relation->relationUri);
+        $request->setProfile(variable_get('ting_profile', 'opac'));
+        $request->setFormat('docbook');
+        $request->setObjectFormat('docbook');
+        $request->setOutputType('xml');
+        $xml_string = ting_execute($request);
+
+        // Parse XML and get docbook namespace with the publisher description.
+        $xml = simplexml_load_string($xml_string);
+        $xml_object = $xml->result->searchResult->collection->object;
+        $namespaces = $xml_object->getNameSpaces(true);
+        $docbook = $xml_object->children($namespaces['docbook']);
+        $description = (string)$docbook->article->section->para;
+
+        //Filter the description to make it usable.
+        $description = _filter_autop($description);
+        $description = preg_replace('/<p>([\w\s]+\:)<br \/>/', '<p><span class="section">$1</span></br>', $description);
+
+        // Cache the result for 2 days (yes it should be configureable).
+        cache_set($object->id . ':PUBDESC', $description, 'cache', time() + 172800);
+
+        return $description;
+      }
+    }
+  }
+
+  return NULL;
 }
