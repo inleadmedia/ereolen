@@ -72,13 +72,19 @@ if (module_exists('ding_voxb')) {
       <div class="facebook-like">
         <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fereolen.dk%2Fting%2Fobject%2F150028%3A<?php echo $elib_isbn; ?>&amp;send=false&amp;layout=box_count&amp;width=130&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=75" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:130px; height:75px;" allowTransparency="true"></iframe>
       </div>
-      <div class="abstract"><?php print check_plain($object->record['dcterms:abstract'][''][0]); ?></div>
-      <div class="description">
-      <?php if (!empty($object->record['dc:description'])): ?>
-        <?php foreach ($object->record['dc:description'] as $type => $dc_description): ?>
-        <?php endforeach; ?>
-      <?php endif; ?>
-      </div>
+      <?php if (isset($object->abstract) && $object->abstract) { ?>
+        <div class="abstract">
+          <p><?php print $object->abstract; ?></p>
+        </div>
+      <?php } ?>
+      <?php if (isset($object->publisherDescription)) { ?>
+        <div class="publisherDescription">
+          <?php if (isset($object->abstract) && $object->abstract) { ?>
+            <h2><?php echo t('Publisher description'); ?></h2>
+          <?php } ?>
+          <?php echo $object->publisherDescription; ?>
+        </div>
+      <?php } ?>
       <div class="details">
         <div class="left grid-4 omega alpha">
           <?php if (!empty($object->language)) { ?>
@@ -91,7 +97,7 @@ if (module_exists('ding_voxb')) {
             <?php print theme('item_list', $object->subjects, t('Subjects').t(':&nbsp;'), 'ul', array('class' => 'subject'));?>
           <?php } ?>
         </div>
-        <div class="right grid-5 omega alpha">
+        <div class="right grid-4 omega alpha">
           <?php if (!empty($object->record['dc:source'][''])) { ?>
             <?php print theme('item_list', $object->record['dc:source'][''], t('Original title').t(':&nbsp;'), 'span', array('class' => 'titles'));?>
           <?php } ?>
