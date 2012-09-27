@@ -59,7 +59,7 @@ function ereolen_admin_get_relations(TingClientObject $object, $reset = FALSE) {
       if ($relation->relationType == 'dbcaddi:hasDescriptionFromPublisher') {
         // Check if cached description is available.
         if (!$reset && $cache = cache_get($object->id . ':PUBDESC', 'cache')) {
-          return _filter_autop($cache->data);
+          return $cache->data;
         }
 
         // No cached description found, so search the data well for a publisher
@@ -79,11 +79,14 @@ function ereolen_admin_get_relations(TingClientObject $object, $reset = FALSE) {
         $docbook = $xml_object->children($namespaces['docbook']);
         $description = (string)$docbook->article->section->para;
 
+        //Filter the description to make it usable.
+        $description = _filter_autop($description);
+        $description = preg_replace('/<p>([\w\s]+\:)<br \/>/', '<p><span class="section">$1</span></br>', $description);
+
         // Cache the result for 2 days (yes it should be configureable).
         cache_set($object->id . ':PUBDESC', $description, 'cache', time() + 172800);
 
-        //Filter the description to make it usable.
-        return _filter_autop($description);
+        return $description;
       }
     }
   }

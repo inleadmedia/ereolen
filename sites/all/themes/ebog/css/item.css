@@ -8,7 +8,7 @@
 
 #ting-object .panel-1col .panel-pane {
   float: right;
-} 
+}
 
 #ting-object .author,
 #ting-object .abstract,
@@ -35,6 +35,19 @@
   color: #8c938b;
 }
 
+#ting-object .publisherDescription {
+  margin-bottom: 25px;
+}
+
+#ting-object .publisherDescription p {
+  margin-bottom: 1em;
+}
+
+#ting-object .publisherDescription .section {
+  font-weight: bold;
+}
+
+#ting-object .publisherDescription,
 #ting-object .abstract {
   margin-top: 25px;
 }
@@ -45,6 +58,7 @@
  * Remove when needed.
  */
 
+#ting-object .tab-navigation.ui-tabs,
 #ting-object .ui-tabs-nav {
   display: none;
 }
