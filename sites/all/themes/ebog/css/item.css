@@ -39,6 +39,30 @@
   margin-bottom: 25px;
 }
 
+#ting-object .publisherDescription .condense_control_more:before {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #BE1F24;
+    content: "";
+    height: 0;
+    margin-right: 8px;
+    position: relative;
+    top: 12px;
+    width: 0;
+}
+
+#ting-object .publisherDescription .condense_control_less:before {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #BE1F24;
+    content: "";
+    height: 0;
+    margin-right: 8px;
+    position: relative;
+    top: -10px;
+    width: 0;
+}
+
 #ting-object .publisherDescription p {
   margin-bottom: 1em;
 }
