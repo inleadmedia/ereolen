@@ -53,13 +53,19 @@ foreach ($collection->objects as $obj) {
         <?php endif; ?>
       </div>
       <div class="right">
-        <?php if ($obj->abstract) : ?>
+        <?php if ($obj->abstract) { ?>
           <div class="abstract">
             <p>
               <?php print drupal_substr(check_plain($obj->abstract), 0, 200) . '...'; ?>
             </p>
           </div>
-        <?php endif; ?>
+        <?php } else if (isset($obj->publisherDescription)) { ?>
+          <div class="abstract">
+            <p>
+              <?php print drupal_substr(strip_tags($obj->publisherDescription), 0, 200) . '...'; ?>
+            </p>
+          </div>
+        <?php } ?>
         <div class="icons">
           <ul>
             <?php

@@ -249,7 +249,7 @@ function ting_do_search($query, $page = 1, $resultsPerPage = 10, $options = arra
   }
 
   $searchResult = ting_execute($request);
-  
+
   //Decorate search result with additional information
   if (is_array($searchResult->collections)) {
     foreach ($searchResult->collections as &$collection) {
