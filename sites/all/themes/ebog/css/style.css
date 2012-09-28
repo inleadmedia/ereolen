@@ -83,6 +83,9 @@ div.messages.error {
   padding: 10px;
 }
 /* EXCEPTIONS */
+.panel-panel .pane-latest-news .view-content {
+  border-bottom:0;
+}
 #sidebar-first #block-elib_block_categories-0 .content .categories,
 #sidebar-first #block-views-latest_news-block_1 .content .view-content,
 .panel-pane.pane-embedvideo .pane-content,
@@ -123,8 +126,7 @@ div.messages.error {
   border: 1px solid #d5661e;
 }
 
-#sidebar-first .block .content,
-.pane-latest-news .pane-content {
+#sidebar-first .block .content {
   background-color: #EDEDED;
   line-height: 18px;
 }
@@ -966,7 +968,7 @@ input[type=submit]:hover {
 }
 
 .block-nice_menus h2 {
-  color: #8f8f8f;
+  color: #8e96a2;
   font-weight: normal;
   left: 30px;
   position: absolute;
@@ -976,9 +978,9 @@ input[type=submit]:hover {
 
 ul.nice-menu-down,
 ul.nice-menu-down ul {
-  background: #000; /* for non-css3 browsers */
-  background: -webkit-gradient(linear, left top, left bottom, from(#3d3d3d), to(#000)); /* for webkit browsers */
-  background: -moz-linear-gradient(top,  #3d3d3d,  #000); /* for firefox 3.6+ */
+  background: #5b6574; /* for non-css3 browsers */
+  background: -webkit-gradient(linear, left top, left bottom, from(#5b6574), to(#485262)); /* for webkit browsers */
+  background: -moz-linear-gradient(top,  #5b6574,  #485262); /* for firefox 3.6+ */
   border: 0;
   clear: both;
   float: none;
@@ -1036,7 +1038,7 @@ ul.nice-menu-down li.menuparent:hover {
 
 ul.nice-menu-down li a,
 ul.nice-menu-down li.menuparent a {
-  border-right: 1px solid #333;
+  border-right: 1px solid #485262;
   color: #fff;
   display: block;
   font-size: 120%;
@@ -1052,14 +1054,14 @@ ul.nice-menu-down li.menuparent ul li a {
 }
 
 ul.nice-menu-down li.menuparent ul li a:hover {
-  background: #333;
+  background: #353f4f;
 }
 
 ul.nice-menu-down li.over,
 ul.nice-menu-down li:hover,
 ul.nice-menu-down li.menuparent.over,
 ul.nice-menu-down li.over a {
-  background: #3d3d3d;
+  background: #485262;
   -moz-border-radius: 4px 4px 0 0;
   -webkit-border-radius: 4px 4px 0 0;
   -khtml-border-radius: 4px 4px 0 0;
