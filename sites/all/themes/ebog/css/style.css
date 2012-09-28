@@ -83,6 +83,9 @@ div.messages.error {
   padding: 10px;
 }
 /* EXCEPTIONS */
+.panel-panel .pane-latest-news .view-content {
+  border-bottom:0;
+}
 #sidebar-first #block-elib_block_categories-0 .content .categories,
 #sidebar-first #block-views-latest_news-block_1 .content .view-content,
 .panel-pane.pane-embedvideo .pane-content,
@@ -123,8 +126,7 @@ div.messages.error {
   border: 1px solid #d5661e;
 }
 
-#sidebar-first .block .content,
-.pane-latest-news .pane-content {
+#sidebar-first .block .content {
   background-color: #EDEDED;
   line-height: 18px;
 }
