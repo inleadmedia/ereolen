@@ -246,6 +246,10 @@ voxb h3 {
   margin-top: 0;
 }
 
+.view-latest-news .views-field-nothing {
+  display: table;
+}
+
 /**
  * PRIMARY NAVIGATION
  */
