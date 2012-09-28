@@ -132,6 +132,8 @@ div.messages.error {
 }
 
 #sidebar-first #block-block-12 .content {
+  background-color: #677588;
+  border-color: #677588;
 }
 
 #sidebar-first #block-block-12 h3,
@@ -139,6 +141,7 @@ div.messages.error {
 #sidebar-first #block-block-12 a:link,
 #sidebar-first #block-block-12 a:visited,
 #sidebar-first #block-block-12 a:hover {
+  color: #FFFFFF;
 }
 
 .panel-pane .review-title,
