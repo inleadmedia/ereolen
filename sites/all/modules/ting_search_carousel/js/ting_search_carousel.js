@@ -99,8 +99,13 @@
       $tabsList.children(':last-child').css({'width' : childWidthLast + 'px'});
     }
 
-    // Get the carousel variable initialized.
-    carousel_init(0);
+    // Only start the carousel if the device display supports it.
+    enquire.register("screen and (min-width:650px)", {
+      match : function() {
+        carousel_init(0);
+      }
+    }, true).listen();
+
 
     // Add click event to tabs.
     $('.carousel-tabs li').click(function(e) {
