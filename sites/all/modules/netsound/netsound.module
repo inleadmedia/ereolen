@@ -359,31 +359,6 @@ function netsound_contact_elib_form($form_state){
   return $form;
 }
 
-function netsound_shortcutmenu_form($form_state){
-  $form  = array();
-
-  $questions = explode("\n",variable_get('netsound_shortcutmenu', ''));
-  if(is_array($questions)){
-    foreach($questions as $line){
-      list($label,$link) = explode('|',$line);
-      $options[] = trim($label);
-    }
-  }
-
-  $form['shortcut'] = array(
-		'#type' => 'radios',
-		'#prefix' => '<strong><p>'.t('Drejer din henvendelse sig om et af de følgende punkter?').'</p></strong><p>'.t('Hvis du vælger et af disse punkter istedet for at skrive direkte til os vil ekspeditionstiden være væsentlig kortere. På forhånd tak.').'</p>',
-    #'#description' => ,
-    '#options' => $options,
-  );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Kontakt')
-  );
-  $form['#submit'][] = 'netsound_shortcutmenu_form_submit';
-  return $form;
-}
-
 function netsound_contact_form_submit($form, &$form_state){
 
   $header = array('Form Key', 'Value');
@@ -429,6 +404,31 @@ function netsound_contact_form_submit($form, &$form_state){
 
   drupal_set_message(t('Tak for din henvendelse. Vi stræber på at behandle den hurtigst muligt.'));
   drupal_goto(); // frontpage
+}
+
+function netsound_shortcutmenu_form($form_state){
+  $form  = array();
+
+  $questions = explode("\n", variable_get('netsound_shortcutmenu', ''));
+  if(is_array($questions)){
+    foreach($questions as $line){
+      list($label,$link) = explode('|',$line);
+      $options[] = trim($label);
+    }
+  }
+
+  $form['shortcut'] = array(
+		'#type' => 'radios',
+		'#prefix' => '<strong><p>'.t('Drejer din henvendelse sig om et af de følgende punkter?').'</p></strong><p>'.t('Hvis du vælger et af disse punkter istedet for at skrive direkte til os vil ekspeditionstiden være væsentlig kortere. På forhånd tak.').'</p>',
+    #'#description' => ,
+    '#options' => $options,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Kontakt')
+  );
+  $form['#submit'][] = 'netsound_shortcutmenu_form_submit';
+  return $form;
 }
 
 function netsound_shortcutmenu_form_submit($form, &$form_state){
