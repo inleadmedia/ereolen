@@ -115,5 +115,29 @@ maximum-scale=3.0" />
     </div>
   </div><!-- /#page -->
   <?php print $closure; ?>
+  <!-- defgo.net script begin -->
+  <script language="JavaScript">
+  <!--
+  var popunder=false;
+  var surveyOk=false;
+  var loaded=false;
+  document.write('<SCR'+'IPT language=\"JavaScript\" src=\"https://www.defgo.net/popup_ium/upload/popup1111745468_1.asp?&t=1&s=1\"></SCR'+'IPT>');
+  function timeoutCall(time){
+    if(loaded && surveyOk){
+      PopUpWindow();
+        if (popunder) {
+          self.focus();
+        }
+    }
+    else 
+      if(time<10000){
+        setTimeout("timeoutCall("+(time+500)+")",500);
+    }
+  }
+  timeoutCall(0);
+  //-->
+  </script>
+  <div style="display:none" id="defgonetmessage" class="defgoDivTag"></div><img style="display: none" border="0" src="http://app01.defgosoftware.net/defgo/blank.gif" width="1" height="1" onLoad="surveyOk=true">
+  <!-- defgo.net script end -->
 </body>
 </html>

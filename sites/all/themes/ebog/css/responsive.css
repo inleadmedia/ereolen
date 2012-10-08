@@ -391,5 +391,12 @@
   .preface {
     display: none;
   }
-  
+
+  /*****************
+   * Delgo.net
+   *****************/
+  #defgonetmessage {
+    width: 0 !important;
+    left: 0 !important;
+  }
 }
