@@ -46,6 +46,7 @@ jQuery(function($){
 
   $(document).ready(function() {
 
+    // Add truncation function to publisher description on object view.
     $('#ting-object .publisherDescription').condense({
         moreSpeed: 'fast',
         lessSpeed: 'fast',
@@ -55,12 +56,12 @@ jQuery(function($){
         condensedLength: 350
     });
 
-
     // Make the help block clickable.
     $('#block-block-12').click(function() {
       document.location.href = "/help";
     });
 
+    // What dose this do ?
     $('.display-book').parent().find('.display-book:last').addClass('last');
   })
 });

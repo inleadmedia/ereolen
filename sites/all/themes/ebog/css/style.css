@@ -132,6 +132,8 @@ div.messages.error {
 }
 
 #sidebar-first #block-block-12 .content {
+  background-color: #677588;
+  border-color: #677588;
 }
 
 #sidebar-first #block-block-12 h3,
@@ -139,6 +141,7 @@ div.messages.error {
 #sidebar-first #block-block-12 a:link,
 #sidebar-first #block-block-12 a:visited,
 #sidebar-first #block-block-12 a:hover {
+  color: #FFFFFF;
 }
 
 .panel-pane .review-title,
@@ -241,6 +244,10 @@ voxb h3 {
 
 .view-latest-news .views-row.views-row-first {
   margin-top: 0;
+}
+
+.view-latest-news .views-field-nothing {
+  display: table;
 }
 
 /**
@@ -514,7 +521,7 @@ voxb h3 {
 }
 
 .feed-and-compare-page .display-book .right {
-  width: 500px;
+  width: 450px;
 }
 
 .display-book .picture img {
@@ -926,7 +933,7 @@ input[type=submit]:hover {
 #ting-object .facebook-like {
   float: right;
   position: absolute;
-  right: 0;
+  left: 84%;
   top: 0;
 }
 
