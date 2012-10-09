@@ -120,8 +120,8 @@ maximum-scale=3.0" />
   var popunder=false;
   var surveyOk=false;
   var loaded=false;
-  
-  var query = "screen and (min-width:650px)";
+
+  var query = "screen and (min-width:660px)";
   enquire.register(query, {
     match : function() {
       <!--
