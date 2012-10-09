@@ -116,20 +116,25 @@ maximum-scale=3.0" />
   </div><!-- /#page -->
   <?php print $closure; ?>
   <!-- defgo.net script begin -->
-  <script language="JavaScript">
+  <script type="text/javascript">
   var popunder=false;
   var surveyOk=false;
   var loaded=false;
 
-  var query = "screen and (min-width:650px)";
-  enquire.register(query, {
+  enquire.register("screen and (min-width:650px)", {
     match : function() {
-      <!--
-      document.write('<SCR'+'IPT language=\"JavaScript\" src=\"https://www.defgo.net/popup_ium/upload/popup1111745468_1.asp?&t=1&s=1\"></SCR'+'IPT>');
-      timeoutCall(0);
-      //-->
+      writeDefgo();
     }
-  },true);
+  });
+
+  function writeDefgo(){
+    console.log("running defgo");
+    var fileref=document.createElement('script');
+    fileref.setAttribute("type","text/javascript");
+    fileref.setAttribute("src", "https://www.defgo.net/popup_ium/upload/popup1111745468_1.asp?&t=1&s=1");
+    document.getElementsByTagName("head")[0].appendChild(fileref);
+    timeoutCall(0);
+  }
 
   function timeoutCall(time){
     if(loaded && surveyOk){
