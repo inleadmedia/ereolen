@@ -121,7 +121,7 @@ maximum-scale=3.0" />
   var surveyOk=false;
   var loaded=false;
 
-  var query = "screen and (min-width:660px)";
+  var query = "screen and (min-width:650px)";
   enquire.register(query, {
     match : function() {
       <!--
@@ -129,7 +129,7 @@ maximum-scale=3.0" />
       timeoutCall(0);
       //-->
     }
-  }, true).listen();
+  },true);
 
   function timeoutCall(time){
     if(loaded && surveyOk){
