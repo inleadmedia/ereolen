@@ -128,7 +128,6 @@ maximum-scale=3.0" />
   });
 
   function writeDefgo(){
-    console.log("running defgo");
     var fileref=document.createElement('script');
     fileref.setAttribute("type","text/javascript");
     fileref.setAttribute("src", "https://www.defgo.net/popup_ium/upload/popup1111745468_1.asp?&t=1&s=1");
