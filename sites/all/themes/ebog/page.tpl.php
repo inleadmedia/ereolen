@@ -121,11 +121,11 @@ maximum-scale=3.0" />
   var surveyOk=false;
   var loaded=false;
 
-  enquire.register("screen and (min-width:650px) or IE", {
+  enquire.register("screen and (min-width:650px)", {
     match : function() {
       writeDefgo();
     }
-  });
+  }, true);
 
   function writeDefgo(){
     var fileref=document.createElement('script');
