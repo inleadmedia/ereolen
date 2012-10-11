@@ -121,7 +121,7 @@ maximum-scale=3.0" />
   var surveyOk=false;
   var loaded=false;
 
-  enquire.register("screen and (min-width:650px)", {
+  enquire.register("screen and (min-width:650px) or IE", {
     match : function() {
       writeDefgo();
     }
@@ -142,7 +142,7 @@ maximum-scale=3.0" />
           self.focus();
         }
     }
-    else 
+    else
       if(time<10000){
         setTimeout("timeoutCall("+(time+500)+")",500);
     }

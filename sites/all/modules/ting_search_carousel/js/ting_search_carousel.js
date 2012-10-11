@@ -100,7 +100,7 @@
     }
 
     // Only start the carousel if the device display supports it.
-    enquire.register("screen and (min-width:650px) or IE8", {
+    enquire.register("screen and (min-width:650px) or IE", {
       match : function() {
         carousel_init(0);
       }
