@@ -319,7 +319,7 @@ function _ting_search_carousel_add_javascript() {
   drupal_add_js($path . '/js/enquire.min.js');
   drupal_add_js($path . '/js/jquery.easing.1.3.min.js');
   drupal_add_js($path . '/js/jquery.elastislide.min.js');
-  drupal_add_js($path . '/js/ting_search_carousel.js');
+  drupal_add_js($path . '/js/ting_search_carousel.min.js');
 }
 
 /**
