@@ -122,9 +122,7 @@ Drupal.tingSearch.contentPager = function() {
 
 Drupal.tingSearch.tabLoading = function (sender) {
   if (Drupal.tingSearch.summary.hasOwnProperty(sender)) {
-    var result, tab;
-    tab = $('#ting-search-tabs li.' + sender);
-    tab.addClass('spinning').find('span.count').remove();
+    $('#ting-search-spinner').show();
 
     result = $("#" + sender + "-result");
     result.addClass('loading');
