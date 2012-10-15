@@ -8,22 +8,19 @@
                     )); ?>
 </div>
 
-<div id="ting-sort-by">
-
-<?php print t('Sorter efter ')?>
-<select class="sort-by-selector">
-  <option value=""><?php print t('Vælg sortering')?></option>
-  <option value="title_ascending"><?php print t('Titel A → Å')?></option>
-  <option value="title_descending"><?php print t('Titel Å → A')?></option>
-  <option value="creator_ascending"><?php print t('Forfatter A → Å')?></option>
-  <option value="creator_descending"><?php print t('Forfatter Å → A')?></option>
-  <option value="date_descending"><?php print t('Udgivelsesår - Nyeste først')?></option>
-  <option value="date_ascending"><?php print t('Udgivelsesår - Ældste først')?></option>
-</select>
-
+<div id="ting-search-sort">
+  <label for="edit-ting-search-sort">
+    <?php print t('Sorted by'); ?>
+  </label>
+  <select id="edit-ting-search-sort">
+    <?php foreach ($sort_options as $sort => $label) { ?>
+      <?php print '<option value="' . $sort . '">' . check_plain($label) . '</option>'; ?>
+    <?php } ?>
+  </select>
 </div>
 
+
 <div id="ting-search-result">
-  <ul>
-  </ul>
+	<ul>
+	</ul>
 </div>

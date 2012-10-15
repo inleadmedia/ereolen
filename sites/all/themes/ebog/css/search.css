@@ -1,15 +1,15 @@
-#ting-search-results #ting-search-tabs,
-#ting-search-results #ting-search-sort,
-#ting-search-results #ting-search-legend {
-  display: none;
-}
-
 #ting-search-results .ui-tabs-panel,
 #ting-search-result ul,
 #ting-search-result li {
   border: 0;
   margin: 0;
   padding: 0;
+}
+
+#ting-search-spinner .spinner {
+  background-image: url('../images/spinner.gif');
+  height: 19px;
+  width: 220px;
 }
 
 #ting-search-result div.picture,
@@ -96,7 +96,7 @@
   text-align: center;
 }
 
-#ting-result #ting-sort-by {
+#ting-result #ting-search-sort {
   float: right;
   margin-bottom: 15px;
 }
