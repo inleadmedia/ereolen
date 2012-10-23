@@ -182,7 +182,11 @@ if (module_exists('ding_voxb')) {
           <?php if (isset($elib_sample_link)) { ?>
             <li><?php print l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('action' => 'sample', 'target' => '_blank'))) ?></li>
             <li class="seperator"></li>
-            <li><?php print l(t('Loan'), $object->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]', 'class' => 'ting-object-loan'))) ?></li>
+            <?php if ($is_loan) { ?>
+              <li><?php print l(t('Download'), $object->url . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan'))) ?></li>
+            <?php } else { ?>
+              <li><?php print l(t('Loan'), $object->url . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan'))) ?></li>
+            <?php } ?>
           <?php
             if($user->uid){
               print '<li class="seperator"></li>';
@@ -192,7 +196,7 @@ if (module_exists('ding_voxb')) {
             }
           ?>
             <li class="seperator"></li>
-            <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+            <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('class' => 'buy-book')))?></li>
           <?php
             }
             else {

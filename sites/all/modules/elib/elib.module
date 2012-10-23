@@ -321,10 +321,16 @@ function elib_get_lydbog($tingObjectID, $format) {
 
       //$content .= 	t('<p>Lån igen om %s dage</p>',);
       //}
-    } else {
-
+    }
+    else {
       //var_dump($response);
       if ($response->status->code == 101) {
+
+        // Clear loan cache for the user.
+        global $user;
+        elib_user_clear_loans_cache($user->uid);
+
+        // Create user responce.
         $src = $response->data->downloadurl;
         $pretext = '<h1>Din ebog afspilles nu nedenfor</h1>';
         if ($format != 'stream') {
@@ -434,35 +440,24 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
     $extra = $hours + 24;
   }
 
-  $NotReloanable = ((int) $elib_data->loanstate == 1);
-  $Reloanable = ((int) $elib_data->loanstate == 2);
-  $ExpiredButReloanable = ((int) $elib_data->loanstate == 3);
-
-  if (($NotReloanable) || ($Reloanable)) {
-    if ($days < 1) {
-      if ($extra <= 24) {
-        $out[] = '<div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>';
-      }
-      else {
-        $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
-      }
+  if ($days < 1) {
+    if ($extra <= 24) {
+      $out[] = '<div class="loanperiod short">' . t('Loan expired.') . '</div>';
     }
     else {
-      $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
+      $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
     }
   }
-  else if ($ExpiredButReloanable) {
-    $out[] = '<div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>';
+  else {
+    $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
   }
 
   $out[] = '
       <div class="icons">
         <div class="icons">
-          <ul>';
-  if (($Reloanable) || ($ExpiredButReloanable)) {
-    $out[] = '<li class="seperator"></li>
-              <li>' . l(t('Re-loan'), $item_url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 're-loan'))) . '</li>';
-  }
+          <ul>
+           <li class="seperator"></li>
+           <li>' . l(t('Download'), $item_url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 'loan'))) . '</li>';
   $out[] = '</ul></div></div></div>';
 
   return implode($out);
@@ -498,25 +493,16 @@ function elib_displaybook_loan($loan = false) {
     $extra = $hours + 24;
   }
 
-  $NotReloanable = ((int) $loan->loanstate == 1);
-  $Reloanable = ((int) $loan->loanstate == 2);
-  $ExpiredButReloanable = ((int) $loan->loanstate == 3);
-
-  if (($NotReloanable) || ($Reloanable)) {
-    if ($days < 1) {
-      if ($extra <= 24) {
-        $out[] = '<div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>';
-      }
-      else {
-        $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
-      }
+  if ($days < 1) {
+    if ($extra <= 24) {
+      $out[] = '<div class="loanperiod short">' . t('Loan expired.') . '</div>';
     }
     else {
-      $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
+      $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
     }
   }
-  else if ($ExpiredButReloanable) {
-    $out[] = '<div class="loanperiod short">' . t('Loan expired. You can re-loan.') . '</div>';
+  else {
+    $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
   }
 
   $out[] = '<div class="book-not-available">';
