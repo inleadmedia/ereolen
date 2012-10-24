@@ -440,9 +440,11 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
     $extra = $hours + 24;
   }
 
+  $display_download_link = TRUE;
   if ($days < 1) {
     if ($extra <= 24) {
       $out[] = '<div class="loanperiod short">' . t('Loan expired.') . '</div>';
+      $display_download_link = FALSE;
     }
     else {
       $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
@@ -452,13 +454,17 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
     $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
   }
 
-  $out[] = '
-      <div class="icons">
+  // Only display download link if loan has not expires (fast hack).
+  if ($display_download_link) {
+    $out[] = '
         <div class="icons">
-          <ul>
-           <li class="seperator"></li>
-           <li>' . l(t('Download'), $item_url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 'loan'))) . '</li>';
-  $out[] = '</ul></div></div></div>';
+          <div class="icons">
+            <ul>
+            <li class="seperator"></li>
+            <li>' . l(t('Download'), $item_url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 'loan'))) . '</li>';
+    $out[] = '</ul></div></div>';
+  }
+  $out[] = '</div>';
 
   return implode($out);
 }
