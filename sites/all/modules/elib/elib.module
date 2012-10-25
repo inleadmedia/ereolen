@@ -442,13 +442,7 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
 
   $display_download_link = TRUE;
   if ($days < 1) {
-    if ($extra <= 24) {
-      $out[] = '<div class="loanperiod short">' . t('Loan expired.') . '</div>';
-      $display_download_link = FALSE;
-    }
-    else {
-      $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
-    }
+    $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
   }
   else {
     $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
@@ -500,12 +494,7 @@ function elib_displaybook_loan($loan = false) {
   }
 
   if ($days < 1) {
-    if ($extra <= 24) {
-      $out[] = '<div class="loanperiod short">' . t('Loan expired.') . '</div>';
-    }
-    else {
-      $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
-    }
+    $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
   }
   else {
     $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
