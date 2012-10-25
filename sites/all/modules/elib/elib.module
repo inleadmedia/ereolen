@@ -553,7 +553,7 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
   if (isset($elib_sample_link)) {
     $action_links[] = l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('target' => '_blank', 'action' => 'sample')));
     $action_classes[] = 'sample';
-    $action_links[] = l(t('Loan'), $obj->url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe')));
+    $action_links[] = l(t('Loan'), $obj->url . '/download', array('html' => true));
     $action_classes[] = 'loan';
   }
   else {
