@@ -437,7 +437,6 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
     $diff = $loanlimit - time();
     $days = floor($diff / 86400);
     $hours = floor($diff / 3600);
-    $extra = $hours + 24;
   }
 
   $display_download_link = TRUE;
@@ -490,7 +489,6 @@ function elib_displaybook_loan($loan = false) {
     $diff = $loanlimit - time();
     $days = floor($diff / 86400);
     $hours = floor($diff / 3600);
-    $extra = $hours + 24;
   }
 
   if ($days < 1) {
