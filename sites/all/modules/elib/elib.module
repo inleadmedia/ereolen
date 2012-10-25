@@ -433,28 +433,27 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
   $out[] = '<div class="rating-for-faust"><div class="' . $object->localId . '"></div></div>';
 
   if ($elib_data->loanexpiredate) {
-    $loanlimit = elib_str_to_time($elib_data->loanexpiredate, true);
-    $diff = $loanlimit - time();
+
+  }
+
+  if (!elib_user_is_loan_expired($elib_data)) {
+    $diff = elib_str_to_time($elib_data->loanexpiredate, true) - time();
     $days = floor($diff / 86400);
     $hours = floor($diff / 3600);
-  }
 
-  $display_download_link = TRUE;
-  if ($days < 1) {
-    $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
-  }
-  else {
-    $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
-  }
+    if ($days < 1) {
+      $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
+    }
+    else {
+      $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
+    }
 
-  // Only display download link if loan has not expires (fast hack).
-  if ($display_download_link) {
     $out[] = '
         <div class="icons">
           <div class="icons">
             <ul>
             <li class="seperator"></li>
-            <li>' . l(t('Download'), $item_url . '/download', array('html' => true, 'attributes' => array('rel' => 'lightframe', 'class' => 'loan'))) . '</li>';
+            <li>' . l(t('Download'), $item_url . '/download', array('html' => true, 'attributes' => array('class' => 'loan'))) . '</li>';
     $out[] = '</ul></div></div>';
   }
   $out[] = '</div>';
@@ -484,18 +483,17 @@ function elib_displaybook_loan($loan = false) {
   $author = check_plain((string)$loan->book->authors->author[0]->attributes()->name);
   $out[] = '<div class="author">' . t('!author', array('!author' => l($author, 'ting/search/' . $author))) . '</div>';
 
-  if ($loan->loanexpiredate) {
-    $loanlimit = elib_str_to_time($loan->loanexpiredate, true);
-    $diff = $loanlimit - time();
+  if (!elib_user_is_loan_expired($loan)) {
+    $diff = elib_str_to_time($loan->loanexpiredate, true) - time();
     $days = floor($diff / 86400);
     $hours = floor($diff / 3600);
-  }
 
-  if ($days < 1) {
-    $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
-  }
-  else {
-    $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
+    if ($days < 1) {
+      $out[] = '<div class="loanperiod short">' . t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.'))) . '</div>';
+    }
+    else {
+      $out[] = '<div class="loanperiod short">' . t('Loan expires in %days', array('%days' => format_plural($days, 'one day.', '@count days'))) . '</div>';
+    }
   }
 
   $out[] = '<div class="book-not-available">';
@@ -558,7 +556,7 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
 
   $alttext = t('@titel af @forfatter', array('@titel' => $obj->record['dc:title'][''][0], '@forfatter' => _elib_get_author($obj, FALSE)));
   $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
-  if ($elib_data->loanexpiredate) {
+  if (isset($elib_data->loanexpiredate)) {
     $loanlimit = elib_str_to_time($elib_data->loanexpiredate, true);
     $diff = $loanlimit - time();
     $days = floor($diff / 86400);
