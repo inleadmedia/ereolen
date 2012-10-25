@@ -296,20 +296,39 @@ function elib_user_get_loans($reset = FALSE) {
  *
  * @param type $isbn
  *  The ISBN of the book to be checked.
+ * @param
+ *  Check if the loan has expired.
  * @return boolean
  *  TRUE is returned if book is loaned by the current user else FALSE
  */
-function elib_user_is_loan($isbn) {
+function elib_user_is_loan($isbn, $expired = FALSE) {
   $loans = elib_user_get_loans();
   if ($loans) {
     foreach ($loans->orderitem as $book) {
       if (in_array($book->book->attributes()->id, $isbn)) {
+        if ($expired) {
+          return !elib_user_is_loan_expired($book);
+        }
         return TRUE;
       }
     }
   }
-
   return FALSE;
+}
+
+/**
+ * Checks a give loan to see if it have expired.
+ *
+ * @param SimpleXMLElement $loan
+ *  A single loan representation from publizon
+ * @return boolean
+ *  If the loan has expired TRUE else FALSE
+ */
+function elib_user_is_loan_expired(SimpleXMLElement $loan) {
+  if ((elib_str_to_time($loan->loanexpiredate, true) - time()) > 0) {
+    return FALSE;
+  }
+  return TRUE;
 }
 
 /**

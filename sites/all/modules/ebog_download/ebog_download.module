@@ -96,11 +96,10 @@ function ebog_download_loan_initial($ting_id) {
 
     $book = $client->getBook($ean);
     $down_link = get_download_url(elib_user_get_loans(), $ean);
-    $download_only = (is_string($down_link)) ? TRUE : FALSE;
 
     // Whether book fetched well
     if ((int)$book->status->code == 101) {
-      if ($download_only) {
+      if (is_string($down_link)) {
         if ($down_link != '') {
           $status = array(
             'status' => TRUE,
@@ -180,7 +179,7 @@ function ebog_download_loan_initial($ting_id) {
 function get_download_url($loans, $ean) {
   if ($loans instanceof SimpleXMLElement) {
     foreach ($loans->orderitem as $book) {
-      if ($book->book['id'] == $ean) {
+      if ($book->book['id'] == $ean && !elib_user_is_loan_expired($book)) {
         return (string)$book->data->data->downloadurl;
       }
     }
