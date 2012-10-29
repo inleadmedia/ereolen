@@ -349,12 +349,11 @@ function elib_get_lydbog($tingObjectID, $format) {
     // if loan show stream and create local
     //$status = $response->status->code.': '.$response->status->message;
   }
-  $status = t($response->status->code . ': ' . $response->status->message);
   //krumo($response);
   // hvis ikke bogen er lånt, så CreateLoan og opret lokal kopi i tabel elib_loan
   // ellers så hent lokal URL
   if ($response->status->code != 101) {
-    $content .= '<div class="status">Fejl: ' . $status . '</div>';
+    $content .= '<div class="status">' . t('Fejl: ' . $response->status->code . ' - ' . $response->status->message) . '</div>';
   }
 
   return $content;
