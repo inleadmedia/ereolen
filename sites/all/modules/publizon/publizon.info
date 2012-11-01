@@ -1,0 +1,9 @@
+name = Publizon intergration
+description = Provides an API to communicate with the publizon library services
+core = 6.x
+php = 5.2
+
+dependencies[] = autoload
+dependencies[] = nanosoap
+
+files[] = lib/publizon_client.inc
