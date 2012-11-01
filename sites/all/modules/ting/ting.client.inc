@@ -457,26 +457,32 @@ function ting_add_object_info(TingClientObject $object) {
  * @return object
  */
 function ting_add_additional_info($collection) {
-  $faust_numbers = array();
+  /**
+   *
+   * THIS IS A HACK AND SHOULD BE LOOK AT LATER ON. WE DONT USE THE ADDITIONAL.
+   *
+   */
 
+//  $faust_numbers = array();
+//
   $objects = (isset($collection->objects)) ? $collection->objects : $collection;
-
-  foreach ($objects as $object) {
-    if ($object->localId) {
-      $faust_numbers[] = $object->localId;
-    }
-  }
-
-  if (sizeof($faust_numbers) > 0) {
-    foreach (ting_get_additional_info($faust_numbers) as $faust_number => $ai) {
-      foreach ($objects as &$object) {
-        if ($faust_number == $object->localId) {
-          $object->additionalInformation = $ai;
-        }
-      }
-    }
-  }
-
+//
+//  foreach ($objects as $object) {
+//    if ($object->localId) {
+//      $faust_numbers[] = $object->localId;
+//    }
+//  }
+//
+//  if (sizeof($faust_numbers) > 0) {
+//    foreach (ting_get_additional_info($faust_numbers) as $faust_number => $ai) {
+//      foreach ($objects as &$object) {
+//        if ($faust_number == $object->localId) {
+//          $object->additionalInformation = $ai;
+//        }
+//      }
+//    }
+//  }
+//
   if (isset($collection->objects)) {
     $collection->objects = $objects;
   }
