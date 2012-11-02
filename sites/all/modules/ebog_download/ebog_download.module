@@ -93,14 +93,13 @@ function ebog_download_loan_initial($ting_id) {
     $userinfo = elib_user_get_cred();
     $client = elib_client();
     $client->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
-    
+
     $book = $client->getBook($ean);
-    $down_link = get_download_url($client->getLoans(), $ean);
-    $download_only = (is_string($down_link)) ? TRUE : FALSE;
+    $down_link = get_download_url(elib_user_get_loans(), $ean);
 
     // Whether book fetched well
     if ((int)$book->status->code == 101) {
-      if ($download_only) {
+      if (is_string($down_link)) {
         if ($down_link != '') {
           $status = array(
             'status' => TRUE,
@@ -117,14 +116,16 @@ function ebog_download_loan_initial($ting_id) {
             )
           );
         }
-        
+
       }
       else {
         $loan = elib_client()->makeLoan($ean);
         // Whether book loaned well
         if ((int)$loan->status->code == 101) {
-          $down_link = $loan->data->downloadurl;
+          // Clear loans cache for the user.
+          elib_user_clear_loans_cache($user->uid);
 
+          $down_link = $loan->data->downloadurl;
           $status = array(
             'status' => TRUE,
             'title' => t('Success'),
@@ -177,11 +178,9 @@ function ebog_download_loan_initial($ting_id) {
  */
 function get_download_url($loans, $ean) {
   if ($loans instanceof SimpleXMLElement) {
-    if (isset($loans->data)) {
-      foreach ($loans->data->orderitem as $book) {
-        if ($book->book['id'] == $ean && $book->loanstate == 1) {
-          return (string)$book->data->data->downloadurl;
-        }
+    foreach ($loans->orderitem as $book) {
+      if ($book->book['id'] == $ean && !elib_user_is_loan_expired($book)) {
+        return (string)$book->data->data->downloadurl;
       }
     }
   }

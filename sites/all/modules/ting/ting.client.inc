@@ -404,7 +404,7 @@ function ting_add_collection_info(TingClientObjectCollection $collection) {
 }
 
 function ting_add_object_info(TingClientObject $object) {
-  $object->type = $object->record['dc:type']['dkdcplus:BibDK-Type'][0];
+  $object->type = isset($object->record['dc:type']['dkdcplus:BibDK-Type'][0]) ? $object->record['dc:type']['dkdcplus:BibDK-Type'][0] : NULL;
   $object->language = !empty($object->record['dc:language'][''][0]) ? $object->record['dc:language'][''][0] : FALSE;
 
   $object->title = $object->record['dc:title'][''][0];
@@ -433,7 +433,7 @@ function ting_add_object_info(TingClientObject $object) {
   $object->url = url('ting/object/'.$object->id, array('absolute' => TRUE));
 
   if (function_exists('ting_proxy_rewrite_download_url')) {
-    if ($object->record['dc:identifier']['dcterms:URI']) {
+    if (isset($object->record['dc:identifier']['dcterms:URI']) && $object->record['dc:identifier']['dcterms:URI']) {
       foreach ($object->record['dc:identifier']['dcterms:URI'] as $url) {
         $object->online_url = ting_proxy_rewrite_download_url($url);
       }
@@ -457,26 +457,32 @@ function ting_add_object_info(TingClientObject $object) {
  * @return object
  */
 function ting_add_additional_info($collection) {
-  $faust_numbers = array();
+  /**
+   *
+   * THIS IS A HACK AND SHOULD BE LOOK AT LATER ON. WE DONT USE THE ADDITIONAL.
+   *
+   */
 
+//  $faust_numbers = array();
+//
   $objects = (isset($collection->objects)) ? $collection->objects : $collection;
-
-  foreach ($objects as $object) {
-    if ($object->localId) {
-      $faust_numbers[] = $object->localId;
-    }
-  }
-
-  if (sizeof($faust_numbers) > 0) {
-    foreach (ting_get_additional_info($faust_numbers) as $faust_number => $ai) {
-      foreach ($objects as &$object) {
-        if ($faust_number == $object->localId) {
-          $object->additionalInformation = $ai;
-        }
-      }
-    }
-  }
-
+//
+//  foreach ($objects as $object) {
+//    if ($object->localId) {
+//      $faust_numbers[] = $object->localId;
+//    }
+//  }
+//
+//  if (sizeof($faust_numbers) > 0) {
+//    foreach (ting_get_additional_info($faust_numbers) as $faust_number => $ai) {
+//      foreach ($objects as &$object) {
+//        if ($faust_number == $object->localId) {
+//          $object->additionalInformation = $ai;
+//        }
+//      }
+//    }
+//  }
+//
   if (isset($collection->objects)) {
     $collection->objects = $objects;
   }

@@ -339,7 +339,7 @@ $vars = static_region_builder($footer_regions, $settings['omega_footer_container
 // ZEN - BODY CLASSES
 // Classes for body element. Allows advanced theming based on context
 // (home page, node of certain type, etc.)
-$classes = split(' ', $vars['body_classes']);
+$classes = explode(' ', $vars['body_classes']);
 // Remove the mostly useless page-ARG0 class.
 if ($index = array_search(preg_replace('![^abcdefghijklmnopqrstuvwxyz0-9-_]+!s', '', 'page-'. drupal_strtolower(arg(0))), $classes)) {
   unset($classes[$index]);

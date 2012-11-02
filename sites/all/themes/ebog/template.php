@@ -32,6 +32,12 @@ function ebog_preprocess_ting_object(&$vars) {
   if ($book->status->code == 101 && isset($book->data->teaser->link)) {
     $vars['elib_sample_link'] = (string)$book->data->teaser->link;
   }
+
+  // Check if the book is loaned by the user.
+  global $user;
+  if ($user->uid > 0) {
+    $vars['is_loan'] = elib_user_is_loan($isbn, TRUE);
+  }
 }
 
 /**
