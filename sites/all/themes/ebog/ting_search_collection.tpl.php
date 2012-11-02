@@ -31,7 +31,7 @@ foreach ($collection->objects as $obj) {
               <?php echo t('By !creator_name', array('!creator_name' => $elib[$isbn]['author'])); ?>
             </span>
           <?php endif; ?>
-          <div id="<?php print $obj->objects[0]->localId ?>"></div>
+          <div id="<?php print $obj->localId ?>"></div>
           <?php if ($obj->date) : ?>
             <span class="publication_date">
               <?php echo t('(%publication_date%)', array('%publication_date%' => $obj->date)) /* TODO: Improve date handling, localizations etc. */ ?>

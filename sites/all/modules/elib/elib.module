@@ -585,20 +585,19 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
       <div class="display-book ' . $displaysize . ' line">' .
             $part['picture'] .
             '<div class="main size1of2">' .
-            $part['loginexpire'] .
-            $part['title'] .
-            $part['author'] .
-            $part['rating'] .
-            $part['icons'] .
-            $part['text'] .
-            $extras .
+            (isset($part['loginexpire']) ? $part['loginexpire'] : '') .
+            (isset($part['title']) ? $part['title'] : '') .
+            (isset($part['author']) ? $part['author'] : '') .
+            (isset($part['rating']) ? $part['rating'] : '') .
+            (isset($part['icons']) ? $part['icons'] : '') .
+            (isset($part['text']) ? $part['text'] : '') .
+            (isset($extras) ? $extras : '') .
             '</div>
       </div>
     ';
   }
 
-
-  if ($elib['popular']) {
+  if (is_array($elib) && isset($elib['popular']) && $elib['popular']) {
     if (!empty($obj->record['dc:contributor'][''])) {
       foreach ($obj->record['dc:contributor'][''] as $reader) {
         $readers[] = l($reader, 'ting/search/' . $reader);
@@ -624,13 +623,13 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
           $part['picture'] .
           '</div>
     <div class="right">' .
-          $part['loginexpire'] .
-          $part['title'] .
-          $part['author'] .
-          $part['rating'] .
-          $part['icons'] .
-          $part['text'] .
-          '<div class="extras" style="margin-left:80px;">' . $extras . '</div>
+          (isset($part['loginexpire']) ? $part['loginexpire'] : '') .
+          (isset($part['title']) ? $part['title'] : '') .
+          (isset($part['author']) ? $part['author'] : '') .
+          (isset($part['rating']) ? $part['rating'] : '') .
+          (isset($part['icons']) ? $part['icons'] : '') .
+          (isset($part['text']) ? $part['text'] : '') .
+          '<div class="extras" style="margin-left:80px;">' . (isset($extras) ? $extras : '') . '</div>
     </div>
   </div>';
 }
@@ -698,7 +697,7 @@ function elib_book_cover($isbns, $presetname, $always_download = FALSE) {
     }
   }
   else {
-    $path = _elib_cover_cache_get($isbn);
+    $path = _elib_cover_cache_get($isbns);
     if ($path) {
       return imagecache_create_url($presetname, $path);
     }

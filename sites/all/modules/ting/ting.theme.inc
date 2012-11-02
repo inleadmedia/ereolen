@@ -220,7 +220,7 @@ function template_preprocess_ting_object(&$vars) {
                    );
 
   // If there is more than one author add it to the details
-  if (sizeof($vars['ting_creators_links']) > 1) {
+  if (isset($vars['ting_creators_links']) && (sizeof($vars['ting_creators_links']) > 1)) {
     $details[1]['data'] = array_merge(array(t('Creators') => 'ting_creators_links'), $details[1]['data']);
   }
 
