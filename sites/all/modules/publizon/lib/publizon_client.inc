@@ -1,7 +1,12 @@
 <?php
 
 class PublizonClient {
-  private $base = 'https://libraryservices.pubhub.dk/';
+  private $retailer_id;
+  private $retailer_key_code;
+  private $langcode;
+  private $logger;
+
+  private $base_url = '';
   private $end_points = array(
     'product' => 'getproduct.asmx',
     'product_list' => 'getproductlist.asmx',
@@ -12,33 +17,67 @@ class PublizonClient {
     'removed_product_list' => 'getremovedproductlist.asmx',
   );
 
-  private $retailer_id;
-  private $retailer_key_code;
-  private $langcode;
-
   private $nanosoap_options = array(
     'namespaces' => array(
       'pub' => 'http://pubhub.org/',
     ),
   );
 
+  // Holds the object instance (part of the singleton pattern).
+  private static $instance = NULL;
+
   /**
    * Class construtor that prepares an connection to publizon and wrappers all
-   * calls into this object.
+   * calls into this object. This is a private constructor as the object is
+   * implemented as a singleton pattern, use PublizonClient::getClient() to get
+   * an instance.
    *
-   * @param type $langcode
-   *    The language code used to fetch the information ('da').
-   * @param type $retailer_id
-   *    An id that represents the library at publizon.
-   * @param type $retailer_key_code
-   *    An hash value validating the library as publizon.
+   * @param string $langcode
+   *  The language code used to fetch the information ('da').
+   * @param string $retailer_id
+   *  An id that represents the library at publizon.
+   * @param string $retailer_key_code
+   *  An hash value validating the library as publizon.
+   * @param PublizonLogger $logger
+   *  Publizon logger class.
    */
-  public function __construct($langcode, $retailer_id, $retailer_key_code) {
-    $this->retailer_id = $retailer_id;
-    $this->retailer_key_code = md5($retailer_key_code);
-    $this->langcode = $langcode;
+  private function __construct($langcode, $retailer_id, $retailer_key_code, $logger) {
+    // Get publizon settings from the administration interface.
+    $publizon = variable_get('publizon', FALSE);
+    if (!$publizon) {
+      throw new PublizonException('Publizon client could not load default settings.');
+    }
 
-    // Start up nanosoap
+    // Set base URL.
+    $this->base_url = $publizon['settings']['base_url'];
+
+    // If input parameters are not given use default values.
+    if (!isset($langcode) || !isset($retailer_id) || !isset($retailer_key_code)) {
+      $this->retailer_id = $publizon['settings']['retailer_id'];
+      $this->retailer_key_code = md5($publizon['settings']['retailer_key_code']);
+      $this->langcode = $publizon['settings']['langcode'];
+    }
+    else {
+      $this->retailer_id = $retailer_id;
+      $this->retailer_key_code = md5($retailer_key_code);
+      $this->langcode = $langcode;
+    }
+
+    // Set logger.
+    $this->logger = new PublizonVoidLogger();
+    if (!isset($logger)) {
+      if ($publizon['settings']['logging']) {
+        $this->logger = new PublizonWatchDogLogger();
+      }
+    }
+  }
+
+  public static function getClient($langcode = NULL, $retailer_id = NULL, $retailer_key_code = NULL, $logger = NULL) {
+    if (!isset(self::$instance)) {
+      $class = __CLASS__;
+      self::$instance = new $class($langcode, $retailer_id, $retailer_key_code);
+    }
+    return self::$instance;
   }
 
   public function create_loan() {
@@ -66,9 +105,12 @@ class PublizonClient {
   }
 
   public function get_product($isbn) {
+    // Get product form the web-serivce.
+    $this->logger->log('GetProduct with ISBN: ' . $isbn);
     $response = $this->call('product', 'GetProduct', array('pub:ebookid' => $isbn));
 
     // Convert XML into PublizonProduct object.
+
   }
 
   public function get_product_list() {
@@ -85,7 +127,7 @@ class PublizonClient {
 
 
   private function call($endpoint, $action, $parameters) {
-    $client = new PublizonNanoSOAPClient($this->base . $this->end_points[$endpoint], $this->nanosoap_options);
+    $client = new PublizonNanoSOAPClient($this->base_url . $this->end_points[$endpoint], $this->nanosoap_options);
     $parameters += array(
       'pub:retailerid' => $this->retailer_id,
       'pub:retailerkeycode' => $this->retailer_key_code,
@@ -115,53 +157,6 @@ class PublizonClient {
 /**
  *
  */
-class PublizonNanoSOAPClient extends NanoSOAPClient {
-
-  /**
-   *
-   */
-  function __construct($endpoint, $options = array()) {
-    parent::__construct($endpoint, $options);
-  }
-
-  /**
-   * Make a SOAP request. Modified this verion to new set a SOAP action header
-   * as publizon's service don't link that
-   *
-   * @param array $parameters
-   *   The parameters to send with the SOAP request.
-   *
-   * @return string
-   *   The SOAP response.
-   */
-  function call($action, $parameters = array()) {
-    // Set content type and send the SOAP action as a header.
-    $headers = array(
-      'Content-Type: text/xml',
-    );
-
-    // Make a DOM document from the envelope and get the Body tag so we
-    // can add our request data to it.
-    $this->doc = new DOMDocument();
-    $this->doc->loadXML($this->generateSOAPenvelope());
-    $body = $this->doc->getElementsByTagName('Body')->item(0);
-
-    // Convert the parameters into XML elements and add them to the
-    // body. The root element of this structure will be the action.
-    $elem = $this->convertParameter($action, $parameters);
-    $body->appendChild($elem);
-
-    // Render and store the final request string.
-    $this->requestBodyString = $this->doc->saveXML();
-
-    // Send the SOAP request to the server via CURL.
-    return $this->curlRequest($this->endpoint, 'POST', $this->requestBodyString, $headers);
-  }
-}
-
-/**
- *
- */
 class PublizonProduct {
   private $created;
   private $modified;
@@ -179,6 +174,8 @@ class PublizonProduct {
   private $publiser;
   private $description;
   private $categories;
+
+  public function __construct() {}
 }
 
 /**
@@ -186,11 +183,37 @@ class PublizonProduct {
  */
 class PublizonLoan {
 
+  private $loan;
+
+  public function __construct(int $uid) {
+    // Use cache to load loans to
+  }
+
+  public function loan_expired() {
+    throw new Exception('Not implemented yet');
+  }
+
 }
 
 /**
  *
  */
 class PublizonUser {
+  private $uid;
+  private $card_number;
+  private $pin;
 
+  private $loans = array();
+
+  public function get_loans() {
+    // Lazy load loans.
+    throw new Exception('Not implemented yet');
+  }
+
+  public function add_loan() {
+    // Create loan and update cache.
+    throw new Exception('Not implemented yet');
+  }
 }
+
+class PublizonException extends Exception {}

@@ -1,0 +1,33 @@
+<?php
+/**
+ * @file
+ *
+ */
+
+/**
+ * Implements hook_perm().
+ */
+function publizon_perm() {
+  return array(
+    'administre publizon',
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function publizon_menu() {
+  $items = array();
+
+  $items['admin/settings/publizon'] = array(
+    'title' => 'Publizon',
+    'description' => 'Configuration of communication with the publizon web-service.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('publizon_admin_form'),
+    'access arguments' => array('administre publizon'),
+    'file' => 'include/publizon.admin.inc',
+  );
+  
+  return $items;
+}
+

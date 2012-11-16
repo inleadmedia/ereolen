@@ -7,3 +7,5 @@ dependencies[] = autoload
 dependencies[] = nanosoap
 
 files[] = lib/publizon_client.inc
+files[] = lib/publizon_logger.inc
+files[] = lib/publizon_soap_client.inc
