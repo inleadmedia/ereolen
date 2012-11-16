@@ -3,7 +3,6 @@
  * @file
  * Defualt template file for the publizon library field.
  */
-  $vars = get_defined_vars();
 ?>
 <div id="<?php echo $element['#id'] . '-wrapper'; ?>" class="form-item form-item-labeled publizon-library-field">
   <div class="retailer-id">
