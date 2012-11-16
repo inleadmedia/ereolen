@@ -31,11 +31,94 @@ function publizon_menu() {
   return $items;
 }
 
+/**
+ * Implements hook_theme().
+ */
 function publizon_theme() {
   return array(
+    // Theme function for custom form element defined in publizon_elements().
+    'publizon_library_field' => array(
+      'arguments' => array('element' => NULL),
+      'template' => 'templates/publizon-library-field',
+    ),
     // Book
     // Book list
     // Loan
   );
 }
 
+/**
+ * Implements hook_elsements().
+ *
+ * Defines custom form element which is used by the administration form to
+ * handle library information.
+ *
+ * @see publizon_admin_form()
+ */
+function publizon_elements() {
+  return array(
+    'publizon_library_field' => array(
+      '#input' => TRUE,
+      '#process' => array('publizon_library_field_process'),
+      '#element_validate' => array('publizon_library_field_validate'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_value().
+ *
+ * @see publizon_elements()
+ */
+function publizon_library_field_value($element, $edit = FALSE) {
+  if (func_num_args() == 1) {
+     return $element['#default_value'];
+  }
+  return $edit;
+}
+
+/**
+ * Implementation of the library field process function.
+ *
+ * @see publizon_elements()
+ */
+function publizon_library_field_process($element, $edit, &$form_state, $complete_form) {
+  return $element;
+}
+
+/**
+ * Implementation of the library field validation function. It ensures that all
+ * input fields contains data befor submitting the element.
+ *
+ * @see publizon_elements()
+ */
+function publizon_library_field_validate($element, &$form_state) {
+  if (empty($element['#value']['retailer_id'])) {
+    form_error($element, t('!field are required.', array('!field' => t('Retailer ID'))));
+    form_set_value($element, 0, $form_state);
+  }
+  elseif (!is_numeric($element['#value']['retailer_id']) || (int)$element['#value']['retailer_id'] < 0) {
+    form_error($element, t('!field have to be an interger.', array('!field' => t('Retailer ID'))));
+    form_set_value($element, 0, $form_state);
+  }
+
+  if (empty($element['#value']['retailer_key_code'])) {
+    form_error($element, t('!field are required.', array('!field' => t('Library key code'))));
+    form_set_value($element, 0, $form_state);
+  }
+
+  if (empty($element['#value']['library_name'])) {
+    form_error($element, t('!field are required.', array('!field' => t('Library name'))));
+    form_set_value($element, 0, $form_state);
+  }
+
+  if (empty($element['#value']['max_loans'])) {
+    form_error($element, t('!field are required.', array('!field' => t('Max loans'))));
+    form_set_value($element, 0, $form_state);
+  }
+  elseif (!is_numeric($element['#value']['max_loans']) || (int)$element['#value']['max_lones'] < 0) {
+    form_error($element, t('!field have to be an interger.', array('!field' => t('Max loans'))));
+    form_set_value($element, 0, $form_state);
+  }
+  return $element;
+}
