@@ -585,20 +585,19 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
       <div class="display-book ' . $displaysize . ' line">' .
             $part['picture'] .
             '<div class="main size1of2">' .
-            $part['loginexpire'] .
-            $part['title'] .
-            $part['author'] .
-            $part['rating'] .
-            $part['icons'] .
-            $part['text'] .
-            $extras .
+            (isset($part['loginexpire']) ? $part['loginexpire'] : '') .
+            (isset($part['title']) ? $part['title'] : '') .
+            (isset($part['author']) ? $part['author'] : '') .
+            (isset($part['rating']) ? $part['rating'] : '') .
+            (isset($part['icons']) ? $part['icons'] : '') .
+            (isset($part['text']) ? $part['text'] : '') .
+            (isset($extras) ? $extras : '') .
             '</div>
       </div>
     ';
   }
 
-
-  if ($elib['popular']) {
+  if (is_array($elib) && isset($elib['popular']) && $elib['popular']) {
     if (!empty($obj->record['dc:contributor'][''])) {
       foreach ($obj->record['dc:contributor'][''] as $reader) {
         $readers[] = l($reader, 'ting/search/' . $reader);
@@ -624,13 +623,13 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
           $part['picture'] .
           '</div>
     <div class="right">' .
-          $part['loginexpire'] .
-          $part['title'] .
-          $part['author'] .
-          $part['rating'] .
-          $part['icons'] .
-          $part['text'] .
-          '<div class="extras" style="margin-left:80px;">' . $extras . '</div>
+          (isset($part['loginexpire']) ? $part['loginexpire'] : '') .
+          (isset($part['title']) ? $part['title'] : '') .
+          (isset($part['author']) ? $part['author'] : '') .
+          (isset($part['rating']) ? $part['rating'] : '') .
+          (isset($part['icons']) ? $part['icons'] : '') .
+          (isset($part['text']) ? $part['text'] : '') .
+          '<div class="extras" style="margin-left:80px;">' . (isset($extras) ? $extras : '') . '</div>
     </div>
   </div>';
 }
@@ -698,7 +697,7 @@ function elib_book_cover($isbns, $presetname, $always_download = FALSE) {
     }
   }
   else {
-    $path = _elib_cover_cache_get($isbn);
+    $path = _elib_cover_cache_get($isbns);
     if ($path) {
       return imagecache_create_url($presetname, $path);
     }
@@ -747,7 +746,10 @@ function _elib_covers_default_image() {
  */
 function _elib_covers_fetch_or_redirect($path, $source_url) {
   if ($source_url && filter_var($source_url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
-    $path = _elib_covers_pages_fetch_image($path, $source_url);
+    // If the file exists, don't download it again.
+    if (!file_exists(file_directory_path() . '/' . $path)) {
+      $path = _elib_covers_pages_fetch_image($path, $source_url);
+    }
     if ($path) {
       return $path;
     }

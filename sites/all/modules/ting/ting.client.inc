@@ -404,7 +404,7 @@ function ting_add_collection_info(TingClientObjectCollection $collection) {
 }
 
 function ting_add_object_info(TingClientObject $object) {
-  $object->type = $object->record['dc:type']['dkdcplus:BibDK-Type'][0];
+  $object->type = isset($object->record['dc:type']['dkdcplus:BibDK-Type'][0]) ? $object->record['dc:type']['dkdcplus:BibDK-Type'][0] : NULL;
   $object->language = !empty($object->record['dc:language'][''][0]) ? $object->record['dc:language'][''][0] : FALSE;
 
   $object->title = $object->record['dc:title'][''][0];
@@ -433,7 +433,7 @@ function ting_add_object_info(TingClientObject $object) {
   $object->url = url('ting/object/'.$object->id, array('absolute' => TRUE));
 
   if (function_exists('ting_proxy_rewrite_download_url')) {
-    if ($object->record['dc:identifier']['dcterms:URI']) {
+    if (isset($object->record['dc:identifier']['dcterms:URI']) && $object->record['dc:identifier']['dcterms:URI']) {
       foreach ($object->record['dc:identifier']['dcterms:URI'] as $url) {
         $object->online_url = ting_proxy_rewrite_download_url($url);
       }

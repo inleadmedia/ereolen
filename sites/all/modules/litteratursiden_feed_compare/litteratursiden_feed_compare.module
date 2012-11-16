@@ -56,7 +56,7 @@ function litteratursiden_feed_compare_get_cached_feed($items, $reset = FALSE) {
     }
     else {
       $items = variable_get('litteratursiden_feed_compare_items_on_page', '10');
-      $lifetime = variable_get('litteratursiden_feed_compare_cache_lifetime', '360');
+      $lifetime = variable_get('litteratursiden_feed_compare_cache_lifetime', '43200');
 
       $data = litteratursiden_feed_compare_get_feed($items);
       if (isset($data['data'])) {
@@ -105,17 +105,19 @@ function litteratursiden_feed_compare_get_feed($items) {
     $feed_json_data = _litteratursiden_feed_compare_file_get_contents_curl($feed_url);
     $feed = json_decode($feed_json_data, TRUE);
     if (is_array($feed)) {
+      if (isset($feed['error']) && $feed['error'] === TRUE) {
+        break;
+      }
       foreach ($feed as $key => $val) {
         if (is_numeric($key)) {
-          $a = explode(' af ', $val['title']);
-          $query = $a[0];
+          $query = 'dc.title="' . str_replace('"', '', $val['book_title']) . '" AND dc.type="ebog"';
           $search = ting_do_search($query, 1, 25);
           if ($search && $search->numTotalObjects > 0) {
             foreach ($search->collections as $collection) {
               foreach ($collection->objects as $object) {
                 $isbn = $object->record['dc:identifier']['oss:PROVIDER-ID'][0];
-                $litteratursiden_item = litteratursiden_feed_compare_get_item($object->title, $object->creators[0]);
-                if (!empty($isbn) && !$litteratursiden_item['error'] && $litteratursiden_item['nid'] == $val['nid']) {
+
+                if (!empty($isbn)) {
                   // Title from feed consists of title+author.
                   // Combine title and author from TING to perform reasonable search.
                   try {
@@ -131,7 +133,7 @@ function litteratursiden_feed_compare_get_feed($items) {
                       'title' => (string)$book->data->title,
                       'isbn' => (string)$book->data->external_ids->id,
                       'author' => (string)$book->data->contributors->first_name . ' ' . (string)$book->data->contributors->family_name,
-                      'abstract' => (string)$litteratursiden_item['description'],
+                      'abstract' => $val['description'],
                       'image' => (string)$book->data->coverimage,
                       'url' => $object->url
                     );

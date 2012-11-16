@@ -160,7 +160,7 @@ function nice_menus_init() {
     // The Nice menus implementation.
     drupal_add_js(drupal_get_path('module', 'nice_menus') .'/nice_menus.js');
   }
-	
+
   // Add main CSS functionality.
   drupal_add_css(drupal_get_path('module', 'nice_menus') .'/nice_menus.css');
   // Add custom CSS layout if specified.
@@ -381,7 +381,7 @@ function theme_nice_menus_tree($menu_name, $mlid = NULL, $depth = -1, $menu = NU
 
   if ($menu) {
     // Set the total menu depth counting from this parent if we need it.
-    $depth =  ($depth > 0) ? ($parent_depth + $depth) : $depth;
+    $depth =  ($depth > 0) ? ((isset($parent_depth) ? $parent_depth : 0) + $depth) : $depth;
     $output['content'] .= theme('nice_menus_build', $menu, $depth, $trail);
   }
 

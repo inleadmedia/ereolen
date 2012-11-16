@@ -13,9 +13,9 @@
     <?php print t('Sorted by'); ?>
   </label>
   <select id="edit-ting-search-sort">
-    <?php foreach ($sort_options as $sort => $label) { ?>
+    <?php foreach ($sort_options as $sort => $label) : ?>
       <?php print '<option value="' . $sort . '">' . check_plain($label) . '</option>'; ?>
-    <?php } ?>
+    <?php endforeach; ?>
   </select>
 </div>
 
