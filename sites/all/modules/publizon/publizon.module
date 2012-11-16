@@ -27,7 +27,15 @@ function publizon_menu() {
     'access arguments' => array('administre publizon'),
     'file' => 'include/publizon.admin.inc',
   );
-  
+
   return $items;
+}
+
+function publizon_theme() {
+  return array(
+    // Book
+    // Book list
+    // Loan
+  );
 }
 
