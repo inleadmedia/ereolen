@@ -139,7 +139,13 @@ function publizon_admin_form(&$form_state) {
     '#attributes' => (($num_libraries == 1) ? array('class' => 'remove-btn-hide') : array()),
   );
 
-  return system_settings_form($form);
+  // Make the form look like at system form.
+  $form = system_settings_form($form);
+
+  // Add submit handler befor system settings.
+  array_unshift($form['#submit'], 'publizon_admin_form_submit');
+
+  return $form;
 }
 
 /**
@@ -182,8 +188,20 @@ function publizon_admin_form_ahah() {
   drupal_json(array('status' => TRUE, 'data' => $output));
 }
 
-function publizon_admin_form_validate($form, &$form_state) {
-  /**
-   * @TODO validate that the information enter is correct.
-   */
+/**
+ * Administration form submit handler, that ensure that correct data is filter
+ * before it's sent to system submit handler. It's done in the submit handler as
+ * the validator function is also call when add one more is clicked.
+ */
+function publizon_admin_form_submit($form, &$form_state) {
+  // Remove buttons from values;
+  unset($form_state['values']['publizon']['libraries']['add_library']);
+  unset($form_state['values']['publizon']['libraries']['remove_library']);
+
+  // Make sure "empty" is removed.
+  foreach ($form_state['values']['publizon']['libraries'] as $id => $library) {
+    if (empty($library['retailer_id'])) {
+      unset($form_state['values']['publizon']['libraries'][$id]);
+    }
+  }
 }
