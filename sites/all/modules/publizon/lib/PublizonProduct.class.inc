@@ -1,12 +1,14 @@
 <?php
 /**
  * @file
+ * Defines class to hold a Publizon product. If the class is parsed an ISBN
+ * number under contruction it will automatically download the information form
+ * the web-service. If the product have been cached, the cached version will be
+ * used.
  *
+ * Eg. $product = new PublizonProduct('9788770703147');
  */
 
-/**
- *
- */
 class PublizonProduct {
   private $properties = array(
     'created' => NULL,
@@ -58,6 +60,9 @@ class PublizonProduct {
     }
   }
 
+  /**
+   * Implements PHP magic __get function.
+   */
   public function __get($name) {
     if (array_key_exists($name, $this->properties)) {
       return $this->properties[$name];
@@ -65,6 +70,9 @@ class PublizonProduct {
     throw new PublizonProductException('Trying to get publizon product property that do not exists (' . $name . ').');
   }
 
+  /**
+   * Implements PHP magic __set function.
+   */
   public function __set($name, $value) {
     if (array_key_exists($name, $this->properties)) {
       $this->properties[$name]= $value;
@@ -74,6 +82,9 @@ class PublizonProduct {
     }
   }
 
+  /**
+   * Implements PHP magic __isset function.
+   */
   public function __isset($name) {
     if (array_key_exists($name, $this->properties)) {
       return isset($this->properties[$name]);
@@ -83,6 +94,9 @@ class PublizonProduct {
     }
   }
 
+  /**
+   * Implements PHP magic __unset function.
+   */
   public function __unset($name) {
     if (array_key_exists($name, $this->properties)) {
       $this->properties[$name] = NULL;
@@ -96,6 +110,15 @@ class PublizonProduct {
     throw new PublizonProductException('To string have not been implemented yet');
   }
 
+  /**
+   * Wrapper function that fetch the product cover (image) from the web-service
+   * and stores it locally.
+   *
+   * @param string $url
+   *  The localtion from where to fetch the cover image.
+   * @return string
+   *  The local path where the image is located.
+   */
   private function fetchCover($url) {
     // Check that the URL is a valid url.
     if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
@@ -103,6 +126,14 @@ class PublizonProduct {
     }
   }
 
+  /**
+   * Download image from a remote location over http(s).
+   *
+   * @param string $src
+   *  The localtion from where to fetch the cover image.
+   * @return string
+   *  The local path where the image is located.
+   */
   private function downloadImage($src) {
     // Build full path into the sites file folder.
     $path = file_directory_path() . '/' . $this->encodeFile();
@@ -130,10 +161,23 @@ class PublizonProduct {
     return $path;
   }
 
+  /**
+   * Encodes the products into a unique path where the cover image can be saved.
+   *
+   * @return string
+   *  Unique filename based on the product ISBN.
+   */
   private function encodeFile() {
     return 'covers/' . md5($this->isbn) . '.jpg';
   }
 
+  /**
+   * Converts XML response from Publizon into the object properties.
+   *
+   * @param SimpleXmlElement $xml
+   *  The "data" part of the XML message return form Publizon web-service
+   *  request to get product.
+   */
   private function parse($xml) {
     $this->created = strtotime($xml->created_date);
     $this->modified = strtotime($xml->updated_date);
