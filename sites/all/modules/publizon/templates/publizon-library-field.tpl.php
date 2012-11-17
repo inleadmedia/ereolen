@@ -31,7 +31,7 @@
 
   <div class="max-loans">
     <label for="<?php echo $element['#id'] . '-max-loans'; ?>">
-      <?php echo $element['#title'] ?>
+      <?php echo t('Max loans') ?>
       <span class="form-required" title="This field is required.">*</span>
     </label>
     <input id="<?php echo $element['#id'] . '-max-loans'; ?>" class="form-text required fuild" type="text" value="<?php echo $element['#value']['max_loans']; ?>" size="12" name="<?php echo $element['#name'] . '[max_loans]' ?>" maxlenght="128" />

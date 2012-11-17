@@ -28,6 +28,14 @@ function publizon_menu() {
     'file' => 'include/publizon.admin.inc',
   );
 
+  $items['admin/settings/publizon/library/ahah'] = array(
+    'title' => 'Publizon ahah callback',
+    'page callback' => 'publizon_admin_form_ahah',
+    'access arguments' => array('administre publizon'),
+    'type' => MENU_CALLBACK,
+    'file' => 'include/publizon.admin.inc',
+  );
+
   return $items;
 }
 
@@ -93,32 +101,32 @@ function publizon_library_field_process($element, $edit, &$form_state, $complete
  * @see publizon_elements()
  */
 function publizon_library_field_validate($element, &$form_state) {
-  if (empty($element['#value']['retailer_id'])) {
-    form_error($element, t('!field are required.', array('!field' => t('Retailer ID'))));
-    form_set_value($element, 0, $form_state);
-  }
-  elseif (!is_numeric($element['#value']['retailer_id']) || (int)$element['#value']['retailer_id'] < 0) {
-    form_error($element, t('!field have to be an interger.', array('!field' => t('Retailer ID'))));
-    form_set_value($element, 0, $form_state);
+  // First is to get the remove one more to work.
+  if (!empty($element['#value']['retailer_id'])) {
+    if (!is_numeric($element['#value']['retailer_id']) || (int)$element['#value']['retailer_id'] < 0) {
+      form_error($element, t('!field have to be an interger.', array('!field' => t('Retailer ID'))));
+      form_set_value($element, 0, $form_state);
+    }
+
+    if (empty($element['#value']['retailer_key_code'])) {
+      form_error($element, t('!field are required.', array('!field' => t('Library key code'))));
+      form_set_value($element, 0, $form_state);
+    }
+
+    if (empty($element['#value']['library_name'])) {
+      form_error($element, t('!field are required.', array('!field' => t('Library name'))));
+      form_set_value($element, 0, $form_state);
+    }
+
+    if (empty($element['#value']['max_loans'])) {
+      form_error($element, t('!field are required.', array('!field' => t('Max loans'))));
+      form_set_value($element, 0, $form_state);
+    }
+    elseif (!is_numeric($element['#value']['max_loans']) || (int)$element['#value']['max_lones'] < 0) {
+      form_error($element, t('!field have to be an interger.', array('!field' => t('Max loans'))));
+      form_set_value($element, 0, $form_state);
+    }
   }
 
-  if (empty($element['#value']['retailer_key_code'])) {
-    form_error($element, t('!field are required.', array('!field' => t('Library key code'))));
-    form_set_value($element, 0, $form_state);
-  }
-
-  if (empty($element['#value']['library_name'])) {
-    form_error($element, t('!field are required.', array('!field' => t('Library name'))));
-    form_set_value($element, 0, $form_state);
-  }
-
-  if (empty($element['#value']['max_loans'])) {
-    form_error($element, t('!field are required.', array('!field' => t('Max loans'))));
-    form_set_value($element, 0, $form_state);
-  }
-  elseif (!is_numeric($element['#value']['max_loans']) || (int)$element['#value']['max_lones'] < 0) {
-    form_error($element, t('!field have to be an interger.', array('!field' => t('Max loans'))));
-    form_set_value($element, 0, $form_state);
-  }
   return $element;
 }
