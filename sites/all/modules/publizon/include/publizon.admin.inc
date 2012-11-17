@@ -81,6 +81,7 @@ function publizon_admin_form(&$form_state) {
     '#collapsed' => FALSE,
   );
 
+  // Find the number of elements (libraries) to show, base on the current state.
   $num_libraries = 1;
   if (isset($form_state['values']['publizon']['num_libraries'])) {
     $num_libraries = $form_state['values']['publizon']['num_libraries'];
@@ -92,7 +93,7 @@ function publizon_admin_form(&$form_state) {
     }
   }
 
-
+  // Store the number of libraries to ahah callbacks (add one more).
   $form['publizon']['num_libraries'] = array(
     '#type' => 'value',
     '#value' => $num_libraries,
@@ -141,6 +142,10 @@ function publizon_admin_form(&$form_state) {
   return system_settings_form($form);
 }
 
+/**
+ * Menu callback used to add or remove an element (library) from the
+ * administration form. Returns the library part of the form as JSON.
+ */
 function publizon_admin_form_ahah() {
   // We're starting in step #3, preparing for #4.
   $form_state = array('storage' => NULL, 'submitted' => FALSE);
