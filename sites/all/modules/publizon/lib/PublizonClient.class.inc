@@ -54,7 +54,7 @@ class PublizonClient {
     // If input parameters are not given use default values.
     if (!isset($langcode) || !isset($retailer_id) || !isset($retailer_key_code)) {
       $this->retailer_id = $publizon['settings']['retailer_id'];
-      $this->retailer_key_code = md5($publizon['settings']['retailer_key_code']);
+      $this->retailer_key_code = $publizon['settings']['retailer_key_code'];
       $this->langcode = $publizon['settings']['langcode'];
     }
     else {
@@ -80,48 +80,64 @@ class PublizonClient {
     return self::$instance;
   }
 
-  public function create_loan() {
+  public function createLoan() {
     throw new Exception('Not implemented yet');
   }
 
-  public function get_last_loans() {
+  public function getLastLoans() {
     throw new Exception('Not implemented yet');
   }
 
-  public function get_last_loans_by_library() {
+  public function getLastLoansByLibrary() {
     throw new Exception('Not implemented yet');
   }
 
-  public function get_last_loans_for_all() {
+  public function getLastLoansForAll() {
     throw new Exception('Not implemented yet');
   }
 
-  public function get_top_list() {
+  public function getTopList() {
     throw new Exception('Not implemented yet');
   }
 
-  public function get_library_user_order_list() {
+  public function getLibraryUserOrderList() {
     throw new Exception('Not implemented yet');
   }
 
-  public function get_product($isbn) {
+  /**
+   * Fetch XML representation for a product at publizon. You should not use this
+   * function directly, but simple create a new PublizonProduct object. Which
+   * will automatically fectch the product through this function.
+   *
+   * @see PublizonProduct()
+   *
+   * @param string $isbn
+   *  Product id also know as ISBN number.
+   * @return SimpleXmlElement
+   *  Raw XML object containing the product.
+   */
+  public function getProduct($isbn) {
     // Get product form the web-serivce.
     $this->logger->log('GetProduct with ISBN: ' . $isbn);
     $response = $this->call('product', 'GetProduct', array('pub:ebookid' => $isbn));
 
     // Convert XML into PublizonProduct object.
-
+    $data = $response->xpath('//data');
+    if (isset($data[0])) {
+      return $data[0];
+    }
+    $this->logger('The product with isbn (' . $isbn . ') did not return any data', 'WARNING');
   }
 
-  public function get_product_list() {
+  public function getProductList() {
     throw new Exception('Not implemented yet');
   }
 
-  public function get_removed_product_list() {
+  public function getRemovedProductList() {
     throw new Exception('Not implemented yet');
   }
 
-  public function validate_library_user() {
+  public function validateLibraryUuser() {
     throw new Exception('Not implemented yet');
   }
 

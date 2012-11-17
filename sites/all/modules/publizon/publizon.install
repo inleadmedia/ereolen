@@ -4,16 +4,27 @@
  *
  */
 
+function publizon_schema() {
+  $schema['cache_publizon_product'] = drupal_get_schema_unprocessed('system', 'cache');
+  $schema['cache_publizon_loans'] = drupal_get_schema_unprocessed('system', 'cache');
+  return $schema;
+}
+
 /**
  * Implements hook_install().
  */
 function publizon_install() {
-
+  // Install cache tables.
+  drupal_install_schema('publizon');
 }
 
 /**
  * Implements hook_uninstall().
  */
 function publizon_uninstall() {
+  // Remove the cache tables.
+  drupal_uninstall_schema('publizon');
 
+  // Remove configuration.
+  variable_del('publizon');
 }

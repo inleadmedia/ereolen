@@ -16,6 +16,8 @@ function ebog_theme(&$existing, $type, $theme, $path) {
 function ebog_preprocess_ting_object(&$vars) {
   $isbn = $vars[object]->record['dc:identifier']['oss:PROVIDER-ID'];
 
+  $book = new PublizonProduct($isbn[0]);
+
   // Override ting object page title.
   drupal_set_title(check_plain($vars['object']->title . ' ' . t('af') . ' ' . $vars['object']->creators_string));
 
