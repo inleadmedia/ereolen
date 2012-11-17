@@ -5,7 +5,7 @@ php = 5.2
 
 dependencies[] = autoload
 dependencies[] = nanosoap
-dependencies[] = ahah_helper
+dependencies[] = imagecache
 
 files[] = lib/PublizonClient.class.inc
 files[] = lib/PublizonLogger.class.inc

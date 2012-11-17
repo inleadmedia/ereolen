@@ -126,7 +126,7 @@ class PublizonClient {
     if (isset($data[0])) {
       return $data[0];
     }
-    $this->logger('The product with isbn (' . $isbn . ') did not return any data', 'WARNING');
+    $this->logger->log('The product with isbn (' . $isbn . ') did not return any data', 'WARNING');
   }
 
   public function getProductList() {
