@@ -130,3 +130,10 @@ function publizon_library_field_validate($element, &$form_state) {
 
   return $element;
 }
+
+/**
+ * Implements hook_flush_caches().
+ */
+function publizon_flush_caches() {
+  return array('cache_publizon_product', 'cache_publizon_loans');
+}

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ *
+ */
 
 /**
  *
@@ -88,6 +92,48 @@ class PublizonProduct {
     }
   }
 
+  public function __toString() {
+    throw new PublizonProductException('To string have not been implemented yet');
+  }
+
+  private function fetchCover($url) {
+    // Check that the URL is a valid url.
+    if (filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED)) {
+      return $this->downloadImage($url);
+    }
+  }
+
+  private function downloadImage($src) {
+    // Build full path into the sites file folder.
+    $path = file_directory_path() . '/' . $this->encodeFile();
+
+    // Check if file exists locally, henc no need to download it.
+    if (!file_exists($path)) {
+      // Request the image file form the remote server over http(s).
+      $result = drupal_http_request($src);
+
+      // If the request succeded, save the image.
+      if ($result->code == 200) {
+        $folder = dirname($path);
+        // Create destination folder, if it does not exists.
+        if (!file_check_directory($folder, FILE_CREATE_DIRECTORY)) {
+          // The opreation failed (might be permissions).
+          $path = FALSE;
+        }
+        else {
+          // Save the file and return the new file name.
+          $path = file_save_data($result->data, $path, FILE_EXISTS_REPLACE);
+        }
+      }
+    }
+
+    return $path;
+  }
+
+  private function encodeFile() {
+    return 'covers/' . md5($this->isbn) . '.jpg';
+  }
+
   private function parse($xml) {
     $this->created = strtotime($xml->created_date);
     $this->modified = strtotime($xml->updated_date);
@@ -115,7 +161,7 @@ class PublizonProduct {
     $this->categories = $categories;
 
     // Download image here or in __get
-    $this->cover = (string)$xml->coverimage;
+    $this->cover = $this->fetchCover((string)$xml->coverimage);
   }
 }
 
