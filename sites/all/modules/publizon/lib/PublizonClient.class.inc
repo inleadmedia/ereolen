@@ -32,6 +32,11 @@ class PublizonClient {
    * implemented as a singleton pattern, use PublizonClient::getClient() to get
    * an instance.
    *
+   * If the parameters is not set (NULL) the object will try to use user provied
+   * information stored in the users current session. If there non given and no
+   * session it will fallback to the information given in the administration
+   * form.
+   *
    * @param string $langcode
    *  The language code used to fetch the information ('da').
    * @param string $retailer_id
@@ -41,7 +46,7 @@ class PublizonClient {
    * @param PublizonLogger $logger
    *  Publizon logger class.
    */
-  private function __construct($langcode, $retailer_id, $retailer_key_code, $logger) {
+  private function __construct($retailer_id, $retailer_key_code, $langcode, $logger) {
     // Get publizon settings from the administration interface.
     $publizon = variable_get('publizon', FALSE);
     if (!$publizon) {
@@ -51,16 +56,36 @@ class PublizonClient {
     // Set base URL.
     $this->base_url = $publizon['settings']['base_url'];
 
-    // If input parameters are not given use default values.
-    if (!isset($langcode) || !isset($retailer_id) || !isset($retailer_key_code)) {
-      $this->retailer_id = $publizon['settings']['retailer_id'];
-      $this->retailer_key_code = $publizon['settings']['retailer_key_code'];
+    // Set langcode fallback to default setting.
+    if (!isset($langcode)) {
       $this->langcode = $publizon['settings']['langcode'];
     }
     else {
-      $this->retailer_id = $retailer_id;
-      $this->retailer_key_code = md5($retailer_key_code);
       $this->langcode = $langcode;
+    }
+
+    // Set retailer id fallback to default setting.
+    if (!isset($retailer_id)) {
+      $this->retailer_id = $publizon['settings']['retailer_id'];
+    }
+    elseif (isset($_SESSION['retailer_id'])) {
+      // If we have a logged in user, use the information stored in the session.
+      $this->retailer_id = $_SESSION['retailer_id'];
+    }
+    else {
+      $this->retailer_id = $retailer_id;
+    }
+
+    // Set reatiler key code fallback to default setting.
+    if (!isset($retailer_key_code)) {
+      $this->retailer_key_code = $publizon['settings']['retailer_key_code'];
+    }
+    elseif (isset($_SESSION['retailer_key_code'])) {
+      // If we have a logged in user, use the information stored in the session.
+      $this->retailer_id = $_SESSION['retailer_key_code'];
+    }
+    else {
+      $this->retailer_key_code = md5($retailer_key_code);
     }
 
     // Set logger.
@@ -72,10 +97,10 @@ class PublizonClient {
     }
   }
 
-  public static function getClient($langcode = NULL, $retailer_id = NULL, $retailer_key_code = NULL, $logger = NULL) {
+  public static function getClient($retailer_id = NULL, $retailer_key_code = NULL, $langcode = NULL, $logger = NULL) {
     if (!isset(self::$instance)) {
       $class = __CLASS__;
-      self::$instance = new $class($langcode, $retailer_id, $retailer_key_code);
+      self::$instance = new $class($retailer_id, $retailer_key_code, $langcode, $logger);
     }
     return self::$instance;
   }
@@ -137,8 +162,17 @@ class PublizonClient {
     throw new Exception('Not implemented yet');
   }
 
-  public function validateLibraryUuser() {
-    throw new Exception('Not implemented yet');
+  public function validateLibraryUser($card_number, $pincode) {
+    $this->logger->log('Login validation called.');
+    $response = $this->call('user', 'ValidateLibraryUser', array(
+      'pub:cardnumber' => $card_number,
+      'pub:pincode' => $pincode,
+    ));
+
+    $t = 1;
+
+
+
   }
 
 
@@ -156,14 +190,17 @@ class PublizonClient {
     }
     catch (Exception $e) {
       // Connection faild.
-
+      throw new PublizonConnectionException(t('Connection with the Publizon web-service failed.'));
     }
 
     // Check the response error codes.
     $status = $response->xpath('//status');
     if (isset($status[0]) && $status[0]->code != 101) {
       // Throw exception.
-      echo 'tis';
+      throw new PublizonException(t('%message with code %code', array(
+        '%message' => $status[0]->message,
+        '%code' => $status[0]->code,
+      )));
     }
 
     return $response;
@@ -171,3 +208,4 @@ class PublizonClient {
 }
 
 class PublizonException extends Exception {}
+class PublizonConnectionException extends Exception {}
