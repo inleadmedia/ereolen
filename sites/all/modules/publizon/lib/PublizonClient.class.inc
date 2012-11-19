@@ -37,12 +37,12 @@ class PublizonClient {
    * session it will fallback to the information given in the administration
    * form.
    *
-   * @param string $langcode
-   *  The language code used to fetch the information ('da').
    * @param string $retailer_id
    *  An id that represents the library at publizon.
    * @param string $retailer_key_code
    *  An hash value validating the library as publizon.
+   * @param string $langcode
+   *  The language code used to fetch the information ('da').
    * @param PublizonLogger $logger
    *  Publizon logger class.
    */
@@ -73,6 +73,21 @@ class PublizonClient {
     }
   }
 
+  /**
+   * Returns an instances of the PublizonClient object that can be used to
+   * communicate with the Publizon web-service.
+   *
+   * @see PublizonClient
+   *
+   * @param string $retailer_id
+   *  An id that represents the library at publizon.
+   * @param string $retailer_key_code
+   *  An hash value validating the library as publizon.
+   * @param string $langcode
+   *  The language code used to fetch the information ('da').
+   * @param PublizonLogger $logger
+   *  Publizon logger class.
+   */
   public static function getClient($retailer_id = NULL, $retailer_key_code = NULL, $langcode = NULL, $logger = NULL) {
     if (!isset(self::$instance)) {
       $class = __CLASS__;
