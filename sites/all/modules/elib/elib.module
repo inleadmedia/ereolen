@@ -67,46 +67,46 @@ function elib_theme() {
  *
  * Adds elib user validation to the login form.
  */
-function elib_form_alter(&$form, $form_state, $form_id) {
-  if ($form_id == 'user_login' || $form_id == 'user_login_block') {
-      // Login form found, so change labels and description.
-      $form['name']['#prefix'] = '<h1>' . t('Welcome to Netlydbog.dk') . '</h1><p>' . t('We noticed that you are not logged in.') . '</p><p>' . t('Please fill in your CPR number + pincode to login.') . '</p>';
-      $form['name']['#title'] = t('CPR number');
-      $form['pass']['#title'] = t('Pincode');
-      $form['name']['#type'] = 'password';
-
-      // Remove default descriptions.
-      unset($form['name']['#description']);
-      unset($form['pass']['#description']);
-
-      // Add validation function to the front of validation form array.
-      array_unshift($form['#validate'], 'elib_login_validate');
-  }
-}
-
-/**
- * Login validation form that handles login into the library.
- */
-function elib_login_validate($form, &$form_state) {
-  // If no credentials are presented, return.
-  if (empty($form_state['values']['name']) || empty($form_state['values']['pass'])) {
-    return;
-  }
-
-  // The user may use both borrower card / cpr number to login, so we have to
-  // remove anything thats not an number form the user name.
-  $card = preg_replace('/\D+/', '', $form_state['values']['name']);
-
-  // Try to login to the library, this will create the user if login succeed
-  // and the user do not exists in Drupal.
-  $account = elib_check_credentials($card, $form_state['values']['pass'], $form_state['values']['library']);
-  if ($account) {
-    global $user;
-    $user = $account;
-    user_authenticate_finalize($form_state['values']);
-    drupal_goto('min_side');
-  }
-}
+//function elib_form_alter(&$form, $form_state, $form_id) {
+//  if ($form_id == 'user_login' || $form_id == 'user_login_block') {
+//      // Login form found, so change labels and description.
+//      $form['name']['#prefix'] = '<h1>' . t('Welcome to Netlydbog.dk') . '</h1><p>' . t('We noticed that you are not logged in.') . '</p><p>' . t('Please fill in your CPR number + pincode to login.') . '</p>';
+//      $form['name']['#title'] = t('CPR number');
+//      $form['pass']['#title'] = t('Pincode');
+//      $form['name']['#type'] = 'password';
+//
+//      // Remove default descriptions.
+//      unset($form['name']['#description']);
+//      unset($form['pass']['#description']);
+//
+//      // Add validation function to the front of validation form array.
+//      array_unshift($form['#validate'], 'elib_login_validate');
+//  }
+//}
+//
+///**
+// * Login validation form that handles login into the library.
+// */
+//function elib_login_validate($form, &$form_state) {
+//  // If no credentials are presented, return.
+//  if (empty($form_state['values']['name']) || empty($form_state['values']['pass'])) {
+//    return;
+//  }
+//
+//  // The user may use both borrower card / cpr number to login, so we have to
+//  // remove anything thats not an number form the user name.
+//  $card = preg_replace('/\D+/', '', $form_state['values']['name']);
+//
+//  // Try to login to the library, this will create the user if login succeed
+//  // and the user do not exists in Drupal.
+//  $account = elib_check_credentials($card, $form_state['values']['pass'], $form_state['values']['library']);
+//  if ($account) {
+//    global $user;
+//    $user = $account;
+//    user_authenticate_finalize($form_state['values']);
+//    drupal_goto('min_side');
+//  }
+//}
 
 /**
  * Based on a ting_object_id this function returns the book ISBN number. It does

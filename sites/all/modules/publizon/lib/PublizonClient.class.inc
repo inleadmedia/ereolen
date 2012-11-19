@@ -20,6 +20,7 @@ class PublizonClient {
   private $nanosoap_options = array(
     'namespaces' => array(
       'pub' => 'http://pubhub.org/',
+      'tem' => 'http://tempuri.org/',
     ),
   );
 
@@ -153,29 +154,40 @@ class PublizonClient {
     throw new Exception('Not implemented yet');
   }
 
+  /**
+   *
+   *
+   * Notice that publizon for this call used another namespace.
+   *
+   * @param string $card_number
+   * @param string $pincode
+   */
   public function validateLibraryUser($card_number, $pincode) {
     $this->logger->log('Login validation called.');
-    $response = $this->call('user', 'ValidateLibraryUser', array(
-      'pub:cardnumber' => $card_number,
-      'pub:pincode' => $pincode,
-    ));
 
-    $t = 1;
-
-
-
+    try {
+      $response = $this->call('user', 'ValidateLibraryUser', array(
+        'tem:cardnumber' => $card_number,
+        'tem:pincode' => $pincode,
+      ), 'tem');
+    }
+    catch (PublizonException $e) {
+      $this->logger->log($e->getMessage(), 'ERROR');
+      return FALSE;
+    }
+    return TRUE;
   }
 
-  private function call($endpoint, $action, $parameters) {
+  private function call($endpoint, $action, $parameters, $namespace = 'pub') {
     $client = new PublizonNanoSOAPClient($this->base_url . $this->end_points[$endpoint], $this->nanosoap_options);
     $parameters += array(
-      'pub:retailerid' => $this->retailer_id,
-      'pub:retailerkeycode' => $this->retailer_key_code,
-      'pub:langcode' => $this->langcode,
+      $namespace . ':retailerid' => $this->retailer_id,
+      $namespace . ':retailerkeycode' => $this->retailer_key_code,
+      $namespace . ':langcode' => $this->langcode,
     );
 
     try {
-      $response = $client->call('pub:' . $action, $parameters);
+      $response = $client->call($namespace . ':' . $action, $parameters);
       $response = simplexml_load_string($response);
     }
     catch (Exception $e) {

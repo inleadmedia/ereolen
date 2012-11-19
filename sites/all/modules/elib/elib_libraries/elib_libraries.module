@@ -32,18 +32,18 @@ function elib_libraries_findlib($cardno){
 	drupal_json(db_fetch_array($res));
 }
 
-function elib_libraries_form_alter(&$form, $form_state, $form_id) {
-  switch ($form_id) {
-    case 'user_login':
-    case 'user_login_block':
-      $form['library'] = array(
-        '#type' => 'select',
-        '#title' => t('Dit bibliotek'),
-        '#options' => elib_libraries_get_libraries(),
-      );
-      break;
-  }
-}
+//function elib_libraries_form_alter(&$form, $form_state, $form_id) {
+//  switch ($form_id) {
+//    case 'user_login':
+//    case 'user_login_block':
+//      $form['library'] = array(
+//        '#type' => 'select',
+//        '#title' => t('Dit bibliotek'),
+//        '#options' => elib_libraries_get_libraries(),
+//      );
+//      break;
+//  }
+//}
 
 function elib_libraries_get_libraries(){
 	$matrix = variable_get('elib_libraries', FALSE);

@@ -70,13 +70,13 @@ function elib_user_theme($existing, $type, $theme, $path) {
  * @param string $cardno
  * @return string MD5 seeded value of the input parameter.
  */
-function elib_user_elib_id($cardno){
-  /**
-   * @todo: Moved seed value into settings.php and upgraded to SHA function.
-   *
-   */
-  return md5(drupal_get_private_key() . $cardno);
-}
+//function elib_user_elib_id($cardno){
+//  /**
+//   * @todo: Moved seed value into settings.php and upgraded to SHA function.
+//   *
+//   */
+//  return md5(drupal_get_private_key() . $cardno);
+//}
 
 function elib_user_get_elib_info(){
 	return array(
@@ -95,78 +95,78 @@ function elib_user_get_elib_info(){
  * @param string $lib
  * @return object $user if success or FALSE on failur.
  */
-function elib_check_credentials($cardno, $pin, $lib) {
-  // Get elib client for communication with the library system.
-  $client = elib_client();
-
-  // Set credentials in the client.
-  $client->setLoaner($cardno, $pin, $lib);
-
-  // Validate the user.
-  if($client->validateUser()){
-    /**
-     *  @todo: do something else here preferably.
-     */
-    $_SESSION['ssn'] = $cardno;
-    $_SESSION['pin'] = $pin;
-
-    // Get the users account or create a new account.
-    $account = elib_check_user($cardno, $lib);
-    if (!$account) {
-      // User have been validate, but no account was found. So lets create one.
-      $random_name = $_SERVER['REQUEST_TIME'] . mt_rand();
-
-      // User data to pass to user_save().
-      $user_data = array(
-        'name' => $random_name,
-        'display_name' => 'unknown',
-        'mail' => $random_name . '@mail.invalid',
-        'pass' => microtime(TRUE) . mt_rand(), // Login via Drupal's standard login should not be possible.
-        'status' => 1,
-      );
-
-      // If no e-mail was set in the XML, we need to generate a
-      // random, invalid address,  since Drupal has a unique
-      // constraint on the mail column in the users table.
-      // Set the initial e-mail to the same e-mail-address.
-      $user_data['init'] = $user_data['mail'];
-
-      // Saves the user and returns the user UID.
-      $account = user_save(NULL, $user_data);
-
-      // Store user reference in our own table.
-      db_query("INSERT INTO {elib_user} (uid, elib_id, elib_library) VALUES (%d, '%s', '%s');", $account->uid, elib_user_elib_id($cardno), $lib);
-    }
-
-    return $account;
-  }
-  return false;
-}
-
-/**
- * Loades an users account based on card number.
- *
- * @param type $cardno
- * @return type
- */
-function elib_check_user($cardno, $lib) {
-  // Check if user is known in the systemt.
-  $elib_id = elib_user_elib_id($cardno);
-  $uid = db_result(db_query("SELECT uid FROM {elib_user} WHERE elib_id = '%s'", $elib_id));
-  if ($uid) {
-    db_query("UPDATE {elib_user} SET elib_library = %d WHERE elib_id = '%s'", $lib, $elib_id);
-    return user_load(array('uid' => $uid));
-  }
-
-  // Test if old encoding is used (security fix) and update it.
-  $uid = db_result(db_query("SELECT uid FROM {elib_user} WHERE elib_id = md5('%s')", $cardno));
-  if ($uid) {
-    db_query("UPDATE {elib_user} SET elib_library = %d, elib_id = '%s' WHERE elib_id = md5('%s')", $lib, $elib_id, $cardno);
-    return user_load(array('uid' => $uid));
-  }
-
-  return FALSE;
-}
+//function elib_check_credentials($cardno, $pin, $lib) {
+//  // Get elib client for communication with the library system.
+//  $client = elib_client();
+//
+//  // Set credentials in the client.
+//  $client->setLoaner($cardno, $pin, $lib);
+//
+//  // Validate the user.
+//  if($client->validateUser()){
+//    /**
+//     *  @todo: do something else here preferably.
+//     */
+//    $_SESSION['ssn'] = $cardno;
+//    $_SESSION['pin'] = $pin;
+//
+//    // Get the users account or create a new account.
+//    $account = elib_check_user($cardno, $lib);
+//    if (!$account) {
+//      // User have been validate, but no account was found. So lets create one.
+//      $random_name = $_SERVER['REQUEST_TIME'] . mt_rand();
+//
+//      // User data to pass to user_save().
+//      $user_data = array(
+//        'name' => $random_name,
+//        'display_name' => 'unknown',
+//        'mail' => $random_name . '@mail.invalid',
+//        'pass' => microtime(TRUE) . mt_rand(), // Login via Drupal's standard login should not be possible.
+//        'status' => 1,
+//      );
+//
+//      // If no e-mail was set in the XML, we need to generate a
+//      // random, invalid address,  since Drupal has a unique
+//      // constraint on the mail column in the users table.
+//      // Set the initial e-mail to the same e-mail-address.
+//      $user_data['init'] = $user_data['mail'];
+//
+//      // Saves the user and returns the user UID.
+//      $account = user_save(NULL, $user_data);
+//
+//      // Store user reference in our own table.
+//      db_query("INSERT INTO {elib_user} (uid, elib_id, elib_library) VALUES (%d, '%s', '%s');", $account->uid, elib_user_elib_id($cardno), $lib);
+//    }
+//
+//    return $account;
+//  }
+//  return false;
+//}
+//
+///**
+// * Loades an users account based on card number.
+// *
+// * @param type $cardno
+// * @return type
+// */
+//function elib_check_user($cardno, $lib) {
+//  // Check if user is known in the systemt.
+//  $elib_id = elib_user_elib_id($cardno);
+//  $uid = db_result(db_query("SELECT uid FROM {elib_user} WHERE elib_id = '%s'", $elib_id));
+//  if ($uid) {
+//    db_query("UPDATE {elib_user} SET elib_library = %d WHERE elib_id = '%s'", $lib, $elib_id);
+//    return user_load(array('uid' => $uid));
+//  }
+//
+//  // Test if old encoding is used (security fix) and update it.
+//  $uid = db_result(db_query("SELECT uid FROM {elib_user} WHERE elib_id = md5('%s')", $cardno));
+//  if ($uid) {
+//    db_query("UPDATE {elib_user} SET elib_library = %d, elib_id = '%s' WHERE elib_id = md5('%s')", $lib, $elib_id, $cardno);
+//    return user_load(array('uid' => $uid));
+//  }
+//
+//  return FALSE;
+//}
 
 /**
  * Fetch the current logged in users library credentials or for the uid parsed

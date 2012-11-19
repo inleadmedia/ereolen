@@ -85,8 +85,8 @@ function publizon_user_encode_pid($login_id) {
 function publizon_user_authentication($login_id, $pass, $retailer_id) {
   // Get informtaion about the libray the user have selected on the login page
   // and get a connection to Publizon base on that information.
-  $library = publizon_user_library($retailter_id);
-  $client = new PublizonClient($retailer_id, $library['retailer_key_code']);
+  $library = publizon_user_library($retailer_id);
+  $client = PublizonClient::getClient($retailer_id, $library['retailer_key_code']);
 
   // Validate the user.
   if($client->validateLibraryUser($login_id, $pass)) {
@@ -203,7 +203,7 @@ function publizon_user_libraries($reset = FALSE) {
  *
  * @staticvar type $libraries
  *  Static cache used to speed-up the search if call more than once.
- * @param type $retailter_id
+ * @param type $retailer_id
  *  Retailer id that identifies the library at Publizon.
  * @param type $reset
  *  If TRUE the static cache will be rebuild. Defaults to FALSE.
@@ -211,9 +211,9 @@ function publizon_user_libraries($reset = FALSE) {
  *  Basic information about the library entered at the publizon administration
  *  interface.
  */
-function publizon_user_library($retailter_id, $reset = FALSE) {
+function publizon_user_library($retailer_id, $reset = FALSE) {
   static $libraries;
-  if (!isset($libraries) || !isset($libraries[$retailter_id]) || $reset) {
+  if (!isset($libraries) || !isset($libraries[$retailer_id]) || $reset) {
     $publizon = variable_get('publizon', array());
     if (empty($publizon) || !isset($publizon['libraries']) || !count($publizon['libraries'])) {
       // We are missing som library configureation here.
@@ -222,12 +222,12 @@ function publizon_user_library($retailter_id, $reset = FALSE) {
     }
 
     foreach ($publizon['libraries'] as $library) {
-      if ($library['retailer_id'] == $retailter_id) {
-        $libraries[$retailter_id] = $library;
+      if ($library['retailer_id'] == $retailer_id) {
+        $libraries[$retailer_id] = $library;
         break;
       }
     }
   }
 
-  return !isset($libraries[$retailter_id]) ? $libraries[$retailter_id] : FALSE;
+  return isset($libraries[$retailer_id]) ? $libraries[$retailer_id] : FALSE;
 }
