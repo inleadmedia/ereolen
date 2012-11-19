@@ -67,7 +67,9 @@ function publizon_user_login_validate($form, &$form_state) {
  * @todo: Moved seed value into settings.php and upgraded to SHA function.
  *
  * @param string $login_id
- * @return string MD5 seeded value of the input parameter.
+ *  This should be the users login id (card number or CPR).
+ * @return string
+ *  MD5 seeded value of the login id.
  */
 function publizon_user_encode_pid($login_id) {
   return md5(drupal_get_private_key() . $login_id);
