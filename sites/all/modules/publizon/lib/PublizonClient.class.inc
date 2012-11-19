@@ -56,37 +56,13 @@ class PublizonClient {
     // Set base URL.
     $this->base_url = $publizon['settings']['base_url'];
 
-    // Set langcode fallback to default setting.
-    if (!isset($langcode)) {
-      $this->langcode = $publizon['settings']['langcode'];
-    }
-    else {
-      $this->langcode = $langcode;
-    }
+    // Encode retailer key code (if needed).
+    $retailer_key_code = isset($retailer_key_code) ? md5($retailer_key_code) : NULL;
 
-    // Set retailer id fallback to default setting.
-    if (!isset($retailer_id)) {
-      $this->retailer_id = $publizon['settings']['retailer_id'];
-    }
-    elseif (isset($_SESSION['retailer_id'])) {
-      // If we have a logged in user, use the information stored in the session.
-      $this->retailer_id = $_SESSION['retailer_id'];
-    }
-    else {
-      $this->retailer_id = $retailer_id;
-    }
-
-    // Set reatiler key code fallback to default setting.
-    if (!isset($retailer_key_code)) {
-      $this->retailer_key_code = $publizon['settings']['retailer_key_code'];
-    }
-    elseif (isset($_SESSION['retailer_key_code'])) {
-      // If we have a logged in user, use the information stored in the session.
-      $this->retailer_id = $_SESSION['retailer_key_code'];
-    }
-    else {
-      $this->retailer_key_code = md5($retailer_key_code);
-    }
+    // Set configuration.
+    $this->setSetting('langcode', $langcode);
+    $this->setSetting('retailer_id', $retailer_id);
+    $this->setSetting('retailer_key_code', $retailer_key_code);
 
     // Set logger.
     $this->logger = new PublizonVoidLogger();
@@ -175,7 +151,6 @@ class PublizonClient {
 
   }
 
-
   private function call($endpoint, $action, $parameters) {
     $client = new PublizonNanoSOAPClient($this->base_url . $this->end_points[$endpoint], $this->nanosoap_options);
     $parameters += array(
@@ -204,6 +179,38 @@ class PublizonClient {
     }
 
     return $response;
+  }
+
+  /**
+   * Used to set a object setting for communication with the Publizon
+   * web-service. If value is given it's used, if non is given the session will
+   * be checked and then the default configuration.
+   *
+   * Data in the session indicates that the current use is logged in, henc this
+   * should be used.
+   *
+   * @param string $name
+   *  Name of the setting that should be set.
+   * @param string $value
+   *  The value that should be set.
+   * @throws PublizonException
+   *  If the function falls back to using administration setting and this could
+   *  not be found exception is throw.
+   */
+  private function setSetting($name, $value = NULL) {
+    if (isset($value)) {
+      $this->$name = $value;
+    }
+    elseif (isset($_SESSION[$name])) {
+      $this->$name = $_SESSION[$name];
+    }
+    else {
+      $publizon = variable_get('publizon', FALSE);
+      if (!$publizon) {
+        throw new PublizonException('Publizon client could not load default settings for ' . $name . '.');
+      }
+      $this->$name = $publizon['settings'][$name];
+    }
   }
 }
 

@@ -95,7 +95,7 @@ function publizon_user_authentication($login_id, $pass, $retailer_id) {
     $_SESSION['login_id'] = $login_id;
     $_SESSION['pass'] = $pass;
     $_SESSION['retailer_id'] = $retailer_id;
-    $_SESSION['retailer_key_code'] = $library['retailer_key_code'];
+    $_SESSION['retailer_key_code'] = md5($library['retailer_key_code']);
 
     // Get the users account or create a new account.
     $account = publizon_user_load_account($login_id, $retailer_id);
