@@ -126,15 +126,6 @@ function publizon_library_field_validate($element, &$form_state) {
       form_error($element, t('!field are required.', array('!field' => t('Library name'))));
       form_set_value($element, 0, $form_state);
     }
-
-    if (empty($element['#value']['max_loans'])) {
-      form_error($element, t('!field are required.', array('!field' => t('Max loans'))));
-      form_set_value($element, 0, $form_state);
-    }
-    elseif (!is_numeric($element['#value']['max_loans']) || (int)$element['#value']['max_lones'] < 0) {
-      form_error($element, t('!field have to be an interger.', array('!field' => t('Max loans'))));
-      form_set_value($element, 0, $form_state);
-    }
   }
 
   return $element;

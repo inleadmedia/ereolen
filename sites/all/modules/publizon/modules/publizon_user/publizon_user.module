@@ -201,7 +201,7 @@ function publizon_user_libraries($reset = FALSE) {
 /**
  * Helper function that loads Publizon configuration information about a given
  * library and return the information as an array. The array contains
- * retailer_id, retailer_key_code, library_name and max_loans.
+ * retailer_id, retailer_key_code and library_name.
  *
  * @staticvar type $libraries
  *  Static cache used to speed-up the search if call more than once.

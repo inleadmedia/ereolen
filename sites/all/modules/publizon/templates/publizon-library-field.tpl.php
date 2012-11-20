@@ -18,7 +18,7 @@
       <?php echo t('Retailer key code'); ?>
       <span class="form-required" title="This field is required.">*</span>
     </label>
-    <input id="<?php echo $element['#id'] . '-retailer-key-code'; ?>" class="form-text required fuild" type="text" value="<?php echo $element['#value']['retailer_key_code']; ?>" size="14" name="<?php echo $element['#name'] . '[retailer_key_code]' ?>" maxlenght="128" />
+    <input id="<?php echo $element['#id'] . '-retailer-key-code'; ?>" class="form-text required fuild" type="text" value="<?php echo $element['#value']['retailer_key_code']; ?>" size="20" name="<?php echo $element['#name'] . '[retailer_key_code]' ?>" maxlenght="128" />
   </div>
 
   <div class="library-name">
@@ -26,15 +26,8 @@
       <?php echo t('Library name'); ?>
       <span class="form-required" title="This field is required.">*</span>
     </label>
-    <input id="<?php echo $element['#id'] . '-library-name'; ?>" class="form-text required fuild" type="text" value="<?php echo $element['#value']['library_name']; ?>" size="20" name="<?php echo $element['#name'] . '[library_name]' ?>" maxlenght="128" />
+    <input id="<?php echo $element['#id'] . '-library-name'; ?>" class="form-text required fuild" type="text" value="<?php echo $element['#value']['library_name']; ?>" size="40" name="<?php echo $element['#name'] . '[library_name]' ?>" maxlenght="128" />
   </div>
 
-  <div class="max-loans">
-    <label for="<?php echo $element['#id'] . '-max-loans'; ?>">
-      <?php echo t('Max loans') ?>
-      <span class="form-required" title="This field is required.">*</span>
-    </label>
-    <input id="<?php echo $element['#id'] . '-max-loans'; ?>" class="form-text required fuild" type="text" value="<?php echo $element['#value']['max_loans']; ?>" size="12" name="<?php echo $element['#name'] . '[max_loans]' ?>" maxlenght="128" />
-  </div>
   <div class="description"><?php echo $element['#description']; ?></div>
 </div>

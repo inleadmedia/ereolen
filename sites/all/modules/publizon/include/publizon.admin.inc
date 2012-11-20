@@ -109,7 +109,7 @@ function publizon_admin_form(&$form_state) {
         'retailer_id' => $default['libraries'][$i]['retailer_id'],
         'retailer_key_code' => $default['libraries'][$i]['retailer_key_code'],
         'library_name' => $default['libraries'][$i]['library_name'],
-        'max_loans' => $default['libraries'][$i]['max_loans']),
+      ),
     );
   }
 
