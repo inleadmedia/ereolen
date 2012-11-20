@@ -52,6 +52,13 @@ class PublizonProduct {
       if (isset($isbn)) {
         $client = PublizonClient::getClient();
         $this->parse($client->getProduct($isbn));
+
+        // The product may sometimes not contain any information (removed from
+        // Publizon). But maybe the datawell have information, so we store the
+        // ISBN.
+        $this->isbn = $isbn;
+
+        // We cache the result for 24 hours.
         cache_set($isbn, $this->properties, 'cache_publizon_product', time() + 43200);
       }
       else {
@@ -108,6 +115,25 @@ class PublizonProduct {
 
   public function __toString() {
     throw new PublizonProductException('To string have not been implemented yet');
+  }
+
+  /**
+   * Returns the cover image through an image cache preset. If the full size or
+   * raw cover image is needed simple call: $product->cover.
+   *
+   * If the product do not have a cover image a default one located in the files
+   * folder name default_cover.jpg will be used.
+   *
+   * @param string $presetname
+   *  Name of the image cache preset to run the image through.
+   * @return string
+   *  Path to the rendered image.
+   */
+  public function getCover($presetname) {
+    if (!isset($this->cover)) {
+     return imagecache_create_url($presetname, file_directory_path() . '/default_cover.jpg');
+    }
+    return imagecache_create_url($presetname, $this->cover);
   }
 
   /**

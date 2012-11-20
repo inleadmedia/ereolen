@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * 
+ */
 
 class PublizonClient {
   private $retailer_id;
@@ -98,27 +102,70 @@ class PublizonClient {
   }
 
   public function createLoan() {
-    throw new Exception('Not implemented yet');
+    throw new PublizonException('Not implemented yet');
   }
 
   public function getLastLoans() {
-    throw new Exception('Not implemented yet');
+    throw new PublizonException('Not implemented yet');
   }
 
   public function getLastLoansByLibrary() {
-    throw new Exception('Not implemented yet');
+    throw new PublizonException('Not implemented yet');
   }
 
-  public function getLastLoansForAll() {
-    throw new Exception('Not implemented yet');
+  /**
+   * Get list of last loaned products for a given type of product.
+   *
+   * @todo Get Publizon to make it possible to limit the number of elements in
+   *       the response.
+   *
+   * @param int $list_type
+   *  This can either be PUBLIZON_EBOOK or PUBLIZON_NETSOUND.
+   * @param int $limit
+   *  The number of products that should be returned. If the limit can not be
+   *  reached, the number available will be returned.
+   * @throws PublizonException
+   *  Will be throw if the list type is unknown.
+   */
+  public function getLastLoansForAll($list_type, $limit = 7) {
+    if ($list_type == PUBLIZON_EBOOK || $list_type == PUBLIZON_NETSOUND) {
+      // Make request to the web-service for the loans.
+      $response = $this->call('libraray_list', 'GetLastLoansForAll', array('pub:listtype' => $list_type));
+
+      $products = array();
+      $items_found = 0;
+
+      // Convert XML into PublizonProduct objects, if data was returned.
+      $data = $response->xpath('//data');
+      if (isset($data[0])) {
+        $data = $data[0];
+        foreach ($data->orderinformationitem as $item) {
+          $product = new PublizonProduct($item->identifier);
+          if (isset($product->status)) {
+            $products[] = $product;
+            $items_found++;
+          }
+          // If we found the number of products we are looking for, break.
+          if ($items_found == $limit) {
+            break;
+          }
+        }
+      }
+
+      return $products;
+    }
+    $this->logger->log('Request for unsuported loans type ' . check_plain($list_type), 'ERROR');
+    throw new PublizonException(t('You are trying to get unsupported type of loans from Publizon'));
   }
 
   public function getTopList() {
-    throw new Exception('Not implemented yet');
+    throw new PublizonException('Not implemented yet');
   }
 
-  public function getLibraryUserOrderList() {
-    throw new Exception('Not implemented yet');
+  public function getLibraryUserOrderList($cardnumber) {
+    // The loans a given user have.
+
+    throw new PublizonException('Not implemented yet');
   }
 
   /**
@@ -135,15 +182,16 @@ class PublizonClient {
    */
   public function getProduct($isbn) {
     // Get product form the web-serivce.
-    $this->logger->log('GetProduct with ISBN: ' . $isbn);
     $response = $this->call('product', 'GetProduct', array('pub:ebookid' => $isbn));
 
-    // Convert XML into PublizonProduct object.
+    // Check if any data was returned.
     $data = $response->xpath('//data');
     if (isset($data[0])) {
       return $data[0];
     }
     $this->logger->log('The product with isbn (' . $isbn . ') did not return any data', 'WARNING');
+
+    return FALSE;
   }
 
   public function getProductList() {
@@ -155,7 +203,7 @@ class PublizonClient {
   }
 
   /**
-   *
+   * @TODO: Write doc.
    *
    * Notice that publizon for this call used another namespace.
    *
@@ -163,8 +211,6 @@ class PublizonClient {
    * @param string $pincode
    */
   public function validateLibraryUser($card_number, $pincode) {
-    $this->logger->log('Login validation called.');
-
     try {
       $response = $this->call('user', 'ValidateLibraryUser', array(
         'tem:cardnumber' => $card_number,
@@ -179,6 +225,10 @@ class PublizonClient {
   }
 
   private function call($endpoint, $action, $parameters, $namespace = 'pub') {
+    // Log request
+    $this->logger->log('Call to ' . $endpoint . ' for ' . $action);
+
+    // Create a new soap client for the request and set default parameters.
     $client = new PublizonNanoSOAPClient($this->base_url . $this->end_points[$endpoint], $this->nanosoap_options);
     $parameters += array(
       $namespace . ':retailerid' => $this->retailer_id,
@@ -186,6 +236,7 @@ class PublizonClient {
       $namespace . ':langcode' => $this->langcode,
     );
 
+    // Make the request.
     try {
       $response = $client->call($namespace . ':' . $action, $parameters);
       $response = simplexml_load_string($response);
@@ -240,6 +291,11 @@ class PublizonClient {
     }
   }
 }
+
+/**
+ * @todo move t() function into the exception, so it's handle in one place.
+ * + check_plain
+ */
 
 class PublizonException extends Exception {}
 class PublizonConnectionException extends Exception {}

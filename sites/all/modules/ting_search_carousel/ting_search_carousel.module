@@ -160,7 +160,7 @@ function ting_search_carousel_do_request($index) {
       $item->id = $objects[$id]['id'];
       $item->title = $objects[$id]['title'];
       $item->creator = $objects[$id]['creator'];
-      $item->image = publizon_image_convert($product, '120_x');
+      $item->image = $product->getCover('120_x');
 
       $items[] = $item;
     }
