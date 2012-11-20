@@ -214,6 +214,10 @@ function elib_user_block($op = 'list', $delta = 0) {
         $out = array();
         $loans = elib_user_get_loans();
 
+        // Test move to publizon_user
+        global $user;
+        $user_loans = new PublizonUserLoans($user->uid, '3208100032');
+
         // It's assumed in the $bookdisplay array that two books can't have the
         // same loan expire date.
         if ($loans && isset($loans->orderitem)) {

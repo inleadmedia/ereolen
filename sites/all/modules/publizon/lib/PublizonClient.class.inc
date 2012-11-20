@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * 
+ *
  */
 
 class PublizonClient {
@@ -17,15 +17,8 @@ class PublizonClient {
     'loan' => 'createloan.asmx',
     'user' => 'validatelibraryuser.asmx',
     'libraray_list' => 'getlibrarylist.asmx',
-    'library_order_list' => 'getlibraryuserorderlist.asmx',
+    'library_user_order_list' => 'getlibraryuserorderlist.asmx',
     'removed_product_list' => 'getremovedproductlist.asmx',
-  );
-
-  private $nanosoap_options = array(
-    'namespaces' => array(
-      'pub' => 'http://pubhub.org/',
-      'tem' => 'http://tempuri.org/',
-    ),
   );
 
   // Holds the object instance (part of the singleton pattern).
@@ -130,7 +123,9 @@ class PublizonClient {
   public function getLastLoansForAll($list_type, $limit = 7) {
     if ($list_type == PUBLIZON_EBOOK || $list_type == PUBLIZON_NETSOUND) {
       // Make request to the web-service for the loans.
-      $response = $this->call('libraray_list', 'GetLastLoansForAll', array('pub:listtype' => $list_type));
+      $response = $this->call('libraray_list', 'GetLastLoansForAll', array(
+        'pub:listtype' => $list_type
+       ), array('pub' => 'http://pubhub.dk/'));
 
       $products = array();
       $items_found = 0;
@@ -162,10 +157,26 @@ class PublizonClient {
     throw new PublizonException('Not implemented yet');
   }
 
-  public function getLibraryUserOrderList($cardnumber) {
-    // The loans a given user have.
+  public function getLibraryUserOrderList($card_number, $list_type) {
+    if ($list_type == PUBLIZON_EBOOK || $list_type == PUBLIZON_NETSOUND) {
+      // Make request to the web-service for the loans.
+      $response = $this->call('library_user_order_list', 'GetLibraryUserOrderList', array(
+        'pub:cardnumber' => $card_number,
+        'pub:booktype' => $list_type,
+      ), array('pub' => 'http://pubhub.dk/'));
 
-    throw new PublizonException('Not implemented yet');
+      // Check if any data was returned.
+      $data = $response->xpath('//data');
+      $extension = $response->xpath('//LibraryExtension');
+      if (isset($data[0]) && isset($extension[0])) {
+        return array($data[0], $extension[0]);
+      }
+
+      $this->logger->log('No loans information was returned for the user', 'WARNING');
+      return FALSE;
+    }
+    $this->logger->log('Request for unsuported loans type ' . check_plain($list_type), 'ERROR');
+    throw new PublizonException(t('You are trying to get unsupported type of loans from Publizon'));
   }
 
   /**
@@ -182,15 +193,15 @@ class PublizonClient {
    */
   public function getProduct($isbn) {
     // Get product form the web-serivce.
-    $response = $this->call('product', 'GetProduct', array('pub:ebookid' => $isbn));
+    $response = $this->call('product', 'GetProduct', array('pub:ebookid' => $isbn), array('pub' => 'http://pubhub.org/'));
 
     // Check if any data was returned.
     $data = $response->xpath('//data');
     if (isset($data[0])) {
       return $data[0];
     }
-    $this->logger->log('The product with isbn (' . $isbn . ') did not return any data', 'WARNING');
 
+    $this->logger->log('The product with isbn (' . $isbn . ') did not return any data', 'WARNING');
     return FALSE;
   }
 
@@ -215,7 +226,7 @@ class PublizonClient {
       $response = $this->call('user', 'ValidateLibraryUser', array(
         'tem:cardnumber' => $card_number,
         'tem:pincode' => $pincode,
-      ), 'tem');
+      ), array('tem' => 'http://tempuri.org/'));
     }
     catch (PublizonException $e) {
       $this->logger->log($e->getMessage(), 'ERROR');
@@ -224,21 +235,24 @@ class PublizonClient {
     return TRUE;
   }
 
-  private function call($endpoint, $action, $parameters, $namespace = 'pub') {
+  private function call($endpoint, $action, $parameters, $namespace) {
     // Log request
     $this->logger->log('Call to ' . $endpoint . ' for ' . $action);
 
+    // Get namespace key.
+    $ns = array_keys($namespace);
+
     // Create a new soap client for the request and set default parameters.
-    $client = new PublizonNanoSOAPClient($this->base_url . $this->end_points[$endpoint], $this->nanosoap_options);
+    $client = new PublizonNanoSOAPClient($this->base_url . $this->end_points[$endpoint], array('namespaces' => $namespace));
     $parameters += array(
-      $namespace . ':retailerid' => $this->retailer_id,
-      $namespace . ':retailerkeycode' => $this->retailer_key_code,
-      $namespace . ':langcode' => $this->langcode,
+      $ns[0] . ':retailerid' => $this->retailer_id,
+      $ns[0] . ':retailerkeycode' => $this->retailer_key_code,
+      $ns[0] . ':languagecode' => $this->langcode,
     );
 
     // Make the request.
     try {
-      $response = $client->call($namespace . ':' . $action, $parameters);
+      $response = $client->call($ns[0] . ':' . $action, $parameters);
       $response = simplexml_load_string($response);
     }
     catch (Exception $e) {
