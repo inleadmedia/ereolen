@@ -1,9 +1,17 @@
 <?php
+/**
+ * @file
+ * The class defined
+ */
 
 /**
+ * Holds information about a given users loans (storage class). The loans are
+ * indexed by ISBN and can be fetched by $user_loans->loans['isbn'];
+ *
+ * @todo: Test that the loans can be indexed, if not move it outside properties.
  *
  */
-class PublizonUserLoans {
+class PublizonUserLoans extends Publizon {
   private $properties = array(
     'max_loan_period' => NULL,
     'max_loan_per_time' => NULL,
@@ -34,10 +42,13 @@ class PublizonUserLoans {
   );
 
   /**
-   * The object assumes that the user is logged in and faling back to using the
-   * session values when connecting to Publizon.
+   * Creates a new PublizonLoans object that stores basic information about the
+   * users loans and also how many loans the user has. The object assumes that
+   * the user is logged in and faling back to using the session values when
+   * connecting to Publizon.
    *
-   * @param type $uid
+   * @param string $uid
+   *  Drupal user ID
    * @throws PublizonProductException
    */
   public function __construct($uid, $card_number, $reset = FALSE) {
@@ -63,61 +74,49 @@ class PublizonUserLoans {
     }
   }
 
-  public function loan_expired() {
-    throw new Exception('Not implemented yet');
-  }
-
-
   /**
-   * Implements PHP magic __get function.
+   * Checks if a given loan is expired.
+   *
+   * @param string $isbn
+   *  ISBN for the loan that should be tested
+   * @return bool
+   *  Returns TRUE if the loan is expired else FALSE
+   * @throws PublizonProductException
+   *  The exception is thrown if the loan is not found for the user.
    */
-  public function __get($name) {
-    if (array_key_exists($name, $this->properties)) {
-      return $this->properties[$name];
+  public function is_expired($isbn) {
+    if (isset($this->loans[$isbn])) {
+      if (($this->loans[$isbn]->expire_date - time()) > 0) {
+        return FALSE;
+      }
+      return TRUE;
     }
-    throw new PublizonLoansException('Trying to get publizon loans property that do not exists (' . $name . ').');
-  }
-
-  /**
-   * Implements PHP magic __set function.
-   */
-  public function __set($name, $value) {
-    if (array_key_exists($name, $this->properties)) {
-      $this->properties[$name]= $value;
-    }
-    else {
-      throw new PublizonLoansException('Trying to set publizon loans property that do not exists (' . $name . ').');
-    }
+    throw new PublizonLoansException('The ISBN given is not a loan that exists for the current user');
   }
 
   /**
-   * Implements PHP magic __isset function.
+   * Checks if a loan with the ISBN given is active for the user.
+   *
+   * @param string $isbn
+   *  ISBN of the loan to check.
+   * @return boolean
+   *  TRUE if the user have the loan else FALSE.
    */
-  public function __isset($name) {
-    if (array_key_exists($name, $this->properties)) {
-      return isset($this->properties[$name]);
+  public function is_a_loan($isbn) {
+    if (isset($this->loans[$isbn])) {
+      return TRUE;
     }
-    else {
-      throw new PublizonLoansException('Trying to test publizon loans property that do not exists (' . $name . ').');
-    }
+    return FALSE;
   }
 
   /**
-   * Implements PHP magic __unset function.
+   * Helper that is used during creation of this class and parses the XML
+   * messages delivered from the web-service. It expects to review and array
+   * with two elements (LibrayExtension and Loans) from the XML response.
+   *
+   * @param array $data
+   *  Array with two elements (LibrayExtension and Loans) from the XML response.
    */
-  public function __unset($name) {
-    if (array_key_exists($name, $this->properties)) {
-      $this->properties[$name] = NULL;
-    }
-    else {
-      throw new PublizonLoansException('Trying to unset publizon loans property that do not exists (' . $name . ').');
-    }
-  }
-
-  public function __toString() {
-    throw new PublizonLoansException('To string have not been implemented yet');
-  }
-
   private function parse($data) {
     // Set information about the users loans limit.
     $extension = $data[1];
@@ -143,7 +142,7 @@ class PublizonUserLoans {
       }
 
       // Build loan array.
-      $loans[] = array(
+      $loans[(string)$item->book->attributes()->id] = array(
         'retailer_order_number' => (string)$item->retailerordernumber,
         'status' => (string)$item->orderstatus->attributes()->name,
         'order_date' => strtotime((string)$item->orderdate),

@@ -9,7 +9,10 @@
  * Eg. $product = new PublizonProduct('9788770703147');
  */
 
-class PublizonProduct {
+/**
+ * Publizon Product class that can hold a Publizon Product (ebook or netsound).
+ */
+class PublizonProduct extends Publizon {
   private $properties = array(
     'created' => NULL,
     'modified' => NULL,
@@ -68,70 +71,33 @@ class PublizonProduct {
   }
 
   /**
-   * Implements PHP magic __get function.
-   */
-  public function __get($name) {
-    if (array_key_exists($name, $this->properties)) {
-      return $this->properties[$name];
-    }
-    throw new PublizonProductException('Trying to get publizon product property that do not exists (' . $name . ').');
-  }
-
-  /**
-   * Implements PHP magic __set function.
-   */
-  public function __set($name, $value) {
-    if (array_key_exists($name, $this->properties)) {
-      $this->properties[$name]= $value;
-    }
-    else {
-      throw new PublizonProductException('Trying to set publizon product property that do not exists (' . $name . ').');
-    }
-  }
-
-  /**
-   * Implements PHP magic __isset function.
-   */
-  public function __isset($name) {
-    if (array_key_exists($name, $this->properties)) {
-      return isset($this->properties[$name]);
-    }
-    else {
-      throw new PublizonProductException('Trying to test publizon product property that do not exists (' . $name . ').');
-    }
-  }
-
-  /**
-   * Implements PHP magic __unset function.
-   */
-  public function __unset($name) {
-    if (array_key_exists($name, $this->properties)) {
-      $this->properties[$name] = NULL;
-    }
-    else {
-      throw new PublizonProductException('Trying to unset publizon product property that do not exists (' . $name . ').');
-    }
-  }
-
-  public function __toString() {
-    throw new PublizonProductException('To string have not been implemented yet');
-  }
-
-  /**
    * Returns the cover image through an image cache preset. If the full size or
    * raw cover image is needed simple call: $product->cover.
    *
    * If the product do not have a cover image a default one located in the files
    * folder name default_cover.jpg will be used.
    *
+   * @todo: If cover is not defined, try to look in our local filesystem. We may
+   *        have it on storage. This can be usefull on user loans lists.
+   *
    * @param string $presetname
    *  Name of the image cache preset to run the image through.
+   * @param bool $local_cache
+   *  If cover is not defined, try to look in the local filesystem. There may
+   *  be a copy on storage. This can be usefull on user loans lists. Defaults to
+   *  FALSE.
    * @return string
    *  Path to the rendered image.
    */
-  public function getCover($presetname) {
+  public function getCover($presetname, $local_cache = FALSE) {
     if (!isset($this->cover)) {
      return imagecache_create_url($presetname, file_directory_path() . '/default_cover.jpg');
+    }
+    if ($local_cache) {
+      $path = file_directory_path() . '/' . $this->encodeFile();
+      if (!file_exists($path)) {
+        return imagecache_create_url($presetname, $path);
+      }
     }
     return imagecache_create_url($presetname, $this->cover);
   }
