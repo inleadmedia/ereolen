@@ -1,5 +1,12 @@
 <?php
+/**
+ * @file
+ *
+ */
 
+/**
+ *
+ */
 abstract class PublizonLogger {
 
   const EMERGENCY = 'EMERGENCY';
@@ -22,7 +29,7 @@ abstract class PublizonLogger {
    */
   public function log($message, $severity = self::INFO) {
     if (!in_array($severity, self::$levels)) {
-      throw new Exception('Unsupported severity: '.$severity);
+      throw new Exception('Unsupported severity: ' . $severity);
     }
     $this->doLog($message, $severity);
   }
@@ -33,8 +40,8 @@ abstract class PublizonLogger {
 class PublizonWatchDogLogger extends PublizonLogger {
   public function doLog($message, $severity) {
     watchdog('publizon client', htmlspecialchars($message, ENT_QUOTES, 'UTF-8', FALSE), array(),
-             constant('WATCHDOG_' . $severity),
-             'http://' . $_SERVER["HTTP_HOST"] . request_uri());
+      constant('WATCHDOG_' . $severity),
+      'http://' . $_SERVER["HTTP_HOST"] . request_uri());
   }
 }
 

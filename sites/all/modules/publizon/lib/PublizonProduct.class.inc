@@ -91,7 +91,7 @@ class PublizonProduct extends Publizon {
    */
   public function getCover($presetname, $local_cache = FALSE) {
     if (!isset($this->cover)) {
-     return imagecache_create_url($presetname, file_directory_path() . '/default_cover.jpg');
+      return imagecache_create_url($presetname, file_directory_path() . '/default_cover.jpg');
     }
     if ($local_cache) {
       $path = file_directory_path() . '/' . $this->encodeFile();

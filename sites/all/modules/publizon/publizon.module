@@ -89,7 +89,7 @@ function publizon_elements() {
  */
 function publizon_library_field_value($element, $edit = FALSE) {
   if (func_num_args() == 1) {
-     return $element['#default_value'];
+    return $element['#default_value'];
   }
   return $edit;
 }
@@ -184,7 +184,7 @@ function publizon_get_authors($ting_object, $link = TRUE) {
         $authors .= $authors . ', ';
       }
     }
-    $authors = substr($authors, 0, -2);
+    $authors = drupal_substr($authors, 0, -2);
   }
 
   return $authors;

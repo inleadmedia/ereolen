@@ -26,7 +26,7 @@ function publizon_admin_form(&$form_state) {
   $form['publizon']['settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Default settings'),
-    '#description'=> t('These settings are used to communicate with the publizon web-service, when no user is logged in. They are required to be able to fetch information about products (eg. covers and basic information from Publizon)'),
+    '#description' => t('These settings are used to communicate with the publizon web-service, when no user is logged in. They are required to be able to fetch information about products (eg. covers and basic information from Publizon)'),
     '#collapsible' => TRUE,
     '#collapsed' => isset($default['settings']['base_url']) ? TRUE : FALSE,
   );

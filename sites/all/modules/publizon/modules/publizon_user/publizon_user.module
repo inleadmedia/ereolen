@@ -91,7 +91,7 @@ function publizon_user_authentication($login_id, $pass, $retailer_id) {
   $client = PublizonClient::getClient($retailer_id, $library['retailer_key_code']);
 
   // Validate the user.
-  if($client->validateLibraryUser($login_id, $pass)) {
+  if ($client->validateLibraryUser($login_id, $pass)) {
     // Store login information need to communicat with Publizon in the users
     // current session.
     $_SESSION['login_id'] = $login_id;

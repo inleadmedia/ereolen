@@ -4,6 +4,9 @@
  *
  */
 
+/**
+ *
+ */
 class PublizonClient {
   private $retailer_id;
   private $retailer_key_code;
@@ -75,7 +78,7 @@ class PublizonClient {
    * Returns an instances of the PublizonClient object that can be used to
    * communicate with the Publizon web-service.
    *
-   * @see PublizonClient
+   * @see PublizonClient().
    *
    * @param string $retailer_id
    *  An id that represents the library at publizon.
@@ -125,7 +128,7 @@ class PublizonClient {
       // Make request to the web-service for the loans.
       $response = $this->call('libraray_list', 'GetLastLoansForAll', array(
         'pub:listtype' => $list_type
-       ), array('pub' => 'http://pubhub.dk/'));
+      ), array('pub' => 'http://pubhub.dk/'));
 
       $products = array();
       $items_found = 0;

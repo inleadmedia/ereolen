@@ -24,7 +24,7 @@ class PublizonUserLoans extends Publizon {
     'max_loans_total_sound' => NULL,
 
     /**
-    * Loans in both netsound and ebook.
+    * Loans in both netsound and ebook ?
     */
     'max_total_period' => NULL,
     'user_total_loans' => NULL,
@@ -112,7 +112,8 @@ class PublizonUserLoans extends Publizon {
    * with two elements (LibrayExtension and Loans) from the XML response.
    *
    * @param array $data
-   *  Array with two elements (LibrayExtension and Loans) from the XML response.
+   *  Array with two elements (LibrayExtension and Loans) from the XML response
+   *  as SimpleXmlElement objects.
    */
   private function parse($data) {
     // Set information about the users loans limit.
