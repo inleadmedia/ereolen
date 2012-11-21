@@ -3,9 +3,6 @@
  * @file
  * Contains the authentication process and login form alters need to handle
  * login through Publizon.
- *
- * It also contains the users loan block definition, which is mainly shown on
- * the user page (my page).
  */
 
 /**
@@ -237,3 +234,20 @@ function publizon_user_library($retailer_id, $reset = FALSE) {
 
   return isset($libraries[$retailer_id]) ? $libraries[$retailer_id] : FALSE;
 }
+
+/**
+ * Test if the current user is logged into Publizon. The user may be a normal
+ * Drupal user.
+ *
+ * @global object $user
+ * @return mixed
+ *  Drupal uid if the user is logged in else FALSE.
+ */
+function publizon_user_is_logged_in() {
+  global $user;
+  if ($user->uid != 0 && $_SESSION['login_id']) {
+    return $user->uid;
+  }
+  return FALSE;
+}
+

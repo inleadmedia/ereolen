@@ -4,6 +4,7 @@ core = 6.x
 php = 5.2
 
 dependencies[] = publizon
+dependencies[] = publizon_user
 
 ; Data class used to store information from Publizon.
 files[] = lib/PublizonUserLoans.class.inc

@@ -1,8 +1,65 @@
 <?php
 /**
  * @file
- *
+ * Defines the users loans blocks. It module also contains the PublizonLoans
+ * class which is used to store information and communicate with Publizon about
+ * user loans.
  */
+
+function publizon_loans_perm() {
+  
+}
+
+/**
+ * Implementation of hook_block().
+ */
+function publizon_loans_block($op = 'list', $delta = 0, $edit = array()) {
+  $block = array();
+  switch ($op) {
+    case 'list':
+      $block['myloans'] = array(
+        'info' => t('My loans (Publizon)'),
+        'cache' => BLOCK_NO_CACHE,
+        'status' => 1,
+      );
+      $block['lastloans'] = array(
+        'info' => t('Last loans (Publizon)'),
+        'cache' => BLOCK_CACHE_PER_PAGE,
+        'status' => 1,
+      );
+      break;
+
+    case 'view':
+      if ($delta == 'myloans') {
+        // Get information about your loans at Publizon
+        if ($uid = publizon_user_is_logged_in()) {
+          $publizon_loans = new PublizonUserLoans($uid, $_SESSION['login_id']);
+          // @todo if card not given fallback on session inside module.
+        }
+        else {
+          $content = t('You need to be logged into Publizon to display your loans.');
+        }
+
+        $block = array(
+          'title' => t('My loans'),
+          'content' => $content,
+        );
+      }
+      elseif ($delta == 'lastloans') {
+        $block = array(
+          'title' => t('Last loans'),
+          'content' => 'CONTENT',
+        );
+      }
+      break;
+
+    case 'configure':
+      break;
+  }
+  return $block;
+}
+
+
 
 /**
  * Implements hook_flush_caches().
@@ -12,14 +69,6 @@
  *
  * @see publizon.drush.inc
  */
-function publizon_flush_caches() {
+function publizon_loans_flush_caches() {
   return array('cache_publizon_loans');
-}
-
-function publizon_loans_block_info() {
-
-}
-
-function publizon_loans_block_view($delta) {
-
 }
