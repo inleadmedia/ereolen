@@ -13,7 +13,7 @@
  * Publizon Product class that can hold a Publizon Product (ebook or netsound).
  */
 class PublizonProduct extends Publizon {
-  private $properties = array(
+  protected $properties = array(
     'created' => NULL,
     'modified' => NULL,
     'published' => NULL,

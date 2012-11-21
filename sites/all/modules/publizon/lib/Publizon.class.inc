@@ -10,7 +10,7 @@
  * Abstract class that all Publizon storage class should extend.
  */
 abstract class Publizon {
-  private $properties = array();
+  protected $properties = array();
 
   /**
    * Implements PHP magic __get function.

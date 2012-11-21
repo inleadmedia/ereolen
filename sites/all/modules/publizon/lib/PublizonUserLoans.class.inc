@@ -12,7 +12,7 @@
  *
  */
 class PublizonUserLoans extends Publizon {
-  private $properties = array(
+  protected $properties = array(
     'max_loan_period' => NULL,
     'max_loan_per_time' => NULL,
     'max_loans_total' => NULL,
