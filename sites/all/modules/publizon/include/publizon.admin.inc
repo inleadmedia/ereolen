@@ -35,7 +35,7 @@ function publizon_admin_form(&$form_state) {
     '#type' => 'textfield',
     '#title' => t('Base URL of the web-service'),
     '#description' => t('The URL of the web-service at Publizon (eg. https://libraryservices.pubhub.dk/)'),
-    '#default_value' => isset($default['settings']['base_url']) ?  $default['settings']['base_url'] : 'https://libraryservices.pubhub.dk/',
+    '#default_value' => isset($default['settings']['base_url']) ? $default['settings']['base_url'] : 'https://libraryservices.pubhub.dk/',
     '#required' => TRUE,
   );
 
@@ -43,7 +43,7 @@ function publizon_admin_form(&$form_state) {
     '#type' => 'textfield',
     '#title' => t('Retailer ID'),
     '#description' => t("This is the library's identification at publizon, which you should recieve from them."),
-    '#default_value' => isset($default['settings']['retailer_id']) ?  $default['settings']['retailer_id'] : '',
+    '#default_value' => isset($default['settings']['retailer_id']) ? $default['settings']['retailer_id'] : '',
     '#required' => TRUE,
   );
 
@@ -51,7 +51,7 @@ function publizon_admin_form(&$form_state) {
     '#type' => 'textfield',
     '#title' => t('Retailer key code'),
     '#description' => t('This is a MD5 hash of the code provied with the retailer ID above.'),
-    '#default_value' => isset($default['settings']['retailer_key_code']) ?  $default['settings']['retailer_key_code'] : '',
+    '#default_value' => isset($default['settings']['retailer_key_code']) ? $default['settings']['retailer_key_code'] : '',
     '#required' => TRUE,
   );
 
@@ -59,8 +59,16 @@ function publizon_admin_form(&$form_state) {
     '#type' => 'textfield',
     '#title' => t('Language code'),
     '#description' => t('You should also have a language code from Publizon (default: da).'),
-    '#default_value' => isset($default['settings']['langcode']) ?  $default['settings']['langcode'] : 'da',
+    '#default_value' => isset($default['settings']['langcode']) ? $default['settings']['langcode'] : 'da',
     '#required' => TRUE,
+  );
+
+  $form['publizon']['settings']['type'] = array(
+    '#type' => 'select',
+    '#title' => t('Site type'),
+    '#description' => t('Which type for information should the Publizon web-service deliver'),
+    '#options' => array(PUBLIZON_EBOOK => 'E-book', PUBLIZON_NETSOUND => 'Net sound'),
+    '#default_value' => isset($default['settings']['type']) ? $default['settings']['type'] : PUBLIZON_EBOOK,
   );
 
   $form['publizon']['settings']['logging'] = array(
@@ -197,6 +205,11 @@ function publizon_admin_form_submit($form, &$form_state) {
   // Remove buttons from values;
   unset($form_state['values']['publizon']['libraries']['add_library']);
   unset($form_state['values']['publizon']['libraries']['remove_library']);
+
+  // Store site type information in own variable, so it can be set in
+  //settings.php
+  variable_set('publizon_site_type', $form_state['values']['publizon']['settings']['type']);
+  unset($form_state['values']['publizon']['settings']['type']);
 
   // Make sure "empty" is removed.
   foreach ($form_state['values']['publizon']['libraries'] as $id => $library) {

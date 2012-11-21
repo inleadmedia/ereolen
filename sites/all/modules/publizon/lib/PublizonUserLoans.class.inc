@@ -57,11 +57,8 @@ class PublizonUserLoans extends Publizon {
       $this->properties = $cache->data;
     }
     else {
-      /**
-       * @TODO: Move the book type into configuration.
-       */
       $client = PublizonClient::getClient();
-      $data = $client->getLibraryUserOrderList($card_number, PUBLIZON_EBOOK);
+      $data = $client->getLibraryUserOrderList($card_number, variable_get('publizon_site_type', PUBLIZON_EBOOK));
       if ($data) {
         $this->parse($data);
       }
