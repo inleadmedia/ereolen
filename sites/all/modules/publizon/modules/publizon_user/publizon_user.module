@@ -1,7 +1,11 @@
 <?php
 /**
  * @file
+ * Contains the authentication process and login form alters need to handle
+ * login through Publizon.
  *
+ * It also contains the users loan block definition, which is mainly shown on
+ * the user page (my page).
  */
 
 /**

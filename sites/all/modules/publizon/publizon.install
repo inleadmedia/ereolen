@@ -7,7 +7,6 @@
 function publizon_schema() {
   $schema = array();
   $schema['cache_publizon_product'] = drupal_get_schema_unprocessed('system', 'cache');
-  $schema['cache_publizon_loans'] = drupal_get_schema_unprocessed('system', 'cache');
   return $schema;
 }
 

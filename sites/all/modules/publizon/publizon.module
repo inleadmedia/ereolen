@@ -140,7 +140,7 @@ function publizon_library_field_validate($element, &$form_state) {
  * @see publizon.drush.inc
  */
 function publizon_flush_caches() {
-  return array('cache_publizon_product', 'cache_publizon_loans');
+  return array('cache_publizon_product');
 }
 
 /**

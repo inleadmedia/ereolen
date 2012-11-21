@@ -1,0 +1,9 @@
+name = Publizon loans
+description = Provides information about loans from Publizon web-service..
+core = 6.x
+php = 5.2
+
+dependencies[] = publizon
+
+; Data class used to store information from Publizon.
+files[] = lib/PublizonUserLoans.class.inc

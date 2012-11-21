@@ -5,11 +5,15 @@
  */
 
 /**
- * Holds information about a given users loans (storage class). The loans are
- * indexed by ISBN and can be fetched by $user_loans->loans['isbn'];
+ * Stores information about a given users loans (storage class). So information
+ * about max loans and remaining loans for the current user is stored here.
  *
- * @todo: Test that the loans can be indexed, if not move it outside properties.
+ * The users loans are indexed by ISBN and can be fetched by
+ * $user_loans->loans['isbn'] or simple $user_loans->loans.
  *
+ * The loans array contains a PublizonProduct object with extened information
+ * about the product if avaliable from Publizon. If not available its values
+ * will be empty with the exception of the ISBN number.
  */
 class PublizonUserLoans extends Publizon {
   protected $properties = array(

@@ -77,9 +77,6 @@ class PublizonProduct extends Publizon {
    * If the product do not have a cover image a default one located in the files
    * folder name default_cover.jpg will be used.
    *
-   * @todo: If cover is not defined, try to look in our local filesystem. We may
-   *        have it on storage. This can be usefull on user loans lists.
-   *
    * @param string $presetname
    *  Name of the image cache preset to run the image through.
    * @param bool $local_cache
