@@ -58,9 +58,6 @@ function publizon_theme() {
       'arguments' => array('element' => NULL),
       'template' => 'templates/publizon-library-field',
     ),
-    // Book
-    // Book list
-    // Loan
   );
 }
 
