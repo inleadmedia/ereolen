@@ -55,14 +55,14 @@ class PublizonUserLoans extends Publizon {
    *  Drupal user ID
    * @throws PublizonProductException
    */
-  public function __construct($uid, $card_number, $reset = FALSE) {
+  public function __construct($uid, $card_number = NULL, $reset = FALSE) {
     // Check cache for the properties values.
     if (!$reset && ($cache = cache_get($uid, 'cache_publizon_loans'))) {
       $this->properties = $cache->data;
     }
     else {
       $client = PublizonClient::getClient();
-      $data = $client->getLibraryUserOrderList($card_number, variable_get('publizon_site_type', PUBLIZON_EBOOK));
+      $data = $client->getLibraryUserOrderList($this->getCardNumber($card_number), variable_get('publizon_site_type', PUBLIZON_EBOOK));
       if ($data) {
         $this->parse($data);
       }
@@ -70,8 +70,9 @@ class PublizonUserLoans extends Publizon {
         throw new PublizonLoansException('The server did not return any information about the users loans.');
       }
 
-      // We cache the result for 24 hours.
-      cache_set($uid, $this->properties, 'cache_publizon_loans', time() + 43200);
+      // We cache the result until the user makes changes to the loans or loan
+      // expires.
+      cache_set($uid, $this->properties, 'cache_publizon_loans');
     }
   }
 
@@ -85,7 +86,7 @@ class PublizonUserLoans extends Publizon {
    * @throws PublizonProductException
    *  The exception is thrown if the loan is not found for the user.
    */
-  public function is_expired($isbn) {
+  public function isExpired($isbn) {
     if (isset($this->loans[$isbn])) {
       if (($this->loans[$isbn]->expire_date - time()) > 0) {
         return FALSE;
@@ -103,11 +104,33 @@ class PublizonUserLoans extends Publizon {
    * @return boolean
    *  TRUE if the user have the loan else FALSE.
    */
-  public function is_a_loan($isbn) {
+  public function isLoan($isbn) {
     if (isset($this->loans[$isbn])) {
       return TRUE;
     }
     return FALSE;
+  }
+
+  /**
+   * If the parameter given is not NULL and is numeric the card number is
+   * returned. If not, the session is checked for a login ID, which is returned
+   * if found.
+   *
+   * @param string $card_number
+   *  Login ID which most likely is a card number or CPR.
+   * @return string
+   *  The cardnumber.
+   * @throws PublizonLoansException
+   *  If the card number / login id is not found the exceptionis thrown.
+   */
+  private function getCardNumber($card_number) {
+    if (isset($card_number) && is_numeric($card_number)) {
+      return $card_number;
+    }
+    elseif (isset($_SESSION['login_id'])) {
+      return $_SESSION['login_id'];
+    }
+    throw new PublizonLoansException('Can\'t get loans for the current user as no login ID was detected');
   }
 
   /**

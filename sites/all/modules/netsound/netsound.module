@@ -108,39 +108,39 @@ function netsound_contact_error_form($form_state) {
   $form['contact_library'] = array(
     '#type' => 'select',
     '#title' => t('Vælg dit bibliotek'),
-    '#options' => elib_libraries_get_libraries(),
-    '#required' => true
+    '#options' => publizon_get_libraries(),
+    '#required' => TRUE,
   );
 
   global $user;
   $userinfo = elib_user_get_cred($user->uid);
   if($userinfo['lib']){
     $form['contact_library']['#default_value'] = $userinfo['lib'];
-    $form['contact_library']['#disabled'] = true;
+    $form['contact_library']['#disabled'] = TRUE;
   }
 
   $form['contact_login_number'] = array(
     '#type' => 'textfield',
     '#title' => t('Det nummer du benytter ved login (Lånerkortnr. / CPR)'),
-    '#required' => true
+    '#required' => TRUE
   );
 
   $form['contact_title'] = array(
     '#type' => 'textfield',
     '#title' => t('Hvilken titel/titler drejer det sig om?'),
-    '#required' => true
+    '#required' => TRUE
   );
 
   $form['contact_time'] = array(
     '#type' => 'date',
     '#title' => t('Hvornår oplevede du problemet?'),
-    '#required' => true
+    '#required' => TRUE
   );
 
   $form['contact_error'] = array(
     '#type' => 'textarea',
     '#title' => t('Uddybende beskrivelse af det problem du oplever'),
-    '#required' => true,
+    '#required' => TRUE,
   );
 
   $form['tablet'] = array(
@@ -152,7 +152,7 @@ function netsound_contact_error_form($form_state) {
         'tablet' => 'Tablet',
         'ebookreader' => 'Ebogslæser',
     ),
-    '#required' => true,
+    '#required' => TRUE,
   );
 
   $form['tablet_model'] = array(
@@ -176,13 +176,13 @@ function netsound_contact_error_form($form_state) {
       'netscape' => 'Netscape',
       'anden' => 'Anden'
     ),
-    '#required' => true
+    '#required' => TRUE
   );
 
   $form['contact_os'] = array(
     '#type' => 'select',
     '#title' => t('Hvilket operativsystem anvender du?'),
-    '#required' => true,
+    '#required' => TRUE,
     '#options' => array(
       'win8' => 'Windows 8',
       'win7' => 'Windows 7',
@@ -215,20 +215,20 @@ function netsound_contact_netlyd_form($form_state){
   $form['contact_mail'] = array(
     '#type' => 'textfield',
     '#title' => t('E-mail'),
-    '#required' => true
+    '#required' => TRUE
   );
 
   $form['contact_library'] = array(
     '#type' => 'select',
     '#title' => t('Vælg dit bibliotek'),
-    '#options' => elib_libraries_get_libraries(),
-  	'#required' => true,
+    '#options' => publizon_get_libraries(),
+  	'#required' => TRUE,
   );
   global $user;
   $userinfo = elib_user_get_cred($user->uid);
   if($userinfo['lib']){
     $form['contact_library']['#default_value'] = $userinfo['lib'];
-    $form['contact_library']['#disabled'] = true;
+    $form['contact_library']['#disabled'] = TRUE;
   }
   $form['problem'] = array(
     '#type' => 'textarea',
@@ -250,52 +250,52 @@ function netsound_contact_elib_form($form_state){
   $form['contact_library'] = array(
     '#type' => 'select',
     '#title' => t('Vælg dit lokalbibliotek2'),
-    '#options' => elib_libraries_get_libraries(),
-  	'#required' => true
+    '#options' => publizon_get_libraries(),
+  	'#required' => TRUE
   );
 
   global $user;
   $userinfo = elib_user_get_cred($user->uid);
   if ($userinfo['lib']){
     $form['contact_library']['#default_value'] = $userinfo['lib'];
-    $form['contact_library']['#disabled'] = true;
+    $form['contact_library']['#disabled'] = TRUE;
   }
 
 
   $form['contact_ssn'] = array(
     '#type' => 'textfield',
     '#title' => t('Det nummer du benytter ved login (Lånerkortnr. / CPR)'),
-    '#required' => true,
+    '#required' => TRUE,
   );
 
   $form['contact_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Navn'),
-    '#required' => true,
+    '#required' => TRUE,
   );
 
   $form['contact_mail'] = array(
     '#type' => 'textfield',
     '#title' => t('E-mail'),
-    '#required' => true
+    '#required' => TRUE
   );
 
   $form['problem'] = array(
     '#type' => 'textarea',
     '#title' => t('Uddybende beskrivelse af det problem du oplever'),
-    '#required' => true,
+    '#required' => TRUE,
   );
 
   $form['book_title'] = array(
     '#type' => 'textfield',
     '#title' => t('Hvilken titel/titler drejer det sig om?'),
-    '#required' => true,
+    '#required' => TRUE,
   );
 
   $form['error_time'] = array(
     '#type' => 'date',
     '#title' => t('Hvornår oplevede du problemet?'),
-    '#required' => true,
+    '#required' => TRUE,
 
   );
 
@@ -308,7 +308,7 @@ function netsound_contact_elib_form($form_state){
         'tablet' => 'Tablet',
         'ebookreader' => 'Ebogslæser',
     ),
-    '#required' => true,
+    '#required' => TRUE,
   );
 
   $form['tablet_model'] = array(
@@ -337,7 +337,7 @@ function netsound_contact_elib_form($form_state){
   $form['contact_os'] = array(
     '#type' => 'select',
     '#title' => t('Hvilket operativsystem anvender du?'),
-    '#required' => true,
+    '#required' => TRUE,
     '#options' => array(
       'win8' => 'Windows 8',
       'win7' => 'Windows 7',
@@ -364,7 +364,7 @@ function netsound_contact_form_submit($form, &$form_state){
   $header = array('Form Key', 'Value');
   $rows = array();
 
-  $libraries = elib_libraries_get_libraries();
+  $libraries = publizon_get_libraries();
 
   foreach($form_state['values'] as $key => $value){
     // Change library id with real name.
@@ -399,8 +399,8 @@ function netsound_contact_form_submit($form, &$form_state){
     $mail = variable_get('netsound_publizonmail', '');
   }
 
-  $mail_from = $form_state['values']['contact_mail'] == null ? "support@ereolen.dk" : $form_state['values']['contact_mail'];
-  drupal_mail('netsound','somekey',$mail,language_default(),$params,$mail_from,true);
+  $mail_from = $form_state['values']['contact_mail'] == NULL ? "support@ereolen.dk" : $form_state['values']['contact_mail'];
+  drupal_mail('netsound','somekey',$mail,language_default(),$params,$mail_from,TRUE);
 
   drupal_set_message(t('Tak for din henvendelse. Vi stræber på at behandle den hurtigst muligt.'));
   drupal_goto(); // frontpage

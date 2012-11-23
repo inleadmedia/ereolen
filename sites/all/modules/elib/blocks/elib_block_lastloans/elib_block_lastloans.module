@@ -154,7 +154,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
         }
 
         $u = elib_user_get_cred();
-        $libs = elib_libraries_get_libraries();
+        $libs = publizon_get_libraries();
 
         foreach ($libs as $key => $lib) {
           if ($key == $u['lib']) {

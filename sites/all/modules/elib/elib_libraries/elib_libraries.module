@@ -45,20 +45,20 @@ function elib_libraries_findlib($cardno){
 //  }
 //}
 
-function elib_libraries_get_libraries(){
-	$matrix = variable_get('elib_libraries', FALSE);
-	if ($matrix) {
-    $libraries = explode("\n",  $matrix);
-    foreach ($libraries as $library) {
-      $p = explode('|',$library);
-      $libs[trim($p[0])] = trim($p[1]);
-    }
-
-    return $libs;
-	}
-
-  return FALSE;
-}
+//function elib_libraries_get_libraries(){
+//	$matrix = variable_get('elib_libraries', FALSE);
+//	if ($matrix) {
+//    $libraries = explode("\n",  $matrix);
+//    foreach ($libraries as $library) {
+//      $p = explode('|',$library);
+//      $libs[trim($p[0])] = trim($p[1]);
+//    }
+//
+//    return $libs;
+//	}
+//
+//  return FALSE;
+//}
 
 function elib_libraries_get_library_keycode($lib){
   $matrix = variable_get('elib_libraries', FALSE);

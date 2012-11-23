@@ -1,4 +1,4 @@
-<?php
+ƒ<?php
 /**
  * @file
  * Defines the users loans blocks. It module also contains the PublizonLoans
@@ -7,7 +7,7 @@
  */
 
 function publizon_loans_perm() {
-  
+
 }
 
 /**
@@ -22,19 +22,15 @@ function publizon_loans_block($op = 'list', $delta = 0, $edit = array()) {
         'cache' => BLOCK_NO_CACHE,
         'status' => 1,
       );
-      $block['lastloans'] = array(
-        'info' => t('Last loans (Publizon)'),
-        'cache' => BLOCK_CACHE_PER_PAGE,
-        'status' => 1,
-      );
       break;
 
     case 'view':
       if ($delta == 'myloans') {
         // Get information about your loans at Publizon
         if ($uid = publizon_user_is_logged_in()) {
-          $publizon_loans = new PublizonUserLoans($uid, $_SESSION['login_id']);
-          // @todo if card not given fallback on session inside module.
+          $publizon_loans = new PublizonUserLoans($uid);
+
+          
         }
         else {
           $content = t('You need to be logged into Publizon to display your loans.');
@@ -43,12 +39,6 @@ function publizon_loans_block($op = 'list', $delta = 0, $edit = array()) {
         $block = array(
           'title' => t('My loans'),
           'content' => $content,
-        );
-      }
-      elseif ($delta == 'lastloans') {
-        $block = array(
-          'title' => t('Last loans'),
-          'content' => 'CONTENT',
         );
       }
       break;
