@@ -256,3 +256,32 @@ function publizon_get_library($retailer_id, $reset = FALSE) {
 
   return isset($libraries[$retailer_id]) ? $libraries[$retailer_id] : FALSE;
 }
+
+/**
+ *
+ *
+ * @param type $isbn
+ * @return type
+ */
+function publizon_ting_find_object($isbn) {
+  // Build ting request.
+  $request = ting_get_request_factory()->getSearchRequest();
+  $request = ting_add_agency($request);
+  $request = ting_add_profile($request);
+
+  // Try to fetch ting object based on ISBN number. Sadly not all object in
+  // ebooks or net sound have ISBN, but uses oss:PROVIDER-ID, which we can not
+  // search directly on (so no dc.identificer=*). Also therefor it have been
+  // reanemd, because it dose not only find object by ISBN.
+  $request->setQuery($isbn);
+  $request->setNumResults(1);
+
+  // Execute the fetch.
+  $response = ting_execute($request);
+  $object = FALSE;
+  if (isset($response->collections[0]->objects[0])) {
+    $object = $response->collections[0]->objects[0];
+  }
+
+  return $object;
+}

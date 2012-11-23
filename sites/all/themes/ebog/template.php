@@ -20,7 +20,7 @@ function ebog_preprocess_ting_object(&$vars) {
   drupal_set_title(check_plain($vars['object']->title . ' ' . t('af') . ' ' . $vars['object']->creators_string));
 
   // Create the author field
-  $vars['author'] = _elib_get_author($vars['object']);
+  $vars['author'] = publizon_get_authors($vars['object']);
 
   // Get cover image.
   $vars['elib_book_cover'] = elib_book_cover($isbn, '170_x');
@@ -60,7 +60,7 @@ function ebog_preprocess_ting_search_collection(&$vars) {
     }
 
     // Get authors.
-    $vars['elib'][$isbn]['author'] = _elib_get_author($obj);
+    $vars['elib'][$isbn]['author'] = publizon_get_authors($obj);
 
     // Get cover image.
     $vars['elib'][$isbn]['elib_book_cover'] = elib_book_cover($isbn, '170_x');
