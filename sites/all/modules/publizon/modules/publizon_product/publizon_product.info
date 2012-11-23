@@ -1,0 +1,9 @@
+name = Publizon product
+description = Provides information about products (ebooks and net sound) from Publizon web-service.
+core = 6.x
+php = 5.2
+
+dependencies[] = publizon
+
+; Data class used to store information from Publizon.
+files[] = lib/PublizonUserProduct.class.inc
