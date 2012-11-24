@@ -163,7 +163,7 @@ function template_preprocess_publizon_actions(&$vars) {
     case 'default':
       if (isset($vars['product']->teaser_link)) {
         $vars['actions']['sample'] = l(t('Sample'), $vars['product']->teaser_link, array('html' => true, 'attributes' => array('target' => '_blank', 'action' => 'sample')));
-        $vars['actions']['loan'] = l(t('Loan'), $object_url . '/download', array('html' => true));
+        $vars['actions']['loan'] = l(t('Loan'), $object_url . '/download', array('html' => true,  'attributes' => array('class' => 'loan')));
       }
       else {
         // The book dosen't have a sample link, hence can't be downloaded.
@@ -172,7 +172,7 @@ function template_preprocess_publizon_actions(&$vars) {
 
     // Cart list on the user page.
     case 'cart':
-      $vars['actions']['remove'] = l(t('Remove'), $object_url . '/huskeliste/fjern', array('html' => true, 'query' => drupal_get_destination()));
+      $vars['actions']['remove'] = recall_list_delete_link($vars['product']->isbn);
       break;
 
     default:

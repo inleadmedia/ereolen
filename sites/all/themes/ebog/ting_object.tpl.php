@@ -191,7 +191,7 @@ if (module_exists('ding_voxb')) {
             if($user->uid){
               print '<li class="seperator"></li>';
               print '<li>';
-              print l(t('Husk'), $object->url . '/huskeliste?' . drupal_get_destination(), array('html' => true));
+              print recall_list_add_link($object->record['dc:identifier']['oss:PROVIDER-ID']);
               print '</li>';
             }
           ?>
