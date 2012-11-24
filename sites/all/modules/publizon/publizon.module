@@ -60,7 +60,7 @@ function publizon_theme() {
     ),
     // Add action buttons to loans, products and ting objects.
     'publizon_actions' => array(
-      'arguments' => array('product' => NULL, 'type' => ''),
+      'arguments' => array('product' => NULL, 'type' => 'default'),
       'template' => 'templates/publizon-actions',
     )
   );
@@ -145,21 +145,39 @@ function publizon_flush_caches() {
   return array('cache_publizon_product');
 }
 
-
+/**
+ * Default implementation fo hook_preprocess_publizon_actions(). It generates
+ * the action links, button or icons on the different publizon product lists.
+ *
+ */
 function template_preprocess_publizon_actions(&$vars) {
-  $object_url = 'ting/object/' . (string)$vars['product']->getTingObject()->id;
-
+  $object_url = 'ting/object/' . $vars['product']->getTingObject()->id;
   $vars['actions'] = array();
   switch ($vars['type']) {
+    // User loan list
     case 'loan':
       $vars['actions']['download'] =  l(t('Download'), $object_url . '/download', array('html' => true, 'attributes' => array('class' => 'loan')));
+      break;
+
+    // Default that should not have a break statement.
+    case 'default':
+      if (isset($vars['product']->teaser_link)) {
+        $vars['actions']['sample'] = l(t('Sample'), $vars['product']->teaser_link, array('html' => true, 'attributes' => array('target' => '_blank', 'action' => 'sample')));
+        $vars['actions']['loan'] = l(t('Loan'), $object_url . '/download', array('html' => true));
+      }
+      else {
+        // The book dosen't have a sample link, hence can't be downloaded.
+        $vars['actions']['unavailable'] = '<span>' . t('Unavailable') . '</span>';
+      }
+
+    // Cart list on the user page.
+    case 'cart':
+      $vars['actions']['remove'] = l(t('Remove'), $object_url . '/huskeliste/fjern', array('html' => true, 'query' => drupal_get_destination()));
       break;
 
     default:
       break;
   }
-
-  $i = 1;
 }
 
 /**

@@ -1,5 +1,6 @@
 name = Publizon intergration
 description = Provides an API to communicate with the publizon library services
+package = Publizon
 core = 6.x
 php = 5.2
 

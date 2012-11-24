@@ -1,0 +1,195 @@
+<?php
+/**
+ * @file
+ *
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function recall_list_menu() {
+  $items = array();
+
+  $items['recall_list/%/add'] = array(
+    'title' => t('Add to recall list'),
+    'page callback' => 'recall_list_modify',
+    'page arguments' => array(1, 'add'),
+    'access arguments' => array('access content'),
+  );
+
+  $items['recall_list/%/delete'] = array(
+    'title' => t('Delete from recall list'),
+    'page callback' => 'recall_list_modify',
+    'page arguments' => array(1, 'delete'),
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
+
+/**
+ * Modify the contents of a given users netsound cart.
+ *
+ * @param type $isbn
+ *  Product identifier ISBN.
+ * @param type $op
+ *  Operation to preform on the cart.
+ */
+function recall_list_modify($isbn, $op) {
+  // If the current user is valid and logged in to Publizon.
+  if ($uid = publizon_user_is_logged_in()) {
+    $product = new PublizonProduct($isbn);
+
+    // Check that we got a ting object
+    $record = array(
+        'uid' => $uid,
+        'isbn' => $isbn,
+    );
+    switch ($op) {
+      case 'add':
+        $record['timestamp'] = time();
+        drupal_write_record('recall_list', $record);
+        drupal_set_message(t('!book er nu tilføjet din huskeliste', array('!book' => $product->title)));
+        break;
+
+      case 'delete':
+        db_query('DELETE FROM {recall_list}
+                        WHERE uid = %s
+                          AND isbn = "%s"', $uid, $isbn);
+        drupal_set_message(t('!book er nu fjernet fra din huskeliste', array('!book' => $product->title)));
+        break;
+    }
+    _recall_list_cache_clear($uid);
+    drupal_goto();
+  }
+}
+
+/**
+ * Creates a add to cart link.
+ *
+ * @param type $isbn
+ * @return type
+ */
+function recall_list_add_link($isbn) {
+  $options = array(
+    'query' => drupal_get_destination(),
+    'attributes' => array(
+      'class' => 'recall-list-add'
+    )
+  );
+  return l(t('Remember'), 'recall_list/' . $isbn . '/add', $options);
+}
+
+/**
+ * Creates a add to cart link.
+ *
+ * @param type $isbn
+ * @return type
+ */
+function recall_list_delete_link($isbn) {
+  $options = array(
+    'query' => drupal_get_destination(),
+    'attributes' => array(
+      'class' => 'recall-list-add'
+    )
+  );
+  return l(t('Remove'), 'recall_list/' . $isbn . '/delete', $options);
+}
+
+/**
+ * Implements hook_block().
+ *
+ * Provides the "My lists" block with information about the books placed in the
+ * cart.
+ *
+ * @TODO implement cache for this list.
+ */
+function recall_list_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks[0]['info'] = t("What's in my cart?");
+      break;
+
+    case 'view':
+      // Get current logged in user.
+      global $user;
+
+      // Set default block title.
+      $blocks['subject'] = t('Min huskeliste');
+
+      $content = _recall_list_cache_get($user->uid);
+      if ($content == FALSE) {
+        // Load cart form the database and extra information form the datawell.
+        $rows = array();
+        $result = db_query('SELECT DISTINCT isbn FROM {recall_list} WHERE uid = %d', array('%d' => $user->uid));
+        while ($row = db_fetch_array($result)) {
+
+          $product = new PublizonProduct($row['isbn']);
+
+          // HACK XXXX, the objects saved in the cart may not longer exists
+          // in the datawell. So if they do not have ISBN number, we have to
+          // remove them from the cart.
+          if (!isset($product->teaser_link)) {
+            recall_list_modify($row['isbn'], 'delete');
+            continue;
+          }
+
+          $rows[] = theme('publizon_product_list', $product, 'cart');
+        }
+
+        // Build content and cache the result.
+        $content = implode($rows);
+        _recall_list_cache_set($content, $user->uid);
+      }
+
+      if ($content == '') {
+        $blocks['content'] = t('Der er ingen bøger på din huskeliste');
+      }
+      else {
+        $blocks['content'] = $content;
+      }
+
+      break;
+  }
+  return $blocks;
+}
+
+/**
+ * Implements hook_flush_caches().
+ */
+function recall_list_flush_caches() {
+  return array('cache_recall_list');
+}
+
+/**
+ * Helper function to store rendered "remember" lists based on user ID.
+ *
+ * @param type $data
+ * @param type $uid
+ */
+function _recall_list_cache_set($data, $uid) {
+  cache_set($uid,  serialize($data), 'cache_recall_list');
+}
+
+/**
+ * Helper function to retrive rendered "remember" lists based on user ID.
+ *
+ * @param type $uid
+ * @param type $reset
+ * @return boolean
+ */
+function _recall_list_cache_get($uid, $reset = FALSE) {
+  if (!$reset && ($cache = cache_get($uid, 'cache_recall_list')) && !empty($cache->data)) {
+    return unserialize($cache->data);
+  }
+  return FALSE;
+}
+
+/**
+ * Helper function to clear a single stored "remember" list for a single user.
+ *
+ * @param type $uid
+ */
+function _recall_list_cache_clear($uid) {
+  cache_clear_all($uid, 'cache_recall_list');
+}

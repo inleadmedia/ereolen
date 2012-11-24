@@ -16,7 +16,8 @@ jQuery(function($){
       document.location.href = "/help";
     });
 
-    // What dose this do ?
+    // Add class "last" to book lists.
     $('.publizon-loans-list li:last-child').addClass('last');
+    $('.display-book').parent().find('.display-book:last').addClass('last');
   })
 });

@@ -1,0 +1,56 @@
+<?php
+/**
+ * @file
+ *
+ */
+
+/**
+ * Implementation of hook_install().
+ */
+function recall_list_install() {
+  drupal_install_schema('recall_list');
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function recall_list_uninstall() {
+  drupal_uninstall_schema('recall_list');
+}
+
+/**
+ * Implementation of hook_schema().
+ */
+function recall_list_schema() {
+  $schema = array();
+
+  $schema['recall_list'] = array(
+    'description' => t('Recall list used to store products for later usage.'),
+    'fields' => array(
+      'isbn' => array(
+        'type' => 'int',
+        'description' => 'The identifier for the product.',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'timestamp' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'type' => 'varchar',
+        'description' => 'Drupal user ID',
+        'length' => 255,
+        'not null' => TRUE,
+      ),
+    ),
+    'indexes' => array(
+      'uid' => array('uid'),
+    ),
+  );
+
+  $schema['cache_recall_list'] = drupal_get_schema_unprocessed('system', 'cache');
+
+  return $schema;
+}

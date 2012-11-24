@@ -121,6 +121,9 @@ function netsound_cart_block($op = 'list', $delta = 0, $edit = array()) {
                                       FROM {netsound_cart}
                                       WHERE uid = %d', array('%d' => $user->uid));
         while ($row = db_fetch_array($result)) {
+
+          
+
           $object = ting_get_object_by_id($row['ting_object_id']);
 
           // HACK XXXX, the objects saved in the cart may not longer exists
@@ -131,7 +134,7 @@ function netsound_cart_block($op = 'list', $delta = 0, $edit = array()) {
             continue;
           }
 
-          $rows[] = elib_displaybookNEW($object, '', 'small_rm');
+          $rows[] = theme('publizon_product_list', $product, 'cart');
         }
 
         // Build content and cache the result.
