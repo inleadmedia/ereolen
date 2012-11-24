@@ -10,6 +10,21 @@ function publizon_loans_perm() {
 
 }
 
+function publizon_loans_theme() {
+  return array(
+    'publizon_loan' => array(
+      'arguments' => array('loan' => NULL),
+      'template' => 'templates/publizon-loan',
+      'file' => 'publizon_loans.theme.inc',
+    ),
+    'publizon_loans_list' => array(
+      'arguments' => array('loans' => NULL),
+      'template' => 'templates/publizon-loans-list',
+      'file' => 'publizon_loans.theme.inc',
+    ),
+  );
+}
+
 /**
  * Implementation of hook_block().
  */
@@ -26,18 +41,17 @@ function publizon_loans_block($op = 'list', $delta = 0, $edit = array()) {
 
     case 'view':
       if ($delta == 'myloans') {
-        // Get information about your loans at Publizon
+        // Get information about your loans at Publizon and the datawell.
         if ($uid = publizon_user_is_logged_in()) {
-          $publizon_loans = new PublizonUserLoans($uid);
-
-
+          $publizon_loans = new PublizonUserLoans($uid, TRUE);
+          $content = theme('publizon_loans_list', $publizon_loans->loans);
         }
         else {
           $content = t('You need to be logged into Publizon to display your loans.');
         }
 
         $block = array(
-          'title' => t('My loans'),
+          'subject' => t('My loans'),
           'content' => $content,
         );
       }

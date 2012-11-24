@@ -6,4 +6,4 @@ php = 5.2
 dependencies[] = publizon
 
 ; Data class used to store information from Publizon.
-files[] = lib/PublizonUserProduct.class.inc
+files[] = lib/PublizonProduct.class.inc

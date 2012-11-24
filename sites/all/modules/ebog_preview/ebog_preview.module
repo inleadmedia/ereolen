@@ -4,11 +4,10 @@
  * Implementation of hook_init.
  */
 function ebog_preview_init() {
-  if (!defined('EBOG_PREVIEW_PATH')) {
-    define('EBOG_PREVIEW_PATH', drupal_get_path('module', 'ebog_preview'));
-  }
-
-  drupal_add_js(EBOG_PREVIEW_PATH . '/js/ebog_preview_scripts.js', 'file');
+  /**
+   * @todo: This JS is add to all pages on the site (WTF!!!!!!).
+   */
+  drupal_add_js(drupal_get_path('module', 'ebog_preview') . '/js/ebog_preview_scripts.js', 'file');
 }
 
 /**

@@ -665,13 +665,15 @@ voxb h3 {
 }
 
 .pane-elib-user-account,
-.pane-netsound-cart-0 {
+.pane-netsound-cart-0,
+.pane-publizon-loans-myloans {
   float: left;
   width: 310px;
   margin: 0;
 }
 
-.pane-elib-user-account {
+.pane-elib-user-account,
+.pane-publizon-loans-myloans {
   margin-right: 10px;
 }
 
@@ -679,7 +681,8 @@ voxb h3 {
   margin-left: 10px;
 }
 
-.pane-elib-user-account ul {
+.pane-elib-user-account ul,
+.pane-publizon-loans-myloans ul {
   margin: 0;
 }
 

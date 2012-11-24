@@ -243,6 +243,7 @@ function publizon_get_library($retailer_id, $reset = FALSE) {
       return array();
     }
 
+    $libraries = array();
     foreach ($publizon['libraries'] as $library) {
       if ($library['retailer_id'] == $retailer_id) {
         $libraries[$retailer_id] = $library;
@@ -255,10 +256,13 @@ function publizon_get_library($retailer_id, $reset = FALSE) {
 }
 
 /**
+ * Search the T!NG datawell for information based on the ISBN parsed to the
+ * function. If more than one match is found only the first match is returned.
  *
- *
- * @param type $isbn
- * @return type
+ * @param string $isbn
+ *  ISBN number for the product that is searched.
+ * @return TingObject
+ *  Datawell object for the product found.
  */
 function publizon_ting_find_object($isbn) {
   // Build ting request.

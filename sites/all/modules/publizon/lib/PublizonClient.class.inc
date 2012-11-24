@@ -260,7 +260,7 @@ class PublizonClient {
     }
     catch (Exception $e) {
       // Connection faild.
-      throw new PublizonConnectionException(t('Connection with the Publizon web-service failed.'));
+      throw new PublizonConnectionException('Connection with the Publizon web-service failed.');
     }
 
     // Check the response error codes.

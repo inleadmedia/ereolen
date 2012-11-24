@@ -6,23 +6,20 @@
  * user loans.
  */
 
-function publizon_product_theme() {
-  return array(
-    'publizon_product' => array(
-      'arguments' => array(
-        'product' => NULL,
-        'object' => NULL,
-        'type' => NULL,
-      ),
-      'template' => 'templates/publizon_product',
-      'file' => 'publizon_product.theme.inc',
-    ),
-    'publizon_product_list' => array(
-      'arguments' => array('products' => NULL, 'type' => NULL),
-      'template' => 'templates/publizon_product_list',
-      'file' => 'publizon_product.theme.inc',
-    ),
-  );
+/**
+ * Implements hook_menu().
+ */
+function publizon_product_menu() {
+  $items = array();
+
+//  $items['ting/object/%/download'] = array(
+//      'title' => 'Download materiale',
+//      'page callback' => 'elib_get_lydbog',
+//      'page arguments' => array(2, 3),
+//      'access arguments' => array('access content'),
+//  );
+
+  return $items;
 }
 
 /**

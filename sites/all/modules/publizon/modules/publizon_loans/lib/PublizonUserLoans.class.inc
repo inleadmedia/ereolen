@@ -9,11 +9,9 @@
  * about max loans and remaining loans for the current user is stored here.
  *
  * The users loans are indexed by ISBN and can be fetched by
- * $user_loans->loans['isbn'] or simple $user_loans->loans.
+ * $user_loans->loans['isbn'] or simple $user_loans->loans. For more information
+ * about a loan see the PublizonLoan class.
  *
- * The loans array contains a PublizonProduct object with extened information
- * about the product if avaliable from Publizon. If not available its values
- * will be empty with the exception of the ISBN number.
  */
 class PublizonUserLoans extends Publizon {
   protected $properties = array(
@@ -53,9 +51,16 @@ class PublizonUserLoans extends Publizon {
    *
    * @param string $uid
    *  Drupal user ID
+   * @param bool $fetch_ting_object
+   *  Should the object fetch the ting objects for each loan
+   * @param string $card_number
+   *  The card number or CPR (login id) to get loans for (defaults to using the
+   *  session).
+   * @param bool $reset
+   *  Should the cache be by passed.
    * @throws PublizonProductException
    */
-  public function __construct($uid, $card_number = NULL, $reset = FALSE) {
+  public function __construct($uid, $fetch_ting_object = FALSE, $card_number = NULL, $reset = FALSE) {
     // Check cache for the properties values.
     if (!$reset && ($cache = cache_get($uid, 'cache_publizon_loans'))) {
       $this->properties = $cache->data;
@@ -64,7 +69,7 @@ class PublizonUserLoans extends Publizon {
       $client = PublizonClient::getClient();
       $data = $client->getLibraryUserOrderList($this->getCardNumber($card_number), variable_get('publizon_site_type', PUBLIZON_EBOOK));
       if ($data) {
-        $this->parse($data);
+        $this->parse($data, $fetch_ting_object);
       }
       else {
         throw new PublizonLoansException('The server did not return any information about the users loans.');
@@ -74,26 +79,14 @@ class PublizonUserLoans extends Publizon {
       // expires.
       cache_set($uid, $this->properties, 'cache_publizon_loans');
     }
-  }
 
-  /**
-   * Checks if a given loan is expired.
-   *
-   * @param string $isbn
-   *  ISBN for the loan that should be tested
-   * @return bool
-   *  Returns TRUE if the loan is expired else FALSE
-   * @throws PublizonProductException
-   *  The exception is thrown if the loan is not found for the user.
-   */
-  public function isExpired($isbn) {
-    if (isset($this->loans[$isbn])) {
-      if (($this->loans[$isbn]->expire_date - time()) > 0) {
-        return FALSE;
+    // This can not be done when parsing the loans, as this has to be outside
+    // cache and freash data always.
+    if ($fetch_ting_object) {
+      foreach ($this->loans as $loan) {
+        $loan->product->getTingObject();
       }
-      return TRUE;
     }
-    throw new PublizonLoansException('The ISBN given is not a loan that exists for the current user');
   }
 
   /**
@@ -160,23 +153,7 @@ class PublizonUserLoans extends Publizon {
 
     $loans = array();
     foreach ($data[0]->orderitem as $item) {
-      // Get book authors.
-      $authors = array();
-      foreach ($item->book->authors->author as $author) {
-        $authors[] = (string)$author->attributes()->name;
-      }
-
-      // Build loan array.
-      $loans[(string)$item->book->attributes()->id] = array(
-        'retailer_order_number' => (string)$item->retailerordernumber,
-        'status' => (string)$item->orderstatus->attributes()->name,
-        'order_date' => strtotime((string)$item->orderdate),
-        'expire_date' => strtotime((string)$item->loanexpiredate),
-        'title' => (string)$item->book->title,
-        'authors' => $authors,
-        'publisher' => (string)$item->book->publisher,
-        'product' => new PublizonProduct((string)$item->book->attributes()->id),
-      );
+      $loans[(string)$item->book->attributes()->id] = new PublizonLoan($item);
     }
     $this->loans = $loans;
   }

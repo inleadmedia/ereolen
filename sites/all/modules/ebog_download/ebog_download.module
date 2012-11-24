@@ -11,13 +11,14 @@
  * Implementation of hook_init.
  */
 function ebog_download_init() {
-  if (!defined('EBOG_DOWNLOAD_PATH')) {
-    define('EBOG_DOWNLOAD_PATH', drupal_get_path('module', 'ebog_download'));
-  }
+  /**
+   * @todo: This JS is add to all pages on the site (WTF!!!!!!).
+   */
+  $path = drupal_get_path('module', 'ebog_download');
 
-  drupal_add_js(EBOG_DOWNLOAD_PATH . '/js/ebog_download_scripts.js', 'file');
-  drupal_add_js(EBOG_DOWNLOAD_PATH . '/js/jquery.form.js', 'file');
-  drupal_add_css(EBOG_DOWNLOAD_PATH . '/css/ebog_download_style.css', 'file');
+  drupal_add_js($path . '/js/ebog_download_scripts.js', 'file');
+  drupal_add_js($path . '/js/jquery.form.js', 'file');
+  drupal_add_css($path . '/css/ebog_download_style.css', 'file');
   jquery_ui_add(array('ui.dialog', 'ui.draggable'));
   jquery_ui_theme_load();
 }

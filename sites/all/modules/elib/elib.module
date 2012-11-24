@@ -30,12 +30,6 @@ function elib_menu() {
       'type' => MENU_DEFAULT_LOCAL_TASK,
   );
 
-  $items['ting/object/%/stream'] = array(
-      'title' => 'stream',
-      'page callback' => 'elib_get_lydbog',
-      'page arguments' => array(2, 3),
-      'access arguments' => array('access content'),
-  );
   $items['ting/object/%/download'] = array(
       'title' => 'Download materiale',
       'page callback' => 'elib_get_lydbog',
@@ -128,237 +122,6 @@ function elib_get_isbn_from_object_id($object_id) {
   return $object->record['dc:identifier']['oss:PROVIDER-ID'][0];
 }
 
-function elib_get_lydbog($tingObjectID, $format) {
-
-  if ($_GET['downloaded']) {
-
-    $out = t('<h1>Hjælp til afspilning</h1>');
-
-    $sql = 'SELECT node.nid AS nid,
-     nodequeue_nodes_node.position AS nodequeue_nodes_node_position
-   FROM node node
-   INNER JOIN nodequeue_nodes nodequeue_nodes_node ON node.nid = nodequeue_nodes_node.nid AND nodequeue_nodes_node.qid = 3
-   WHERE node.status <> 0
-     ORDER BY nodequeue_nodes_node_position ASC
-  		';
-
-    $res = db_query($sql);
-
-    while ($row = db_fetch_array($res)) {
-
-      $n = node_load($row['nid']);
-
-      /* hmm */
-      $keys = array_keys($n->taxonomy);
-      $tid = $n->taxonomy[$keys[0]];
-      $tid = $tid->tid;
-
-      $anchor = $tid . 'n' . $n->nid;
-
-      $items[] = l($n->title, 'faqlist/' . $tid, array("fragment" => $anchor, 'attributes' => array('target' => '_top')));
-    }
-
-    $out .= '<div class="ruler-after">' . theme('item_list', $items) . '</div>';
-
-    $out .= '<p>' . l(t('Få mere hjælp'), 'help', array('attributes' => array('target' => '_top '))) . '</p>';
-
-    return $out;
-  }
-
-
-
-  global $user;
-  //no user logged in
-  if (!$user->uid) {
-    header('Location: /user/login/?' . drupal_get_destination() . '&clean=1');
-    exit();
-  }
-  $userinfo = elib_user_get_cred();
-
-  if (!$userinfo['cpr']) {
-    $out = '<h1>Mangler eLIB tilknytning</h1>';
-    $out .= t('<p>Der er ikke knyttet nogle elib informationer til den bruger du er logget ind med. Det er højstsansyneligt fordi du er logget ind som redaktør eller administrator. Hvis dette ikke er tilfældet, kontakt !email</p>', array('!email' => l('info@ereolen.dk', 'info@ereolen.dk')));
-
-    return $out;
-  }
-
-  $isbn = elib_get_isbn_from_object_id($tingObjectID);
-
-  // verify user
-  elib_client()->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
-
-  // kig om bogen allerede er lånt GetLibraryUserOrder
-  // get all the books that are loaned!
-  $loans = elib_client()->getLoans();
-
-  if ($loans->status->code == 101) {
-    if ($loans->status->usersoundloansNexttime != '') {
-      $loanlimit = elib_str_to_time($loans->status->usersoundloansNexttime, true);
-    } else {
-      $loanlimit = time() + 3600 + (3600 * 24 * 30);
-    }
-  }
-
-  $loans = $loans->data->orderitem;
-
-  $alreadyloaned = false;
-  /* $loanlimit = 1000000000000; */
-
-  // var_dump($loans);
-
-  if ($loans) {
-    $nob = sizeof($loans);
-    foreach ($loans as $obj) {
-
-      if ($loanlimit > elib_str_to_time($obj->loanexpiredate, true)) {
-        $loanlimit = elib_str_to_time($obj->loanexpiredate, true);
-      }
-
-      if (trim($obj->book['idtype']) == 'ISBN') {
-        if (trim($obj->book['id']) == $isbn) {
-
-          $response = elib_client()->GetUrl(intval($obj->retailerordernumber) . '');
-
-          // book is already loaned
-          $alreadyloaned = true;
-        }
-      }
-    }
-  }
-  // There is no loans after all??!?
-  /* if($loanlimit == 1000000000000){
-    $loanlimit = 3600;
-    } */
-  if ($alreadyloaned) {
-
-    $pretext = '<h1>Din ebog afspilles nu nedenfor</h1>';
-    $src = $response->data->downloadurl;
-    if ($format != 'stream') {
-
-      $filesrc = (trim($response->data[1]->files[0]->file));
-      if (!empty($filesrc)) {
-        // ok ready for download
-        $src = $filesrc;
-        global $base_root;
-        $pretext = '<h1>Vi er ved at generere din ebog.<br/> Vent venligst...</h1><div class="loader"></div><p>Vi er ved at pakke din ebog til en fil</p><p>Problemer med download? Hent filen via <a href="' . $src . '">direkte link</a><p>Når du har gemt filen, tryk næste</p>' . l('Næste', $base_root . request_uri(), array('query' => 'downloaded=1', 'attributes' => array('class' => 'nextknap knap')));
-      } else {
-        // hmm, something is up...
-        //$pretext = 'whatup? ('.$format.') ' . $src ;
-        $format = 'info';
-        $pretext = '';
-      }
-
-      // this should never happen.
-      if (empty($src)) {
-        $pretext = '<h1>FEJL</h1><p>Der returneres ikke nogen download url fra eLib webservicen.</p>';
-      }
-    }
-
-    // Check if debug message should be logged.
-    $logging = variable_get(elib_enable_logging, FALSE);
-    if ($logging) {
-      watchdog('elib', 'eLib download src: @src - @response', array(
-        '@src' => $src,
-        '@response' => var_export($response, true), WATCHDOG_DEBUG));
-    }
-
-    $content = $pretext;
-    $content .= '<iframe src="' . $src . '" class="audioplayer-' . $format . '" frameborder="0" scrolling="no"></iframe>';
-  } else {
-
-    $loaned = $nob;
-    $max = elib_libraries_get_maxloans($userinfo['lib']) - $nob;
-
-    if ($max <= 0) {
-
-      $libmax = elib_libraries_get_maxloans($userinfo['lib']);
-      //if($nob >= $libmax){
-      $diff = $loanlimit - time();
-      $days = floor($diff / 86400);
-
-      $rest = $diff % 86400;
-
-      $hours = floor($rest / 3600);
-
-      $content = t('<h1>Max grænse for lån opnået</h1>');
-      $content .= t("<p>Du har allerede lånt %books og har derfor nået dit maximum</p><p>Læs mere om <a href='!link' target='_top'>antal af lån</a> om måneden</p>", array('%books' => format_plural($nob, 'en bog', '@count bøger'), '!link' => '/node/5175'));
-      $content .= t('<p>Du kan låne en ebog igen om</p><div class="timeleft"> %dage og %time</div>', array('%dage' => format_plural($days, 'en dag', '@count dage'), '%time' => format_plural($hours, 'en time', '@count timer')));
-      $content .= '<p>' . netsound_cart_add_link($tingObjectID) . '</p>';
-
-
-      return $content;
-    }
-
-    if (!$_GET['confirm']) {
-
-      global $base_root;
-      //krumo(request_uri());
-
-
-
-      $loaned = $loaned ? format_plural($loaned, 'en lånt ebog', '@count lånte ebøger') : t('ikke lånt nogen bøger');
-
-      return '<h1>Lån denne ebog?</h1><p>' . t('Du har %loaned og kan pt. låne %max.', array('%loaned' => $loaned, '%max' => format_plural($max, 'en mere', '@count til'))) . '</p>' . l('Ok', $base_root . request_uri(), array('query' => 'confirm=1', 'attributes' => array('class' => 'okknap'))) . l('Fortryd', $base_root . request_uri(), array('attributes' => array('class' => 'annullerknap')));
-    }
-
-
-    $response = elib_client()->makeLoan($isbn);
-    if ($response->status->code == 120) {
-      // else show cart
-      $libmax = elib_libraries_get_maxloans($userinfo['lib']);
-      //if($nob >= $libmax){
-      $diff = $loanlimit - time();
-      $days = floor($diff / 86400);
-
-      $rest = $diff % 86400;
-
-      $hours = floor($rest / 3600);
-
-      $content = t('<h1>Max grænse for lån opnået</h1>');
-      $content .= t("<p>Du har allerede lånt %books og har derfor nået dit maximum</p><p>Læs mere om <a href='!link'>antal af lån</a> om måneden</p>", array('%books' => format_plural($nob, 'en bog', '@count bøger')));
-      $content .= t('<p>Du kan låne en ebog igen om</p><div class="timeleft"> %dage og %time</div>', array('%dage' => format_plural($days, 'en dag', '@count dage'), '%time' => format_plural($hours, 'en time', '@count timer')));
-      $content .= '<p>' . netsound_cart_add_link($tingObjectID) . '</p>';
-
-      //$content .= 	t('<p>Lån igen om %s dage</p>',);
-      //}
-    }
-    else {
-      //var_dump($response);
-      if ($response->status->code == 101) {
-
-        // Clear loan cache for the user.
-        global $user;
-        elib_user_clear_loans_cache($user->uid);
-
-        // Create user responce.
-        $src = $response->data->downloadurl;
-        $pretext = '<h1>Din ebog afspilles nu nedenfor</h1>';
-        if ($format != 'stream') {
-          $src = (trim($response->data[1]->files[0]->file));
-          global $base_root;
-          $pretext = '<h1>Vi er ved at generere din ebog.<br/> Vent venligst...</h1><div class="loader"></div><p>Vi er ved at pakke din ebog til en fil</p><p>Når du har gemt filen, tryk næste</p>' . l('Næste', $base_root . request_uri(), array('query' => 'downloaded=1', 'attributes' => array('class' => 'nextknap knap')));
-        }
-
-        $content = $pretext;
-        $content .= '<iframe src="' . $src . '" class="audioplayer-' . $format . '" scrolling="no"></iframe>';
-      }
-    }
-
-    //krumo($response );
-    // call create loan
-    // if loan show stream and create local
-    //$status = $response->status->code.': '.$response->status->message;
-  }
-  //krumo($response);
-  // hvis ikke bogen er lånt, så CreateLoan og opret lokal kopi i tabel elib_loan
-  // ellers så hent lokal URL
-  if ($response->status->code != 101) {
-    $content .= '<div class="status">' . t('Fejl: ' . $response->status->code . ' - ' . $response->status->message) . '</div>';
-  }
-
-  return $content;
-}
-
 function elib_str_to_time($str, $aststamp = false) {
   list($d, $t) = explode(" ", $str);
   list($r['y'], $r['m'], $r['d']) = explode("-", $d);
@@ -368,35 +131,6 @@ function elib_str_to_time($str, $aststamp = false) {
   }
   return $r;
 }
-
-function elib_block($op = 'list', $delta = 0, $edit = array()) {
-  if ($op == 'list') {
-    return array(
-        'account' => array(
-            'info' => t('Login through eLib'),
-            'cache' => BLOCK_NO_CACHE,
-            'status' => 1,
-            'region' => 'account',
-        ),
-    );
-  } elseif ($op == 'view' && $delta == 'account') {
-    global $user;
-    $block = array();
-
-    // If user is not logged in, display the login form.
-    if (!$user->uid) {
-      $block['content'] = drupal_get_form('user_login_block');
-    } else {
-      $block['content'] = 'LOGIN HERE!';
-
-      //$block['content'] = theme('alma_user_status_block', $status);
-    }
-
-    return $block;
-  }
-}
-
-/* init elib client as singleton */
 
 function elib_client() {
   global $user;
@@ -430,10 +164,6 @@ function elib_displaybook(TingClientObject $object, $elib_data = false) {
   $out[] = '<h3 class="title">' . l($object->record['dc:title'][''][0], $item_url, array('attributes' => array('class' => 'title'))) . '</h3>';
   $out[] = '<div class="author">' . t('!author', array('!author' => publizon_get_authors($object))) . '</div>';
   $out[] = '<div class="rating-for-faust"><div class="' . $object->localId . '"></div></div>';
-
-  if ($elib_data->loanexpiredate) {
-
-  }
 
   if (!elib_user_is_loan_expired($elib_data)) {
     $diff = elib_str_to_time($elib_data->loanexpiredate, true) - time();
@@ -521,13 +251,7 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
   switch ($displaysize) {
     case 'small':
     case 'small_rm':
-    case 'lorem':
-    case 'review':
       $image_url = elib_book_cover($obj->record['dc:identifier']['oss:PROVIDER-ID'], '65_x');
-      break;
-    case 'medium':
-    case 'textright':
-      $image_url = elib_book_cover($obj->record['dc:identifier']['oss:PROVIDER-ID'], '170_x');
       break;
   }
 
@@ -548,10 +272,6 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
     $action_links[] = l(t('Remove'), $obj->url . '/huskeliste/fjern', array('html' => true, 'query' => drupal_get_destination()));
     $action_classes[] = 'remove';
   }
-  if (isset($elib_sample_link)) {
-    $action_links[] = l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('action' => 'deactivated')));
-    $action_classes[] = 'deactivated';
-  }
 
   $alttext = t('@titel af @forfatter', array('@titel' => $obj->record['dc:title'][''][0], '@forfatter' => publizon_get_authors($obj, FALSE)));
   $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
@@ -567,35 +287,6 @@ function elib_displaybookNEW($obj, $elib = '', $displaysize = false, $block_inde
   $part['title'] = '<h3 class="title">' . l($obj->record['dc:title'][''][0], $obj->url, array('attributes' => array('class' => 'title'))) . '</h3>';
   $part['author'] = '<div class="author">' . t('!author', array('!author' => publizon_get_authors($obj))) . '</div>';
   $part['icons'] = elib_create_icons($action_links, $action_classes);
-
-  if ($displaysize == 'review') {
-    $u = elib_user_get_cred($elib[1]);
-    $part['text'] = '<div class="spacing-before" style="text-transform:uppercase;">Anmelder</div><div>' . $u['user'] . '</div><div class="text"  style="margin-left:80px;"><p class="spacing-before">' . truncate_utf8($elib[0], 400, true, true) . ' ' . l('LÆS MERE →', $obj->url) . '</p>';
-    $part['icons'] = elib_create_icons($action_links, $action_classes);
-    $part['picture'] = '<div class="picture">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
-    $displaysize = 'small';
-  }
-
-  if ($displaysize == 'textright') {
-    #error_log(__FILE__ . ' +' . __LINE__ . ' ' . print_r($obj->record, 1));
-    $part['picture'] = '<div class="picture main size1of2">' . l(theme('image', $image_url, $alttext, $alttext, null, false), $obj->url, array('html' => true)) . '</div>';
-    $part['author'] = '<div class="author">' . t('By !author', array('!author' => publizon_get_authors($obj))) . '</div>';
-
-    return '
-      <div class="display-book ' . $displaysize . ' line">' .
-            $part['picture'] .
-            '<div class="main size1of2">' .
-            (isset($part['loginexpire']) ? $part['loginexpire'] : '') .
-            (isset($part['title']) ? $part['title'] : '') .
-            (isset($part['author']) ? $part['author'] : '') .
-            (isset($part['rating']) ? $part['rating'] : '') .
-            (isset($part['icons']) ? $part['icons'] : '') .
-            (isset($part['text']) ? $part['text'] : '') .
-            (isset($extras) ? $extras : '') .
-            '</div>
-      </div>
-    ';
-  }
 
   if (is_array($elib) && isset($elib['popular']) && $elib['popular']) {
     if (!empty($obj->record['dc:contributor'][''])) {
@@ -665,18 +356,6 @@ function elib_display_error($error) {
     drupal_set_message(t('Oops! We cound\'nt connect to the library') . '<div class="spec" style="font-size:.7em">' . t($error->getMessage()) . '</div>', 'error');
     $isset = true;
   }
-}
-
-function elib_get_rating($objectid) {
-
-  /* if node dosent exist, there is no rating, skip this function */
-  if (!$n = node_load(array('title' => $objectid, 'type' => 'bookrating'))) {
-    return;
-  }
-
-  $c = node_build_content($n, true);
-
-  return $c->content['fivestar_widget']['#value'];
 }
 
 /**

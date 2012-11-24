@@ -33,6 +33,12 @@ class PublizonProduct extends Publizon {
     'categories' => NULL,
   );
 
+  // This is outside the properties array, as it should not be cached witht the
+  // object properties. The ting object is used to get extended information and
+  // verify that the product is avaliable, so it needs to be as fresh as
+  // possible, hence it's not cached.
+  private $ting_object = NULL;
+
   /**
    * Constructor that takes a ISBN and fetchs the product from Publizon if the
    * information is not located the product cache.
@@ -98,6 +104,22 @@ class PublizonProduct extends Publizon {
     }
     return imagecache_create_url($presetname, $this->cover);
   }
+
+  /**
+   * JIT fetch a ting object from the datawell that represents the publizon
+   * product.
+   *
+   * @return TingObject
+   *  Returns a ting object from the T!NG datawell.
+   */
+  public function getTingObject() {
+    if (!isset($this->ting_object)) {
+      // If not fetched in this http request, search the datawell for the product.
+      $this->ting_object = publizon_ting_find_object($this->isbn);
+    }
+    return $this->ting_object;
+  }
+
 
   /**
    * Wrapper function that fetch the product cover (image) from the web-service

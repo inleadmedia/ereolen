@@ -14,4 +14,3 @@ files[] = lib/PublizonNanoSoapClient.class.inc
 
 ; Data classes used to store information from Publizon.
 files[] = lib/Publizon.class.inc
-files[] = lib/PublizonProduct.class.inc
