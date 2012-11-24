@@ -82,6 +82,12 @@ class PublizonLoan extends Publizon {
     return $str;
   }
 
+  /**
+   * Parse a XML loan from publizon into the object.
+   *
+   * @param SimpleXMLElement $item
+   *  Publizon XML representation of a loan.
+   */
   private function parse(SimpleXMLElement $item) {
     // Get book authors.
     $authors = array();

@@ -58,6 +58,11 @@ function publizon_theme() {
       'arguments' => array('element' => NULL),
       'template' => 'templates/publizon-library-field',
     ),
+    // Add action buttons to loans, products and ting objects.
+    'publizon_actions' => array(
+      'arguments' => array('product' => NULL, 'type' => ''),
+      'template' => 'templates/publizon-actions',
+    )
   );
 }
 
@@ -138,6 +143,23 @@ function publizon_library_field_validate($element, &$form_state) {
  */
 function publizon_flush_caches() {
   return array('cache_publizon_product');
+}
+
+
+function template_preprocess_publizon_actions(&$vars) {
+  $object_url = 'ting/object/' . (string)$vars['product']->getTingObject()->id;
+
+  $vars['actions'] = array();
+  switch ($vars['type']) {
+    case 'loan':
+      $vars['actions']['download'] =  l(t('Download'), $object_url . '/download', array('html' => true, 'attributes' => array('class' => 'loan')));
+      break;
+
+    default:
+      break;
+  }
+
+  $i = 1;
 }
 
 /**
@@ -262,7 +284,8 @@ function publizon_get_library($retailer_id, $reset = FALSE) {
  * @param string $isbn
  *  ISBN number for the product that is searched.
  * @return TingObject
- *  Datawell object for the product found.
+ *  Datawell object for the product found, if non is found FALSE will be
+ *  returned.
  */
 function publizon_ting_find_object($isbn) {
   // Build ting request.

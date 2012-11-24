@@ -27,6 +27,7 @@
 }
 
 .display-book.last,
+.publizon-loans-list .last,
 .view-user-reviews .views-row-last {
   border: none !important;
   padding-bottom: 0 !important;
