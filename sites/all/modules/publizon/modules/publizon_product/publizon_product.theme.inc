@@ -33,5 +33,4 @@ function template_preprocess_publizon_product(&$vars) {
     // There are no local actions as the book is not available.
     $vars['actions'] = '<div class="book-not-available">'. t('This book is no longer available and can not be downloaded.') . '</div>';
   }
-
 }

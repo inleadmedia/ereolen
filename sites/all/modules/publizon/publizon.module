@@ -152,32 +152,53 @@ function publizon_flush_caches() {
  */
 function template_preprocess_publizon_actions(&$vars) {
   $object_url = 'ting/object/' . $vars['product']->getTingObject()->id;
-  $vars['actions'] = array();
+  $actions = array();
   switch ($vars['type']) {
     // User loan list
     case 'loan':
-      $vars['actions']['download'] =  l(t('Download'), $object_url . '/download', array('html' => true, 'attributes' => array('class' => 'loan')));
+      $actions[] =  array(
+        '#link' => l(t('Download'), $object_url . '/download', array('html' => true, 'attributes' => array('class' => 'loan'))),
+        '#class' => 'download',
+        '#weight' => 1,
+      );
       break;
 
-    // Default that should not have a break statement.
+    // Cart list on the user page (should not have a break statement).
+    case 'cart':
+      $actions[] = array(
+        '#link' => recall_list_delete_link($vars['product']->isbn),
+        '#class' => 'remove',
+        '#weight' => 10,
+      );
+
+    // Default button.
     case 'default':
       if (isset($vars['product']->teaser_link)) {
-        $vars['actions']['sample'] = l(t('Sample'), $vars['product']->teaser_link, array('html' => true, 'attributes' => array('target' => '_blank', 'action' => 'sample')));
-        $vars['actions']['loan'] = l(t('Loan'), $object_url . '/download', array('html' => true,  'attributes' => array('class' => 'loan')));
+        $actions[] = array(
+          '#link' => l(t('Sample'), $vars['product']->teaser_link, array('html' => true, 'attributes' => array('target' => '_blank', 'action' => 'sample'))),
+          '#class' => 'sample',
+          '#weight' => -10,
+        );
+        $actions[] = array(
+          '#link' => l(t('Loan'), $object_url . '/download', array('html' => true,  'attributes' => array('class' => 'loan'))),
+          '#class' => 'loan',
+          '#weight' => -5,
+        );
       }
       else {
         // The book dosen't have a sample link, hence can't be downloaded.
-        $vars['actions']['unavailable'] = '<span>' . t('Unavailable') . '</span>';
+        $actions[] = array(
+         '#link' => '<span>' . t('Unavailable') . '</span>',
+         '#class' => 'unavailable',
+         '#weight' => 1,
+        );
       }
-
-    // Cart list on the user page.
-    case 'cart':
-      $vars['actions']['remove'] = recall_list_delete_link($vars['product']->isbn);
-      break;
-
-    default:
       break;
   }
+
+  // Sort the actions based on weight.
+  usort($actions, 'element_sort');
+  $vars['actions'] = $actions;
 }
 
 /**

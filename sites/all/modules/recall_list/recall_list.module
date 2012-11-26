@@ -41,14 +41,15 @@ function recall_list_menu() {
  * @param type $op
  *  Operation to preform on the cart.
  */
-function recall_list_modify($isbn, $op) {
+function recall_list_modify($isbn, $op, $rewrite = TRUE) {
   // If the current user is valid and logged in to Publizon.
-  if ($uid = publizon_user_is_logged_in()) {
+  global $user;
+  if ($user->uid != 0) {
     $product = new PublizonProduct($isbn);
 
     // Check that we got a ting object
     $record = array(
-        'uid' => $uid,
+        'uid' => $user->uid,
         'isbn' => $isbn,
     );
     switch ($op) {
@@ -57,7 +58,6 @@ function recall_list_modify($isbn, $op) {
         $result = drupal_write_record('recall_list', $record);
 
         // TIME STAMP IS NEW; SO MANY WILL BE SAVED..
-
 
         if ($result == SAVED_UPDATED) {
           drupal_set_message(t('"!book" is allready on your recall list', array('!book' => $product->title)));
@@ -70,12 +70,14 @@ function recall_list_modify($isbn, $op) {
       case 'delete':
         db_query('DELETE FROM {recall_list}
                         WHERE uid = %s
-                          AND isbn = "%s"', $uid, $isbn);
+                          AND isbn = "%s"', $user->uid, $isbn);
         drupal_set_message(t('"!book" have been removed from your recall list', array('!book' => $product->title)));
         break;
     }
-    _recall_list_cache_clear($uid);
-    drupal_goto();
+    _recall_list_cache_clear($user->uid);
+    if ($rewrite) {
+      drupal_goto();
+    }
   }
 }
 
@@ -131,7 +133,7 @@ function recall_list_block($op = 'list', $delta = 0, $edit = array()) {
       global $user;
 
       // Set default block title.
-      $blocks['subject'] = t('Min huskeliste');
+      $blocks['subject'] = t('My recall list');
 
       $content = _recall_list_cache_get($user->uid);
       if ($content == FALSE) {
@@ -145,8 +147,8 @@ function recall_list_block($op = 'list', $delta = 0, $edit = array()) {
           // HACK XXXX, the objects saved in the cart may not longer exists
           // in the datawell. So if they do not have ISBN number, we have to
           // remove them from the cart.
-          if (!isset($product->teaser_link)) {
-            recall_list_modify($row['isbn'], 'delete');
+          if (empty($product->teaser_link)) {
+            recall_list_modify($row['isbn'], 'delete', FALSE);
             continue;
           }
 

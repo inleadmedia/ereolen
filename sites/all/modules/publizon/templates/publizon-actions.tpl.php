@@ -10,8 +10,8 @@
 <div class="icons">
   <div class="icons">
     <ul>
-      <?php foreach ($actions as $class => $link) : ?>
-        <li class="<?php echo $class; ?>"><?php echo $link; ?></li>
+      <?php foreach ($actions as $link) : ?>
+        <li class="<?php echo $link['#class']; ?>"><?php echo $link['#link']; ?></li>
         <li class="seperator"></li>
       <?php endforeach; ?>
     </ul>
