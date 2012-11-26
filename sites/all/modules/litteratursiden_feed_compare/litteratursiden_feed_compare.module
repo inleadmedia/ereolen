@@ -88,16 +88,11 @@ function litteratursiden_feed_compare_object_to_array($object) {
  * Gets feed from litteratursiden.dk and performs search in TING datawell.
  */
 function litteratursiden_feed_compare_get_feed($items) {
-
   module_load_include('client.inc', 'ting');
-  module_load_include('isbn_static_func.inc', 'elib');
-
-  $client = elib_client();
-  $client->setLibrary(variable_get('elib_retailer_id', ''));
 
   $ret = array();
   $i = 0;
-  $amo = 0;
+  $amount = 0;
   $feed_main_url = variable_get('litteratursiden_feed_compare_feed_url', 'http://www.litteratursiden.dk/service/recommendations');
 
   while ($i != 25) {
@@ -118,26 +113,24 @@ function litteratursiden_feed_compare_get_feed($items) {
                 $isbn = $object->record['dc:identifier']['oss:PROVIDER-ID'][0];
 
                 if (!empty($isbn)) {
-                  // Title from feed consists of title+author.
-                  // Combine title and author from TING to perform reasonable search.
                   try {
-                    $book = $client->getBook($isbn);
+                    $book = new PublizonProduct($isbn);
                   }
                   catch (Exception $e) {
                     $ret['status'] = 'error';
                     $ret['message'] = $e;
                     return $ret;
                   }
-                  if (!empty($book->data)) {
+                  if (!empty($book->title)) {
                     $ret['data'][] = array(
-                      'title' => (string)$book->data->title,
-                      'isbn' => (string)$book->data->external_ids->id,
-                      'author' => (string)$book->data->contributors->first_name . ' ' . (string)$book->data->contributors->family_name,
+                      'title' => $book->title,
+                      'isbn' => $isbn,
+                      'author' => publizon_get_authors($object),
                       'abstract' => $val['description'],
-                      'image' => (string)$book->data->coverimage,
+                      'image' => $book->getCover('120_x'),
                       'url' => $object->url
                     );
-                    $amo++;
+                    $amount++;
 
                     // Post found so no need to loop over the other items found.
                     break 2;
@@ -147,10 +140,10 @@ function litteratursiden_feed_compare_get_feed($items) {
             }
           }
         }
-        if ($amo != $items && $amo > 0) {
+        if ($amount != $items && $amount > 0) {
           $ret['status'] = 'notfull';
         }
-        elseif ($amo == $items) {
+        elseif ($amount == $items) {
           $ret['status'] = 'ok';
           break 2;
         }

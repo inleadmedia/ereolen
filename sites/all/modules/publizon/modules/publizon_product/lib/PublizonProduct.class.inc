@@ -92,7 +92,7 @@ class PublizonProduct extends Publizon {
    * @return string
    *  Path to the rendered image.
    */
-  public function getCover($presetname, $local_cache = FALSE) {
+  public function getCover($presetname, $local_cache = TRUE) {
     if (!isset($this->cover)) {
       return imagecache_create_url($presetname, file_directory_path() . '/default_cover.jpg');
     }
