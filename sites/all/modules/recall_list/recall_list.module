@@ -24,6 +24,12 @@ function recall_list_menu() {
     'access arguments' => array('access content'),
   );
 
+  $items['recall_list_migrate'] = array(
+    'title' => t('Delete from recall list'),
+    'page callback' => 'recall_list_migrate',
+    'access arguments' => array('access content'),
+  );
+
   return $items;
 }
 
@@ -48,15 +54,24 @@ function recall_list_modify($isbn, $op) {
     switch ($op) {
       case 'add':
         $record['timestamp'] = time();
-        drupal_write_record('recall_list', $record);
-        drupal_set_message(t('!book er nu tilføjet din huskeliste', array('!book' => $product->title)));
+        $result = drupal_write_record('recall_list', $record);
+
+        // TIME STAMP IS NEW; SO MANY WILL BE SAVED..
+
+
+        if ($result == SAVED_UPDATED) {
+          drupal_set_message(t('"!book" is allready on your recall list', array('!book' => $product->title)));
+        }
+        else {
+          drupal_set_message(t('"!book" have been add to your recall list', array('!book' => $product->title)));
+        }
         break;
 
       case 'delete':
         db_query('DELETE FROM {recall_list}
                         WHERE uid = %s
                           AND isbn = "%s"', $uid, $isbn);
-        drupal_set_message(t('!book er nu fjernet fra din huskeliste', array('!book' => $product->title)));
+        drupal_set_message(t('"!book" have been removed from your recall list', array('!book' => $product->title)));
         break;
     }
     _recall_list_cache_clear($uid);
@@ -107,7 +122,7 @@ function recall_list_delete_link($isbn) {
 function recall_list_block($op = 'list', $delta = 0, $edit = array()) {
   switch ($op) {
     case 'list':
-      $blocks[0]['info'] = t("What's in my cart?");
+      $blocks['cart']['info'] = t("Recall list (cart)");
       break;
 
     case 'view':
@@ -192,4 +207,34 @@ function _recall_list_cache_get($uid, $reset = FALSE) {
  */
 function _recall_list_cache_clear($uid) {
   cache_clear_all($uid, 'cache_recall_list');
+}
+
+/***
+ * THE STUFF BELOW SHOULD BE REMOVED AFTER MIGRATION.
+ */
+
+function recall_list_migrate() {
+  $result = db_query('SELECT DISTINCT * FROM {netsound_cart}');
+  while ($row = db_fetch_array($result)) {
+    $isbn = recall_list_get_isbn_from_object_id($row['ting_object_id']);
+    if (isset($isbn)) {
+      $record = array(
+        'uid' => $row['uid'],
+        'isbn' => $isbn,
+        'timestamp' => $row['tstamp'],
+      );
+      drupal_write_record('recall_list', $record);
+    }
+  }
+}
+
+function recall_list_get_isbn_from_object_id($object_id) {
+  module_load_include('client.inc', 'ting');
+  try {
+    $object = ting_get_object_by_id($object_id);
+  } catch (TingClientException $e) {
+    echo 'øv';
+    return NULL;
+  }
+  return $object->record['dc:identifier']['oss:PROVIDER-ID'][0];
 }

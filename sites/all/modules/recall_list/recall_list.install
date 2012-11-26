@@ -28,9 +28,8 @@ function recall_list_schema() {
     'description' => t('Recall list used to store products for later usage.'),
     'fields' => array(
       'isbn' => array(
-        'type' => 'int',
+        'type' => 'text',
         'description' => 'The identifier for the product.',
-        'unsigned' => TRUE,
         'not null' => TRUE,
       ),
       'timestamp' => array(
@@ -39,9 +38,9 @@ function recall_list_schema() {
         'not null' => TRUE,
       ),
       'uid' => array(
-        'type' => 'varchar',
-        'description' => 'Drupal user ID',
-        'length' => 255,
+        'type' => 'int',
+        'description' => 'Drupal user id.',
+        'unsigned' => TRUE,
         'not null' => TRUE,
       ),
     ),

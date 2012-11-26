@@ -664,7 +664,7 @@ voxb h3 {
   display: none;
 }
 
-.pane-netsound-cart-0,
+.pane-recall-list-cart,
 .pane-publizon-loans-myloans {
   float: left;
   width: 310px;
@@ -675,7 +675,7 @@ voxb h3 {
   margin-right: 10px;
 }
 
-.pane-netsound-cart-0 {
+.pane-recall-list-cart {
   margin-left: 10px;
 }
 

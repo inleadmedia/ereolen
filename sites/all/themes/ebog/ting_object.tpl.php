@@ -191,7 +191,7 @@ if (module_exists('ding_voxb')) {
             if($user->uid){
               print '<li class="seperator"></li>';
               print '<li>';
-              print recall_list_add_link($object->record['dc:identifier']['oss:PROVIDER-ID']);
+              print recall_list_add_link($object->record['dc:identifier']['oss:PROVIDER-ID'][0]);
               print '</li>';
             }
           ?>
