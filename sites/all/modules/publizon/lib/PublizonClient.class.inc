@@ -1,11 +1,15 @@
 <?php
 /**
  * @file
- *
+ * Implementation of the main communication object with the Publizon
+ * web-service.
  */
 
 /**
+ * This is a single ton class that is used to communicate with the Publizon
+ * web-service.
  *
+ * You get a instances of the object by calling PublizonClient::getClient();
  */
 class PublizonClient {
   private $retailer_id;
@@ -97,8 +101,39 @@ class PublizonClient {
     return self::$instance;
   }
 
-  public function createLoan() {
+  /**
+   * Create a new loan at Publizon. It throws an exception if the loan does not
+   * go through else a download url is returned.
+   *
+   * @param type $card_number
+   *  The users cardnumber/CPR also known as login id.
+   * @param type $pincode
+   *  The users login pincode.
+   * @param type $isbn
+   *  ISBN number on the product.
+   * @return string
+   *  Download URL to the product.
+   * @throws PublizonException
+   */
+  public function createLoan($card_number, $pincode, $isbn) {
     throw new PublizonException('Not implemented yet');
+
+    // Make request to the web-service for the loan. It throws an exception if
+    // the loan failes.
+    $response = $this->call('libraray_list', 'GetLastLoansForAll', array(
+      'pub:ebookid' => $isbn,
+      'pub:cardnumber' => $isbn,
+      'pub:pincode' => $pincode,
+    ), array('pub' => 'http://pubhub.dk/'));
+
+    $data = $response->xpath('//data');
+    if (isset($data[0])) {
+      $data = $data[0];
+      return $data->downloadurl;
+    }
+
+    $this->logger->log('Create loan request returned no data (' . $isbn . ').', 'ERROR');
+    throw new PublizonException('Create loan request returned no data (' . $isbn . ').');
   }
 
   public function getLastLoans() {
@@ -127,7 +162,7 @@ class PublizonClient {
     if ($list_type == PUBLIZON_EBOOK || $list_type == PUBLIZON_NETSOUND) {
       // Make request to the web-service for the loans.
       $response = $this->call('libraray_list', 'GetLastLoansForAll', array(
-        'pub:listtype' => $list_type
+        'pub:listtype' => $list_type,
       ), array('pub' => 'http://pubhub.dk/'));
 
       $products = array();
@@ -153,13 +188,25 @@ class PublizonClient {
       return $products;
     }
     $this->logger->log('Request for unsuported loans type ' . check_plain($list_type), 'ERROR');
-    throw new PublizonException(t('You are trying to get unsupported type of loans from Publizon'));
+    throw new PublizonException('You are trying to get unsupported type of loans from Publizon');
   }
 
   public function getTopList() {
     throw new PublizonException('Not implemented yet');
   }
 
+  /**
+   * Retrives information about the user loans stored at Publizon.
+   *
+   * @param string $card_number
+   *  User card_number / CPR also known as login id.
+   * @param string $list_type
+   *  This can either be PUBLIZON_EBOOK or PUBLIZON_NETSOUND.
+   * @return boolean
+   *  Returns an array with general information about the user and the user
+   *  loans. If no information is returned from the web-service FALSE.
+   * @throws PublizonException
+   */
   public function getLibraryUserOrderList($card_number, $list_type) {
     if ($list_type == PUBLIZON_EBOOK || $list_type == PUBLIZON_NETSOUND) {
       // Make request to the web-service for the loans.
@@ -179,7 +226,7 @@ class PublizonClient {
       return FALSE;
     }
     $this->logger->log('Request for unsuported loans type ' . check_plain($list_type), 'ERROR');
-    throw new PublizonException(t('You are trying to get unsupported type of loans from Publizon'));
+    throw new PublizonException('You are trying to get unsupported type of loans from Publizon');
   }
 
   /**
@@ -196,7 +243,9 @@ class PublizonClient {
    */
   public function getProduct($isbn) {
     // Get product form the web-serivce.
-    $response = $this->call('product', 'GetProduct', array('pub:ebookid' => $isbn), array('pub' => 'http://pubhub.org/'));
+    $response = $this->call('product', 'GetProduct', array(
+      'pub:ebookid' => $isbn,
+     ), array('pub' => 'http://pubhub.dk/'));
 
     // Check if any data was returned.
     $data = $response->xpath('//data');
@@ -217,9 +266,8 @@ class PublizonClient {
   }
 
   /**
-   * @TODO: Write doc.
-   *
-   * Notice that publizon for this call used another namespace.
+   * Validates that a given user is allowed to login to the publizon
+   * web-service.
    *
    * @param string $card_number
    * @param string $pincode
@@ -227,9 +275,9 @@ class PublizonClient {
   public function validateLibraryUser($card_number, $pincode) {
     try {
       $response = $this->call('user', 'ValidateLibraryUser', array(
-        'tem:cardnumber' => $card_number,
-        'tem:pincode' => $pincode,
-      ), array('tem' => 'http://tempuri.org/'));
+        'pub:cardnumber' => $card_number,
+        'pub:pincode' => $pincode,
+      ), array('pub' => 'http://pubhub.dk/'));
     }
     catch (PublizonException $e) {
       $this->logger->log($e->getMessage(), 'ERROR');
