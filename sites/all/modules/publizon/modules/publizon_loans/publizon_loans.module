@@ -10,6 +10,9 @@ function publizon_loans_perm() {
 
 }
 
+/**
+ * Implements hook_theme().
+ */
 function publizon_loans_theme() {
   return array(
     'publizon_loan' => array(

@@ -24,7 +24,7 @@ function recall_list_menu() {
     'access arguments' => array('access content'),
   );
 
-  $items['recall_list_migrate'] = array(
+  $items['admin/settings/recall_list_migrate'] = array(
     'title' => t('Delete from recall list'),
     'page callback' => 'recall_list_migrate',
     'access arguments' => array('access content'),
@@ -120,6 +120,7 @@ function recall_list_delete_link($isbn) {
  * @TODO implement cache for this list.
  */
 function recall_list_block($op = 'list', $delta = 0, $edit = array()) {
+  $blocks = array();
   switch ($op) {
     case 'list':
       $blocks['cart']['info'] = t("Recall list (cart)");
@@ -135,7 +136,7 @@ function recall_list_block($op = 'list', $delta = 0, $edit = array()) {
       $content = _recall_list_cache_get($user->uid);
       if ($content == FALSE) {
         // Load cart form the database and extra information form the datawell.
-        $rows = array();
+        $products = array();
         $result = db_query('SELECT DISTINCT isbn FROM {recall_list} WHERE uid = %d', array('%d' => $user->uid));
         while ($row = db_fetch_array($result)) {
 
@@ -149,21 +150,20 @@ function recall_list_block($op = 'list', $delta = 0, $edit = array()) {
             continue;
           }
 
-          $rows[] = theme('publizon_product_list', $product, 'cart');
+          $products[] = $product;
         }
 
         // Build content and cache the result.
-        $content = implode($rows);
+        $content = theme('publizon_products_list', $products, 'cart');
         _recall_list_cache_set($content, $user->uid);
       }
 
       if ($content == '') {
-        $blocks['content'] = t('Der er ingen bøger på din huskeliste');
+        $blocks['content'] = t('There is no products in your recall list.');
       }
       else {
         $blocks['content'] = $content;
       }
-
       break;
   }
   return $blocks;
