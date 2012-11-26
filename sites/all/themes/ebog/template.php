@@ -22,15 +22,14 @@ function ebog_preprocess_ting_object(&$vars) {
   // Create the author field
   $vars['author'] = publizon_get_authors($vars['object']);
 
+  $product = new PublizonProduct($isbn);
+
   // Get cover image.
-  $vars['elib_book_cover'] = elib_book_cover($isbn, '170_x');
+  $vars['elib_book_cover'] = $product->getCover('170_x');
 
   // Get ebook sample link.
-  $client = elib_client();
-  $client->setLibrary(variable_get('elib_retailer_id', ''));
-  $book = $client->getBook($isbn);
-  if ($book->status->code == 101 && isset($book->data->teaser->link)) {
-    $vars['elib_sample_link'] = (string)$book->data->teaser->link;
+  if (!empty($product->teaser_link)) {
+    $vars['elib_sample_link'] = $product->teaser_link;
   }
 
   // Check if the book is loaned by the user.
@@ -46,10 +45,6 @@ function ebog_preprocess_ting_object(&$vars) {
  * Add extra information from elib to the ting objects.
  */
 function ebog_preprocess_ting_search_collection(&$vars) {
-  // Get elib client.
-  $client = elib_client();
-  $client->setLibrary(variable_get('elib_retailer_id', ''));
-
   foreach ($vars['collection']->objects as $obj) {
     $isbn = $obj->record['dc:identifier']['oss:PROVIDER-ID'][0];
     if (isset($vars['elib'])) {
@@ -62,13 +57,14 @@ function ebog_preprocess_ting_search_collection(&$vars) {
     // Get authors.
     $vars['elib'][$isbn]['author'] = publizon_get_authors($obj);
 
+    $product = new PublizonProduct($isbn);
+
     // Get cover image.
-    $vars['elib'][$isbn]['elib_book_cover'] = elib_book_cover($isbn, '170_x');
+    $vars['elib'][$isbn]['elib_book_cover'] = $product->getCover('170_x');
 
     // Get ebook sample link.
-    $book = $client->getBook($isbn);
-    if ($book->status->code == 101 && isset($book->data->teaser->link)) {
-      $vars['elib'][$isbn]['elib_sample_link'] = (string)$book->data->teaser->link;
+    if (!empty($product->teaser_link)) {
+      $vars['elib'][$isbn]['elib_sample_link'] = $product->teaser_link;
     }
   }
 }
