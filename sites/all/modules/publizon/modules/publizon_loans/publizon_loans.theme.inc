@@ -28,7 +28,7 @@ function template_preprocess_publizon_loan(&$vars) {
   }
   else {
     $vars['title']  = $vars['loan']->title;
-    $vars['authors'] = t('!author', array('!author' => l($vars['loan']->author[0], 'ting/search/' . $author)));
+    $vars['authors'] = t('!author', array('!author' => l($vars['loan']->authors[0], 'ting/search/' . $author)));
 
     // There are no local actions as the book is not available.
     $vars['actions'] = '<div class="book-not-available">'. t('This book is no longer available and can not be downloaded.') . '</div>';

@@ -185,7 +185,7 @@ function recall_list_flush_caches() {
  * @param type $uid
  */
 function _recall_list_cache_set($data, $uid) {
-  cache_set($uid,  serialize($data), 'cache_recall_list');
+  cache_set($uid,  $data, 'cache_recall_list', time() + 43200); // 12 hours
 }
 
 /**
@@ -197,7 +197,7 @@ function _recall_list_cache_set($data, $uid) {
  */
 function _recall_list_cache_get($uid, $reset = FALSE) {
   if (!$reset && ($cache = cache_get($uid, 'cache_recall_list')) && !empty($cache->data)) {
-    return unserialize($cache->data);
+    return $cache->data;
   }
   return FALSE;
 }
