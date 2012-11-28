@@ -7,7 +7,7 @@ function ebog_preview_init() {
   /**
    * @todo: This JS is add to all pages on the site (WTF!!!!!!).
    */
-  drupal_add_js(drupal_get_path('module', 'ebog_preview') . '/js/ebog_preview_scripts.js', 'file');
+  drupal_add_js(drupal_get_path('module', 'ebog_preview') . '/js/ebog_preview_scripts.js');
 }
 
 /**
