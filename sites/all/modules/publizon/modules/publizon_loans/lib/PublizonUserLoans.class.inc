@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * The class defined
+ * 
  */
 
 /**
@@ -166,7 +166,7 @@ class PublizonUserLoans extends Publizon {
     elseif (isset($_SESSION['login_id'])) {
       return $_SESSION['login_id'];
     }
-    throw new PublizonLoansException('Can\'t get loans for the current user as login ID was detected');
+    throw new PublizonLoansException('Can\'t get loans for the current user as login ID was not detected.');
   }
 
   /**
@@ -188,7 +188,7 @@ class PublizonUserLoans extends Publizon {
     elseif (isset($_SESSION['pass'])) {
       return $_SESSION['pass'];
     }
-    throw new PublizonLoansException('Can\'t get loans for the current user as login ID was detected');
+    throw new PublizonLoansException('Can\'t get loans for the current user as login ID was not detected.');
   }
 
   /**

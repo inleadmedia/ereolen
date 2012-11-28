@@ -25,23 +25,6 @@ function publizon_product_theme() {
 }
 
 /**
- * Implements hook_menu().
- */
-function publizon_product_menu() {
-  $items = array();
-
-  // Use ISBN in menu callback.
-//  $items['ting/object/%/download'] = array(
-//      'title' => 'Download materiale',
-//      'page callback' => 'elib_get_lydbog',
-//      'page arguments' => array(2, 3),
-//      'access arguments' => array('access content'),
-//  );
-
-  return $items;
-}
-
-/**
  * Implements hook_flush_caches().
  *
  * Ensures that all caches used by the module is flush on cache clear. The

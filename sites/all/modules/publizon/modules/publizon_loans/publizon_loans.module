@@ -44,13 +44,18 @@ function publizon_loans_block($op = 'list', $delta = 0, $edit = array()) {
 
     case 'view':
       if ($delta == 'myloans') {
+        // Default content.
+        $content = t('You need to be logged into Publizon to display your loans.');
+
         // Get information about your loans at Publizon and the datawell.
         if ($uid = publizon_user_is_logged_in()) {
-          $publizon_loans = new PublizonUserLoans($uid, TRUE);
-          $content = theme('publizon_loans_list', $publizon_loans->loans);
-        }
-        else {
-          $content = t('You need to be logged into Publizon to display your loans.');
+          try {
+            $publizon_loans = new PublizonUserLoans($uid, TRUE);
+            $content = theme('publizon_loans_list', $publizon_loans->loans);
+          }
+          catch (Exception $e) {
+            drupal_set_message($e->getMessage(), 'error');
+          }
         }
 
         $block = array(

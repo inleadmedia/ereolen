@@ -142,22 +142,29 @@ function recall_list_block($op = 'list', $delta = 0, $edit = array()) {
         $result = db_query('SELECT DISTINCT isbn FROM {recall_list} WHERE uid = %d', array('%d' => $user->uid));
         while ($row = db_fetch_array($result)) {
 
-          $product = new PublizonProduct($row['isbn']);
+          try {
+            $product = new PublizonProduct($row['isbn']);
 
-          // HACK XXXX, the objects saved in the cart may not longer exists
-          // in the datawell. So if they do not have ISBN number, we have to
-          // remove them from the cart.
-          if (empty($product->teaser_link)) {
-            recall_list_modify($row['isbn'], 'delete', FALSE);
-            continue;
+            // HACK XXXX, the objects saved in the cart may not longer exists
+            // in the datawell. So if they do not have ISBN number, we have to
+            // remove them from the cart.
+            if (empty($product->teaser_link)) {
+              recall_list_modify($row['isbn'], 'delete', FALSE);
+              continue;
+            }
+
+            $products[] = $product;
           }
-
-          $products[] = $product;
+          catch (Exception $e) {
+            drupal_set_message($e->getMessage(), 'error', FALSE);
+          }
         }
 
         // Build content and cache the result.
-        $content = theme('publizon_products_list', $products, 'cart');
-        _recall_list_cache_set($content, $user->uid);
+        if (!empty($products)) {
+          $content = theme('publizon_products_list', $products, 'cart');
+          _recall_list_cache_set($content, $user->uid);
+        }
       }
 
       if ($content == '') {

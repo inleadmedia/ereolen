@@ -189,44 +189,51 @@ function publizon_user_block($op = 'list', $delta = 0) {
       break;
 
     case 'view':
+      // Get the current user.
       global $user;
 
-      // Welcome block.
-      if ($delta == 'welcome') {
-        // Try to find the users max loans.
-        $user_loans = new PublizonUserLoans($user->uid);
-        $cred = publizon_user_get_credentials();
-        $library = publizon_get_library($cred['retailer_id']);
+      switch ($delta) {
+        case 'welcome':
+          // Default content.
+          $content = t('Welcome to my page. If you see this message an error have happend.');
 
-        // Add welcom information.
-        $content = '<p class="spacing-before">' .
-          t('Velkommen! Som bruger i @library kan du låne @amount om måneden', array(
-            '@library' => $library['library_name'],
-            '@amount' => $user_loans->max_loan_per_time, 'en ebog', '@count ebøger',
-          )) .
-        '</p>';
+          // Try to find the users max loans.
+          try {
+            $user_loans = new PublizonUserLoans($user->uid);
+            $cred = publizon_user_get_credentials();
+            $library = publizon_get_library($cred['retailer_id']);
 
-        // IF MAX LOANS REACED ADD YOU CAN LOAN IN DAYS.
+            // Add welcom information.
+            $content = '<p class="spacing-before">' .
+              t('Welcome! As user at @library you are allowed to download @amount a mount', array(
+                '@library' => $library['library_name'],
+                '@amount' => $user_loans->max_loan_per_time, 'one product', '@count products',
+              )) . '</p>';
 
-        // Add content to output-
-        $block = array(
-          'content' => $content,
-        );
+            // IF MAX LOANS REACED ADD YOU CAN LOAN IN DAYS.
+          }
+          catch (Exception $e) {
+            // The message shoudl already be translated in the custom exception.
+            drupal_set_message($e->getMessage(), 'error', FALSE);
+          }
+          // Add content to output.
+          $block = array(
+            'content' => $content,
+          );
+
+          break;
+
+        case 'logout':
+          $content = '';
+          if ($user->uid) {
+            $content = '<p>' . t('You are logged in: !link', array('!link' => l(t('Logout'), 'logout', array('attributes' => array('class' => 'logout-button'))))) . '</p>';
+          }
+          $block = array(
+            'subject' => t('My profile'),
+            'content' => $content,
+          );
+        break;
       }
-
-      // Logout block.
-      elseif ($delta == 'logout') {
-        if ($user->uid) {
-          $content = '<p>' . t('You are logged in: !link', array('!link' => l(t('Logout'), 'logout', array('attributes' => array('class' => 'logout-button'))))) . '</p>';
-        }
-        $block = array(
-          'subject' => t('My profile'),
-          'content' => $content,
-        );
-      }
-      break;
-
-    case 'configure':
       break;
   }
   return $block;
@@ -238,6 +245,7 @@ function publizon_user_block($op = 'list', $delta = 0) {
  * Drupal user.
  *
  * @global object $user
+ *
  * @return mixed
  *  Drupal uid if the user is logged in else FALSE.
  */

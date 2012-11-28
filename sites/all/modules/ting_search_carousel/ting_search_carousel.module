@@ -151,18 +151,24 @@ function ting_search_carousel_do_request($index) {
 
   $items = array();
   foreach ($local_ids as $id) {
-    // Load product to get cover image and cache product.
-    $product = new PublizonProduct($objects[$id]['isbn']);
+    try {
+      // Load product to get cover image and cache product.
+      $product = new PublizonProduct($objects[$id]['isbn']);
 
-    // Build object with the information collected, if it has an cover image.
-    if (isset($product->cover)) {
-      $item = new stdClass();
-      $item->id = $objects[$id]['id'];
-      $item->title = $objects[$id]['title'];
-      $item->creator = $objects[$id]['creator'];
-      $item->image = $product->getCover('120_x');
+      // Build object with the information collected, if it has an cover image.
+      if (isset($product->cover)) {
+        $item = new stdClass();
+        $item->id = $objects[$id]['id'];
+        $item->title = $objects[$id]['title'];
+        $item->creator = $objects[$id]['creator'];
+        $item->image = $product->getCover('120_x');
 
-      $items[] = $item;
+        $items[] = $item;
+      }
+    }
+    catch (Exception $e) {
+      // There is not much we can do about an error in fetching a product in the
+      // search carousel.
     }
   }
 
