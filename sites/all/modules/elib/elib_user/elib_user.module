@@ -168,208 +168,208 @@ function elib_user_theme($existing, $type, $theme, $path) {
 //  return FALSE;
 //}
 
-/**
- * Fetch the current logged in users library credentials or for the uid parsed
- * to the function.
- *
- * @global object $user
- * @param string $uid user identifier
- * @return array user credentials (ssn, pin, lib, user name)
- */
-function elib_user_get_cred($uid = FALSE){
-	if(!$uid){
-	  global $user;
-	  $uid = $user->uid;
-	}
-  $elibuser = db_fetch_array(db_query('SELECT * FROM {elib_user} WHERE uid = %d', $uid));
+///**
+// * Fetch the current logged in users library credentials or for the uid parsed
+// * to the function.
+// *
+// * @global object $user
+// * @param string $uid user identifier
+// * @return array user credentials (ssn, pin, lib, user name)
+// */
+//function elib_user_get_cred($uid = FALSE){
+//	if(!$uid){
+//	  global $user;
+//	  $uid = $user->uid;
+//	}
+//  $elibuser = db_fetch_array(db_query('SELECT * FROM {elib_user} WHERE uid = %d', $uid));
+//
+//  /**
+//   * @todo: Why not save every ting in the session ?
+//   */
+//
+//	return array(
+//	 'cpr' => $_SESSION['ssn'],
+//	 'pin' => $_SESSION['pin'],
+//	 'lib' => $elibuser['elib_library'],
+//	 'user' => $elibuser['elib_username'],
+//	);
+//}
 
-  /**
-   * @todo: Why not save every ting in the session ?
-   */
+//function elib_user_block($op = 'list', $delta = 0) {
+//  $block = array();
+//  switch ($op) {
+//    case 'list':
+//      $block = array(
+//        'account' => array(
+//          'info' => t('Mine lån'),
+//          'cache' => BLOCK_NO_CACHE,
+//          'status' => 1,
+//        ),
+//      );
+//      return $block;
+//      break;
+//
+//    case 'view':
+//      if ($delta == 'account') {
+//        $out = array();
+//        $loans = elib_user_get_loans();
+//
+//        // It's assumed in the $bookdisplay array that two books can't have the
+//        // same loan expire date.
+//        if ($loans && isset($loans->orderitem)) {
+//          module_load_include('client.inc', 'ting');
+//
+//          foreach ($loans->orderitem as $book) {
+//            if (!elib_user_is_loan_expired($book)) {
+//              $object = publizon_ting_find_object(trim($book->book->attributes()->id));
+//              if (isset($object) && $object) {
+//                $bookdisplay[elib_str_to_time((string)$book->loanexpiredate[0], TRUE)] = elib_displaybook($object, $book);
+//              }
+//              else {
+//                $bookdisplay[elib_str_to_time((string)$book->loanexpiredate[0], TRUE)] = elib_displaybook_loan($book);
+//              }
+//            }
+//          }
+//          ksort($bookdisplay);
+//
+//          foreach ($bookdisplay as $book) {
+//            $out[] = '<div class="display-book biglist">' . $book . '</div>';
+//          }
+//        }
+//        else {
+//          $out[] = t('Du har ingen aktive ebogslån.');
+//        }
+//      }
+//      break;
+//  }
+//
+//  $block['subject'] = t('Mine lån');
+//  $block['content'] = implode($out);
+//  return $block;
+//}
 
-	return array(
-	 'cpr' => $_SESSION['ssn'],
-	 'pin' => $_SESSION['pin'],
-	 'lib' => $elibuser['elib_library'],
-	 'user' => $elibuser['elib_username'],
-	);
-}
+//function elib_user_cleanuploans(&$loans) {
+//  // Some problem occur when an object passed by refference is empty, the
+//  // validation is done before function call instead
+//  $count = sizeof($loans);
+//  for ($i = $count - 1; $i >= 0; $i--) {
+//    $id = $loans[$i]->orderstatus['id'];
+//    $expiredate = $loans[$i]->loanexpiredate;
+//    if ((intval($id) != 1) || (strtotime($expiredate) < time())) {
+//      unset($loans[$i]);
+//    }
+//  }
+//}
 
-function elib_user_block($op = 'list', $delta = 0) {
-  $block = array();
-  switch ($op) {
-    case 'list':
-      $block = array(
-        'account' => array(
-          'info' => t('Mine lån'),
-          'cache' => BLOCK_NO_CACHE,
-          'status' => 1,
-        ),
-      );
-      return $block;
-      break;
+///**
+// * Wrapper function that gets the current logged in users loans from cache or
+// * elib backend.
+// *
+// * @param boolean $reset
+// *   Don't use the cache, defaults to FALSE.
+// */
+//function elib_user_get_loans($reset = FALSE) {
+//  global $user;
+//
+//  // Try to get loans from the cache.
+//  $loans = elib_user_get_loans_cache($user->uid);
+//  if (!$loans || $reset) {
+//    // Get user information.
+//    $userinfo = elib_user_get_cred();
+//
+//    // Verify user
+//    elib_client()->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
+//    try {
+//      $loans = elib_client()->getLoans();
+//      $loans = isset($loans->data) ? $loans->data : FALSE;
+//      if ($loans) {
+//        global $user;
+//        elib_user_set_loans_cache($user->uid, $loans);
+//      }
+//    } catch (Exception $e) {
+//      elib_display_error($e);
+//    }
+//  }
+//
+//  return $loans;
+//}
 
-    case 'view':
-      if ($delta == 'account') {
-        $out = array();
-        $loans = elib_user_get_loans();
+///**
+// * Check if a given book is loaned by the current user.
+// *
+// * @param type $isbn
+// *  The ISBN of the book to be checked.
+// * @param
+// *  Check if the loan has expired.
+// * @return boolean
+// *  TRUE is returned if book is loaned by the current user else FALSE
+// */
+//function elib_user_is_loan($isbn, $expired = FALSE) {
+//  $loans = elib_user_get_loans();
+//  if ($loans) {
+//    foreach ($loans->orderitem as $book) {
+//      if (in_array($book->book->attributes()->id, $isbn)) {
+//        if ($expired) {
+//          return !elib_user_is_loan_expired($book);
+//        }
+//        return TRUE;
+//      }
+//    }
+//  }
+//  return FALSE;
+//}
 
-        // It's assumed in the $bookdisplay array that two books can't have the
-        // same loan expire date.
-        if ($loans && isset($loans->orderitem)) {
-          module_load_include('client.inc', 'ting');
+///**
+// * Checks a give loan to see if it have expired.
+// *
+// * @param SimpleXMLElement $loan
+// *  A single loan representation from publizon
+// * @return boolean
+// *  If the loan has expired TRUE else FALSE
+// */
+//function elib_user_is_loan_expired(SimpleXMLElement $loan) {
+//  if ((elib_str_to_time($loan->loanexpiredate, true) - time()) > 0) {
+//    return FALSE;
+//  }
+//  return TRUE;
+//}
 
-          foreach ($loans->orderitem as $book) {
-            if (!elib_user_is_loan_expired($book)) {
-              $object = publizon_ting_find_object(trim($book->book->attributes()->id));
-              if (isset($object) && $object) {
-                $bookdisplay[elib_str_to_time((string)$book->loanexpiredate[0], TRUE)] = elib_displaybook($object, $book);
-              }
-              else {
-                $bookdisplay[elib_str_to_time((string)$book->loanexpiredate[0], TRUE)] = elib_displaybook_loan($book);
-              }
-            }
-          }
-          ksort($bookdisplay);
-
-          foreach ($bookdisplay as $book) {
-            $out[] = '<div class="display-book biglist">' . $book . '</div>';
-          }
-        }
-        else {
-          $out[] = t('Du har ingen aktive ebogslån.');
-        }
-      }
-      break;
-  }
-
-  $block['subject'] = t('Mine lån');
-  $block['content'] = implode($out);
-  return $block;
-}
-
-function elib_user_cleanuploans(&$loans) {
-  // Some problem occur when an object passed by refference is empty, the
-  // validation is done before function call instead
-  $count = sizeof($loans);
-  for ($i = $count - 1; $i >= 0; $i--) {
-    $id = $loans[$i]->orderstatus['id'];
-    $expiredate = $loans[$i]->loanexpiredate;
-    if ((intval($id) != 1) || (strtotime($expiredate) < time())) {
-      unset($loans[$i]);
-    }
-  }
-}
-
-/**
- * Wrapper function that gets the current logged in users loans from cache or
- * elib backend.
- *
- * @param boolean $reset
- *   Don't use the cache, defaults to FALSE.
- */
-function elib_user_get_loans($reset = FALSE) {
-  global $user;
-
-  // Try to get loans from the cache.
-  $loans = elib_user_get_loans_cache($user->uid);
-  if (!$loans || $reset) {
-    // Get user information.
-    $userinfo = elib_user_get_cred();
-
-    // Verify user
-    elib_client()->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
-    try {
-      $loans = elib_client()->getLoans();
-      $loans = isset($loans->data) ? $loans->data : FALSE;
-      if ($loans) {
-        global $user;
-        elib_user_set_loans_cache($user->uid, $loans);
-      }
-    } catch (Exception $e) {
-      elib_display_error($e);
-    }
-  }
-
-  return $loans;
-}
-
-/**
- * Check if a given book is loaned by the current user.
- *
- * @param type $isbn
- *  The ISBN of the book to be checked.
- * @param
- *  Check if the loan has expired.
- * @return boolean
- *  TRUE is returned if book is loaned by the current user else FALSE
- */
-function elib_user_is_loan($isbn, $expired = FALSE) {
-  $loans = elib_user_get_loans();
-  if ($loans) {
-    foreach ($loans->orderitem as $book) {
-      if (in_array($book->book->attributes()->id, $isbn)) {
-        if ($expired) {
-          return !elib_user_is_loan_expired($book);
-        }
-        return TRUE;
-      }
-    }
-  }
-  return FALSE;
-}
-
-/**
- * Checks a give loan to see if it have expired.
- *
- * @param SimpleXMLElement $loan
- *  A single loan representation from publizon
- * @return boolean
- *  If the loan has expired TRUE else FALSE
- */
-function elib_user_is_loan_expired(SimpleXMLElement $loan) {
-  if ((elib_str_to_time($loan->loanexpiredate, true) - time()) > 0) {
-    return FALSE;
-  }
-  return TRUE;
-}
-
-/**
- * Wrapper function to save users loans to local cache.
- *
- * @param type $uid
- * @param type $loans
- */
-function elib_user_set_loans_cache($uid, $loans) {
-  $data = $loans->asXML();
-  cache_set(ELIB_USER_CACHE_PREFIX . $uid, $data, 'cache', strtotime('+24 hours'));
-}
-
-/**
- * Wrapper function to get cached version of a users loans.
- *
- * @param type $uid
- * @return boolean
- */
-function elib_user_get_loans_cache($uid) {
-  $cache = cache_get(ELIB_USER_CACHE_PREFIX . $uid, 'cache');
-  if (isset($cache->data)) {
-    return simplexml_load_string($cache->data);
-  }
-  return FALSE;
-}
-
-/**
- * Wrapper function to handle cache clear of a users loans.
- *
- * @param type $uid
- * @param type $all
- */
-function elib_user_clear_loans_cache($uid, $all = FALSE) {
-  if ($all) {
-    cache_clear_all(ELIB_USER_CACHE_PREFIX, 'cache', TRUE);
-  }
-  else {
-    cache_clear_all(ELIB_USER_CACHE_PREFIX . $uid, 'cache');
-  }
-}
+///**
+// * Wrapper function to save users loans to local cache.
+// *
+// * @param type $uid
+// * @param type $loans
+// */
+//function elib_user_set_loans_cache($uid, $loans) {
+//  $data = $loans->asXML();
+//  cache_set(ELIB_USER_CACHE_PREFIX . $uid, $data, 'cache', strtotime('+24 hours'));
+//}
+//
+///**
+// * Wrapper function to get cached version of a users loans.
+// *
+// * @param type $uid
+// * @return boolean
+// */
+//function elib_user_get_loans_cache($uid) {
+//  $cache = cache_get(ELIB_USER_CACHE_PREFIX . $uid, 'cache');
+//  if (isset($cache->data)) {
+//    return simplexml_load_string($cache->data);
+//  }
+//  return FALSE;
+//}
+//
+///**
+// * Wrapper function to handle cache clear of a users loans.
+// *
+// * @param type $uid
+// * @param type $all
+// */
+//function elib_user_clear_loans_cache($uid, $all = FALSE) {
+//  if ($all) {
+//    cache_clear_all(ELIB_USER_CACHE_PREFIX, 'cache', TRUE);
+//  }
+//  else {
+//    cache_clear_all(ELIB_USER_CACHE_PREFIX . $uid, 'cache');
+//  }
+//}

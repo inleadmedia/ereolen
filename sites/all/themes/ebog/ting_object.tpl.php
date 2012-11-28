@@ -183,26 +183,22 @@ if (module_exists('ding_voxb')) {
             <li><?php print l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('action' => 'sample', 'target' => '_blank'))) ?></li>
             <li class="seperator"></li>
             <?php if ($is_loan) { ?>
-              <li><?php print l(t('Download'), $object->url . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan'))) ?></li>
+              <li><?php print l(t('Download'), 'publizon/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan'))) ?></li>
             <?php } else { ?>
-              <li><?php print l(t('Loan'), $object->url . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan'))) ?></li>
+              <li><?php print l(t('Loan'), 'publizon/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan'))) ?></li>
             <?php } ?>
-          <?php
-            if($user->uid){
-              print '<li class="seperator"></li>';
-              print '<li>';
-              print recall_list_add_link($object->record['dc:identifier']['oss:PROVIDER-ID'][0]);
-              print '</li>';
-            }
-          ?>
-            <li class="seperator"></li>
-            <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('class' => 'buy-book')))?></li>
-          <?php
+            <?php
+              if($user->uid){
+                print '<li class="seperator"></li>';
+                print '<li>';
+                print recall_list_add_link($object->record['dc:identifier']['oss:PROVIDER-ID'][0]);
+                print '</li>';
+              }
             }
             else {
-          ?>
-            <li class="unavailable"><span><?php echo t('Unavailable') ?></span></li>
-          <?php
+            ?>
+              <li class="unavailable"><span><?php echo t('Unavailable') ?></span></li>
+            <?php
             }
           ?>
          </ul>

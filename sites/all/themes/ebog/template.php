@@ -35,7 +35,8 @@ function ebog_preprocess_ting_object(&$vars) {
   // Check if the book is loaned by the user.
   global $user;
   if ($user->uid > 0) {
-    $vars['is_loan'] = elib_user_is_loan($isbn, TRUE);
+    $user_loans = new PublizonUserLoans($user->uid);
+    $vars['is_loan'] = $user_loans->isLoan($isbn, TRUE);
   }
 }
 

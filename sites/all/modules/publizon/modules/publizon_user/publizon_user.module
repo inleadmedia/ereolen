@@ -169,6 +169,60 @@ function publizon_user_load_account($login_id, $retailer_id) {
 }
 
 /**
+ * Implementation of hook_block().
+ */
+function publizon_user_block($op = 'list', $delta = 0, $edit = array()) {
+  $block = array();
+  switch ($op) {
+    case 'list':
+      $block['logout'] = array(
+        'info' => t('Logout button (Publizon)'),
+        'cache' => BLOCK_CACHE_GLOBAL,
+        'status' => 1,
+      );
+
+      $block['welcome'] = array(
+        'info' => t('Welcome header (Publizon)'),
+        'cache' => BLOCK_CACHE_GLOBAL,
+        'status' => 1,
+      );
+      break;
+
+    case 'view':
+      if ($delta == 'logout') {
+        global $user;
+        $user_loans = new PublizonUserLoans($user->uid);
+        $cred = publizon_user_get_credentials();
+        $content = '<p class="spacing-before">' .
+          t('Velkommen! Som bruger i @library kan du låne @amount om måneden', array(
+            '@library' => publizon_get_library($cred['retailer_id']),
+            '@amount' => $user_loans->max_loans_total, 'en ebog', '@count ebøger',
+          )) .
+        '</p>';
+
+        // IF MAX LOANS REACED ADD YOU CAN LOAN IN DAYS.
+
+        $block = array(
+          'content' => $content,
+        );
+      }
+      elseif ($delta == 'welcome') {
+        $content = 'test';
+        $block = array(
+          'subject' => t('My loans'),
+          'content' => $content,
+        );
+      }
+      break;
+
+    case 'configure':
+      break;
+  }
+  return $block;
+}
+
+
+/**
  * Test if the current user is logged into Publizon. The user may be a normal
  * Drupal user.
  *
@@ -184,3 +238,20 @@ function publizon_user_is_logged_in() {
   return FALSE;
 }
 
+/**
+ * Gets the current users login credentials.
+ *
+ * @return mixed
+ *  If the current user is logged in a keyed array with information is returned
+ *  else FALSE.
+ */
+function publizon_user_get_credentials() {
+  if (publizon_user_is_logged_in()) {
+    return array(
+      'login_id' => $_SESSION['login_id'],
+      'pass' => $_SESSION['pass'],
+      'retailer_id' => $_SESSION['retailer_id'],
+    );
+  }
+  return FALSE;
+}

@@ -16,7 +16,7 @@
   $(document).ready(function() {
     $('a').live('click', function() {
       href = $(this).attr('href');
-      if (!href.match(/ting\/object\/(.)+\/download/)) {
+      if (!href.match(/publizon\/(.)+\/download/)) {
         return true;
       }
 
@@ -126,7 +126,6 @@
                 }
               });
               return false;
-
             }
 
             popup_buttons[cancel_button] = function() {

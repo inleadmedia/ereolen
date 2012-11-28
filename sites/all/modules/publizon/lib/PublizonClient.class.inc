@@ -116,20 +116,18 @@ class PublizonClient {
    * @throws PublizonException
    */
   public function createLoan($card_number, $pincode, $isbn) {
-    throw new PublizonException('Not implemented yet');
-
     // Make request to the web-service for the loan. It throws an exception if
     // the loan failes.
-    $response = $this->call('libraray_list', 'GetLastLoansForAll', array(
+    $response = $this->call('loan', 'CreateLoan', array(
       'pub:ebookid' => $isbn,
-      'pub:cardnumber' => $isbn,
+      'pub:cardnumber' => $card_number,
       'pub:pincode' => $pincode,
-    ), array('pub' => 'http://pubhub.dk/'));
+    ), array('pub' => 'pubhub.dk'));
 
     $data = $response->xpath('//data');
     if (isset($data[0])) {
       $data = $data[0];
-      return $data->downloadurl;
+      return (string)$data->downloadurl;
     }
 
     $this->logger->log('Create loan request returned no data (' . $isbn . ').', 'ERROR');

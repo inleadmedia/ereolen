@@ -66,14 +66,8 @@ class PublizonUserLoans extends Publizon {
       $this->properties = $cache->data;
     }
     else {
-      $client = PublizonClient::getClient();
-      $data = $client->getLibraryUserOrderList($this->getCardNumber($card_number), variable_get('publizon_site_type', PUBLIZON_EBOOK));
-      if ($data) {
-        $this->parse($data, $fetch_ting_object);
-      }
-      else {
-        throw new PublizonLoansException('The server did not return any information about the users loans.');
-      }
+      // Get the users loans.
+      $this->fetchLoans();
 
       // We cache the result until the user makes changes to the loans or loan
       // expires.
@@ -94,19 +88,68 @@ class PublizonUserLoans extends Publizon {
    *
    * @param string $isbn
    *  ISBN of the loan to check.
+   * @param boolean $expired
+   *  If TRUE the loan is also have to not be expired to be a loan.
    * @return boolean
    *  TRUE if the user have the loan else FALSE.
    */
-  public function isLoan($isbn) {
+  public function isLoan($isbn, $expired = FALSE) {
     if (isset($this->loans[$isbn])) {
+      if ($expired) {
+        if ($this->loans[$isbn]->isExpired) {
+          return FALSE;
+        }
+      }
       return TRUE;
     }
     return FALSE;
   }
 
   /**
+   * Create a new loan for the currently logged in user. If the loan is
+   * unsuccessful an Publizon exception will be thrown.
+   *
+   * @param string $isbn
+   *  The products ISBN number for which the user is trying to loan.
+   * @return string
+   *  The download link to the prodoct, if successfull.
+   */
+  public function createLoan($isbn) {
+    // Check if this already is a loan and if so return that loan.
+    if ($this->isLoan($isbn) && !$this->loans[$isbn]->isExpired()) {
+      return $this->loans[$isbn];
+    }
+
+    // Try to create new loan.
+    $client = PublizonClient::getClient();
+    $download_url = $client->createLoan($this->getCardNumber(), $this->getPincode(), $isbn);
+
+    // Refresh the local loans cache.
+    $this->refreshCache();
+
+    // Return the download url.
+    return $download_url;
+  }
+
+  /**
+   * Fetch all loans for the current user.
+   *
+   * @throws PublizonLoansException
+   */
+  private function fetchLoans() {
+    $client = PublizonClient::getClient();
+    $data = $client->getLibraryUserOrderList($this->getCardNumber($card_number), variable_get('publizon_site_type', PUBLIZON_EBOOK));
+    if ($data) {
+      $this->parse($data);
+    }
+    else {
+      throw new PublizonLoansException('The server did not return any information about the users loans.');
+    }
+  }
+
+  /**
    * If the parameter given is not NULL and is numeric the card number is
-   * returned. If not, the session is checked for a login ID, which is returned
+   * returned. If not, the session is checked for a login ID, which is returned,
    * if found.
    *
    * @param string $card_number
@@ -114,16 +157,52 @@ class PublizonUserLoans extends Publizon {
    * @return string
    *  The cardnumber.
    * @throws PublizonLoansException
-   *  If the card number / login id is not found the exceptionis thrown.
+   *  If the card number / login id is not found the exception is thrown.
    */
-  private function getCardNumber($card_number) {
+  private function getCardNumber($card_number = NULL) {
     if (isset($card_number) && is_numeric($card_number)) {
       return $card_number;
     }
     elseif (isset($_SESSION['login_id'])) {
       return $_SESSION['login_id'];
     }
-    throw new PublizonLoansException('Can\'t get loans for the current user as no login ID was detected');
+    throw new PublizonLoansException('Can\'t get loans for the current user as login ID was detected');
+  }
+
+  /**
+   * If the parameter given is not NULL and is numeric the pincode is returned.
+   * If not, the session is checked for a pincode (pass), which is returned, if
+   * found.
+   *
+   * @param string $pincode
+   *  The current users pincode.
+   * @return string
+   *  The current users pincode
+   * @throws PublizonLoansException
+   *  If no pincode information is found and exception is thrown.
+   */
+  private function getPincode($pincode = NULL) {
+    if (isset($pincode) && is_numeric($pincode)) {
+      return $pincode;
+    }
+    elseif (isset($_SESSION['pass'])) {
+      return $_SESSION['pass'];
+    }
+    throw new PublizonLoansException('Can\'t get loans for the current user as login ID was detected');
+  }
+
+  /**
+   * Update the cache with the current loans
+   */
+  private function refreshCache() {
+    global $user;
+
+    // Get the users loans.
+    $this->fetchLoans();
+
+    // We cache the result until the user makes changes to the loans or loan
+    // expires.
+    cache_set($user->uid, $this->properties, 'cache_publizon_loans');
   }
 
   /**

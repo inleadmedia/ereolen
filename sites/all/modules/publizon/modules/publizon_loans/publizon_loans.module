@@ -66,8 +66,6 @@ function publizon_loans_block($op = 'list', $delta = 0, $edit = array()) {
   return $block;
 }
 
-
-
 /**
  * Implements hook_flush_caches().
  *

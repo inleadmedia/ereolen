@@ -112,10 +112,9 @@ function netsound_contact_error_form($form_state) {
     '#required' => TRUE,
   );
 
-  global $user;
-  $userinfo = elib_user_get_cred($user->uid);
-  if($userinfo['lib']){
-    $form['contact_library']['#default_value'] = $userinfo['lib'];
+  $userinfo = publizon_user_get_credentials();
+  if ($userinfo) {
+    $form['contact_library']['#default_value'] = publizon_get_library($userinfo['retailer_id']);
     $form['contact_library']['#disabled'] = TRUE;
   }
 
@@ -224,10 +223,10 @@ function netsound_contact_netlyd_form($form_state){
     '#options' => publizon_get_libraries(),
   	'#required' => TRUE,
   );
-  global $user;
-  $userinfo = elib_user_get_cred($user->uid);
-  if($userinfo['lib']){
-    $form['contact_library']['#default_value'] = $userinfo['lib'];
+
+  $userinfo = publizon_user_get_credentials();
+  if ($userinfo) {
+    $form['contact_library']['#default_value'] = publizon_get_library($userinfo['retailer_id']);
     $form['contact_library']['#disabled'] = TRUE;
   }
   $form['problem'] = array(
@@ -254,10 +253,9 @@ function netsound_contact_elib_form($form_state){
   	'#required' => TRUE
   );
 
-  global $user;
-  $userinfo = elib_user_get_cred($user->uid);
-  if ($userinfo['lib']){
-    $form['contact_library']['#default_value'] = $userinfo['lib'];
+  $userinfo = publizon_user_get_credentials();
+  if ($userinfo) {
+    $form['contact_library']['#default_value'] = publizon_get_library($userinfo['retailer_id']);
     $form['contact_library']['#disabled'] = TRUE;
   }
 

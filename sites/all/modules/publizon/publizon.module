@@ -151,13 +151,13 @@ function publizon_flush_caches() {
  *
  */
 function template_preprocess_publizon_actions(&$vars) {
-  $object_url = 'ting/object/' . $vars['product']->getTingObject()->id;
+  $isbn = $vars['product']->isbn;
   $actions = array();
   switch ($vars['type']) {
     // User loan list
     case 'loan':
       $actions[] =  array(
-        '#link' => l(t('Download'), $object_url . '/download', array('html' => true, 'attributes' => array('class' => 'loan'))),
+        '#link' => l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => true, 'attributes' => array('class' => 'loan'))),
         '#class' => 'download',
         '#weight' => 1,
       );
@@ -180,7 +180,7 @@ function template_preprocess_publizon_actions(&$vars) {
           '#weight' => -10,
         );
         $actions[] = array(
-          '#link' => l(t('Loan'), $object_url . '/download', array('html' => true,  'attributes' => array('class' => 'loan'))),
+          '#link' => l(t('Loan'), 'publizon/' . $isbn . '/download', array('html' => true,  'attributes' => array('class' => 'loan'))),
           '#class' => 'loan',
           '#weight' => -5,
         );

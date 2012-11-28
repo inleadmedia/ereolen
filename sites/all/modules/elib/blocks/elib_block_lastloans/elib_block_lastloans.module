@@ -153,7 +153,7 @@ function elib_block_lastloans_block($op = 'list', $delta = 0) {
           return false;
         }
 
-        $u = elib_user_get_cred();
+        $u = array();//elib_user_get_cred();
         $libs = publizon_get_libraries();
 
         foreach ($libs as $key => $lib) {
