@@ -132,6 +132,35 @@ class PublizonUserLoans extends Publizon {
   }
 
   /**
+   * Finds the number of hours or days until the current user can loan a book
+   * again.
+   *
+   * @return string
+   *  Formatted string with the next expire time.
+   */
+  public function nextLoanPeriode() {
+    // Because of the loans cache we can not use the field available
+    // from publizon.
+
+    // Find the first loan to expire.
+    $expire = 100000000000;
+    foreach ($this->loans as $loan) {
+      $expire = ($loan->expire_date > $expire) ? $expire : $loan->expire_date;
+    }
+    $hours = (date_difference(time(), $expire, 'hours', DATE_UNIX));
+    if ($hours <= 24) {
+      $str = t('You can loan a new product in %hours.', array('%hours' => format_plural($hours, 'one hour', '@count hours')));
+    }
+    else {
+      $days = date_difference(time(), $expire, 'days', DATE_UNIX);
+      $str = t('You can loan a new product in %days.', array('%days' => format_plural($days, 'one day', '@count days')));
+    }
+
+    return $str;
+  }
+
+
+  /**
    * Fetch all loans for the current user.
    *
    * @throws PublizonLoansException

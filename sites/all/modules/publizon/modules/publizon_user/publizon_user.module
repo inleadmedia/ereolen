@@ -172,6 +172,10 @@ function publizon_user_load_account($login_id, $retailer_id) {
 
 /**
  * Implementation of hook_block().
+ *
+ * Implemnets the blocks thats mainly is located on the "my page" panel after
+ * the user is logged in. If you are looking for my loans look in
+ * publizon_loans.
  */
 function publizon_user_block($op = 'list', $delta = 0) {
   $block = array();
@@ -205,12 +209,22 @@ function publizon_user_block($op = 'list', $delta = 0) {
 
             // Add welcom information.
             $content = '<p class="spacing-before">' .
-              t('Welcome! As user at @library you are allowed to download @amount a mount', array(
+              t('Welcome! As user at @library library you are allowed to download @amount at the same time.', array(
                 '@library' => $library['library_name'],
-                '@amount' => $user_loans->max_loan_per_time, 'one product', '@count products',
+                '@amount' => format_plural($user_loans->max_loan_per_time, 'one product', '@count products'),
               )) . '</p>';
 
-            // IF MAX LOANS REACED ADD YOU CAN LOAN IN DAYS.
+            // If max loans have been reached. Run over the loans an find the
+            // loan that exipres first and display the time until the user can
+            // make a new loan.
+            $var = 'usere_book_loans_remain';
+            $publizon = variable_get('publizon', array());
+            if (isset($publizon['settings']['type']) && $publizon['settings']['type'] == PUBLIZON_NETSOUND) {
+              $var = 'usere_sound_loans_remain';
+            }
+            if ($user_loans->$var) {
+              $content .= '<p class="next-loan-periode">' . $user_loans->nextLoanPeriode() . '</p>';
+            }
           }
           catch (Exception $e) {
             // The message shoudl already be translated in the custom exception.
@@ -221,7 +235,7 @@ function publizon_user_block($op = 'list', $delta = 0) {
             'content' => $content,
           );
 
-          break;
+            break;
 
         case 'logout':
           $content = '';
