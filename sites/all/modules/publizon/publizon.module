@@ -327,6 +327,9 @@ function publizon_get_library($retailer_id, $reset = FALSE) {
  *  returned.
  */
 function publizon_ting_find_object($isbn) {
+  // Ensure that the ting client is available.
+  module_load_include('client.inc', 'ting');
+  
   // Build ting request.
   $request = ting_get_request_factory()->getSearchRequest();
   $request = ting_add_agency($request);
