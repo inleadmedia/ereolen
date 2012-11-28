@@ -1,11 +1,12 @@
 <?php
 /**
  * @file
- *
+ * Logger classes used to log information from the Publizon client.
  */
 
 /**
- *
+ * Logger class that is used to send logged messages to the system for later
+ * usage in debugging problems.
  */
 abstract class PublizonLogger {
 
@@ -37,6 +38,10 @@ abstract class PublizonLogger {
   abstract protected function dolog($message, $severity);
 }
 
+/**
+ * Watch dog logger that ensure that the log message is sent to Drupal's
+ * logger.
+ */
 class PublizonWatchDogLogger extends PublizonLogger {
   public function doLog($message, $severity) {
     watchdog('publizon client', htmlspecialchars($message, ENT_QUOTES, 'UTF-8', FALSE), array(),
@@ -45,6 +50,9 @@ class PublizonWatchDogLogger extends PublizonLogger {
   }
 }
 
+/**
+ * Void logger class that sends the log message into the big void.
+ */
 class PublizonVoidLogger extends PublizonLogger {
   public function doLog($message, $severity) {}
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- *
+ * Contains the loans storage classes uses by PublizonUserLoans.
  */
 
 /**

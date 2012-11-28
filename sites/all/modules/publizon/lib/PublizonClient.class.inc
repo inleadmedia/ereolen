@@ -360,5 +360,15 @@ class PublizonClient {
  * + check_plain
  */
 
-class PublizonException extends Exception {}
-class PublizonConnectionException extends Exception {}
+class PublizonException extends Exception {
+  // Create new constructor that ensure message is tranlated.
+  public function __construct($message, $code = 0, Exception $previous = null) {
+    // Add support for tranlation.
+    $message = t($message);
+
+    // Make sure everything is assigned properly
+    parent::__construct($message, $code, $previous);
+  }
+}
+
+class PublizonConnectionException extends PublizonException {}

@@ -220,4 +220,4 @@ class PublizonProduct extends Publizon {
   }
 }
 
-class PublizonProductException extends Exception {}
+class PublizonProductException extends PublizonException {}

@@ -1,16 +1,17 @@
 <?php
 /**
  * @file
- *
+ * Defines the comunication client to use with the Publizon client. It makes
+ * some overrides of the default NanoSOAPClient implementation.
  */
 
 /**
- *
+ * Implementation of the communication object based on NanoSOAPClient object.
  */
 class PublizonNanoSOAPClient extends NanoSOAPClient {
 
   /**
-   *
+   * Default construtor.
    */
   function __construct($endpoint, $options = array()) {
     parent::__construct($endpoint, $options);

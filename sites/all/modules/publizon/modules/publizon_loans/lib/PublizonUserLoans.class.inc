@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * 
+ *
  */
 
 /**
@@ -238,4 +238,4 @@ class PublizonUserLoans extends Publizon {
   }
 }
 
-class PublizonLoansException extends Exception {}
+class PublizonLoansException extends PublizonException {}
