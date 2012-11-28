@@ -102,7 +102,7 @@ class PublizonLoan extends Publizon {
     $this->expire_date = strtotime((string)$item->loanexpiredate);
     $this->title = (string)$item->book->title;
     $this->authors = $authors;
-    $this->download_url = (string)$item->book->data->data->downloadurk;
+    $this->download_url = (string)$item->data->data->downloadurl;
     $this->publisher = (string)$item->book->publisher;
     $this->product = new PublizonProduct($this->isbn);
   }

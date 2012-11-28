@@ -222,7 +222,9 @@ function publizon_user_block($op = 'list', $delta = 0) {
             if (isset($publizon['settings']['type']) && $publizon['settings']['type'] == PUBLIZON_NETSOUND) {
               $var = 'usere_sound_loans_remain';
             }
-            if ($user_loans->$var) {
+
+            // If the current type and user have 0 loans left.
+            if (!$user_loans->$var) {
               $content .= '<p class="next-loan-periode">' . $user_loans->nextLoanPeriode() . '</p>';
             }
           }
