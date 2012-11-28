@@ -96,7 +96,7 @@ class PublizonUserLoans extends Publizon {
   public function isLoan($isbn, $expired = FALSE) {
     if (isset($this->loans[$isbn])) {
       if ($expired) {
-        if ($this->loans[$isbn]->isExpired) {
+        if ($this->loans[$isbn]->isExpired()) {
           return FALSE;
         }
       }

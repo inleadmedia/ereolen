@@ -171,7 +171,7 @@ voxb h3 {
 .panel-pane.pane-embedvideo .pane-content,
 .panel-pane.pane-front .pane-content,
 #sidebar-first #block-views-latest_news-block_1 .content,
-.pane-elib-block-lastloans-3 .pane-content,
+.pane-publizon-user-welcome .pane-content,
 .panel-pane.pane-latest-news .pane-content,
 .page-anmeldelser .pane-content,
 .section-artikel .pane-content,
@@ -685,7 +685,7 @@ voxb h3 {
   margin: 0;
 }
 
-.pane-elib-block-lastloans-3 {
+.pane-publizon-user-welcome {
   margin-bottom: 35px;
 }
 
@@ -701,6 +701,10 @@ voxb h3 {
 
 div.panel-pane.pane-node-content .pane-content div.submitted {
   display: none;
+}
+
+.pane-publizon-user-welcome .next-loan-periode {
+  color: #C00;
 }
 
 /**

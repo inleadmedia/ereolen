@@ -14,7 +14,7 @@ function ebog_theme(&$existing, $type, $theme, $path) {
  * Add extra information form elib to the ting object.
  */
 function ebog_preprocess_ting_object(&$vars) {
-  $isbn = $vars[object]->record['dc:identifier']['oss:PROVIDER-ID'];
+  $isbn = $vars[object]->record['dc:identifier']['oss:PROVIDER-ID'][0];
 
   // Override ting object page title.
   drupal_set_title(check_plain($vars['object']->title . ' ' . t('af') . ' ' . $vars['object']->creators_string));
@@ -22,21 +22,27 @@ function ebog_preprocess_ting_object(&$vars) {
   // Create the author field
   $vars['author'] = publizon_get_authors($vars['object']);
 
-  $product = new PublizonProduct($isbn);
+  // Load the product.
+  try {
+    $product = new PublizonProduct($isbn);
 
-  // Get cover image.
-  $vars['elib_book_cover'] = $product->getCover('170_x');
+    // Get cover image.
+    $vars['cover'] = $product->getCover('170_x');
 
-  // Get ebook sample link.
-  if (!empty($product->teaser_link)) {
-    $vars['elib_sample_link'] = $product->teaser_link;
+    // Get ebook sample link.
+    if (!empty($product->teaser_link)) {
+      $vars['elib_sample_link'] = $product->teaser_link;
+    }
+
+    // Check if the book is loaned by the user.
+    global $user;
+    if ($user->uid > 0) {
+      $user_loans = new PublizonUserLoans($user->uid);
+      $vars['is_loan'] = $user_loans->isLoan($isbn, TRUE);
+    }
   }
-
-  // Check if the book is loaned by the user.
-  global $user;
-  if ($user->uid > 0) {
-    $user_loans = new PublizonUserLoans($user->uid);
-    $vars['is_loan'] = $user_loans->isLoan($isbn, TRUE);
+  catch (Exception $e) {
+    drupal_set_message($e->getMessage(), 'error');
   }
 }
 
@@ -58,14 +64,19 @@ function ebog_preprocess_ting_search_collection(&$vars) {
     // Get authors.
     $vars['elib'][$isbn]['author'] = publizon_get_authors($obj);
 
-    $product = new PublizonProduct($isbn);
+    try {
+      $product = new PublizonProduct($isbn);
 
-    // Get cover image.
-    $vars['elib'][$isbn]['elib_book_cover'] = $product->getCover('170_x');
+      // Get cover image.
+      $vars['elib'][$isbn]['elib_book_cover'] = $product->getCover('170_x');
 
-    // Get ebook sample link.
-    if (!empty($product->teaser_link)) {
-      $vars['elib'][$isbn]['elib_sample_link'] = $product->teaser_link;
+      // Get ebook sample link.
+      if (!empty($product->teaser_link)) {
+        $vars['elib'][$isbn]['elib_sample_link'] = $product->teaser_link;
+      }
+    }
+    catch (Exception $e) {
+      drupal_set_message($e->getMessage(), 'error');
     }
   }
 }

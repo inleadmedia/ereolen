@@ -33,13 +33,13 @@ if (module_exists('ding_voxb')) {
 <div id="ting-object" class="line rulerafter">
 
   <div class="picture unit grid-3 alpha">
-    <?php if (strpos($elib_book_cover, 'imagecache')): ?>
+    <?php if (strpos($cover, 'imagecache')): ?>
       <div class="inner left" style="margin-bottom:10px;">
-        <?php print theme('image', $elib_book_cover, $object->title, $object->title, null, false); ?>
+        <?php print theme('image', $cover, $object->title, $object->title, null, false); ?>
       </div>
     <?php else: ?>
       <div class="inner left nopicture" style="height:270px;margin-bottom:10px;">
-        <?php print theme('image', $elib_book_cover, $object->title, $object->title, null, false); ?>
+        <?php print theme('image', $cover, $object->title, $object->title, null, false); ?>
       </div>
     <?php endif;?>
   </div>
