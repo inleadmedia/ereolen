@@ -167,7 +167,7 @@ class PublizonUserLoans extends Publizon {
    */
   private function fetchLoans() {
     $client = PublizonClient::getClient();
-    $data = $client->getLibraryUserOrderList($this->getCardNumber($card_number), variable_get('publizon_site_type', PUBLIZON_EBOOK));
+    $data = $client->getLibraryUserOrderList($this->getCardNumber(), variable_get('publizon_site_type', PUBLIZON_EBOOK));
     if ($data) {
       $this->parse($data);
     }
