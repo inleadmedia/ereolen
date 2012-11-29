@@ -687,6 +687,10 @@ voxb h3 {
 }
 
 .pane-publizon-user-welcome {
+  margin-bottom: 1em;
+}
+
+.page-min-side .pane-custom .pane-content {
   margin-bottom: 35px;
 }
 
