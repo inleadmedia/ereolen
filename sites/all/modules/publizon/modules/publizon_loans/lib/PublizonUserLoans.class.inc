@@ -172,9 +172,10 @@ class PublizonUserLoans extends Publizon {
     if ($data) {
       $this->parse($data);
     }
-    else {
-      throw new PublizonLoansException('The server did not return any information about the users loans.');
-    }
+
+    // If the user dose not have any loans, no data element is returned from
+    // publizon.
+    return FALSE;
   }
 
   /**

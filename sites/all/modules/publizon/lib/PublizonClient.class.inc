@@ -26,6 +26,7 @@ class PublizonClient {
     'libraray_list' => 'getlibrarylist.asmx',
     'library_user_order_list' => 'getlibraryuserorderlist.asmx',
     'removed_product_list' => 'getremovedproductlist.asmx',
+    'library_profile' => 'getlibraryinfo.asmx',
   );
 
   // Holds the object instance (part of the singleton pattern).
@@ -282,6 +283,28 @@ class PublizonClient {
       return FALSE;
     }
     return TRUE;
+  }
+
+
+  public function getLibraryProfile($retailer_id = NULL, $retailer_key_code = NULL) {
+    // Try to get parameters and fallback to default.
+    $retailer_id = isset($retailer_id) ? $retailer_id : $this->retailer_id;
+    $retailer_key_code = isset($retailer_key_code) ? $retailer_key_code : $this->retailer_key_code;
+
+    // Make the web-service call.
+    $response = $this->call('library_profile', 'GetLibraryProfile', array(
+        'pub:retailerid' => $retailer_id,
+        'pub:retailerkeycode' => $retailer_key_code,
+    ), array('pub' => 'http://pubhub.dk/'));
+
+    // Check if any data was returned.
+    $data = $response->xpath('//data');
+    if (isset($data[0])) {
+      return $data[0];
+    }
+
+    $this->logger->log('The library profile with id (' . $retailer_id . ') did not return any data', 'WARNING');
+    return FALSE;
   }
 
   /**
