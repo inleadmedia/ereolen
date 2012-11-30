@@ -335,7 +335,7 @@ class PublizonClient {
     $status = $response->xpath('//status');
     if (isset($status[0]) && $status[0]->code != 101) {
       // Throw exception, it's translated in the exception.
-      throw new PublizonException($status[0]->message, $status[0]->code);
+      throw new PublizonException($status[0]->message, intval($status[0]->code));
       $this->logger->log(check_plain($status[0]->message()));
     }
 
@@ -385,7 +385,7 @@ class PublizonException extends Exception {
   // Create new constructor that ensure message is tranlated.
   public function __construct($message, $code = 0, Exception $previous = NULL) {
     // Add support for tranlation.
-    $message = t(check_markup($message), FILTER_FORMAT_DEFAULT, FALSE);
+    $message = t(check_plain($message));
 
     // Make sure everything is assigned properly
     parent::__construct($message, $code, $previous);
