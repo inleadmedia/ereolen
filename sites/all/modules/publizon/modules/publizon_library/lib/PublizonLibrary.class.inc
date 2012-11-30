@@ -1,11 +1,13 @@
 <?php
 /**
  * @file
- *
+ * Create the PublizonLibrary class the holds bsaic information about a given
+ * library as registered by Publizon.
  */
 
 /**
- *
+ * PublizonLibrary class the holds bsaic information about a given library as
+ * registered by Publizon.
  */
 class PublizonLibrary extends Publizon {
   protected $properties = array(
@@ -17,6 +19,18 @@ class PublizonLibrary extends Publizon {
     'LoanDurationInDays' => NULL,
   );
 
+  /**
+   * Creates the object, if the parameters is not given if will fallback to the
+   * once currently in the session or the library that is defined as default by
+   * the site administrator.
+   *
+   * @param string $retailer_id
+   *  The librarys ID at Publizon.
+   * @param string $retailer_key_code
+   *  The librarys access code at Publizon.
+   * @param string $reset
+   *  If TRUE the cache is by-passed.
+   */
   public function __construct($retailer_id = NULL, $retailer_key_code = NULL, $reset = FALSE) {
     // Check cache for the properties values.
     if (!$reset && ($cache = cache_get($isbn, 'cache_publizon_library'))) {
@@ -32,7 +46,7 @@ class PublizonLibrary extends Publizon {
   }
 
   /**
-   * Findes the m
+   * Get the max number of loan per borrower base on the current site type.
    *
    * @return int
    *  The max number of loan per borrower.
@@ -65,7 +79,6 @@ class PublizonLibrary extends Publizon {
 }
 
 /**
- * Custom Exception for Publizon Products is mainly thrown when the object is
- * give invalided parameters.
+ * Custom Exception for Publizon Library.
  */
 class PublizonLibraryException extends PublizonException {}

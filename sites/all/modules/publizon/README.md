@@ -129,7 +129,21 @@ This sub-module is only used to hook into the login process and to provide
 blocks for "my page". It has two utility functions that may be useful outside
 the module.
 
+## Usage
+
 ```php
   publizon_user_get_credentials();
   publizon_user_is_logged_in();
+```
+
+# Publizon library
+This sub-module can be used to get basic information about a given library as
+registered by Publizon.
+
+## Usage
+The object as one function to extract max loans per borrower and it properties.
+
+```php
+  $library_profile = new PublizonLibrary();
+  $library_profile->getMaxLoans();
 ```

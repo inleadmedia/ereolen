@@ -204,13 +204,12 @@ function publizon_user_block($op = 'list', $delta = 0) {
           try {
             // Get max loans for the library.
             $library_profile = new PublizonLibrary();
-            $max = $library_profile->getMaxLoans();
 
             // Add welcom information.
             $content = '<p class="spacing-before">' .
               t('Welcome! As user at @library you are allowed to download @amount at the same time.', array(
                 '@library' => $library_profile->name,
-                '@amount' => format_plural($max, 'one product', '@count products'),
+                '@amount' => format_plural($library_profile->getMaxLoans(), 'one product', '@count products'),
               )) . '</p>';
 
             // If max loans have been reached. Run over the loans an find the

@@ -285,7 +285,17 @@ class PublizonClient {
     return TRUE;
   }
 
-
+  /**
+   * Get basic information about a given library as registrated at Publizon. It
+   * will fallback on the clients retailer id and retailer key code defined in
+   * the current instance of the client if non is given as arguments.
+   * 
+   * @param string $retailer_id
+   *  The librarys ID at Publizon.
+   * @param string $retailer_key_code
+   *  The librarys access code at Publizon.
+   * @return boolean
+   */
   public function getLibraryProfile($retailer_id = NULL, $retailer_key_code = NULL) {
     // Try to get parameters and fallback to default.
     $retailer_id = isset($retailer_id) ? $retailer_id : $this->retailer_id;

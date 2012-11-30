@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- *
+ * Main module implementation which defines functions used in the administration
+ * interface and a few helper functions.
  */
 
 /**
