@@ -31,7 +31,9 @@ module for more information about these helper functions.
 If you need to communicate directly with Publizon the client can be fetched an
 instance of the object link this:
 
+```php
   $client = PublizonClient::getClient($retailer_id, $retailer_key_code, $langcode, $logger);
+```
 
 Please not that all parameters are optional and that it's only in very special
 cases that you would need to use any parameters. The object it self will detect
@@ -53,7 +55,9 @@ requested the first time).
 ## Usage
 To get a product simply crate a new PublizonProduct object.
 
+```php
   $product = PublizonProduct($isbn);
+```
 
 ## Methods
 To get a cover image use the getCover method on the Product class. The method
@@ -62,11 +66,15 @@ image. It takes usage of the fact that the cover may have been downloaded before
 and uses the local copy. If you which to download a new version the second
 argument should be set to FALSE (default TRUE).
 
+```php
   $product->getCover('presetName');
+```
 
 To get a ting object for the product simply call:
 
+```php
   $ting_object = $product->getTingObject()
+```
 
 # Publizon Loans
 If you need access to the currently logged in users loans create a new
@@ -81,6 +89,7 @@ if a given loan is expire before displaying it.
 ## Usage
 Simply create a new object and theme it as a list:
 
+```php
   if ($uid = publizon_user_is_logged_in()) {
     try {
       $publizon_loans = new PublizonUserLoans($uid, TRUE);
@@ -90,15 +99,19 @@ Simply create a new object and theme it as a list:
       drupal_set_message($e->getMessage(), 'error');
     }
   }
+```
 
 The loans are available as PublizonLoan objects like this:
 
+```php
   $loans = $publizon_loans->loans;
   $loan = $publizon_loans[$isbn];
+```
 
 Both the PublizonUserLoans and PublizonLoan objects have helper function to
 create expire strings and check for different conditions.
 
+```php
   // PublizonUserLoans.
   $publizon_loans->isLoan($isbn, FALSE);
   $publizon_loans->createLoan($isbn);
@@ -107,6 +120,7 @@ create expire strings and check for different conditions.
   // PublizonLoan.
   $loan->isExpired();
   $loan->loanExpiresIn();
+```
 
 See the class for information about the methods.
 
@@ -115,5 +129,7 @@ This sub-module is only used to hook into the login process and to provide
 blocks for "my page". It has two utility functions that may be useful outside
 the module.
 
+```php
   publizon_user_get_credentials();
   publizon_user_is_logged_in();
+```
