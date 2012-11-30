@@ -1,6 +1,9 @@
 <?php
 /**
  * @file
+ * Install user mapping table from encode Publizon id to Drupal user id. It also
+ * migrates the old elib user mapping if the table exists on module
+ * installation.
  */
 
 /**
@@ -39,6 +42,9 @@ function publizon_user_schema() {
   return $schema;
 }
 
+/**
+ * Implements hook_install().
+ */
 function publizon_user_install() {
   // Install database schema.
   drupal_install_schema('publizon_user');
@@ -52,6 +58,9 @@ function publizon_user_install() {
   }
 }
 
+/**
+ * Implements hook_uninstall().
+ */
 function publizon_user_uninstall() {
   // Remove the database table, it's comment out because it will remove all user
   // mapping from the database. I don't think we ever wants to do that.

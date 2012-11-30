@@ -1,14 +1,12 @@
 <?php
 /**
  * @file
- *
+ * Defines default implementation of custom theme functions, such as theme_ and
+ * preprocess functions.
  */
 
-
 /**
- * Default implementation of hook_publizon_product_preprocess().
- *
- * @param type $vars
+ * Implement of hook_publizon_product_preprocess().
  */
 function template_preprocess_publizon_product(&$vars) {
   $ting_object = $vars['product']->getTingObject();
@@ -27,6 +25,8 @@ function template_preprocess_publizon_product(&$vars) {
     $vars['actions'] = theme('publizon_actions', $vars['product'], $vars['type']);
   }
   else {
+    // As the ting object was not available, try using the information we have
+    // from publizon.
     $vars['title']  = $vars['product']->title;
     $vars['authors'] = t('!author', array('!author' => l($vars['product']->author[0], 'ting/search/' . $author)));
 

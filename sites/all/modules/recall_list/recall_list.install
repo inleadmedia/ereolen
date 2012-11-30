@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- *
+ * Defines the table used to store ISBN numbers for the products that the users
+ * puts on the list for later usage.
  */
 
 /**
@@ -24,6 +25,9 @@ function recall_list_uninstall() {
 function recall_list_schema() {
   $schema = array();
 
+  // Add the database schema that the module uses to store the recall lists.
+  // It's base on ISBN numbers as they can be used to load publizon product
+  // rater the ting_object_ids, which would require datawell access.
   $schema['recall_list'] = array(
     'description' => t('Recall list used to store products for later usage.'),
     'fields' => array(
@@ -49,6 +53,7 @@ function recall_list_schema() {
     ),
   );
 
+  // Add cache table.
   $schema['cache_recall_list'] = drupal_get_schema_unprocessed('system', 'cache');
 
   return $schema;

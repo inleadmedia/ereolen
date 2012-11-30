@@ -19,6 +19,7 @@ abstract class PublizonLogger {
   const INFO = 'INFO';
   const DEBUG = 'DEBUG';
 
+  // Defines the different levels that a error message can have.
   static public $levels = array(self::EMERGENCY, self::ALERT, self::CRITICAL, self::ERROR,
                                 self::WARNING,  self::NOTICE, self::INFO, self::DEBUG);
 

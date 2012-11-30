@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- *
+ * Implements a simple cart function (or recall list) that users can use to
+ * store products they want to look at later on.
  */
 
 /**
@@ -11,23 +12,23 @@ function recall_list_menu() {
   $items = array();
 
   $items['recall_list/%/add'] = array(
-    'title' => t('Add to recall list'),
+    'title' => 'Add to recall list',
     'page callback' => 'recall_list_modify',
     'page arguments' => array(1, 'add'),
     'access arguments' => array('access content'),
   );
 
   $items['recall_list/%/delete'] = array(
-    'title' => t('Delete from recall list'),
+    'title' => 'Delete from recall list',
     'page callback' => 'recall_list_modify',
     'page arguments' => array(1, 'delete'),
     'access arguments' => array('access content'),
   );
 
   $items['admin/settings/recall_list_migrate'] = array(
-    'title' => t('Delete from recall list'),
+    'title' => 'Migrate elib lists',
     'page callback' => 'recall_list_migrate',
-    'access arguments' => array('access content'),
+    'access arguments' => array('administre site'),
   );
 
   return $items;
@@ -219,9 +220,8 @@ function _recall_list_cache_clear($uid) {
 }
 
 /***
- * THE STUFF BELOW SHOULD BE REMOVED AFTER MIGRATION.
+ * THE STUFF BELOW SHOULD BE REMOVED AFTER MIGRATION FROM ELIB.
  */
-
 function recall_list_migrate() {
   $result = db_query('SELECT DISTINCT * FROM {netsound_cart}');
   while ($row = db_fetch_array($result)) {

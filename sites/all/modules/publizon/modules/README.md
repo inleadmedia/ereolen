@@ -1,11 +1,5 @@
-# Modules
+This folder contains helper modules that each may have their own Publizon
+storage classes defined. The classes is defined in each of these submodules
+"lib" folder.
 
- * Categories
- * Last loans
- * New books
-
- * User
-  * Login alter.
-  * User search (administration).
-  * User overview
-  * User deletion
+See the main README for more information about using the sub-modules.

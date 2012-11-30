@@ -161,38 +161,36 @@ function publizon_admin_form(&$form_state) {
  * administration form. Returns the library part of the form as JSON.
  */
 function publizon_admin_form_ahah() {
-  // We're starting in step #3, preparing for #4.
+  // Build new form state and get the form from cache.
   $form_state = array('storage' => NULL, 'submitted' => FALSE);
   $form_build_id = $_POST['form_build_id'];
-  // Step #4.
   $form = form_get_cache($form_build_id, $form_state);
 
-  // Preparing for #5.
+  // Get the form id and prevent the form from doing redirects on rebuild.
   $args = $form['#parameters'];
   $form_id = array_shift($args);
   $form_state['post'] = $form['#post'] = $_POST;
   $form['#programmed'] = $form['#redirect'] = FALSE;
 
-  // Step #5.
+  // Process the form and prepare it for rebuild.
   drupal_process_form($form_id, $form, $form_state);
 
-  // Step #6 and #7 and #8.
+  // Rebuild it and update the cache.
   $form = drupal_rebuild_form($form_id, $form_state, $args, $form_build_id);
-
   form_set_cache($form_build_id, $form, $form_state);
-
   $form += array(
     '#post' => $_POST,
     '#programmed' => FALSE,
   );
 
+  // Build the form.
   $form = form_builder('node_form', $form, $form_state);
 
-  // Step #9.
+  // Get the part thats going to be returend.
   $subform = $form['publizon']['libraries'];
   $output = drupal_render($subform);
 
-  // Final rendering callback.
+  // Encode the result as JSON.
   drupal_json(array('status' => TRUE, 'data' => $output));
 }
 

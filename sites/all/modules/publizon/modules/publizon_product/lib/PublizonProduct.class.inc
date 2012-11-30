@@ -220,4 +220,8 @@ class PublizonProduct extends Publizon {
   }
 }
 
+/**
+ * Custom Exception for Publizon Products is mainly thrown when the object is
+ * give invalided parameters.
+ */
 class PublizonProductException extends PublizonException {}

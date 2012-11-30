@@ -1,14 +1,12 @@
 <?php
 /**
  * @file
- *
+ * Defines default implementation of custom theme functions, such as theme_ and
+ * preprocess functions.
  */
 
-
 /**
- * Default implementation of hook_publizon_product_preprocess().
- *
- * @param type $vars
+ * Implements hook_publizon_product_preprocess().
  */
 function template_preprocess_publizon_loan(&$vars) {
   $ting_object = $vars['loan']->product->getTingObject();

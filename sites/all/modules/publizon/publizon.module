@@ -157,7 +157,7 @@ function template_preprocess_publizon_actions(&$vars) {
     // User loan list
     case 'loan':
       $actions[] =  array(
-        '#link' => l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => true, 'attributes' => array('class' => 'loan'))),
+        '#link' => l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => TRUE, 'attributes' => array('class' => 'loan'))),
         '#class' => 'download',
         '#weight' => 1,
       );
@@ -175,12 +175,12 @@ function template_preprocess_publizon_actions(&$vars) {
     case 'default':
       if (isset($vars['product']->teaser_link)) {
         $actions[] = array(
-          '#link' => l(t('Sample'), $vars['product']->teaser_link, array('html' => true, 'attributes' => array('target' => '_blank', 'action' => 'sample'))),
+          '#link' => l(t('Sample'), $vars['product']->teaser_link, array('html' => TRUE, 'attributes' => array('target' => '_blank', 'action' => 'sample'))),
           '#class' => 'sample',
           '#weight' => -10,
         );
         $actions[] = array(
-          '#link' => l(t('Loan'), 'publizon/' . $isbn . '/download', array('html' => true,  'attributes' => array('class' => 'loan'))),
+          '#link' => l(t('Loan'), 'publizon/' . $isbn . '/download', array('html' => TRUE,  'attributes' => array('class' => 'loan'))),
           '#class' => 'loan',
           '#weight' => -5,
         );
@@ -329,7 +329,7 @@ function publizon_get_library($retailer_id, $reset = FALSE) {
 function publizon_ting_find_object($isbn) {
   // Ensure that the ting client is available.
   module_load_include('client.inc', 'ting');
-  
+
   // Build ting request.
   $request = ting_get_request_factory()->getSearchRequest();
   $request = ting_add_agency($request);

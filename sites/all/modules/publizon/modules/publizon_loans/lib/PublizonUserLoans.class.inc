@@ -1,7 +1,8 @@
 <?php
 /**
  * @file
- *
+ * Contains the information about the Object that stores information about a
+ * given users status and loan at Publizon.
  */
 
 /**
@@ -267,4 +268,8 @@ class PublizonUserLoans extends Publizon {
   }
 }
 
+/**
+ * Custom Exception class used to indicate that there was a problem with the
+ * users loans.
+ */
 class PublizonLoansException extends PublizonException {}

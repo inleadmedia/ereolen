@@ -243,7 +243,7 @@ class PublizonClient {
     // Get product form the web-serivce.
     $response = $this->call('product', 'GetProduct', array(
       'pub:ebookid' => $isbn,
-     ), array('pub' => 'http://pubhub.dk/'));
+    ), array('pub' => 'http://pubhub.dk/'));
 
     // Check if any data was returned.
     $data = $response->xpath('//data');
@@ -284,9 +284,30 @@ class PublizonClient {
     return TRUE;
   }
 
+  /**
+   * Wrapper function for preforming af call to Publizon's web-service via the
+   * NanoSOAP module.
+   *
+   * @param string $endpoint
+   *  Index into the end-points array (defined in the top of the object).
+   * @param string $action
+   *  SOAP action to request.
+   * @param array $parameters
+   *  The parameters to call the actions with. Also known as the content of the
+   *  message. Remember to prefix them with the namespace they should use.
+   * @param array $namespace
+   *  The namespaces that is used inside the SOAP message.
+   * @return SimpleXMLElement
+   *  The response from the web-service.
+   *
+   * @throws PublizonConnectionException
+   *  If the connection fails.
+   * @throws PublizonException
+   *  If the response dose not have a 101 status.
+   */
   private function call($endpoint, $action, $parameters, $namespace) {
     // Log request
-    $this->logger->log('Call to ' . $endpoint . ' for ' . $action);
+    $this->logger->log('Call to "' . $this->end_points[$endpoint] . '" for "' . $action . '"');
 
     // Get namespace key.
     $ns = array_keys($namespace);
@@ -307,16 +328,15 @@ class PublizonClient {
     catch (Exception $e) {
       // Connection faild.
       throw new PublizonConnectionException('Connection with the Publizon web-service failed.');
+      $this->logger->log('Connection with the Publizon web-service failed.');
     }
 
     // Check the response error codes.
     $status = $response->xpath('//status');
     if (isset($status[0]) && $status[0]->code != 101) {
-      // Throw exception.
-      throw new PublizonException(t('%message with code %code', array(
-        '%message' => $status[0]->message,
-        '%code' => $status[0]->code,
-      )));
+      // Throw exception, it's translated in the exception.
+      throw new PublizonException($status[0]->message, $status[0]->code);
+      $this->logger->log(check_plain($status[0]->message()));
     }
 
     return $response;
@@ -348,7 +368,7 @@ class PublizonClient {
     else {
       $publizon = variable_get('publizon', FALSE);
       if (!$publizon) {
-        throw new PublizonException('Publizon client could not load default settings for ' . $name . '.');
+        throw new PublizonException('Publizon client could not load default settings for "' . $name . '".');
       }
       $this->$name = $publizon['settings'][$name];
     }
@@ -356,19 +376,25 @@ class PublizonClient {
 }
 
 /**
- * @todo move t() function into the exception, so it's handle in one place.
- * + check_plain
+ * Custom Excetion that ensures that the string given is checked and
+ * translatable in the frontned.
+ *
+ * All other Excetion class should use this as their base class.
  */
-
 class PublizonException extends Exception {
   // Create new constructor that ensure message is tranlated.
-  public function __construct($message, $code = 0, Exception $previous = null) {
+  public function __construct($message, $code = 0, Exception $previous = NULL) {
     // Add support for tranlation.
-    $message = t($message);
+    $message = t(check_markup($message), FILTER_FORMAT_DEFAULT, FALSE);
 
     // Make sure everything is assigned properly
     parent::__construct($message, $code, $previous);
   }
 }
 
+/**
+ * Connection Exception that is used when the communication with Publizon fails.
+ *
+ * Mostly in the case where they are not online.
+ */
 class PublizonConnectionException extends PublizonException {}
