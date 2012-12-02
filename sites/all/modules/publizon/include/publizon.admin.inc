@@ -201,19 +201,23 @@ function publizon_admin_form_ahah() {
  * the validator function is also call when add one more is clicked.
  */
 function publizon_admin_form_submit($form, &$form_state) {
-  // Remove buttons from values;
-  unset($form_state['values']['publizon']['libraries']['add_library']);
-  unset($form_state['values']['publizon']['libraries']['remove_library']);
+  $op = isset($form_state['values']['op']) ? $form_state['values']['op'] : '';
 
-  // Store site type information in own variable, so it can be set in
-  //settings.php
-  variable_set('publizon_site_type', $form_state['values']['publizon']['settings']['type']);
-  unset($form_state['values']['publizon']['settings']['type']);
+  if ($op == t('Save configuration')) {
+    // Remove buttons from values;
+    unset($form_state['values']['publizon']['libraries']['add_library']);
+    unset($form_state['values']['publizon']['libraries']['remove_library']);
 
-  // Make sure "empty" is removed.
-  foreach ($form_state['values']['publizon']['libraries'] as $id => $library) {
-    if (empty($library['retailer_id'])) {
-      unset($form_state['values']['publizon']['libraries'][$id]);
+    // Store site type information in own variable, so it can be set in
+    //settings.php
+    variable_set('publizon_site_type', $form_state['values']['publizon']['settings']['type']);
+    unset($form_state['values']['publizon']['settings']['type']);
+
+    // Make sure "empty" is removed.
+    foreach ($form_state['values']['publizon']['libraries'] as $id => $library) {
+      if (empty($library['retailer_id'])) {
+        unset($form_state['values']['publizon']['libraries'][$id]);
+      }
     }
   }
 }

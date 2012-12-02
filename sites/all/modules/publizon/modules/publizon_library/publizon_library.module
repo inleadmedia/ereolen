@@ -45,7 +45,10 @@ function publizon_get_libraries($reset = FALSE) {
   }
 
   // Sort the libraries by library name.
+  setlocale(LC_ALL, 'da_DK');
   asort($retailers, SORT_LOCALE_STRING);
+  setlocale(LC_ALL, '');
+
 
   return $retailers;
 }
