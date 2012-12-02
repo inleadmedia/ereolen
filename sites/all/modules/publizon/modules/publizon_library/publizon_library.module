@@ -49,7 +49,6 @@ function publizon_get_libraries($reset = FALSE) {
   asort($retailers, SORT_LOCALE_STRING);
   setlocale(LC_ALL, '');
 
-
   return $retailers;
 }
 
