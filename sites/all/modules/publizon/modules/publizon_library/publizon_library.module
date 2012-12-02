@@ -44,6 +44,9 @@ function publizon_get_libraries($reset = FALSE) {
     }
   }
 
+  // Sort the libraries by library name.
+  asort($retailers, SORT_LOCALE_STRING);
+
   return $retailers;
 }
 

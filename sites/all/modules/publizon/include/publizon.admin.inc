@@ -90,7 +90,7 @@ function publizon_admin_form(&$form_state) {
   );
 
   // Find the number of elements (libraries) to show, base on the current state.
-  $num_libraries = 1;
+  $num_libraries = count($default['libraries']) ? count($default['libraries']) : 1;
   if (isset($form_state['values']['publizon']['num_libraries'])) {
     $num_libraries = $form_state['values']['publizon']['num_libraries'];
     if ($form_state['clicked_button']['#value'] == t('Add one more')) {
@@ -126,7 +126,6 @@ function publizon_admin_form(&$form_state) {
     '#type' => 'submit',
     '#value' => t('Add one more'),
     '#ahah' => array(
-      'event' => 'click',
       'path' => 'admin/settings/publizon/library/ahah',
       'wrapper' => 'libraries-fieldset-wrapper',
       'method' => 'replace',
@@ -139,7 +138,6 @@ function publizon_admin_form(&$form_state) {
     '#type' => 'submit',
     '#value' => t('Remove one'),
     '#ahah' => array(
-      'event' => 'click',
       'path' => 'admin/settings/publizon/library/ahah',
       'wrapper' => 'libraries-fieldset-wrapper',
       'method' => 'replace',
@@ -162,36 +160,39 @@ function publizon_admin_form(&$form_state) {
  */
 function publizon_admin_form_ahah() {
   // Build new form state and get the form from cache.
-  $form_state = array('storage' => NULL, 'submitted' => FALSE);
+  $form_state = array(
+    'storage' => NULL,
+    'submitted' => FALSE,
+  );
   $form_build_id = $_POST['form_build_id'];
   $form = form_get_cache($form_build_id, $form_state);
 
   // Get the form id and prevent the form from doing redirects on rebuild.
   $args = $form['#parameters'];
   $form_id = array_shift($args);
-  $form_state['post'] = $form['#post'] = $_POST;
-  $form['#programmed'] = $form['#redirect'] = FALSE;
+
+  // We will run some of the submit handlers so we need to disable redirecting.
+  $form['#redirect'] = FALSE;
+  // We need to process the form, prepare for that by setting a few internals
+  // variables.
+  $form['#post'] = $_POST;
+  $form['#programmed'] = FALSE;
+  $form_state['post'] = $_POST;
 
   // Process the form and prepare it for rebuild.
   drupal_process_form($form_id, $form, $form_state);
 
   // Rebuild it and update the cache.
   $form = drupal_rebuild_form($form_id, $form_state, $args, $form_build_id);
-  form_set_cache($form_build_id, $form, $form_state);
-  $form += array(
-    '#post' => $_POST,
-    '#programmed' => FALSE,
-  );
-
-  // Build the form.
-  $form = form_builder('node_form', $form, $form_state);
 
   // Get the part thats going to be returend.
   $subform = $form['publizon']['libraries'];
-  $output = drupal_render($subform);
 
   // Encode the result as JSON.
-  drupal_json(array('status' => TRUE, 'data' => $output));
+  drupal_json(array(
+    'status' => TRUE,
+    'data' => drupal_render($subform),
+  ));
 }
 
 /**
