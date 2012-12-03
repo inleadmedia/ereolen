@@ -32,8 +32,11 @@ class PublizonLibrary extends Publizon {
    *  If TRUE the cache is by-passed.
    */
   public function __construct($retailer_id = NULL, $retailer_key_code = NULL, $reset = FALSE) {
+    // We need to have the retailer id to use that cache.
+    $retailer_id = isset($retailer_id) ? $retailer_id : $this->getSetting('retailer_id');
+
     // Check cache for the properties values.
-    if (!$reset && ($cache = cache_get($isbn, 'cache_publizon_library'))) {
+    if (!$reset && ($cache = cache_get($retailer_id, 'cache_publizon_library'))) {
       $this->properties = $cache->data;
     }
     else {
@@ -59,6 +62,22 @@ class PublizonLibrary extends Publizon {
     }
 
     return $this->$var;
+  }
+
+  /**
+   * Gets a user login setting from the current session. If no active session
+   * exception is throw as library profile should only be used after user have
+   * logged in.
+   *
+   * @param string $name
+   * @return string
+   * @throws PublizonLibraryException
+   */
+  private function getSetting($name) {
+    if (isset($_SESSION[$name])) {
+      return $_SESSION[$name];
+    }
+    throw new PublizonLibraryException('The current user needs to be logged into Publizon to get Library Profile.');
   }
 
   /**
