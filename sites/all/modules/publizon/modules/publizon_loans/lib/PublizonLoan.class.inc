@@ -72,7 +72,7 @@ class PublizonLoan extends Publizon {
     if (!$this->isExpired()) {
       $hours = date_difference(time(), $this->expire_date, 'hours', DATE_UNIX);
       if ($hours <= 24) {
-        $str = t('Loan expires in %hours', array('%hours' => format_plural($hours, 'one hour.', '@count hours.')));
+        $str = t('Loan expires in %hours', array('%hours' => format_plural(ceil($hours), 'one hour.', '@count hours.')));
       }
       else {
         $days = date_difference(time(), $this->expire_date, 'days', DATE_UNIX);
