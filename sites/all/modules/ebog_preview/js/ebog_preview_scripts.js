@@ -2,7 +2,7 @@
   $(document).ready(function() {
     $('a').live('click', function() {
       href = $(this).attr('href');
-      if (!href.match(/ting\/object\/(.)+\/sample/)) {
+      if (!href.match(/publizon\/(.)+\/sample\/preview/)) {
         return true;
       }
       $.ajax({

@@ -1,0 +1,27 @@
+<?php
+/**
+ * @file
+ *
+ */
+
+function publizon_loans_schema() {
+  $schema = array();
+  $schema['cache_publizon_loans'] = drupal_get_schema_unprocessed('system', 'cache');
+  return $schema;
+}
+
+/**
+ * Implements hook_install().
+ */
+function publizon_loans_install() {
+  // Install cache tables.
+  drupal_install_schema('publizon_loans');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function publizon_loans_uninstall() {
+  // Remove the cache tables.
+  drupal_uninstall_schema('publizon_loans');
+}

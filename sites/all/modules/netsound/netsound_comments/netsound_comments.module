@@ -3,9 +3,6 @@
 function netsound_comments_form_alter(&$form, $form_state, $form_id) {
 		if($form_id == 'comment_form'){
 
-			$u = elib_user_get_cred();
-			$form['elib_username']['#default_value'] = $u['user'];
-
 			$form['elib_username']['#type'] = 'textfield';
 			$form['elib_username']['#title'] = $form['_author']['#title'];
 		  $form['elib_username']['#required'] = true;

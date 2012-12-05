@@ -1,0 +1,7 @@
+name = Publizon user
+description = Provides Drupal authentication and logim with Publizon web-service.
+package = Publizon
+core = 6.x
+php = 5.2
+
+dependencies[] = publizon

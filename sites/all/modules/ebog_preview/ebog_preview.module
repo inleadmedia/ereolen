@@ -4,11 +4,10 @@
  * Implementation of hook_init.
  */
 function ebog_preview_init() {
-  if (!defined('EBOG_PREVIEW_PATH')) {
-    define('EBOG_PREVIEW_PATH', drupal_get_path('module', 'ebog_preview'));
-  }
-
-  drupal_add_js(EBOG_PREVIEW_PATH . '/js/ebog_preview_scripts.js', 'file');
+  /**
+   * @todo: This JS is add to all pages on the site (WTF!!!!!!).
+   */
+  drupal_add_js(drupal_get_path('module', 'ebog_preview') . '/js/ebog_preview_scripts.js');
 }
 
 /**
@@ -17,11 +16,11 @@ function ebog_preview_init() {
 function ebog_preview_menu() {
   $menu = array();
 
-  $menu['ting/object/%/sample/preview'] = array(
+  $menu['publizon/%/sample/preview'] = array(
     'title' => 'Preview ting ebook',
     'description' => 'Provide an ebook preview using Monocle.',
     'page callback' => 'ebog_preview_preview',
-    'page arguments' => array(2),
+    'page arguments' => array(1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -30,29 +29,29 @@ function ebog_preview_menu() {
 }
 
 /**
- * Make a preview of a selected item.
+ * Get teaser link for a given product based on ISBN number.
  *
- * @param $ting_id
- *   Ting object id
+ * @param string $isbn
+ *  The ebooks ISBN number.
  */
-function ebog_preview_preview($ting_id) {
-  $isbn = elib_get_isbn_from_object_id($ting_id);
-  $ean = convertToEAN($isbn);
+function ebog_preview_preview($isbn) {
+  // Default response.
+  $response = array(
+    'status' => 'err',
+    'msg' => t('Book not found.')
+  );
 
-  $client = elib_client();
-  $client->setLibrary(variable_get('elib_retailer_id', ''));
-
-  $book = $client->getBook($ean);
-  $response = array();
-
-  // Book fetched correctly
-  if ($book->status->code == 101) {
-    $preview_link = (string)$book->data->teaser->link;
-
-    $response = array('status' => 'dl', 'msg' => $preview_link);
+  // Try to get product from Publizon.
+  try {
+    $product = new PublizonProduct($isbn);
+    $response = array(
+      'status' => 'dl',
+      'msg' => $product->teaser_link);
   }
-  else {
-    $response = array('status' => 'err', 'msg' => t('Book not found.'));
+  catch (Exception $e) {
+    $response = array(
+      'status' => 'err',
+      'msg' => $e->getMessage());
   }
 
   echo json_encode($response);

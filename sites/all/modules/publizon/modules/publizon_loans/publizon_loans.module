@@ -1,0 +1,84 @@
+<?php
+/**
+ * @file
+ * Defines the users loans blocks. It module also contains the PublizonLoans
+ * class which is used to store information and communicate with Publizon about
+ * user loans.
+ */
+
+function publizon_loans_perm() {
+
+}
+
+/**
+ * Implements hook_theme().
+ */
+function publizon_loans_theme() {
+  return array(
+    'publizon_loan' => array(
+      'arguments' => array('loan' => NULL),
+      'template' => 'templates/publizon-loan',
+      'file' => 'publizon_loans.theme.inc',
+    ),
+    'publizon_loans_list' => array(
+      'arguments' => array('loans' => NULL),
+      'template' => 'templates/publizon-loans-list',
+      'file' => 'publizon_loans.theme.inc',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_block().
+ */
+function publizon_loans_block($op = 'list', $delta = 0, $edit = array()) {
+  $block = array();
+  switch ($op) {
+    case 'list':
+      $block['myloans'] = array(
+        'info' => t('My loans (Publizon)'),
+        'cache' => BLOCK_NO_CACHE,
+        'status' => 1,
+      );
+      break;
+
+    case 'view':
+      if ($delta == 'myloans') {
+        // Default content.
+        $content = t('You need to be logged into Publizon to display your loans.');
+
+        // Get information about your loans at Publizon and the datawell.
+        if ($uid = publizon_user_is_logged_in()) {
+          try {
+            $publizon_loans = new PublizonUserLoans($uid, TRUE);
+            $content = theme('publizon_loans_list', $publizon_loans->loans);
+          }
+          catch (Exception $e) {
+            drupal_set_message($e->getMessage(), 'error');
+          }
+        }
+
+        $block = array(
+          'subject' => t('My loans'),
+          'content' => $content,
+        );
+      }
+      break;
+
+    case 'configure':
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_flush_caches().
+ *
+ * Ensures that all caches used by the module is flush on cache clear. The
+ * module also comes with drush support for clearing these caches.
+ *
+ * @see publizon_loans.drush.inc
+ */
+function publizon_loans_flush_caches() {
+  return array('cache_publizon_loans');
+}
