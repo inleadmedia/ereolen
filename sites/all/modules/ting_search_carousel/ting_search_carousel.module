@@ -143,7 +143,7 @@ function ting_search_carousel_do_request($index) {
           'id' => $object->id,
           'isbn' => isset($object->record['dc:identifier']['oss:PROVIDER-ID'][0]) ? $object->record['dc:identifier']['oss:PROVIDER-ID'][0] : '',
           'title' => isset($object->record['dc:title'][''][0]) ? $object->record['dc:title'][''][0] : '',
-          'creator' => _elib_get_author($object, FALSE),
+          'creator' => publizon_get_authors($object, FALSE),
         );
       }
     }
@@ -151,14 +151,25 @@ function ting_search_carousel_do_request($index) {
 
   $items = array();
   foreach ($local_ids as $id) {
-    // Build object with the information collected.
-    $item = new stdClass();
-    $item->id = $objects[$id]['id'];
-    $item->title = $objects[$id]['title'];
-    $item->creator = $objects[$id]['creator'];
-    $item->image =  elib_book_cover($objects[$id]['isbn'], '120_x');;
+    try {
+      // Load product to get cover image and cache product.
+      $product = new PublizonProduct($objects[$id]['isbn']);
 
-    $items[] = $item;
+      // Build object with the information collected, if it has an cover image.
+      if (isset($product->cover)) {
+        $item = new stdClass();
+        $item->id = $objects[$id]['id'];
+        $item->title = $objects[$id]['title'];
+        $item->creator = $objects[$id]['creator'];
+        $item->image = $product->getCover('120_x');
+
+        $items[] = $item;
+      }
+    }
+    catch (Exception $e) {
+      // There is not much we can do about an error in fetching a product in the
+      // search carousel.
+    }
   }
 
   // Update the cache with the fetched items.

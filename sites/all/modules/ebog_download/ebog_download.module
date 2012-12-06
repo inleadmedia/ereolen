@@ -11,13 +11,14 @@
  * Implementation of hook_init.
  */
 function ebog_download_init() {
-  if (!defined('EBOG_DOWNLOAD_PATH')) {
-    define('EBOG_DOWNLOAD_PATH', drupal_get_path('module', 'ebog_download'));
-  }
+  /**
+   * @todo: This JS is add to all pages on the site (WTF!!!!!!).
+   */
+  $path = drupal_get_path('module', 'ebog_download');
 
-  drupal_add_js(EBOG_DOWNLOAD_PATH . '/js/ebog_download_scripts.js', 'file');
-  drupal_add_js(EBOG_DOWNLOAD_PATH . '/js/jquery.form.js', 'file');
-  drupal_add_css(EBOG_DOWNLOAD_PATH . '/css/ebog_download_style.css', 'file');
+  drupal_add_js($path . '/js/ebog_download_scripts.js');
+  drupal_add_js($path . '/js/jquery.form.js');
+  drupal_add_css($path . '/css/ebog_download_style.css');
   jquery_ui_add(array('ui.dialog', 'ui.draggable'));
   jquery_ui_theme_load();
 }
@@ -28,20 +29,20 @@ function ebog_download_init() {
 function ebog_download_menu() {
   $menu = array();
 
-  $menu['ting/object/%/download/request'] = array(
+  $menu['publizon/%/download/request'] = array(
     'title' => 'Download ting ebook',
     'description' => 'Checker for download abilities regarding selected ebook for specific user.',
     'page callback' => 'ebog_download_loan_initial',
-    'page arguments' => array(2),
+    'page arguments' => array(1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
 
-  $menu['ting/object/%/download/popup'] = array(
+  $menu['publizon/%/download/popup'] = array(
     'title' => 'Show a popup before download',
     'description' => 'Display some user specific text and perform some check before download.',
     'page callback' => 'ebog_download_loan_popup',
-    'page arguments' => array(2),
+    'page arguments' => array(1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
@@ -81,30 +82,24 @@ function ebog_download_theme($existing, $type, $theme, $path) {
  * @param $ting_id
  *   Ting object id
  */
-function ebog_download_loan_initial($ting_id) {
+function ebog_download_loan_initial($isbn) {
   global $user;
   $status = array();
 
   // Whether user authenticated in drupal
   if ($user->uid) {
-    $isbn = elib_get_isbn_from_object_id($ting_id);
-    $ean = convertToEAN($isbn);
-
-    $userinfo = elib_user_get_cred();
-    $client = elib_client();
-    $client->setLoaner($userinfo['cpr'], $userinfo['pin'], $userinfo['lib']);
-
-    $book = $client->getBook($ean);
-    $down_link = get_download_url(elib_user_get_loans(), $ean);
-
-    // Whether book fetched well
-    if ((int)$book->status->code == 101) {
-      if (is_string($down_link)) {
-        if ($down_link != '') {
+    try {
+      $loans = new PublizonUserLoans($user->uid);
+      if ($loans->isLoan($isbn)) {
+        $down_link = $loans->loans[$isbn]->download_url;
+        if (!empty($down_link)) {
           $status = array(
             'status' => TRUE,
             'title' => t('Success'),
-            'content' => theme('ebog_download_info', array('message' => t('Book download url.'), 'link' => $down_link))
+            'content' => theme('ebog_download_info', array(
+              'message' => t('Book download url.'),
+              'link' => $down_link,
+            )),
           );
         }
         else {
@@ -112,79 +107,41 @@ function ebog_download_loan_initial($ting_id) {
             'status' => FALSE,
             'title' => t('Error'),
             'content' => theme('ebog_download_error', array(
-              'message' => t('Failed to fetch download url.'))
-            )
+              'message' => t('Failed to fetch download url.')
+            )),
           );
         }
-
       }
       else {
-        $loan = elib_client()->makeLoan($ean);
-        // Whether book loaned well
-        if ((int)$loan->status->code == 101) {
-          // Clear loans cache for the user.
-          elib_user_clear_loans_cache($user->uid);
+        // Not a loan, yet.
+        $down_link = $loans->createLoan($isbn);
 
-          $down_link = $loan->data->downloadurl;
-          $status = array(
-            'status' => TRUE,
-            'title' => t('Success'),
-            'content' => theme('ebog_download_info', array('message' => t('Successfuly loaned this item.'), 'link' => $down_link))
-          );
-        }
-        else {
-          $status = array(
-            'status' => FALSE,
-            'title' => t('Error'),
-            'content' => theme('ebog_download_error', array(
-              'message' => t('@message', array('@message' => $loan->status->message)))
-            )
-          );
-        }
+        // If no exception was thrown, the loan went through.
+        $status = array(
+          'status' => TRUE,
+          'title' => t('Success'),
+          'content' => theme('ebog_download_info', array(
+            'message' => t('Successfuly loaned this item.'),
+            'link' => $down_link,
+          )),
+        );
       }
     }
-    else {
+    catch (Exception $e) {
       $status = array(
         'status' => FALSE,
         'title' => t('Error'),
         'content' => theme('ebog_download_error', array(
-          'message' => t('@message', array('@message' => $book->status->message)))
-        )
+          'message' => t('@message', array('@message' => $e->getMessage()))
+        )),
       );
     }
   }
-  else {
-    $status = array(
-      'status' => FALSE,
-      'title' => t('Error'),
-      'content' => theme('ebog_download_error', array('message' => t('Only authenticated users are able to loan.')))
-    );
-  }
+
 
   // Send response
   drupal_json($status);
   exit(0);
-}
-
-/**
- * Fetch specific book download url.
- *
- * @param SimpleXMLElement $loans
- *   User loans object
- * @param String $ean
- *   Searched item isbn
- * @return String
- *   Download url
- */
-function get_download_url($loans, $ean) {
-  if ($loans instanceof SimpleXMLElement) {
-    foreach ($loans->orderitem as $book) {
-      if ($book->book['id'] == $ean && !elib_user_is_loan_expired($book)) {
-        return (string)$book->data->data->downloadurl;
-      }
-    }
-  }
-  return FALSE;
 }
 
 /**

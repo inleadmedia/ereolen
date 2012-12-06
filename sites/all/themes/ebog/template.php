@@ -14,29 +14,35 @@ function ebog_theme(&$existing, $type, $theme, $path) {
  * Add extra information form elib to the ting object.
  */
 function ebog_preprocess_ting_object(&$vars) {
-  $isbn = $vars[object]->record['dc:identifier']['oss:PROVIDER-ID'];
+  $isbn = $vars[object]->record['dc:identifier']['oss:PROVIDER-ID'][0];
 
   // Override ting object page title.
   drupal_set_title(check_plain($vars['object']->title . ' ' . t('af') . ' ' . $vars['object']->creators_string));
 
   // Create the author field
-  $vars['author'] = _elib_get_author($vars['object']);
+  $vars['author'] = publizon_get_authors($vars['object']);
 
-  // Get cover image.
-  $vars['elib_book_cover'] = elib_book_cover($isbn, '170_x');
+  // Load the product.
+  try {
+    $product = new PublizonProduct($isbn);
 
-  // Get ebook sample link.
-  $client = elib_client();
-  $client->setLibrary(variable_get('elib_retailer_id', ''));
-  $book = $client->getBook($isbn);
-  if ($book->status->code == 101 && isset($book->data->teaser->link)) {
-    $vars['elib_sample_link'] = (string)$book->data->teaser->link;
+    // Get cover image.
+    $vars['cover'] = $product->getCover('170_x');
+
+    // Get ebook sample link.
+    if (!empty($product->teaser_link)) {
+      $vars['elib_sample_link'] = $product->teaser_link;
+    }
+
+    // Check if the book is loaned by the user.
+    global $user;
+    if ($user->uid > 0) {
+      $user_loans = new PublizonUserLoans($user->uid);
+      $vars['is_loan'] = $user_loans->isLoan($isbn, TRUE);
+    }
   }
-
-  // Check if the book is loaned by the user.
-  global $user;
-  if ($user->uid > 0) {
-    $vars['is_loan'] = elib_user_is_loan($isbn, TRUE);
+  catch (Exception $e) {
+    drupal_set_message($e->getMessage(), 'error');
   }
 }
 
@@ -46,10 +52,6 @@ function ebog_preprocess_ting_object(&$vars) {
  * Add extra information from elib to the ting objects.
  */
 function ebog_preprocess_ting_search_collection(&$vars) {
-  // Get elib client.
-  $client = elib_client();
-  $client->setLibrary(variable_get('elib_retailer_id', ''));
-
   foreach ($vars['collection']->objects as $obj) {
     $isbn = $obj->record['dc:identifier']['oss:PROVIDER-ID'][0];
     if (isset($vars['elib'])) {
@@ -60,15 +62,21 @@ function ebog_preprocess_ting_search_collection(&$vars) {
     }
 
     // Get authors.
-    $vars['elib'][$isbn]['author'] = _elib_get_author($obj);
+    $vars['elib'][$isbn]['author'] = publizon_get_authors($obj);
 
-    // Get cover image.
-    $vars['elib'][$isbn]['elib_book_cover'] = elib_book_cover($isbn, '170_x');
+    try {
+      $product = new PublizonProduct($isbn);
 
-    // Get ebook sample link.
-    $book = $client->getBook($isbn);
-    if ($book->status->code == 101 && isset($book->data->teaser->link)) {
-      $vars['elib'][$isbn]['elib_sample_link'] = (string)$book->data->teaser->link;
+      // Get cover image.
+      $vars['elib'][$isbn]['elib_book_cover'] = $product->getCover('170_x');
+
+      // Get ebook sample link.
+      if (!empty($product->teaser_link)) {
+        $vars['elib'][$isbn]['elib_sample_link'] = $product->teaser_link;
+      }
+    }
+    catch (Exception $e) {
+      drupal_set_message($e->getMessage(), 'error');
     }
   }
 }

@@ -171,7 +171,8 @@ voxb h3 {
 .panel-pane.pane-embedvideo .pane-content,
 .panel-pane.pane-front .pane-content,
 #sidebar-first #block-views-latest_news-block_1 .content,
-.pane-elib-block-lastloans-3 .pane-content,
+.pane-publizon-user-welcome .pane-content,
+.page-min-side .pane-custom .pane-content,
 .panel-pane.pane-latest-news .pane-content,
 .page-anmeldelser .pane-content,
 .section-artikel .pane-content,
@@ -641,9 +642,9 @@ voxb h3 {
   padding: 4px;
 }
 
-#user-login #edit-library-wrapper label {
+#edit-retailer-id-wrapper label {
   float: left;
-  margin-right: 15px;
+  margin-right: 8px;
 }
 
 #user-login #edit-name-wrapper label,
@@ -664,41 +665,51 @@ voxb h3 {
   display: none;
 }
 
-.pane-elib-user-account,
-.pane-netsound-cart-0 {
+.pane-recall-list-cart,
+.pane-publizon-loans-myloans {
   float: left;
   width: 310px;
   margin: 0;
 }
 
-.pane-elib-user-account {
+.pane-publizon-loans-myloans {
   margin-right: 10px;
 }
 
-.pane-netsound-cart-0 {
+.pane-recall-list-cart {
   margin-left: 10px;
 }
 
-.pane-elib-user-account ul {
+#main-content .publizon-loans-list,
+#main-content .publizon-products-list,
+.pane-publizon-loans-myloans ul {
   margin: 0;
 }
 
-.pane-elib-block-lastloans-3 {
+.pane-publizon-user-welcome {
+  margin-bottom: 1em;
+}
+
+.page-min-side .pane-custom .pane-content {
   margin-bottom: 35px;
 }
 
-.pane-elib-user-account .loanperiod {
+.pane-publizon-loans-myloans .loanperiod {
   clear: both;
   font-weight: bold;
   padding-top: 10px;
 }
 
-.pane-elib-user-account .loanperiod.short   { color: #C00;    }
-.pane-elib-user-account .loanperiod.medium  { color: #FF8;     }
-.pane-elib-user-account .loanperiod.long    { color: #9BC833;  }
+.pane-publizon-loans-myloans .loanperiod.short   { color: #C00;    }
+.pane-publizon-loans-myloans .loanperiod.medium  { color: #FF8;     }
+.pane-publizon-loans-myloans .loanperiod.long    { color: #9BC833;  }
 
 div.panel-pane.pane-node-content .pane-content div.submitted {
   display: none;
+}
+
+.pane-publizon-user-welcome .next-loan-periode {
+  color: #C00;
 }
 
 /**
