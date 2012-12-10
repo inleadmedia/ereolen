@@ -27,7 +27,7 @@ function ereolen_admin_init(){
  */
 function ereolen_admin_ting_client_request_alter(&$request) {
   if (is_a($request, 'TingClientSearchRequest')) {
-    $request->setQuery('( ' . $request->getQuery() . ' ) AND (dc.identifier=978*)');
+    $request->setQuery('( ' . $request->getQuery() . ' )');
     $request->setAllRelations(TRUE);
     $request->setRelationData('full');
   }
