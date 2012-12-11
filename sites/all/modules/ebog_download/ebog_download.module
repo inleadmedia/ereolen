@@ -232,11 +232,11 @@ function elib_popup_login_form_validate($form, &$form_state) {
 
   // The user may use both borrower card / cpr number to login, so we have to
   // remove anything thats not an number form the user name.
-  $card = preg_replace('/\D+/', '', $form_state['values']['name']);
+  $login_id = preg_replace('/\D+/', '', $form_state['values']['name']);
 
   // Try to login to the library, this will create the user if login succeed
   // and the user do not exists in Drupal.
-  $account = elib_check_credentials($card, $form_state['values']['pass'], $form_state['values']['library']);
+  $account = publizon_user_authentication($login_id, $form_state['values']['pass'], $form_state['values']['retailer_id']);
   if ($account) {
     global $user;
     $user = $account;
