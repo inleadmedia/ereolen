@@ -25,3 +25,69 @@ function ebog_embed_video_ctools_plugin_directory($module, $plugin) {
     return "plugins/$plugin";
   }
 }
+
+function ebog_embed_video_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      return array(array(
+        'info' => t('Ebog Embed video'),
+      ));
+      break;
+    case 'view':
+      return array(
+        'subject' => t('Ebog Embed video'),
+        'content' => _ebog_embed_video_block_view(),
+      );
+      break;
+    case 'configure':
+      return _ebog_embed_video_block_configure();
+    case 'save':
+      _ebog_embed_video_block_save($edit);
+      break;
+  }
+}
+
+function _ebog_embed_video_block_view() {
+  return '<h1>DUMMY</h1>';
+}
+
+function _ebog_embed_video_block_configure() {
+  $form = array();
+
+  $form['ebog_embed_video_video'] = array(
+    '#type' => 'textfield',
+    '#title' => t('URL to YouTube OR Vimeo video:'),
+    '#description' => t('example: http://www.youtube.com/watch?v=XwmHoWfwHiw OR http://vimeo.com/3535418'),
+    '#default_value' => variable_get('ebog_embed_video_video', ''),
+  );
+
+  $form['ebog_embed_video_short_description'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Short description:'),
+    '#default_value' => variable_get('ebog_embed_video_short_description', ''),
+  );
+
+  $form['ebog_embed_video_see_more_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Title for "see more link":'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('ebog_embed_video_see_more_title', ''),
+  );
+
+  $form['ebog_embed_video_see_more_link'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Link for "see more link":'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('ebog_embed_video_see_more_link', ''),
+  );
+
+  return $form;
+}
+
+function _ebog_embed_video_block_save($settings) {
+  if (is_array($settings)) {
+    foreach ($settings as $key => $setting) {
+      variable_set($key, trim(check_plain($setting)));
+    }
+  }
+}
