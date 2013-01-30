@@ -621,7 +621,7 @@ function ding_voxb_preprocess_ting_object(&$variables) {
   // Rating section
   // Since voxb stores rating in within 0-100 range, divide the actual rating to 20,
   // to process 5 stars.
-  $is_able_to_rate = ($user->uid > 0) ? TRUE : FALSE;
+  $is_able_to_rate = ($user->uid) ? TRUE : FALSE;
   $voxb_rating = theme(
     'voxb_rating',
     array(
