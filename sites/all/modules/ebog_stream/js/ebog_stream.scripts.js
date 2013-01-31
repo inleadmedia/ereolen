@@ -183,7 +183,7 @@
   }
 
   displayReader = function(response) {
-    window.open('/publizon/stream', Drupal.t('eReader'), 'location=0,menubar=0,status=0,titlebar=0,toolbar=0');
+    showPopup(Drupal.t('Stream'), '<a href="#" class="reader-init">' + Drupal.t('Start reading') + '</a>', []);
   }
 
   $(document).ready(function() {
@@ -202,6 +202,13 @@
 
       return false;
     });
+
+    // Workaround, so popup windows to not get blocked.
+    $('.reader-init').live('click', function() {
+      window.open('/publizon/stream', Drupal.t('eReader'), 'location=0,menubar=0,status=0,titlebar=0,toolbar=0');
+      closePopup();
+    });
   });
+
 })(jQuery);
 
