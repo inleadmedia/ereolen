@@ -138,9 +138,9 @@ function ebog_stream_get_loan($book_id) {
       if (isset($user_loans->loans[$book_id])) {
         $order_number = $user_loans->loans[$book_id]->retailer_order_number;
         $_SESSION['ebog_stream'] = array(
-            'session_url' => 'publizon/' . $order_number . '/checkauth',
-            'order_number' => $order_number,
-          );
+          'session_url' => 'publizon/' . $order_number . '/checkauth',
+          'order_number' => $order_number,
+        );
         $response = array(
           'status' => 'loaned',
           //'session_url' => 'publizon/' . $order_number . '/checkauth',
@@ -173,11 +173,9 @@ function ebog_stream_get_loan($book_id) {
  *   Book isbn.
  */
 function ebog_stream_stream($book_id) {
-  global $user;
-
   $response = array();
 
-  if ($user->uid) {
+  if (user_is_logged_in()) {
     ebog_stream_get_loan($book_id);
   }
   else {
