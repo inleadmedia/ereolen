@@ -164,10 +164,6 @@ function ebog_stream_get_loan($book_id) {
   exit(0);
 }
 
-function ebog_stream_form_alter(&$form, &$form_state, $form_id) {
-
-}
-
 /**
  * Initial stream checks.
  *
