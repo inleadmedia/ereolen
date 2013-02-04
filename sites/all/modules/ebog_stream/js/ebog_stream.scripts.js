@@ -61,7 +61,7 @@
           displayReader(response);
         }
         else if (response.status === 'loan_exceeded') {
-          showPopup(response.title, response.message, { 'Ok': function() { $(popupSelector).dialog('close').remove(); } });
+          showPopup(response.title, response.message, {'Ok': function() {$(popupSelector).dialog('close').remove();}});
         }
       });
     }
@@ -186,11 +186,13 @@
   }
 
   var displayReader = function(response) {
-    showPopup(Drupal.t('Stream'), '<a href="#" class="reader-init">' + Drupal.t('Start reading') + '</a>', []);
+    showPopup(Drupal.t('Stream'), '<a href="/publizon/stream/'+response.book_id+'" target="_blank">' + Drupal.t('Start reading') + '</a>', []);
   }
 
   $(document).ready(function() {
-    $('a.ebook-stream').live('click', function() {
+    $('a.ebook-stream').live('click', function(e) {
+      e.preventDefault();
+
       if (popupOpen) {
         return false;
       }
@@ -204,12 +206,6 @@
       tryStream();
 
       return false;
-    });
-
-    // Workaround, so popup windows to not get blocked.
-    $('.reader-init').live('click', function() {
-      window.open('/publizon/stream', Drupal.t('eReader'), 'location=0,menubar=0,status=0,titlebar=0,toolbar=0');
-      closePopup();
     });
   });
 

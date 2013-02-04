@@ -136,6 +136,7 @@ function ebog_stream_try_loan($book_id) {
           ebog_stream_set_session($book_id, $order_number);
           $response = array(
             'status' => 'loaned',
+            'book_id' => $book_id,
           );
         }
         else {
@@ -176,8 +177,11 @@ function ebog_stream_get_loan($book_id, $js = TRUE) {
         ebog_stream_set_session($book_id, $order_number);
         $response = array(
           'status' => 'loaned',
+          'book_id' => $book_id,
         );
-        return TRUE;
+        if (!$js) {
+          return TRUE;
+        }
       }
       else {
         $response = array(
@@ -264,16 +268,18 @@ function ebog_stream_preprocess_page(&$variables) {
  */
 function ebog_stream_preprocess_publizon_actions(&$vars) {
   if ($vars['type'] == 'loan') {
+    // Try to make the right link based on book loan status.
     $isbn = $vars['product']->isbn;
     $link = l(t('Stream'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'loan ebook-stream', 'target' => '_blank')));
     if (ebog_stream_get_loan($isbn, FALSE)) {
+      // Book was not available to fallback to normal loan link.
       $link = l(t('Stream'), 'publizon/stream/' . $isbn, array('html' => TRUE, 'attributes' => array('class' => '.reader-init', 'target' => '_blank')));
     }
 
     $vars['actions'][] =  array(
-        '#link' => $link,
-        '#class' => 'download',
-        '#weight' => 1,
+      '#link' => $link,
+      '#class' => 'download',
+      '#weight' => 1,
     );
 
     // Re-sort the actions based on weight.
