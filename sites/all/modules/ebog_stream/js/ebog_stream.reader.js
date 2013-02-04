@@ -68,7 +68,7 @@ function Reader(settings) {
     var numberOfDependeciesToBeLoaded;
 
     function LoadDependencies() {
-        numberOfDependeciesToBeLoaded = 14;
+        numberOfDependeciesToBeLoaded = 13;
 
         LoadScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js', function () {
             window.jq17 = jQuery.noConflict(true);
@@ -87,7 +87,7 @@ function Reader(settings) {
             LoadDependency('scripts/reader-1.1.4/bookrenderer.js', false);
             LoadDependency('scripts/reader-1.1.4/bookmarker.js', false);
             LoadDependency('scripts/reader-1.1.4/readerspinner.js', false);
-            LoadDependency('scripts/reader-1.1.4/reader-1.1.4.css');
+//            LoadDependency('scripts/reader-1.1.4/reader-1.1.4.css');
         });
     }
 
