@@ -230,7 +230,7 @@ function ebog_stream_preprocess_page(&$variables) {
 function ebog_stream_preprocess_publizon_actions(&$vars) {
   if ($vars['type'] == 'loan') {
     $vars['actions'][] =  array(
-        '#link' => l(t('Stream'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'loan ebook-stream', 'target' => '_blank'))),
+        '#link' => l(t('Stream'), 'publizon/' . $vars['product']->isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'loan ebook-stream', 'target' => '_blank'))),
         '#class' => 'download',
         '#weight' => 1,
     );
