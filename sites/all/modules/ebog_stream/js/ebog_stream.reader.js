@@ -18,40 +18,40 @@ function Reader(settings) {
 
     // Styles MUST be inline - otherwise epub css might override the styles
     var defaultMarkup = '<div id="' + ElementId.ReaderHeader + '">' +
-                            '<a href="javascript:reader.ZoomOut();" id="reader-link-zoomout"><img src="http://reader.pubhub.dk/images/zoom_out.png" title="Zoom ud" border="0" style="width:42px;height:42px;" /></a>' +
-                            '<a href="javascript:reader.ZoomNormal();" id="reader-link-zoomnormal"><img src="http://reader.pubhub.dk/images/zoom_normal.png" title="Zoom normal" border="0" style="width:42px;height:42px;" /></a>' +
-                            '<a href="javascript:reader.ZoomIn();" id="reader-link-zoomin"><img src="http://reader.pubhub.dk/images/zoom_in.png" title="Zoom in" border="0" style="width:42px;height:42px;" /></a>' +
-                            '<a href="javascript:reader.ToggleBookmark();"><img src="http://reader.pubhub.dk/images/bookmark_new.png" title="Tilføj/fjern bogmærke" border="0" style="width:42px;height:42px;" /></a>' +
-                            '<a href="javascript:reader.DisplayAddNoteWindow();"><img src="http://reader.pubhub.dk/images/note_add.png" title="Tilføj/ret note" border="0" style="width:42px;height:42px;margin-left:10px;" /></a>' +
-                            '<a href="javascript:reader.DisplayBookmarkList();"><img src="http://reader.pubhub.dk/images/mark_list.png" title="Vis bogmærker & noter" border="0" style="margin-left:10px;width:42px;height:42px;" /></a>' +
-                            '<a href="javascript:reader.DisplayToc();"><img src="http://reader.pubhub.dk/images/toc.png" title="Indholdsfortegnelse" border="0" style="margin-left:10px;width:42px;height:42px;" /></a>' +
+                            '<a href="javascript:reader.ZoomOut();" id="reader-link-zoomout"><img src="https://reader.pubhub.dk/images/1.1.3/zoom_out.png" title="Zoom ud" border="0" style="width:42px;height:42px;" /></a>' +
+                            '<a href="javascript:reader.ZoomNormal();" id="reader-link-zoomnormal"><img src="https://reader.pubhub.dk/images/1.1.3/zoom_normal.png" title="Zoom normal" border="0" style="margin-left:10px;width:42px;height:42px;" /></a>' +
+                            '<a href="javascript:reader.ZoomIn();" id="reader-link-zoomin"><img src="https://reader.pubhub.dk/images/1.1.3/zoom_in.png" title="Zoom in" border="0" style="margin-left:10px;width:42px;height:42px;" /></a>' +
+                            '<a href="javascript:reader.ToggleBookmark();"><img src="https://reader.pubhub.dk/images/1.1.3/bookmark.png" title="Tilføj/fjern bogmærke" border="0" style="margin-left:10px;width:42px;height:42px;" /></a>' +
+                            '<a href="javascript:reader.DisplayAddNoteWindow();"><img src="https://reader.pubhub.dk/images/1.1.3/note.png" title="Tilføj/ret note" border="0" style="margin-left:10px;width:42px;height:42px;" /></a>' +
+                            '<a href="javascript:reader.DisplayBookmarkList();"><img src="https://reader.pubhub.dk/images/1.1.3/bookmarks_notes.png" title="Vis bogmærker & noter" border="0" style="margin-left:10px;width:42px;height:42px;" /></a>' +
+                            '<a href="javascript:reader.DisplayToc();"><img src="https://reader.pubhub.dk/images/1.1.3/toc.png" title="Indholdsfortegnelse" border="0" style="margin-left:10px;width:42px;height:42px;" /></a>' +
                         '</div>' +
                         '<div id="reader-navigation-top">' +
-                            '<a href="javascript:reader.PrevPage();"><img src="http://reader.pubhub.dk/images/arrow_left.png" alt="Forrige side" border="0" style="left:0px;position:absolute;margin:10px;width:17px;height:30px;"/></a>' +
+                            '<a href="javascript:reader.PrevPage();"><img src="https://reader.pubhub.dk/images/arrow_left.png" alt="Forrige side" border="0" style="left:0px;position:absolute;margin:10px;width:17px;height:30px;"/></a>' +
                             '<div id="reader-bookmark-mobile" onclick="javascript:reader.RemoveBookmark();"></div>' +
                             '<div id="reader-note-mobile" onclick="javascript:reader.RemoveNote();"></div>' +
-                            '<a href="javascript:reader.NextPage();"><img src="http://reader.pubhub.dk/images/arrow_right.png" alt="Næste side" border="0" style="right:0px;position:absolute;margin:10px;width:17px;height:30px;" /></a>' +
+                            '<a href="javascript:reader.NextPage();"><img src="https://reader.pubhub.dk/images/arrow_right.png" alt="Næste side" border="0" style="right:0px;position:absolute;margin:10px;width:17px;height:30px;" /></a>' +
                         '</div>' +
                         '<div id="reader-content-container">' +
                             '<div id="reader-content">' +
                                 '<div id="reader-navigation-left" style="text-align:left;">' +
                                     '<a href="#" id="reader-button-previouspage" onclick="javascript:reader.PrevPage()">' +
-                                        '<img src="http://reader.pubhub.dk/images/arrow_left.png" alt="Forrige side" id="reader-button-previouspage-image" border="0" style="width:17px;height:30px;" />' +
+                                        '<img src="https://reader.pubhub.dk/images/arrow_left.png" alt="Forrige side" id="reader-button-previouspage-image" border="0" style="width:17px;height:30px;" />' +
                                     '</a>' +
                                 '</div>' +
                                 '<div id="reader-book"><div id="reader-book-inner-div" i="0"></div></div>' +
                                 '<div id="reader-navigation-right" style="text-align:left;">' +
-                                    '<img src="http://reader.pubhub.dk/images/bookmark.png" id="reader-bookmark" alt="Fjern bogmærke" onclick="javascript:reader.RemoveBookmark();"  style="width:55px;height:75px;" />' +
-                                    '<img src="http://reader.pubhub.dk/images/note.png" id="reader-note" alt="Fjern note" onclick="javascript:reader.RemoveNote();"  style="width:55px;height:75px;" />' +
+                                    '<img src="https://reader.pubhub.dk/images/bookmark.png" id="reader-bookmark" alt="Fjern bogmærke" onclick="javascript:reader.RemoveBookmark();"  style="width:55px;height:75px;" />' +
+                                    '<img src="https://reader.pubhub.dk/images/note.png" id="reader-note" alt="Fjern note" onclick="javascript:reader.RemoveNote();"  style="width:55px;height:75px;" />' +
                                     '<a href="#" id="reader-button-nextpage" onclick="javascript:reader.NextPage();">' +
-                                        '<img src="http://reader.pubhub.dk/images/arrow_right.png" alt="Næste side" id="reader-button-nextpage-image" border="0" style="width:17px;height:30px;" />' +
+                                        '<img src="https://reader.pubhub.dk/images/arrow_right.png" alt="Næste side" id="reader-button-nextpage-image" border="0" style="width:17px;height:30px;" />' +
                                     '</a>' +
                                 '</div>' +
                             '</div>' +
                             '<div id="reader-modal-window">' +
                                 '<div id="reader-modal-window-header">' +
                                     '<span id="reader-modal-window-header-title"></span>' +
-                                    '<a id="reader-modal-window-button-close" href="javascript:reader.CloseModalWindow();"><img src="http://reader.pubhub.dk/images/close.png" border="0" alt="Luk" style="width:13px;height:12px;" /></a>' +
+                                    '<a id="reader-modal-window-button-close" href="javascript:reader.CloseModalWindow();"><img src="https://reader.pubhub.dk/images/close.png" border="0" alt="Luk" style="width:13px;height:12px;" /></a>' +
                                 '</div>' +
                                 '<div id="reader-modal-window-content"></div>' +
                             '</div>' +
@@ -66,23 +66,24 @@ function Reader(settings) {
     var numberOfDependenciesLoaded = 0;
     var numberOfDependeciesToBeLoaded;
     function LoadDependencies() {
-        numberOfDependeciesToBeLoaded = 13;
-        //LoadScript('scripts/jquery-1.7.2.min.js', function () {
+        numberOfDependeciesToBeLoaded = 14;
+
+//        LoadScript('https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js', function () {
             LoadDependency('scripts/jquery.browser.mobile.js');
             LoadDependency('scripts/spin.min.js');
             LoadDependency('scripts/jquery.cj-swipe.js');
-            LoadDependency('scripts/reader-1.0.9/browser.js');
-            LoadDependency('scripts/reader-1.0.9/serviceurl.js');
-            LoadDependency('scripts/reader-1.0.9/toc.js');
-            LoadDependency('scripts/reader-1.0.9/modalwindow.js');
-            LoadDependency('scripts/reader-1.0.9/security.js');
-            LoadDependency('scripts/reader-1.0.9/zoomer.js');
-            LoadDependency('scripts/reader-1.0.9/epubloader.js');
-            LoadDependency('scripts/reader-1.0.9/bookrenderer.js');
-            LoadDependency('scripts/reader-1.0.9/bookmarker.js');
-            LoadDependency('scripts/reader-1.0.9/readerspinner.js');
-            //LoadDependency('scripts/reader-1.0.9/reader-1.0.9.css');
-        //});
+            LoadDependency('scripts/reader-1.1.3/browser.js');
+            LoadDependency('scripts/reader-1.1.3/serviceurl.js');
+            LoadDependency('scripts/reader-1.1.3/toc.js');
+            LoadDependency('scripts/reader-1.1.3/modalwindow.js');
+            LoadDependency('scripts/reader-1.1.3/security.js');
+            LoadDependency('scripts/reader-1.1.3/zoomer.js');
+            LoadDependency('scripts/reader-1.1.3/epubloader.js');
+            LoadDependency('scripts/reader-1.1.3/bookrenderer.js');
+            LoadDependency('scripts/reader-1.1.3/bookmarker.js');
+            LoadDependency('scripts/reader-1.1.3/readerspinner.js');
+//            LoadDependency('scripts/reader-1.1.3/reader-1.1.3.css');
+//        });
     }
 
     function LoadDependency(path) {
@@ -111,6 +112,7 @@ function Reader(settings) {
 
     function LoadScript(url, success) {
         var script = document.createElement('script');
+
         script.src = url;
         var head = document.getElementsByTagName('head')[0];
         var done = false;
@@ -327,13 +329,13 @@ function Reader(settings) {
     function GetStreamingServiceBaseUri() {
         if (window.location.hostname == 'localhost')
             return 'http://localhost:15495/publicstreaming/v1/';
-        return 'http://streaming.bogskyen.dk/publicstreaming/v1/';
+        return 'https://streaming.pubhub.dk/publicstreaming/v1/';
     }
 
     function GetReaderBaseUri() {
         if (window.location.hostname == 'localhost')
             return 'http://localhost:64286/';
-        return 'http://reader.pubhub.dk/';
+        return 'https://reader.pubhub.dk/';
     }
 
 }
