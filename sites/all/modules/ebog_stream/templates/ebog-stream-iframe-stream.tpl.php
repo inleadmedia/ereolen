@@ -1,7 +1,5 @@
 <html>
   <head>
-    <!--<script src="http://reader.pubhub.dk/scripts/reader-1.0.9/reader.js" type="text/javascript"></script>-->
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="/<?php print drupal_get_path('module', 'ebog_stream') . '/js/ebog_stream.reader.js'; ?>"></script>
     <script type="text/javascript">
       var reader = new Reader ({
