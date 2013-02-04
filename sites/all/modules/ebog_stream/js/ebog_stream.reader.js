@@ -15,6 +15,7 @@ function Reader(settings) {
     var toc;
     var spinner;
     var modalWindow;
+    var jq17;
 
     // Styles MUST be inline - otherwise epub css might override the styles
     var defaultMarkup = '<div id="' + ElementId.ReaderHeader + '">' +
@@ -70,7 +71,7 @@ function Reader(settings) {
         numberOfDependeciesToBeLoaded = 13;
 
         LoadScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js', function () {
-            window.jq17 = jQuery.noConflict(true);
+            jq17 = jQuery.noConflict(true);
 
             LoadDependency('scripts/jquery.browser.mobile.js');
             LoadDependency('scripts/spin.min.js');
