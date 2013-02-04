@@ -221,3 +221,21 @@ function ebog_stream_preprocess_page(&$variables) {
     drupal_add_js(drupal_get_path('module', 'ebog_stream') . '/js/ebog_stream.scripts.js');
   }
 }
+
+/**
+ * Implements hook_preprocess_publizon_actions().
+ *
+ * Adds extra action link to stream functions on loan lists.
+ */
+function ebog_stream_preprocess_publizon_actions(&$vars) {
+  if ($vars['type'] == 'loan') {
+    $vars['actions'][] =  array(
+        '#link' => l(t('Stream'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'loan ebook-stream', 'target' => '_blank'))),
+        '#class' => 'download',
+        '#weight' => 1,
+    );
+
+    // Re-sort the actions based on weight.
+    usort($vars['actions'], 'element_sort');
+  }
+}
