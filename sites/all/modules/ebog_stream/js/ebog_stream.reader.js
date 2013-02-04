@@ -71,30 +71,31 @@ function Reader(settings) {
         numberOfDependeciesToBeLoaded = 13;
 
         LoadScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js', function () {
-            jq17 = jQuery.noConflict(true);
+            window.jq17 = jQuery.noConflict(true);
+            jq17 = window.jq17;
 
-            LoadDependency('scripts/jquery.browser.mobile.js');
-            LoadDependency('scripts/spin.min.js');
-            LoadDependency('scripts/jquery.cj-swipe.js');
-            LoadDependency('scripts/reader-1.1.4/browser.js');
-            LoadDependency('scripts/reader-1.1.4/serviceurl.js');
-            LoadDependency('scripts/reader-1.1.4/toc.js');
-            LoadDependency('scripts/reader-1.1.4/modalwindow.js');
-            LoadDependency('scripts/reader-1.1.4/security.js');
-            LoadDependency('scripts/reader-1.1.4/zoomer.js');
-            LoadDependency('scripts/reader-1.1.4/epubloader.js');
-            LoadDependency('scripts/reader-1.1.4/bookrenderer.js');
-            LoadDependency('scripts/reader-1.1.4/bookmarker.js');
-            LoadDependency('scripts/reader-1.1.4/readerspinner.js');
+            LoadDependency('jquery.browser.mobile.js', true);
+            LoadDependency('scripts/spin.min.js', false);
+            LoadDependency('jquery.cj-swipe.js', true);
+            LoadDependency('scripts/reader-1.1.4/browser.js', false);
+            LoadDependency('scripts/reader-1.1.4/serviceurl.js', false);
+            LoadDependency('scripts/reader-1.1.4/toc.js', false);
+            LoadDependency('scripts/reader-1.1.4/modalwindow.js', false);
+            LoadDependency('scripts/reader-1.1.4/security.js', false);
+            LoadDependency('scripts/reader-1.1.4/zoomer.js', false);
+            LoadDependency('scripts/reader-1.1.4/epubloader.js', false);
+            LoadDependency('scripts/reader-1.1.4/bookrenderer.js', false);
+            LoadDependency('scripts/reader-1.1.4/bookmarker.js', false);
+            LoadDependency('scripts/reader-1.1.4/readerspinner.js', false);
 //            LoadDependency('scripts/reader-1.1.4/reader-1.1.4.css');
         });
     }
 
-    function LoadDependency(path) {
+    function LoadDependency(path, local) {
         var extension = path.substring(path.lastIndexOf('.'));
 
         if (extension == '.js') {
-            LoadScript(GetReaderBaseUri() + path, function() {
+            LoadScript(GetReaderBaseUri(local) + path, function() {
                 numberOfDependenciesLoaded++;
                 if (numberOfDependenciesLoaded == numberOfDependeciesToBeLoaded) SetSessionKeyAndInitReader();
             });
@@ -337,7 +338,10 @@ function Reader(settings) {
         return 'https://streaming.pubhub.dk/publicstreaming/v1/';
     }
 
-    function GetReaderBaseUri() {
+    function GetReaderBaseUri(local) {
+        if (local) {
+          return '/sites/all/modules/ebog_stream/js/';
+        }
         if (window.location.hostname == 'localhost')
             return 'http://localhost:64286/';
         return 'https://reader.pubhub.dk/';
