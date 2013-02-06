@@ -190,7 +190,7 @@
   }
 
   $(document).ready(function() {
-    $('a.ebook-stream').live('click', function(e) {
+    $('a.ebook-stream').click(function(e) {
       e.preventDefault();
 
       if (popupOpen) {
