@@ -1,5 +1,5 @@
 (function ($) {
-  $('.ebog-dlink').live('click', function() {
+  $('.ebog-dlink').click(function() {
     $('#ting-download-popup-info').dialog('close');
   });
 
@@ -14,7 +14,7 @@
 
   // Handle clicked loan link, those matching 'ting/object/%/download' pattern
   $(document).ready(function() {
-    $('a').live('click', function() {
+    $('a').click(function() {
       href = $(this).attr('href');
       if (!href.match(/publizon\/(.)+\/download/)) {
         return true;
