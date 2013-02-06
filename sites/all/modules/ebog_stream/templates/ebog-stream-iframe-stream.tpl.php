@@ -2,6 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="da" lang="da" dir="ltr">
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script type="text/javascript" src="//reader.pubhub.dk/scripts/reader-1.1.4/reader.js"></script>
     <script type="text/javascript">
       var reader = new Reader ({
