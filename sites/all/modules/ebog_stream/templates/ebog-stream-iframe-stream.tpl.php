@@ -3,17 +3,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="da" lang="da" dir="ltr">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript" src="//reader.pubhub.dk/scripts/reader-1.1.4/reader.js"></script>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="no-cache, no-store" http-equiv="cache-control" />
+    <meta content="no-cache" http-equiv="pragma" />
+    <meta content="-1" http-equiv="expires" />
+    <script type="text/javascript" src="https://reader.pubhub.dk/scripts/reader-1.1.4/reader.js"></script>
     <script type="text/javascript">
-      var reader = new Reader ({
-        elementId: 'elib-reader',
-        orderId: '<?php print $vars['order_number']; ?>',
-        sessionKeyUrl: '/<?php print $vars['session_url']; ?>'
-      });
-      reader.Display();
+      var reader;
+        function InitReader() {
+          reader = new Reader ({
+            elementId: 'reader-container',
+            orderId: '<?php print $vars['order_number']; ?>',
+            sessionKeyUrl: window.location.protocol + '//' + window.location.host + '/<?php print $vars['session_url']; ?>'
+          });
+          reader.Display();
+      }
     </script>
   </head>
-  <body>
-    <div id="elib-reader"></div>
+  <body onload="javascript:InitReader();">
+    <div id="reader-container"></div>
   </body>
 </html>
