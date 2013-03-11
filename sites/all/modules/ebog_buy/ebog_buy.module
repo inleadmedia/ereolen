@@ -66,12 +66,19 @@ function ebog_buy_get_resellers($isbn = '') {
   $ws_key = variable_get('ebog_buy_secret_code', '');
 
   $resellers = json_decode(ebog_buy_send_request($isbn, $ws_link, $ws_key));
-  usort($resellers, '_ebog_sort_resellers');
 
-  $response['markup'] = ebog_buy_get_resellers_markup($resellers);
-  $response['status'] = count($response) > 0 ? TRUE : FALSE;
+  if (json_last_error() === JSON_ERROR_NONE) {
+    usort($resellers, '_ebog_sort_resellers');
 
-  drupal_json($response);
+    $response['markup'] = ebog_buy_get_resellers_markup($resellers);
+    $response['status'] = count($response) > 0 ? TRUE : FALSE;
+
+    drupal_json($response);
+  }
+  else {
+    watchdog('Ebog buy', 'Error validating JSON', WATCHDOG_ERROR);
+  }
+
   exit(0);
 }
 
@@ -87,7 +94,7 @@ function ebog_buy_get_resellers($isbn = '') {
  * @return
  *   Web-service response, expected in JSON format with resellers information.
  */
-function ebog_buy_send_request($isbn = '', $ws_link = '', $ws_key = '') {
+function ebog_buy_send_request($isbn = NULL, $ws_link = NULL, $ws_key = NULL) {
   $resellers = '{}';
 
   if (!empty($ws_link) && !empty($isbn) && !empty($ws_key)) {
