@@ -120,7 +120,7 @@ function _ebog_banner_block_configure() {
  *
  * @see ebog_banner_block().
  */
-function _ebog_banner_block_save($values) {//var_dump($values);die();
+function _ebog_banner_block_save($values) {
   $source = 'ebog_banner_image';
   $fields = array(
     'ebog_banner_text',
@@ -141,7 +141,7 @@ function _ebog_banner_block_save($values) {//var_dump($values);die();
   }
 
   if ($values['ebog_banner_image_remove'] === 1) {
-    variable_set('ebog_banner_image', '');
+    variable_del('ebog_banner_image');
   }
   else {
     // Handle uploads.
