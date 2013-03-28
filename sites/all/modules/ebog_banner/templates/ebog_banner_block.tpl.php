@@ -6,7 +6,7 @@
 ?>
 <div class="ebog-banner">
   <div class="ebog-banner-image">
-    <?php echo l(theme_image($conf['image'], '' , '', array('width' => '100%', 'height' => '225'), FALSE), $conf['url'], array('html' => TRUE, 'absolute' => TRUE)); ?>
+    <?php echo l(theme_image($conf['image'], '' , '', array('width' => '100%', 'height' => ''), FALSE), $conf['url'], array('html' => TRUE, 'absolute' => TRUE)); ?>
   </div>
   <div class="ebog_banner_descr"><?php echo $conf['text']; ?></div>
 </div>
