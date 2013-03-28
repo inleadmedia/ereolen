@@ -90,18 +90,21 @@ function _ebog_banner_block_configure() {
     '#title' => t('Banner text'),
     '#default_value' => variable_get('ebog_banner_text', ''),
     '#maxlength' => 1024,
+    '#required' => TRUE,
   );
 
   $form['ebog_banner_url'] = array(
     '#type' => 'textfield',
     '#title' => t('Banner url'),
     '#default_value' => variable_get('ebog_banner_url', ''),
+    '#required' => TRUE,
   );
 
   $form['ebog_banner_url_text'] = array(
     '#type' => 'textfield',
     '#title' => t('Banner url text'),
     '#default_value' => variable_get('ebog_banner_url_text', ''),
+    '#required' => TRUE,
   );
 
   return $form;
