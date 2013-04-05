@@ -36,3 +36,8 @@ block-ebog_banner {
   padding: 2px 6px;
   text-decoration: underline;
 }
+
+.block-ebog_banner .ebog-banner-image img {
+  height: auto;
+  width: 100%;
+}
