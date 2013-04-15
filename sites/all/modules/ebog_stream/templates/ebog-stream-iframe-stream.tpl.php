@@ -19,6 +19,7 @@
           reader.Display();
       }
     </script>
+    <title>eReolen Stream - <?php print $vars['title'] ?></title>
   </head>
   <body onload="javascript:InitReader();">
     <div id="reader-container"></div>

@@ -72,14 +72,17 @@ function ebog_stream_theme() {
  *  The books ISBN number.
  * @param int $order_number
  *  The Publizon order number.
+ * @param string $title
+ *  The books title.
  */
-function ebog_stream_set_session($book_id, $order_number) {
+function ebog_stream_set_session($book_id, $order_number, $title) {
   if (!isset($_SESSION['ebog_stream'])) {
     $_SESSION['ebog_stream'] = array();
   }
   $_SESSION['ebog_stream'][$book_id] = array(
     'session_url' => 'publizon/' . $order_number . '/checkauth',
     'order_number' => $order_number,
+    'title' => $title,
   );
 }
 
@@ -133,7 +136,8 @@ function ebog_stream_try_loan($book_id) {
       if ($user_loans->isLoan($book_id)) {
         if (isset($user_loans->loans[$book_id])) {
           $order_number = $user_loans->loans[$book_id]->retailer_order_number;
-          ebog_stream_set_session($book_id, $order_number);
+          $title = $user_loans->loans[$book_id]->title;
+          ebog_stream_set_session($book_id, $order_number, $title);
           $response = array(
             'status' => 'loaned',
             'book_id' => $book_id,
@@ -174,7 +178,8 @@ function ebog_stream_get_loan($book_id, $js = TRUE) {
     if ($user_loans->isLoan($book_id)) {
       if (isset($user_loans->loans[$book_id])) {
         $order_number = $user_loans->loans[$book_id]->retailer_order_number;
-        ebog_stream_set_session($book_id, $order_number);
+        $title = $user_loans->loans[$book_id]->title;
+        ebog_stream_set_session($book_id, $order_number, $title);
         $response = array(
           'status' => 'loaned',
           'book_id' => $book_id,
