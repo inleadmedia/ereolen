@@ -43,7 +43,7 @@ function ebog_stream_menu() {
 
   $items['stream/%'] = array(
     'page callback' => 'ebog_stream_iframe_stream',
-    'page arguments' => array(2),
+    'page arguments' => array(1),
     'access arguments' => array('access content'),
     'type' => MENU_CALLBACK,
   );
