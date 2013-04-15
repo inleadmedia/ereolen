@@ -267,7 +267,7 @@ function ebog_stream_preprocess_page(&$variables) {
  * Adds extra action link to stream functions on loan lists.
  */
 function ebog_stream_preprocess_publizon_actions(&$vars) {
-  if ($vars['type'] == 'loan') {
+  if (in_array($vars['type'], array('loan', 'cart'))) {
     // Try to make the right link based on book loan status.
     $isbn = $vars['product']->isbn;
     $link = l(t('Stream'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'loan ebook-stream', 'target' => '_blank', 'action' => 'stream')));
