@@ -186,7 +186,7 @@
   }
 
   var displayReader = function(response) {
-    showPopup(Drupal.t('Stream'), '<a href="/publizon/stream/'+response.book_id+'" target="_blank">' + Drupal.t('Start reading') + '</a>', []);
+    showPopup(Drupal.t('Stream'), '<a href="/publizon/stream/' + response.book_id + '" target="_blank" onClick="$(\'#ebog-stream-popup\').dialog(\'close\').remove();">' + Drupal.t('Start reading') + '</a>', []);
   }
 
   $(document).ready(function() {
