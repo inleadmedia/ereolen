@@ -830,6 +830,7 @@ div.messages,
   -webkit-background-clip: padding-box;
      -moz-background-clip: padding;
           background-clip: padding-box;
+          position: relative;
 }
 .panel-pane.pane-latest-news .pane-content .view-content .views-row {
   overflow: hidden;

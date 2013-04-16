@@ -147,7 +147,7 @@ function _ebog_banner_block_save($values) {
     // Handle uploads.
     $file_type = $_FILES['files']['type'][$source];
     if (in_array($file_type, $allowed_types)) {
-      $file = file_save_upload('ebog_banner_image', 'sites/default/files/', FILE_EXISTS_REPLACE);
+      $file = file_save_upload('ebog_banner_image', array(), 'sites/default/files/', FILE_EXISTS_REPLACE);
 
       if (is_object($file)) {
         variable_set('ebog_banner_image', $file->filepath);
