@@ -14,7 +14,8 @@
           reader = new Reader ({
             elementId: 'reader-container',
             orderId: '<?php print $vars['order_number']; ?>',
-            sessionKeyUrl: window.location.protocol + '//' + window.location.host + '/<?php print $vars['session_url']; ?>'
+            sessionKeyUrl: window.location.protocol + '//' + window.location.host + '/<?php print $vars['session_url']; ?>',
+            notesEnable: false
           });
           reader.Display();
       }
