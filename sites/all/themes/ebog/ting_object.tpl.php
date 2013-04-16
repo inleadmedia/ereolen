@@ -175,7 +175,7 @@ if (module_exists('ding_voxb')) {
               <li><?php print l(t('Loan'), 'publizon/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))) ?></li>
             <?php } ?>
             <?php
-              if($user->uid){
+              if(user_is_logged_in()){
                 print '<li class="seperator"></li>';
                 print '<li>';
                 print recall_list_add_link($object->record['dc:identifier']['oss:PROVIDER-ID'][0]);

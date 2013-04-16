@@ -82,7 +82,7 @@ foreach ($collection->objects as $obj) {
               <li><?php print l(t('Loan'), 'publizon/' . $isbn . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))) ?></li>
               <?php } ?>
             <?php
-              }
+                }
               else {
             ?>
               <li class="unavailable"><span><?php echo t('Unavailable') ?></span></li>
