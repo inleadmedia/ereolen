@@ -11,10 +11,10 @@
   <div class="ebog-author-portrait-descr">
     <h3 class="title"><?php echo $conf['portrait']['name']; ?></h3>
     <p class="teaser"><?php echo $conf['portrait']['teaser']; ?></p>
-    <p class="litteratursiden-link"><?php echo l(theme_image(drupal_get_path('theme', 'ebog') . '/images/litteratursiden.png', '' , '', array(), FALSE), 'http://www.litteratursiden.dk/', array('html' => TRUE, 'absolute' => TRUE, 'attributes' => array('target' => '_blank', 'title' => 'Litteratursiden'))); ?></p>
+    <p class="forfatterweb-link"><?php echo l(theme_image(drupal_get_path('theme', 'ebog') . '/images/forfatterweb.png', '' , '', array(), FALSE), 'http://www.forfatterweb.dk/', array('html' => TRUE, 'absolute' => TRUE, 'attributes' => array('target' => '_blank', 'title' => 'Forfatterweb'))); ?></p>
   </div>
   <div class="clear"></div>
 </div>
 <div class="bottom-bar">
-  <div class="see-more"><?php echo l($conf['portrait']['url'], $conf['portrait']['more'], array('attributes' => array('title' => $conf['portrait']['more']))); ?></div>
+  <div class="see-more"><?php echo l($conf['portrait']['url'], $conf['portrait']['more'], array('attributes' => array('target' => '_blank', 'title' => $conf['portrait']['more']))); ?></div>
 </div>
