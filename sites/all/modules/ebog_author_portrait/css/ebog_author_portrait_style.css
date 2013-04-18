@@ -1,54 +1,14 @@
-#sidebar-first .block-ebog_author_portrait {
-  margin-bottom: 30px;
-  position: relative;
-}
-
-.block-ebog_author_portrait .bottom-bar {
-  background-clip: padding-box;
-  -webkit-background-clip: padding-box;
-  -moz-background-clip: padding;
-  background-color: #BE1F24;
-  border-radius: 0 0 4px 4px;
-  -moz-border-radius: 0 0 4px 4px;
-  -webkit-border-radius: 0 0 4px 4px;
-  bottom: -22px;
-  height: 26px;
-  left: 0;
-  position: absolute;
-  width: 100%;
-}
-
-.block-ebog_author_portrait .bottom-bar a {
-  color: #fff;
-  line-height: 26px;
-  margin-left: 10px;
-  padding: 3px 7px;
-  text-decoration: none;
-}
-
-.block-ebog_author_portrait .bottom-bar a:hover {
-  border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  box-shadow: inset 0 0 3px #000000;
-  -webkit-box-shadow: inset 0 0 3px #000000;
-  -moz-box-shadow: inset 0 0 3px #000000;
-  border: 1px solid #b41a67;
-  padding: 2px 6px;
-  text-decoration: underline;
-}
-
-.block-ebog_author_portrait .ebog-author-portrait-image,
-.block-ebog_author_portrait .ebog-author-portrait-descr {
+.ebog-author-portrait .ebog-author-portrait-image,
+.ebog-author-portrait .ebog-author-portrait-descr {
   float: left;
 }
 
-.block-ebog_author_portrait .ebog-author-portrait-image {
+.ebog-author-portrait .ebog-author-portrait-image {
   margin-right: 10px;
   width: 120px;
 }
 
-.block-ebog_author_portrait .ebog-author-portrait-image img {
+.ebog-author-portrait .ebog-author-portrait-image img {
   background-color: #fff;
   border: 1px solid #dddfdc;
   height: auto;
@@ -56,19 +16,11 @@
   width: 110px;
 }
 
-.block-ebog_author_portrait .ebog-author-portrait-descr {
-  width: 125px;
-}
-
-.block-ebog_author_portrait .ebog-author-portrait-descr .teaser {
+.ebog-author-portrait .ebog-author-portrait-descr .teaser {
   margin: 10px 0 10px 0;
 }
 
-.block-ebog_author_portrait h3.title {
-  font: 16px/20px 'DroidSerifRegular', Helvetica, Arial, sans-serif;
-}
-
-.block-ebog_author_portrait .clear {
+.ebog-author-portrait .clear {
   clear: both;
-  float:none;
+  float: none;
 }
