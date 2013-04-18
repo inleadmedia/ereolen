@@ -16,5 +16,5 @@
   <div class="clear"></div>
 </div>
 <div class="bottom-bar">
-  <div class="see-more"><?php echo l($conf['portrait']['url'], $conf['portrait']['more'], array('attributes' => array('title' => $conf['portrait']['url']))); ?></div>
+  <div class="see-more"><?php echo l($conf['portrait']['url'], $conf['portrait']['more'], array('attributes' => array('title' => $conf['portrait']['more']))); ?></div>
 </div>
