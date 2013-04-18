@@ -41,3 +41,7 @@ block-ebog_banner {
   height: auto;
   width: 100%;
 }
+
+.pane-ebog-banner-0 .ebog-banner {
+  border: medium none;
+}
