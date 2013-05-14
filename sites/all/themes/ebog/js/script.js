@@ -1,17 +1,7 @@
 jQuery(function($){
   $(document).ready(function() {
 
-    // Add truncation function to publisher description on object view.
-//    $('#ting-object .publisherDescription').condense({
-//        moreSpeed: 'fast',
-//        lessSpeed: 'fast',
-//        moreText: Drupal.t('More'),
-//        lessText: Drupal.t('Less'),
-//        ellipsis: '',
-//        condensedLength: 350
-//    });
-
-
+    // Make publisher description folderable.
     $('#ting-object .publisherDescription').expander({
       slicePoint:       350,
       expandPrefix:     ' ',
@@ -27,5 +17,7 @@ jQuery(function($){
     // Add class "last" to book lists.
     $('.publizon-loans-list li:last-child').addClass('last');
     $('.display-book').parent().find('.display-book:last').addClass('last');
+
+
   })
 });

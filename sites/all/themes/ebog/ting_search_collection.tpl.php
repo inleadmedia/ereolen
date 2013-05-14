@@ -65,6 +65,9 @@ foreach ($collection->objects as $obj) {
             </p>
           </div>
         <?php } ?>
+        <?php if ($elib[$isbn]['is_loan']) { ?>
+        <span class="downloaded off-line-app" rel="<?php print $isbn; ?>"></span>
+        <?php } ?>
         <div class="icons">
           <ul>
             <?php
@@ -73,7 +76,7 @@ foreach ($collection->objects as $obj) {
               <li><?php print l(t('Sample'), $elib[$isbn]['elib_sample_link'], array('html' => TRUE, 'attributes' => array('target' => '_blank','action' => 'sample'))) ?></li>
               <li class="seperator"></li>
               <?php if ($elib[$isbn]['is_loan']) { ?>
-              <li><?php print l(t('Stream'), 'stream/' . $isbn  . '?cvo=' . $elib[$isbn]['cvo'], array('html' => TRUE, 'attributes' => array('target' => '_blank'))); ?></li>
+              <li><?php print l(t('Stream'), 'stream/' . $isbn  . '?cvo=' . $elib[$isbn]['cvo'], array('html' => TRUE, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))); ?></li>
               <li class="seperator"></li>
               <li><?php print l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))) ?></li>
               <?php } else { ?>
@@ -89,7 +92,6 @@ foreach ($collection->objects as $obj) {
             <?php
               }
             ?>
-
           </ul>
         </div>
       </div>

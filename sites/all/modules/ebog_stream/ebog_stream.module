@@ -170,7 +170,7 @@ function ebog_stream_try_loan($book_id) {
  *  Book isbn.
  * @param bool $js
  *  If TRUE returns json array else return bool.
- * 
+ *
  * @return mixed
  *  If json is not select to be return FALSE or order id will be returned
  */
@@ -281,7 +281,7 @@ function ebog_stream_preprocess_publizon_actions(&$vars) {
     $link = l(t('Stream'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'loan ebook-stream', 'target' => '_blank', 'action' => 'stream')));
     if ($order_id = ebog_stream_get_loan($isbn, FALSE)) {
       // Book was not available so fallback to normal loan link.
-      $link = l(t('Stream'), 'stream/' . $isbn . '?cvo=' . $order_id, array('html' => TRUE, 'attributes' => array('class' => '.reader-init', 'target' => '_blank')));
+      $link = l(t('Stream'), 'stream/' . $isbn . '?cvo=' . $order_id, array('html' => TRUE, 'attributes' => array('class' => 'reader-init .cvo', 'target' => '_blank')));
     }
 
     $vars['actions'][] =  array(
