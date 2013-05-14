@@ -72,8 +72,8 @@ foreach ($collection->objects as $obj) {
             ?>
               <li><?php print l(t('Sample'), $elib[$isbn]['elib_sample_link'], array('html' => TRUE, 'attributes' => array('target' => '_blank','action' => 'sample'))) ?></li>
               <li class="seperator"></li>
-              <?php if ($is_loan) { ?>
-              <li><?php print l(t('Stream'), 'stream/' . $isbn, array('html' => TRUE, 'attributes' => array('target' => '_blank'))); ?></li>
+              <?php if ($elib[$isbn]['is_loan']) { ?>
+              <li><?php print l(t('Stream'), 'stream/' . $isbn  . '?cvo=' . $elib[$isbn]['cvo'], array('html' => TRUE, 'attributes' => array('target' => '_blank'))); ?></li>
               <li class="seperator"></li>
               <li><?php print l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))) ?></li>
               <?php } else { ?>

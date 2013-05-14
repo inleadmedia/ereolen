@@ -39,6 +39,9 @@ function ebog_preprocess_ting_object(&$vars) {
     if ($user->uid > 0) {
       $user_loans = new PublizonUserLoans($user->uid);
       $vars['is_loan'] = $user_loans->isLoan($isbn, TRUE);
+      if ($vars['is_loan']) {
+        $vars['cvo'] = $user_loans->loans[$isbn]->retailer_order_number;
+      }
     }
   }
   catch (Exception $e) {
@@ -79,7 +82,10 @@ function ebog_preprocess_ting_search_collection(&$vars) {
       global $user;
       if ($user->uid > 0) {
         $user_loans = new PublizonUserLoans($user->uid);
-        $vars['is_loan'] = $user_loans->isLoan($isbn, TRUE);
+        $vars['elib'][$isbn]['is_loan'] = $user_loans->isLoan($isbn, TRUE);
+        if ($vars['elib'][$isbn]['is_loan']) {
+          $vars['elib'][$isbn]['cvo'] = $user_loans->loans[$isbn]->retailer_order_number;
+        }
       }
     }
     catch (Exception $e) {
