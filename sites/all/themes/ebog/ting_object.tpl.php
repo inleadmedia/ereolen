@@ -169,7 +169,7 @@ if (module_exists('ding_voxb')) {
             <li><?php print l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('action' => 'sample', 'target' => '_blank'))) ?></li>
             <li class="seperator"></li>
             <?php if ($is_loan) { ?>
-                <li><?php print l(t('Stream'), 'stream/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '?cvo=' . $cvo, array('html' => true, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))) ?></li>
+                <li><?php print l(t('Stream'), 'stream/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0], array('query' => array('cvo' => $cvo), 'html' => true, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))) ?></li>
                 <li class="seperator"></li>
                 <li><?php print l(t('Download'), 'publizon/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))) ?></li>
             <?php } else { ?>
