@@ -1,0 +1,5 @@
+name = Ebog 
+description = Enables different helper functions.
+version = 0.1
+core = 6.x
+dependencies[] = publizon

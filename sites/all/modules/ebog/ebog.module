@@ -1,0 +1,52 @@
+<?php
+/**
+ * @file
+ * Defines helper functions and setting that only apply to eReolen. 
+ */
+
+
+
+/**
+ * Implements hook_preprocess_publizon_actions().
+ * 
+ * It generates the action links, button or icons on the different publizon 
+ * product lists.
+ */
+function ebog_preprocess_publizon_actions(&$vars) {
+  $isbn = $vars['product']->isbn;
+  $actions = $vars['actions'];
+  switch ($vars['type']) {
+    // User loan list
+    case 'loan':
+      if (ebog_is_app()) {
+        $actions[] =  array(
+          '#link' => l(t('Read off-line'), '#', array('html' => TRUE, 'attributes' => array('class' => 'loan', 'action' => 'offline'))),
+          '#class' => 'hidden download',
+          '#weight' => 2,
+        );
+      }
+      break;
+  }
+
+  // Sort the actions based on weight.
+  usort($actions, 'element_sort');
+  $vars['actions'] = $actions;
+}
+
+/**
+ * Check if the current user is using the off-line App, which adds a string to
+ * the User-Agent string in each request.
+ * 
+ * Mainly used to change the user interface to support off-line reading in the
+ * app.
+ * 
+ * @return boolean 
+ *  TRUE if the App is detected else FALSE.
+ */
+function ebog_is_app() {  
+  $agent = $_SERVER['HTTP_USER_AGENT'];
+  if (preg_match('eReolenApp', $agent)) {
+    return TRUE;
+  }
+  return FALSE;
+}
