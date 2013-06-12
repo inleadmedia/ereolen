@@ -68,7 +68,7 @@ function ebog_offline_preprocess_publizon_actions(&$vars) {
  */
 function ebog_offline_is_app() {
   $agent = $_SERVER['HTTP_USER_AGENT'];
-  if (preg_match('eReolenApp', $agent)) {
+  if (preg_match('/eReolenApp/', $agent)) {
     return TRUE;
   }
   return FALSE;
