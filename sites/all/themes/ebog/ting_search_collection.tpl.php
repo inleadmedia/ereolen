@@ -75,8 +75,14 @@ foreach ($collection->objects as $obj) {
             ?>
               <li><?php print l(t('Sample'), $elib[$isbn]['elib_sample_link'], array('html' => TRUE, 'attributes' => array('target' => '_blank','action' => 'sample'))) ?></li>
               <li class="seperator"></li>
-              <?php if ($elib[$isbn]['is_loan']) { ?>
-              <li><?php print l(t('Stream'), 'stream/' . $isbn, array('query' => array('cvo' => $elib[$isbn]['cvo']), 'html' => TRUE, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))); ?></li>
+              <?php if ($elib[$isbn]['is_loan']) {
+                      $query = array(
+                        'cvo' => $elib[$isbn]['cvo'],
+                        'title' => $obj->title,
+                        'author' => publizon_get_authors($obj, FALSE),
+                      );
+              ?>
+              <li><?php print l(t('Stream'), 'stream/' . $isbn, array('query' => array($query), 'html' => TRUE, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))); ?></li>
               <?php } else { ?>
               <li><?php print l(t('Stream'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'ebook-stream', 'target' => '_blank', 'action' => 'stream'))); ?></li>
               <?php } ?>
