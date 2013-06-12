@@ -12,13 +12,13 @@
  * It generates the action links, button or icons on the different publizon 
  * product lists.
  */
-function ebog_preprocess_publizon_actions(&$vars) {
+function ebog_offline_preprocess_publizon_actions(&$vars) {
   $isbn = $vars['product']->isbn;
   $actions = $vars['actions'];
   switch ($vars['type']) {
     // User loan list
     case 'loan':
-      if (ebog_is_app()) {
+      if (ebog_offline_is_app()) {
         $actions[] =  array(
           '#link' => l(t('Read off-line'), '#', array('html' => TRUE, 'attributes' => array('class' => 'loan', 'action' => 'offline'))),
           '#class' => 'hidden download',
@@ -43,7 +43,7 @@ function ebog_preprocess_publizon_actions(&$vars) {
  * @return boolean 
  *  TRUE if the App is detected else FALSE.
  */
-function ebog_is_app() {  
+function ebog_offline_is_app() {  
   $agent = $_SERVER['HTTP_USER_AGENT'];
   if (preg_match('eReolenApp', $agent)) {
     return TRUE;
