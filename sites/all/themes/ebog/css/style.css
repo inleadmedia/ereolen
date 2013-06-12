@@ -1184,3 +1184,10 @@ ul.nice-menu-down li.over a {
   display: none;
 }
 
+#ebog-stream-popup {
+  text-align: center;
+}
+
+#read-offline {
+  margin-right: 4px;
+}
