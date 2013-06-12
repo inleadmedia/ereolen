@@ -1,49 +1,72 @@
 <?php
 /**
  * @file
- * Defines helper functions and setting that only apply to eReolen. 
+ * Defines helper functions and setting that only apply to eReolen.
  */
 
 
 
 /**
  * Implements hook_preprocess_publizon_actions().
- * 
- * It generates the action links, button or icons on the different publizon 
+ *
+ * It generates the action links, button or icons on the different publizon
  * product lists.
  */
 function ebog_offline_preprocess_publizon_actions(&$vars) {
+  // Get ISBN number for the current product
   $isbn = $vars['product']->isbn;
-  $actions = $vars['actions'];
-  switch ($vars['type']) {
-    // User loan list
-    case 'loan':
-      if (ebog_offline_is_app()) {
-        $actions[] =  array(
-          '#link' => l(t('Read off-line'), '#', array('html' => TRUE, 'attributes' => array('class' => 'loan', 'action' => 'offline'))),
-          '#class' => 'hidden download',
-          '#weight' => 2,
-        );
-      }
-      break;
+
+  // Get the users loans.
+  static $user_loans = false;
+  if (!$user_loans) {
+    $user_loans = new PublizonUserLoans($user->uid);
   }
 
-  // Sort the actions based on weight.
-  usort($actions, 'element_sort');
-  $vars['actions'] = $actions;
+  // Check if this is a user loan.
+  if ($user_loans->isLoan($isbn, TRUE)) {
+    $actions = $vars['actions'];
+    switch ($vars['type']) {
+      // User loan list
+      case 'loan':
+        // Only show the download button in the app.
+        if (ebog_offline_is_app()) {
+          // Get current path, so we can link to it.
+          $item = menu_get_item();
+
+          // Build query array.
+          $query = array(
+            'cvo' => $user_loans->loans[$isbn]->internal_order_number,
+            'title' => $vars['product']->title,
+            'author' => publizon_get_authors($vars['product']->getTingObject(), FALSE),
+          );
+
+          // Build action array.
+          $actions[] =  array(
+            '#link' => l(t('Download'), $item['path'], array('query' => array($query), 'html' => TRUE, 'attributes' => array('class' => 'loan', 'action' => 'offline'))),
+            '#class' => 'download app-hidden',
+            '#weight' => 2,
+          );
+        }
+        break;
+    }
+
+    // Sort the actions based on weight.
+    usort($actions, 'element_sort');
+    $vars['actions'] = $actions;
+  }
 }
 
 /**
  * Check if the current user is using the off-line App, which adds a string to
  * the User-Agent string in each request.
- * 
+ *
  * Mainly used to change the user interface to support off-line reading in the
  * app.
- * 
- * @return boolean 
+ *
+ * @return boolean
  *  TRUE if the App is detected else FALSE.
  */
-function ebog_offline_is_app() {  
+function ebog_offline_is_app() {
   $agent = $_SERVER['HTTP_USER_AGENT'];
   if (preg_match('eReolenApp', $agent)) {
     return TRUE;

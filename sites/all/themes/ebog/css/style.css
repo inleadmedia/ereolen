@@ -1176,3 +1176,11 @@ ul.nice-menu-down li.over a {
 .pane-ebog-author-portrait-0 .ebog-author-portrait .ebog-author-portrait-descr {
   width: 155px;
 }
+
+/**
+ * Off line app.
+ */
+.app-hidden {
+  display: none;
+}
+
