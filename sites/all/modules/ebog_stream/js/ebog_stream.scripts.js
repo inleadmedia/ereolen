@@ -188,7 +188,7 @@
   var displayReader = function(response) {
     var content = '<a href="/stream/' + response.book_id + '" target="_blank" onClick="$(\'#ebog-stream-popup\').dialog(\'close\').remove();">' + Drupal.t('Start reading') + '</a>';
     if (response.is_app) {
-      var query = '?cvo=' + response.cvo + '&title=' + response.title + '&author=' + response.author + '&download=1';
+      var query = '?cvo=' + response.cvo + '&title=' + response.title + '&author=' + response.author;
 
       // We are inside the off-line app.
       var link = '<a class="start-stream" href="/stream/' + response.book_id + '" target="_blank" onClick="$(\'#ebog-stream-popup\').dialog(\'close\').remove();">' + Drupal.t('Start reading') + '</a>';
