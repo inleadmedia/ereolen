@@ -42,7 +42,7 @@ function ebog_offline_preprocess_publizon_actions(&$vars) {
 
           // Build action array.
           $actions[] =  array(
-            '#link' => l(t('Download'), $item['path'], array('query' => array($query), 'html' => TRUE, 'attributes' => array('class' => 'loan', 'action' => 'offline'))),
+            '#link' => l(t('Download'), $item['path'], array('query' => array($query), 'html' => TRUE, 'attributes' => array('isbn' => $isbn, 'class' => 'loan', 'action' => 'offline'))),
             '#class' => 'download app-hidden',
             '#weight' => 2,
           );
