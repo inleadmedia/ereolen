@@ -143,7 +143,7 @@ function ebog_stream_try_loan($book_id) {
           $response = array(
             'status' => 'loaned',
             'book_id' => $book_id,
-            'cvo' => $order_number,
+            'cvo' => $internal_order_number,
             'title' => $title,
             'author' => publizon_get_authors($user_loans->loans[$book_id]->product->getTingObject(), FALSE),
             'is_app' => ebog_offline_is_app(),
