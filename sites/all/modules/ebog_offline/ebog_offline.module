@@ -64,6 +64,15 @@ function ebog_offline_preprocess_publizon_actions(&$vars) {
 }
 
 /**
+ * Implements hook_ctools_plugin_directory().
+ */
+function ebog_offline_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' && !empty($plugin)) {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
  * Check if the current user is using the off-line App, which adds a string to
  * the User-Agent string in each request.
  *
