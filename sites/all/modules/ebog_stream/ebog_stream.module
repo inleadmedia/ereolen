@@ -184,8 +184,16 @@ function ebog_stream_try_loan($book_id) {
 function ebog_stream_get_loan($book_id, $js = TRUE) {
   $response = array();
   if (!empty($book_id)) {
-    $user_loans = new PublizonUserLoans();
-    if ($user_loans->isLoan($book_id)) {
+    try {
+      $user_loans = new PublizonUserLoans();
+    }
+    catch (PublizonLoansException $e) {
+      // This happens when the user is not a publizon user (e.g. editor or
+      // admin).
+      $user_loans = FALSE;
+    }
+
+    if ($user_loans && $user_loans->isLoan($book_id)) {
       if (isset($user_loans->loans[$book_id])) {
         $order_number = $user_loans->loans[$book_id]->retailer_order_number;
         $internal_order_number = $user_loans->loans[$book_id]->internal_order_number;

@@ -19,7 +19,14 @@ function ebog_offline_preprocess_publizon_actions(&$vars) {
   // Get the users loans.
   static $user_loans = false;
   if (!$user_loans) {
-    $user_loans = new PublizonUserLoans($user->uid);
+    try {
+      $user_loans = new PublizonUserLoans();
+    }
+    catch (PublizonLoansException $e) {
+      // This happens when the user is not a publizon user (e.g. editor or
+      // admin).
+      return;
+    }
   }
 
   // Check if this is a user loan.
