@@ -175,9 +175,9 @@ if (module_exists('ding_voxb')) {
                       'author' => publizon_get_authors($object, FALSE),
                     );
             ?>
-                <li><?php print l(t('Stream'), 'stream/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0], array('query' => array($query), 'html' => true, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))) ?></li>
+                <li><?php print l(t('Read'), 'stream/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0], array('query' => array($query), 'html' => true, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))) ?></li>
             <?php } else { ?>
-              <li><?php print l(t('Stream'), 'publizon/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '/stream', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'stream', 'target' => '_blank'))) ?></li>
+              <li><?php print l(t('Borrow'), 'publizon/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '/stream', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'stream', 'target' => '_blank'))) ?></li>
             <?php } ?>
             <?php
               if(user_is_logged_in()){

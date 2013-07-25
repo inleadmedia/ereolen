@@ -289,10 +289,10 @@ function ebog_stream_preprocess_publizon_actions(&$vars) {
   if (in_array($vars['type'], array('loan', 'cart'))) {
     // Try to make the right link based on book loan status.
     $isbn = $vars['product']->isbn;
-    $link = l(t('Stream'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'loan ebook-stream', 'target' => '_blank', 'action' => 'stream')));
+    $link = l(t('Borrow'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'loan ebook-stream', 'target' => '_blank', 'action' => 'stream')));
     if ($order_numbers = ebog_stream_get_loan($isbn, FALSE)) {
       // Book was not available so fallback to normal loan link.
-      $link = l(t('Stream'), 'stream/' . $isbn, array('query' => array('cvo' => $order_numbers['internal_order_number']), 'html' => TRUE, 'attributes' => array('class' => 'reader-init .cvo', 'target' => '_blank')));
+      $link = l(t('Read'), 'stream/' . $isbn, array('query' => array('cvo' => $order_numbers['internal_order_number']), 'html' => TRUE, 'attributes' => array('class' => 'reader-init .cvo', 'target' => '_blank')));
     }
 
     $vars['actions'][] =  array(

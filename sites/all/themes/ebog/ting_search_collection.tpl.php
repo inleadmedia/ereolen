@@ -82,9 +82,9 @@ foreach ($collection->objects as $obj) {
                         'author' => publizon_get_authors($obj, FALSE),
                       );
               ?>
-              <li><?php print l(t('Stream'), 'stream/' . $isbn, array('query' => array($query), 'html' => TRUE, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))); ?></li>
+              <li><?php print l(t('Read'), 'stream/' . $isbn, array('query' => array($query), 'html' => TRUE, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))); ?></li>
               <?php } else { ?>
-              <li><?php print l(t('Stream'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'ebook-stream', 'target' => '_blank', 'action' => 'stream'))); ?></li>
+              <li><?php print l(t('Borrow'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'ebook-stream', 'target' => '_blank', 'action' => 'stream'))); ?></li>
               <?php } ?>
             <?php
                 }

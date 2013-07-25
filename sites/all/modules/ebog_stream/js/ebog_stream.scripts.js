@@ -205,7 +205,7 @@
         }
       });
     }
-    showPopup(Drupal.t('Stream'), content, []);
+    showPopup(Drupal.t('Read'), content, []);
   }
 
   $(document).ready(function() {
