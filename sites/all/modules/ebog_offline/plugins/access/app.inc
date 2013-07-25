@@ -38,4 +38,3 @@ function ebog_offline_app_ctools_access_check($conf, $context) {
 function ebog_offline_app_ctools_access_summary($conf, $context) {
   return t('Only display when User-agent string (eReolenApp)');
 }
-
