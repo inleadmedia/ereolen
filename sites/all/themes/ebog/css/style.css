@@ -1176,4 +1176,26 @@ ul.nice-menu-down li.over a {
 .pane-ebog-banner-0 .ebog-banner {
   padding-bottom: 20px
 }
->>>>>>> aakb/development
+
+.block-ebog_author_portrait .ebog-author-portrait .ebog-author-portrait-descr {
+  width: 125px;
+}
+
+.pane-ebog-author-portrait-0 .ebog-author-portrait .ebog-author-portrait-descr {
+  width: 155px;
+}
+
+/**
+ * Off line app.
+ */
+.app-hidden {
+  display: none;
+}
+
+#ebog-stream-popup {
+  text-align: center;
+}
+
+#read-offline {
+  margin-right: 4px;
+}
