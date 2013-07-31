@@ -47,28 +47,11 @@ if (module_exists('ding_voxb')) {
     <div class="inner">
       <h1 class="book-title"><?php print check_plain($object->record['dc:title'][''][0]); ?></h1>
       <div class="author"><?php echo t('By !author', array('!author' => $author)); ?></div>
-      <?php if (module_exists('ding_voxb')) { ?>
-      <div class="ratingsContainer">
-        <?php
-          $rating = $voxb_item->getRating();
-          $rating = intval($rating / 20);
-        ?>
-        <div class="addRatingContainer">
-          <div id="<?php echo $faust_number; ?>" <?php echo(($profile && $profile->isAbleToRate($faust_number)) ? 'class="userRate"' : ''); ?>>
-            <?php for ($i = 1; $i <= 5; $i++) { ?>
-              <div class="rating <?php echo($i <= $rating ? 'star-on' : 'star-off'); ?>"></div>
-            <?php } ?>
-          </div>
-        </div>
-        <?php
-        if ($voxb_item->getRatingCount() > 0) {
-          echo '<span class="ratingCountSpan">(<span class="ratingVotesNumber">' . $voxb_item->getRatingCount() . '</span> stemmer)</span>';
-        }
-        ?>
-        <img src="/<?php echo VOXB_PATH . '/img/ajax-loader.gif'; ?>" alt="" class="ajax_anim" />
-        <div class="clearfix"></div>
-      </div>
-      <?php } ?>
+      <?php
+      if (module_exists('ding_voxb')) {
+        print($object->voxb_rating);
+      }
+       ?>
       <div class="facebook-like">
         <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fereolen.dk%2Fting%2Fobject%2F<?php echo $object->id; ?>&amp;send=false&amp;layout=box_count&amp;width=130&amp;show_faces=false&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=75" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:130px; height:75px;" allowTransparency="true"></iframe>
       </div>
@@ -133,7 +116,7 @@ if (module_exists('ding_voxb')) {
           <?php } ?>
           <?php if (!empty($object->record['dc:contributor']['oss:dkind'])) { ?>
             <?php foreach($object->record['dc:contributor']['oss:dkind'] as $reader): ?>
-              <?php $readers[] = l($reader,'ting/search/'.$reader); ?>
+              <?php $readers[] = l($reader,'ting/search/"' . $reader . '"'); ?>
             <?php endforeach;?>
             <?php print theme('item_list', $readers, t('Reader'), 'span', array('class' => 'contributor'));?>
           <?php } ?>
@@ -177,18 +160,27 @@ if (module_exists('ding_voxb')) {
           <?php } ?>
         </div>
       </div>
+      <?php if ($is_loan) { ?>
+      <span class="off-line" rel="<?php print $object->record['dc:identifier']['oss:PROVIDER-ID'][0]; ?>"></span>
+      <?php } ?>
       <div class="icons">
         <ul>
           <?php if (isset($elib_sample_link)) { ?>
             <li><?php print l(t('Sample'), $elib_sample_link, array('html' => true, 'attributes' => array('action' => 'sample', 'target' => '_blank'))) ?></li>
             <li class="seperator"></li>
-            <?php if ($is_loan) { ?>
-              <li><?php print l(t('Download'), 'publizon/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan'))) ?></li>
+            <?php if ($is_loan) {
+                    $query = array(
+                      'cvo' => $cvo,
+                      'title' => $object->record['dc:title'][''][0],
+                      'author' => publizon_get_authors($object, FALSE),
+                    );
+            ?>
+                <li><?php print l(t('Read'), 'stream/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0], array('query' => array($query), 'html' => true, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))) ?></li>
             <?php } else { ?>
-              <li><?php print l(t('Loan'), 'publizon/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan'))) ?></li>
+              <li><?php print l(t('Borrow'), 'publizon/' . $object->record['dc:identifier']['oss:PROVIDER-ID'][0] . '/stream', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'stream', 'target' => '_blank'))) ?></li>
             <?php } ?>
             <?php
-              if($user->uid){
+              if(user_is_logged_in()){
                 print '<li class="seperator"></li>';
                 print '<li>';
                 print recall_list_add_link($object->record['dc:identifier']['oss:PROVIDER-ID'][0]);

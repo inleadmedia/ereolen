@@ -5,7 +5,6 @@
  * @file
  * Template to render a Ting collection of books.
  */
-
 module_load_include('isbn_static_func.inc', 'elib');
 foreach ($collection->objects as $obj) {
   $isbn = $obj->record['dc:identifier']['oss:PROVIDER-ID'][0];
@@ -66,25 +65,35 @@ foreach ($collection->objects as $obj) {
             </p>
           </div>
         <?php } ?>
+        <?php if ($elib[$isbn]['is_loan']) { ?>
+        <span class="downloaded off-line-app" rel="<?php print $isbn; ?>"></span>
+        <?php } ?>
         <div class="icons">
           <ul>
             <?php
               if (isset($elib[$isbn]['elib_sample_link'])) {
             ?>
-              <li><?php print l(t('Sample'), $elib[$isbn]['elib_sample_link'], array('html' => true, 'attributes' => array('target' => '_blank','action' => 'sample'))) ?></li>
+              <li><?php print l(t('Sample'), $elib[$isbn]['elib_sample_link'], array('html' => TRUE, 'attributes' => array('target' => '_blank','action' => 'sample'))) ?></li>
               <li class="seperator"></li>
-              <li><?php print l(t('Loan'), $obj->url.'/download', array('html' => true, 'attributes' => array('rel' => 'lightframe[|width:350px; height:120px;]'))) ?></li>
-              <li class="seperator"></li>
-              <li class="deactivated"><?php print l(t('Buy'), 'butik', array('html' => true, 'attributes' => array('rel' => 'lightframe')))?></li>
+              <?php if ($elib[$isbn]['is_loan']) {
+                      $query = array(
+                        'cvo' => $elib[$isbn]['cvo'],
+                        'title' => $obj->title,
+                        'author' => publizon_get_authors($obj, FALSE),
+                      );
+              ?>
+              <li><?php print l(t('Read'), 'stream/' . $isbn, array('query' => array($query), 'html' => TRUE, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))); ?></li>
+              <?php } else { ?>
+              <li><?php print l(t('Borrow'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'ebook-stream', 'target' => '_blank', 'action' => 'stream'))); ?></li>
+              <?php } ?>
             <?php
-              }
+                }
               else {
             ?>
               <li class="unavailable"><span><?php echo t('Unavailable') ?></span></li>
             <?php
               }
             ?>
-
           </ul>
         </div>
       </div>

@@ -39,6 +39,9 @@ function ebog_preprocess_ting_object(&$vars) {
     if ($user->uid > 0) {
       $user_loans = new PublizonUserLoans($user->uid);
       $vars['is_loan'] = $user_loans->isLoan($isbn, TRUE);
+      if ($vars['is_loan']) {
+        $vars['cvo'] = $user_loans->loans[$isbn]->internal_order_number;
+      }
     }
   }
   catch (Exception $e) {
@@ -73,6 +76,16 @@ function ebog_preprocess_ting_search_collection(&$vars) {
       // Get ebook sample link.
       if (!empty($product->teaser_link)) {
         $vars['elib'][$isbn]['elib_sample_link'] = $product->teaser_link;
+      }
+
+      // Check if the book is loaned by the user.
+      global $user;
+      if ($user->uid > 0) {
+        $user_loans = new PublizonUserLoans($user->uid);
+        $vars['elib'][$isbn]['is_loan'] = $user_loans->isLoan($isbn, TRUE);
+        if ($vars['elib'][$isbn]['is_loan']) {
+          $vars['elib'][$isbn]['cvo'] = $user_loans->loans[$isbn]->internal_order_number;
+        }
       }
     }
     catch (Exception $e) {
@@ -109,11 +122,11 @@ function ebog_preprocess_page(&$vars, $hook) {
   $primary_links = theme('links', $vars['primary_links'], array('class' => 'menu'));
   $vars['navigation'] = '<div class="block block-menu" id="block-menu-primary-links"><div class="content">' . $primary_links . '</div></div>';
 
-  if(arg(0) == 'min_side' && $user->uid == 0){
+  if (arg(0) == 'min_side' && $user->uid == 0) {
     drupal_goto('user', drupal_get_destination());
   }
 
-  if(arg(3) == 'stream' || arg(3) == 'download' || (isset($_GET['clean']) && $_GET['clean'] == 1)){
+  if (arg(3) == 'stream' || arg(3) == 'download' || (isset($_GET['clean']) && $_GET['clean'] == 1)) {
     $vars['template_files'] = array('page-clean');
     $vars['css']['all']['theme']['sites/all/themes/ebog/css/style.css'] = false;
   }

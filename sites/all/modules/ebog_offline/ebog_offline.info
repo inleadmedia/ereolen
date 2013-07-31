@@ -1,0 +1,5 @@
+name = Ebog offline
+description = Adds support for the off-line app
+version = 0.1
+core = 6.x
+dependencies[] = publizon
