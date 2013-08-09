@@ -65,21 +65,48 @@ foreach ($collection->objects as $obj) {
             </p>
           </div>
         <?php } ?>
+        <?php if ($elib[$isbn]['is_loan']) { ?>
+        <span class="downloaded off-line-app" rel="<?php print $isbn; ?>"></span>
+        <?php } ?>
         <div class="icons">
           <ul>
             <?php
               if (isset($elib[$isbn]['elib_sample_link'])) {
             ?>
-              <li><?php print l(t('Sample'), $elib[$isbn]['elib_sample_link'], array('html' => TRUE, 'attributes' => array('target' => '_blank','action' => 'sample'))) ?></li>
-              <li class="seperator"></li>
-              <?php if ($is_loan) { ?>
-              <li><?php print l(t('Stream'), 'stream/' . $isbn, array('html' => TRUE, 'attributes' => array('target' => '_blank'))); ?></li>
-              <li class="seperator"></li>
-              <li><?php print l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))) ?></li>
+                <li><?php print l(t('Sample'), $elib[$isbn]['elib_sample_link'], array('html' => TRUE, 'attributes' => array('target' => '_blank','action' => 'sample'))) ?></li>
+                <li class="seperator"></li>
+                <?php if ($elib[$isbn]['is_loan']) {
+                        $query = array(
+                          'cvo' => $elib[$isbn]['cvo'],
+                          'title' => $obj->title,
+                          'author' => publizon_get_authors($obj, FALSE),
+                        );
+                ?>
+                <li><?php print l(t('Read'), 'stream/' . $isbn, array('query' => array($query), 'html' => TRUE, 'attributes' => array('class' => 'cvo', 'target' => '_blank'))); ?></li>
+  
+                <?php
+                  /**
+                   * THIS IS TEMP CODE UNTIL APP IS ONLINE.
+                   */
+                  if (!ebog_offline_is_app()) :
+                ?>
+                  <li class="seperator"></li>
+                  <li><?php print l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))) ?></li>
+                <?php endif; ?>
+
               <?php } else { ?>
-              <li><?php print l(t('Stream'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'ebook-stream', 'target' => '_blank', 'action' => 'stream'))); ?></li>
-              <li class="seperator"></li>
-              <li><?php print l(t('Loan'), 'publizon/' . $isbn . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))) ?></li>
+                <li><?php print l(t('Borrow'), 'publizon/' . $isbn . '/stream', array('html' => TRUE, 'attributes' => array('class' => 'ebook-stream', 'target' => '_blank', 'action' => 'stream'))); ?></li>
+
+                <?php
+                  /**
+                   * THIS IS TEMP CODE UNTIL APP IS ONLINE.
+                   */
+                  if (!ebog_offline_is_app()) :
+                ?>
+                  <li class="seperator"></li>
+                  <li><?php print l(t('Loan'), 'publizon/' . $isbn . '/download', array('html' => true, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))) ?></li>
+                <?php endif; ?>
+
               <?php } ?>
             <?php
                 }
@@ -89,7 +116,6 @@ foreach ($collection->objects as $obj) {
             <?php
               }
             ?>
-
           </ul>
         </div>
       </div>
