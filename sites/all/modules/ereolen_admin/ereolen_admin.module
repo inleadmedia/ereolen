@@ -147,7 +147,7 @@ function ereolen_admin_preprocess_publizon_actions(&$vars) {
   if (!ebog_offline_is_app() && ($vars['type'] == 'loan' || isset($vars['product']->teaser_link))) {
     $isbn = $vars['product']->isbn;
     $vars['actions'][] =  array(
-      '#link' => l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => TRUE, 'attributes' => array('class' => 'loan'))),
+      '#link' => l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => TRUE, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))),
       '#class' => 'download',
       '#weight' => 2,
     );
