@@ -136,23 +136,3 @@ function ereolen_admin_preprocess_page(&$variables) {
     newrelic_name_transaction($name);
   }
 }
-
-
-/**
- * Implements hook_preprocess_publizon_actions().
- *
- * THIS IS ONLY TEMP AND SHOULD BE REMOVED WHEN APP IS LAUNCHED.
- */
-function ereolen_admin_preprocess_publizon_actions(&$vars) {
-  if (!ebog_offline_is_app() && ($vars['type'] == 'loan' || isset($vars['product']->teaser_link))) {
-    $isbn = $vars['product']->isbn;
-    $vars['actions'][] =  array(
-      '#link' => l(t('Download'), 'publizon/' . $isbn . '/download', array('html' => TRUE, 'attributes' => array('class' => 'ting-object-loan', 'action' => 'download'))),
-      '#class' => 'download',
-      '#weight' => 2,
-    );
-
-    // Re-sort the actions based on weight.
-    usort($vars['actions'], 'element_sort');
-  }
-}
