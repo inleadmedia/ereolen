@@ -53,6 +53,10 @@ function netsound_block($op = 'list', $delta = 0, $edit = array()) {
       'info' => t('Form: Error in ebook title'),
       'cache' => BLOCK_NO_CACHE,
     );
+    $blocks[8] = array(
+      'info' => t('Form: Problem med konkret ebog'),
+      'cache' => BLOCK_NO_CACHE,
+    );
   }
   elseif ($op == 'view') {
     switch($delta){
@@ -96,6 +100,10 @@ function netsound_block($op = 'list', $delta = 0, $edit = array()) {
 
       case 7:
         $blocks['content'] = drupal_get_form('netsound_contact_error_form');
+        break;
+
+      case 8:
+        $blocks['content'] = drupal_get_form('netsound_contact_publizon_form');
         break;
     }
   }
@@ -243,6 +251,88 @@ function netsound_contact_netlyd_form($form_state){
 
 }
 
+function netsound_contact_publizon_form($form_state) {
+  $form = array();
+
+  $form['contact_library'] = array(
+    '#type' => 'select',
+    '#title' => t('Vælg dit lokalbibliotek2'),
+    '#options' => publizon_get_libraries(),
+  	'#required' => TRUE
+  );
+
+  $userinfo = publizon_user_get_credentials();
+  if ($userinfo) {
+    $form['contact_library']['#default_value'] = $userinfo['retailer_id'];
+    $form['contact_library']['#disabled'] = TRUE;
+  }
+
+
+  $form['contact_ssn'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Det nummer du benytter ved login (Lånerkortnr. / CPR)'),
+    '#required' => TRUE,
+  );
+
+  $form['contact_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Navn'),
+    '#required' => TRUE,
+  );
+
+  $form['contact_mail'] = array(
+    '#type' => 'textfield',
+    '#title' => t('E-mail'),
+    '#required' => TRUE
+  );
+
+  $form['problem'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Uddybende beskrivelse af det problem du oplever'),
+    '#required' => TRUE,
+  );
+
+  $form['book_title'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Hvilken titel drejer det sig om?'),
+    '#required' => TRUE,
+  );
+
+  $form['error_time'] = array(
+    '#type' => 'date',
+    '#title' => t('Hvornår oplevede du problemet?'),
+    '#required' => TRUE,
+
+  );
+
+  $form['enheds_type'] = array(
+    '#type' => 'select',
+    '#title' => t('Enhed'),
+    '#options' => array(
+      'ipad' => 'iPad',
+      'iphone' => 'iPhone',
+      'android_smartphone' => 'Android smartphone',
+      'android_tablet' => 'Android tablet',
+      'pc' => 'PC',
+      'mac' => 'Mac',
+    ),
+    '#required' => TRUE,
+  );
+
+  $form['tablet_model'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Indtast evt. modelnummer'),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Send spørgsmål')
+  );
+  $form['#submit'][] = 'netsound_contact_form_submit';
+
+  return $form;
+}
+
 function netsound_contact_elib_form($form_state){
   $form = array();
 
@@ -388,12 +478,15 @@ function netsound_contact_form_submit($form, &$form_state){
   $params['subject'] = t('Support besked fra eReolen.dk');
   $params['body'] = $out;
 
-
+  // Find the mail address to send the mail to.
   $mail = variable_get('netsound_elibmail', '');
-  if($form_state['values']['form_id'] == 'netsound_contact_netlyd_form'){
+  if ($form_state['values']['form_id'] == 'netsound_contact_netlyd_form') {
     $mail = variable_get('netsound_supportmail', '');
   }
-  else if($form_state['values']['form_id'] == 'netsound_contact_error_form'){
+  else if ($form_state['values']['form_id'] == 'netsound_contact_error_form') {
+    $mail = variable_get('netsound_publizonmail', '');
+  }
+  else if ($form_state['values']['form_id'] == 'netsound_contact_publizon_form') {
     $mail = variable_get('netsound_publizonmail', '');
   }
 
@@ -416,8 +509,8 @@ function netsound_shortcutmenu_form($form_state){
   }
 
   $form['shortcut'] = array(
-		'#type' => 'radios',
-		'#prefix' => '<strong><p>'.t('Drejer din henvendelse sig om et af de følgende punkter?').'</p></strong><p>'.t('Hvis du vælger et af disse punkter istedet for at skrive direkte til os vil ekspeditionstiden være væsentlig kortere. På forhånd tak.').'</p>',
+    '#type' => 'radios',
+    '#prefix' => '<strong><p>'.t('Drejer din henvendelse sig om et af de følgende punkter?').'</p></strong><p>'.t('Hvis du vælger et af disse punkter istedet for at skrive direkte til os vil ekspeditionstiden være væsentlig kortere. På forhånd tak.').'</p>',
     #'#description' => ,
     '#options' => $options,
   );

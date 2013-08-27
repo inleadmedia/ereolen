@@ -2,10 +2,9 @@
 
 function netsound_settings_form($form_state){
 
-	$form['netsound']['netsound_keywords'] = array(
+  $form['netsound']['netsound_keywords'] = array(
     '#type'          => 'textarea',
     '#title'         => t('Emneord'),
-    '#description'   => t(''),
     '#required'      => FALSE,
     '#default_value' => variable_get('netsound_keywords', ''),
   );
@@ -22,11 +21,13 @@ function netsound_settings_form($form_state){
     '#required'      => FALSE,
     '#default_value' => variable_get('netsound_shortcutmenu', ''),
   );
+
   $form['netsound']['supportforms']['netsound_elibmail'] = array(
     '#type' => 'textfield',
     '#title' => 'ELIB support email address',
    	'#default_value' => variable_get('netsound_elibmail', ''),
   );
+
   $form['netsound']['supportforms']['netsound_supportmail'] = array(
     '#type' => 'textfield',
     '#title' => 'eReolen.dk support email address',
@@ -41,5 +42,4 @@ function netsound_settings_form($form_state){
   );
 
   return system_settings_form($form);
-
 }
