@@ -344,7 +344,7 @@ function netsound_contact_elib_form($form_state){
 
   $form['contact_library'] = array(
     '#type' => 'select',
-    '#title' => t('Vælg dit lokalbibliotek2'),
+    '#title' => t('Vælg dit lokalbibliotek'),
     '#options' => publizon_get_libraries(),
   	'#required' => TRUE
   );
@@ -490,9 +490,11 @@ function netsound_contact_form_submit($form, &$form_state){
     $mail = variable_get('netsound_supportmail', '');
   }
   else if ($form_state['values']['form_id'] == 'netsound_contact_error_form') {
+    $params['subject'] = t('Fejl besked fra eReolen.dk');
     $mail = variable_get('netsound_publizonmail', '');
   }
   else if ($form_state['values']['form_id'] == 'netsound_contact_publizon_form') {
+    $params['subject'] = t('Problem med konkret ebog fra eReolen.dk');
     $mail = variable_get('netsound_publizonmail', '');
   }
 
