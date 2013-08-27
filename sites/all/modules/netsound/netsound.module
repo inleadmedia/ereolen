@@ -256,7 +256,7 @@ function netsound_contact_publizon_form($form_state) {
 
   $form['contact_library'] = array(
     '#type' => 'select',
-    '#title' => t('Vælg dit lokalbibliotek2'),
+    '#title' => t('Vælg dit lokalbibliotek'),
     '#options' => publizon_get_libraries(),
   	'#required' => TRUE
   );
@@ -322,6 +322,12 @@ function netsound_contact_publizon_form($form_state) {
   $form['tablet_model'] = array(
     '#type' => 'textfield',
     '#title' => t('Indtast evt. modelnummer'),
+  );
+
+  $form['tablet_model'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Hvilen version af operativsystemet anvender du?'),
+    '#description' => t('F.eks. iOS 6.1.3. eller Android 4.0.4'),
   );
 
   $form['submit'] = array(
