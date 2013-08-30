@@ -328,8 +328,13 @@ function ebog_stream_preprocess_publizon_actions(&$vars) {
       '#class' => 'download',
       '#weight' => 1,
     );
-
-    // Re-sort the actions based on weight.
-    usort($vars['actions'], 'element_sort');
   }
+
+  // Evil HACK to change preview link to stream link on eReolen only.
+  if ($vars['actions'][0]['#class'] == 'sample') {
+    $vars['actions'][0]['#link'] = l(t('Sample'), 'stream/' . $vars['product']->isbn . '/preview', array('html' => TRUE, 'attributes' => array('target' => '_blank', 'action' => 'sample')));
+  }
+
+  // Re-sort the actions based on weight.
+  usort($vars['actions'], 'element_sort');
 }
