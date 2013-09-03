@@ -48,6 +48,13 @@ function ebog_stream_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['stream/%/preview'] = array(
+    'page callback' => 'ebog_stream_iframe_stream_preview',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
 
@@ -61,6 +68,12 @@ function ebog_stream_theme() {
     'arguments' => array('vars' => NULL),
     'template' => 'templates/ebog-stream-iframe-stream',
   );
+
+    $hooks['ebog_stream_iframe_stream_preview'] = array(
+    'arguments' => array('vars' => NULL),
+    'template' => 'templates/ebog-stream-iframe-stream-preview',
+  );
+
 
   return $hooks;
 }
@@ -118,6 +131,13 @@ function ebog_stream_iframe_stream($book_id) {
     $data = ebog_stream_get_session($book_id);
   }
   echo theme('ebog_stream_iframe_stream', $data);
+}
+
+/**
+ * Creates markup for the reader.
+ */
+function ebog_stream_iframe_stream_preview($isbn) {
+  echo theme('ebog_stream_iframe_stream_preview', array('isbn' => $isbn));
 }
 
 /**
@@ -308,8 +328,13 @@ function ebog_stream_preprocess_publizon_actions(&$vars) {
       '#class' => 'download',
       '#weight' => 1,
     );
-
-    // Re-sort the actions based on weight.
-    usort($vars['actions'], 'element_sort');
   }
+
+  // Evil HACK to change preview link to stream link on eReolen only.
+  if ($vars['actions'][0]['#class'] == 'sample') {
+    $vars['actions'][0]['#link'] = l(t('Sample'), 'stream/' . $vars['product']->isbn . '/preview', array('html' => TRUE, 'attributes' => array('target' => '_blank', 'action' => 'sample')));
+  }
+
+  // Re-sort the actions based on weight.
+  usort($vars['actions'], 'element_sort');
 }
