@@ -14,8 +14,7 @@
         function InitReader() {
           reader = new Reader ({
             elementId: 'reader-container',
-            orderId: '<?php print $vars['order_number']; ?>',
-            sessionKeyUrl: window.location.protocol + '//' + window.location.host + '/<?php print $vars['session_url']; ?>',
+            isbn : '<?php print $vars['isbn']; ?>',
             notesEnabled: false
           });
           reader.Display();
