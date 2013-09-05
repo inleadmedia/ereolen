@@ -31,7 +31,7 @@ function ebog_preprocess_ting_object(&$vars) {
 
     // Get ebook sample link.
     if (!empty($product->teaser_link)) {
-      $vars['elib_sample_link'] = $product->teaser_link;
+      $vars['elib_sample_link'] = 'stream/' . $isbn . '/preview/';
     }
 
     // Check if the book is loaned by the user.
@@ -75,7 +75,7 @@ function ebog_preprocess_ting_search_collection(&$vars) {
 
       // Get ebook sample link.
       if (!empty($product->teaser_link)) {
-        $vars['elib'][$isbn]['elib_sample_link'] = $product->teaser_link;
+        $vars['elib'][$isbn]['elib_sample_link'] = 'stream/' . $isbn . '/preview/';
       }
 
       // Check if the book is loaned by the user.
