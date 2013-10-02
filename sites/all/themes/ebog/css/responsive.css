@@ -1,4 +1,4 @@
-@media screen and (max-width:480px) {
+@media screen and (max-width: 480px) {
   .front #main-wrapper #main-content .panel-panel.panel-col-first,
   .block-elib_infinite_carousel h2,
   .infiniteCarousel a.arrow,
@@ -334,13 +334,22 @@
     width: 100%;
   }
 
-  .preface {
-    display: none;
+  ul.nice-menu-down li a,
+  ul.nice-menu-down li.menuparent > a,
+  ul.nice-menu-down ul li a,
+  ul.nice-menu-down li.menuparent ul li a {
+    font-size: 85%;
+    padding: 5px 5px 10px 5px;
   }
 
+  .block-nice_menus h2 {
+    left: 14px;
+    top: 5px;
+    font-size: 85%;
+  }
 }
 
-@media screen and (min-width:480px) and (max-width: 960px) {
+@media screen and (min-width: 480px) and (max-width: 960px) {
   body,
   #footer,
   #page {
@@ -606,7 +615,7 @@
   }
 }
 
-@media screen and (min-width:480px) and (max-width: 740px) {
+@media screen and (min-width: 480px) and (max-width: 740px) {
   #branding,
   #site-menu {
     width: 50%;
@@ -696,7 +705,9 @@
   }
 
   ul.nice-menu-down li a,
-  ul.nice-menu-down li.menuparent a {
+  ul.nice-menu-down li.menuparent a,
+  ul.nice-menu-down ul li a,
+  ul.nice-menu-down li.menuparent ul li a {
     font-size: 85%;
   }
 
@@ -704,6 +715,25 @@
   .pane-publizon-loans-myloans {
     width: 100%;
     margin: 0 0 10px 0;
+  }
+
+  ul.nice-menu-down {
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+  }
+
+  ul.nice-menu-down ul {
+    margin-top: 10px;
+  }
+}
+
+@media screen and (min-width: 480px) and (max-width: 540px) {
+  .block-nice_menus h2 {
+    font-size: 85%;
+    left: 24px;
   }
 }
 
