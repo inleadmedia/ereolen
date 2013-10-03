@@ -1,5 +1,4 @@
 @media screen and (max-width: 480px) {
-  .front #main-wrapper #main-content .panel-panel.panel-col-first,
   .block-elib_infinite_carousel h2,
   .infiniteCarousel a.arrow,
   #sidebar-first #block-elib_block_categories-0,
@@ -19,7 +18,6 @@
   #footer,
   #page {
     width: 100%;
-  /*overflow: hidden;*/
   }
 
   body,
@@ -747,6 +745,24 @@
 
   ul.nice-menu-down ul {
     margin-top: 10px;
+  }
+
+  .collapsible-title {
+    cursor: pointer;
+    background: url(../img/expanded.png) 100% 50% no-repeat;
+  }
+
+  .collapsible-title.active {
+    background: url(../img/collapsed.png) 100% 50% no-repeat;
+  }
+
+  #page .container-16 .collapsible-title {
+    margin: 5px 0;
+  }
+
+  .panel-separator,
+  .panel-region-separator {
+    height: auto;
   }
 }
 
