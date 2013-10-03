@@ -7,7 +7,6 @@
   #sidebar-first #block-views-latest_news-block_1,
   #ting-search-result ul li .record .right .abstract,
   #ting-result #ting-sort-by,
-  #header-regions,
   #ting-object .details {
     display: none;
   }
@@ -93,9 +92,11 @@
   }
 
   #header-regions {
-    height: 163px;
+    height: auto;
     margin-bottom: 17px;
     overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 10px;
   }
 
   #header-regions .infiniteCarousel,
@@ -346,6 +347,25 @@
     left: 14px;
     top: 5px;
     font-size: 85%;
+  }
+
+  .content .carousel-tabs ul,
+  .content .carousel-tabs ul li {
+    display: block;
+    width: 100%;
+  }
+
+  .content .carousel-tabs ul li a {
+    padding: 5px;
+  }
+
+  .content .carousel-runner {
+    height: 188px;
+    overflow: hidden;
+  }
+
+  .carousel-inner ul li {
+    margin: auto !important;
   }
 }
 
