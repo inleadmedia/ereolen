@@ -20,12 +20,14 @@ jQuery(function($){
           if ( $(document).width() < 540 - (window.innerWidth - $(document).width()) ) {
             if (block.siblings('.collapsible-title').hasClass('active')) {
               block.show();
-            } else {
+            }
+            else {
               block.hide();
             }
             block.addClass('collapsible');
             block.siblings('h2').addClass('collapsible-title');
-          } else {
+          }
+          else {
             block.show().removeClass('collapsible');
             block.siblings('h2').removeClass('collapsible-title');
           }
