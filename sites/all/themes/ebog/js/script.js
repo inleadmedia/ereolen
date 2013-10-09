@@ -19,6 +19,10 @@ jQuery(function($){
       [
         '.view-latest-news',
         '.views-row'
+      ],
+      [
+        '#ting-search-result > ul',
+        'li.ting-collection'
       ]
     ];
 
