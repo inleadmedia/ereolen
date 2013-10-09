@@ -31,6 +31,10 @@ jQuery(function($){
       [
         '.publizon-products-list',
         '.display-book'
+      ],
+      [
+        '.view-faq',
+        '.item-list'
       ]
     ];
 
