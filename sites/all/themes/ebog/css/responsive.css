@@ -764,6 +764,11 @@
   .panel-region-separator {
     height: auto;
   }
+
+  .ebog-author-portrait {
+    max-height: 300px;
+    overflow-y: auto;
+  }
 }
 
 @media screen and (min-width: 480px) and (max-width: 540px) {
