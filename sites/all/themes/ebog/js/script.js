@@ -23,6 +23,14 @@ jQuery(function($){
       [
         '#ting-search-result > ul',
         'li.ting-collection'
+      ],
+      [
+        '.publizon-loans-list',
+        '.display-book'
+      ],
+      [
+        '.publizon-products-list',
+        '.display-book'
       ]
     ];
 
