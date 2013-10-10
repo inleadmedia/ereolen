@@ -18,6 +18,10 @@ jQuery(function($){
     $('.publizon-loans-list li:last-child').addClass('last');
     $('.display-book').parent().find('.display-book:last').addClass('last');
 
+    // Prevent scrolling for menu
+    $('.nice-menu .nolink').click(function () {
+      return false;
+    });
 
   })
 });
