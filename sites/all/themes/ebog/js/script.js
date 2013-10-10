@@ -41,7 +41,8 @@ jQuery(function($) {
 
     /**
      * Make block collapsible and expandable
-     * @param  {object} blockSelector
+     * @param  object blockSelector
+     *   jQuery selector for block which will be collapsed
      */
     function makeBlockCollapsible(block) {
       // Check block previous state "collapsed or expanded" if window resized
@@ -57,8 +58,10 @@ jQuery(function($) {
 
     /**
      * Slide to next item
-     * @param  {object} items - list of items
-     * @param  {object} lastItem - in list
+     * @param  object items
+     *   List of items
+     * @param  object lastItem
+     *   Last item in given items list
      */
     function goToNextItem(items, lastItem) {
       var currentItem = items.parent().find('.visible_item').prevAll().length;
@@ -75,8 +78,10 @@ jQuery(function($) {
 
     /**
      * Slide to previous item
-     * @param  {object} items - list of items
-     * @param  {object} lastItem - in list
+     * @param  object items
+     *   List of items
+     * @param  object lastItem
+     *   Last item in given items list
      */
     function goToPrevItem(items, lastItem) {
       var currentItem = items.parent().find('.visible_item').prevAll().length;
@@ -92,12 +97,14 @@ jQuery(function($) {
     }
 
     /**
-     * Activate item Rotation for given block
-     * @param  {object} itemsContainer block
-     * @param  {object} items list
+     * Activate item Rotation for given block.
+     *
+     * @param object itemsContainer
+     *   Items container block
+     * @param object items
+     *   List of items
      */
     function activateRotation(itemsContainer, items) {
-
       // Additional buttons to rotate items by click
       var prevItem = '<a href="#" class="prev_item">prev</a>',
           nextItem = '<a href="#" class="next_item">next</a>',
@@ -123,7 +130,8 @@ jQuery(function($) {
       items.each(function (i, elem) {
         if (i !== 0) {
           $(elem).hide();
-        } else {
+        }
+        else {
           $(elem).addClass('visible_item');
         }
       });
@@ -156,7 +164,8 @@ jQuery(function($) {
 
     /**
      * Checks if mobile device is active
-     * @param  {int} width - maximum mobile width
+     * @param  int width
+     *   Maximum mobile width
      */
     function checkIfMobile(width) {
       var mobileWidth = $(document).width() <= width - (window.innerWidth - $(document).width()),
@@ -181,10 +190,7 @@ jQuery(function($) {
       // Rotate block if it's available
       $(blocksBeingRotated).each(function (i, block) {
         if ($(block[0]).length !== 0) {
-          var itemsContainer = $(block[0]),
-              items = $(block[0]).find(block[1]);
-
-          activateRotation(itemsContainer, items);
+          activateRotation($(block[0]), $(block[0]).find(block[1]));
         }
       });
     }
