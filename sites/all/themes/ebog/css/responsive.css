@@ -189,12 +189,14 @@
 
   .display-book .right,
   #ting-search-result ul li.display-book .record {
+    min-width: 128px;
     width: 70%;
   }
 
   .display-book .left,
   #ting-search-result ul li.display-book .picture {
     width: 30%;
+    min-width: 128px;
     margin: 0;
   }
 
@@ -751,7 +753,7 @@
     background: url(../img/expanded.png) 100% 50% no-repeat;
   }
 
-  .collapsible-title.active {
+  .collapsible-title.expanded {
     background: url(../img/collapsed.png) 100% 50% no-repeat;
   }
 
@@ -801,4 +803,36 @@
 
 .ajax-loader {
   margin-left: -110px;
+}
+
+
+/* Rotate blocks
+  ----------------------------------------------------------------------------------------------------*/
+.rotated_container {
+  position: relative;
+}
+
+.rotated_item {
+  min-height: 50px;
+}
+
+.rotated_container .prev_item,
+.rotated_container .next_item {
+  display: block;
+  background-image: url(../images/cycle.png);
+  height: 36px;
+  width: 36px;
+  position: absolute;
+  top: 50%;
+  margin-top: -18px;
+  text-indent: -9999px;
+}
+
+.rotated_container .prev_item {
+  left: -18px;
+}
+
+.rotated_container .next_item {
+  right: -18px;
+  background-position: 108px 0;
 }
