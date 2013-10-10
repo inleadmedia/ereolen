@@ -166,10 +166,12 @@ jQuery(function($) {
      * Checks if mobile device is active
      * @param  int width
      *   Maximum mobile width
+     * return boolean
+     *   Return status
      */
     function checkIfMobile(width) {
       var mobileWidth = $(document).width() <= width - (window.innerWidth - $(document).width()),
-        mobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          mobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
       if (mobileWidth || mobileDevice) {
         return true;
@@ -177,7 +179,7 @@ jQuery(function($) {
     }
 
     /**
-     * Execute listed features
+     * Execute listed features for mobile devices
      */
     function runMobileFeatures() {
       // Collapse block if it's available
@@ -193,6 +195,14 @@ jQuery(function($) {
           activateRotation($(block[0]), $(block[0]).find(block[1]));
         }
       });
+    }
+
+    /**
+     * Execute listed features for touch devices
+     */
+    function runTouchDeviceFeatures() {
+      // Change rating
+      enableTouchRatingOptions();
     }
 
     /**
@@ -217,8 +227,53 @@ jQuery(function($) {
       });
     }
 
+    /**
+     * Rating blinking effect on star press
+     */
+    function anim(times, speed) {
+      if (times !== 0) {
+        times--;
+        $('.userRate').animate({opacity:0}, speed / 2).animate({opacity:1},speed / 2);
+        anim(times, speed);
+      }
+      else {
+        return;
+      }
+    }
+
+    /**
+     * Change rating for touch device
+     */
+    function enableTouchRatingOptions() {
+      var buttonContainer = '<a href="#" class="show_rating">show rating</a>';
+
+      $(buttonContainer).prependTo($('.addRatingContainer'));
+
+      var showRatingBtn = $('.show_rating');
+
+      // Toggle rating start on button click
+      showRatingBtn.live("click", function (e) {
+        e.preventDefault();
+        $(this).siblings('.userRate').toggleClass('active');
+      });
+
+      // Blink selected rating on tap
+      $('.userRate .rating').click(function () {
+        var speed = 700;
+        var times = 3;
+
+        // Run blink rating effect
+        anim(times, speed);
+      });
+    }
+
     // Features available for mobile device only
     var isMobile = checkIfMobile(540);
+
+    // Activate touch features
+    if ($('.touch').length !== 0) {
+      runTouchDeviceFeatures();
+    }
 
     // Activate or revert mobile features
     if (isMobile) {
