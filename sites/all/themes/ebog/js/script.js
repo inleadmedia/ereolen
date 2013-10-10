@@ -1,8 +1,9 @@
-jQuery(function($){
+jQuery(function($) {
+  "use strict";
   $(document).ready(function() {
 
-    // Collapsible blocks
-    var container = [
+    // Collapse listed blocks in mobile view
+    var blocksBeingCollapsed = [
       '.pane-latest-news .pane-content',
       '.block-publizon_user .content',
       '.block-ebog_author_portrait .content',
@@ -10,11 +11,11 @@ jQuery(function($){
       '.pane-front .pane-content'
     ];
 
-    // Swiped these blocks
-    var swipe_array = [
+    // Rotate listed blocks in mobile view
+    var blocksBeingRotated = [
       [
-        '.feed-and-compare-front', // Parent
-        '.feed_and_compare_item'   // Child
+        '.feed-and-compare-front',  // Items container
+        '.feed_and_compare_item'    // Items
       ],
       [
         '.view-latest-news',
@@ -38,170 +39,215 @@ jQuery(function($){
       ]
     ];
 
-    // Collapsible blocks
-    function collapsibleBlocks() {
-      for (var i = container.length - 1; i >= 0; i--) {
-        if ($(container[i]).length !== 0) {
-          var block = $(container[i]);
+    /**
+     * Make block collapsible and expandable
+     * @param  {object} blockSelector
+     */
+    function makeBlockCollapsible(block) {
+      // Check block previous state "collapsed or expanded" if window resized
+      if (block.siblings('.collapsible-title').is('.expanded')) {
+        block.show();
+      }
+      else {
+        block.hide();
+      }
+      block.addClass('collapsible');
+      block.siblings('h2').addClass('collapsible-title');
+    }
 
-          // Make toggle feauture only for mobile screen
-          if ( $(document).width() < 540 - (window.innerWidth - $(document).width()) ) {
-            if (block.siblings('.collapsible-title').hasClass('active')) {
-              block.show();
-            }
-            else {
-              block.hide();
-            }
-            block.addClass('collapsible');
-            block.siblings('h2').addClass('collapsible-title');
-          }
-          else {
-            block.show().removeClass('collapsible');
-            block.siblings('h2').removeClass('collapsible-title');
-          }
+    /**
+     * Slide to next item
+     * @param  {object} items - list of items
+     * @param  {object} lastItem - in list
+     */
+    function goToNextItem(items, lastItem) {
+      var currentItem = items.parent().find('.visible_item').prevAll().length;
+
+      if (currentItem === lastItem) {
+        currentItem = 0;
+      }
+      else {
+        currentItem++;
+      }
+
+      items.removeClass('visible_item').hide().eq(currentItem).addClass('visible_item').show();
+    }
+
+    /**
+     * Slide to previous item
+     * @param  {object} items - list of items
+     * @param  {object} lastItem - in list
+     */
+    function goToPrevItem(items, lastItem) {
+      var currentItem = items.parent().find('.visible_item').prevAll().length;
+
+      if (currentItem === 0) {
+        currentItem = lastItem;
+      }
+      else {
+        currentItem--;
+      }
+
+      items.removeClass('visible_item').hide().eq(currentItem).addClass('visible_item').show();
+    }
+
+    /**
+     * Activate item Rotation for given block
+     * @param  {object} itemsContainer block
+     * @param  {object} items list
+     */
+    function activateRotation(itemsContainer, items) {
+
+      // Additional buttons to rotate items by click
+      var prevItem = '<a href="#" class="prev_item">prev</a>',
+          nextItem = '<a href="#" class="next_item">next</a>',
+
+          // Last item
+          lastItem = items.length - 1;
+
+      // Classes for CSS purposes
+      itemsContainer.addClass('rotated_container');
+      items.addClass('rotated_item');
+
+      // Append buttons to items container
+      if (itemsContainer.find('.prev_item:first').length === 0) {
+        $(prevItem).appendTo(itemsContainer);
+        $(nextItem).appendTo(itemsContainer);
+      }
+
+      // Show buttons if they were hidden on resize
+      itemsContainer.find('.prev_item:first').show();
+      itemsContainer.find('.next_item:first').show();
+
+      // Show only first item in items container
+      items.each(function (i, elem) {
+        if (i !== 0) {
+          $(elem).hide();
+        } else {
+          $(elem).addClass('visible_item');
         }
+      });
+
+      // Change to next item on click
+      itemsContainer.find('.next_item:first').click(function(e) {
+        e.preventDefault();
+        goToNextItem(items, lastItem);
+      });
+
+      // Change to previous item on click
+      itemsContainer.find('.prev_item:first').click(function(e) {
+        e.preventDefault();
+        goToPrevItem(items, lastItem);
+      });
+
+      // Change item on swipe
+      itemsContainer.touchwipe({
+        wipeRight: function() {
+          goToNextItem(items, lastItem);
+        },
+        wipeLeft: function() {
+          goToPrevItem(items, lastItem);
+        },
+        min_move_x: 20,
+        min_move_y: 20,
+        preventDefaultEvents: true
+      });
+    }
+
+    /**
+     * Checks if mobile device is active
+     * @param  {int} width - maximum mobile width
+     */
+    function checkIfMobile(width) {
+      var mobileWidth = $(document).width() <= width - (window.innerWidth - $(document).width()),
+        mobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      if (mobileWidth || mobileDevice) {
+        return true;
       }
     }
 
-    // Activate swipe for given block
-    // Block = [parent and child]
-    function activate_swipe(block) {
-      var parent = block[0],
-          child = block[1],
-
-          // Additional buttons for mouse click
-          prev_slide = '<a href="#" class="prev_slide">prev</a>',
-          next_slide = '<a href="#" class="next_slide">next</a>';
-
-      if ( $(document).width() < 540 - (window.innerWidth - $(document).width()) ) {
-
-
-        // Class for slyle purposes
-        $(parent).addClass('swipe_container');
-        $(child).addClass('swipe_item');
-
-        // Attach buttons to parent
-        if ($(parent).find('.prev_slide:first').length === 0) {
-          $(prev_slide).appendTo($(parent));
-          $(next_slide).appendTo($(parent));
+    /**
+     * Execute listed features
+     */
+    function runMobileFeatures() {
+      // Collapse block if it's available
+      $(blocksBeingCollapsed).each(function (i, block) {
+        if ($(block).length !== 0) {
+          makeBlockCollapsible($(block));
         }
+      });
 
-        // Show only first child in container
-        $(parent).find(child).each(function (id, elem) {
-          if (id !== 0) {
-            $(elem).hide();
-          } else {
-            $(elem).addClass('visible_item');
-          }
-        });
+      // Rotate block if it's available
+      $(blocksBeingRotated).each(function (i, block) {
+        if ($(block[0]).length !== 0) {
+          var itemsContainer = $(block[0]),
+              items = $(block[0]).find(block[1]);
 
-        // Change slide on click
-        // Next slide
-        $(parent).find('.next_slide').click(function (e) {
-          e.preventDefault();
-          var triggers = $(parent).find(child),
-              last_elem = $(parent).find(child).length-1,
-              target;
-
-          target = $(parent).find('.visible_item').prevAll().length;
-
-          if (target === last_elem) {
-            target = 0;
-          } else {
-            target++;
-          }
-
-          triggers.removeClass('visible_item').hide().eq(target).addClass('visible_item').show();
-        });
-
-        // Prev slide
-        $(parent).find('.prev_slide').click(function (e) {
-          e.preventDefault();
-          var triggers = $(parent).find(child),
-              first_elem = 0,
-              last_elem = $(parent).find(child).length-1,
-              target;
-
-          target = $(parent).find('.visible_item').prevAll().length;
-
-          if (target === first_elem) {
-            target = last_elem;
-          } else {
-            target--;
-          }
-
-          triggers.removeClass('visible_item').hide().eq(target).addClass('visible_item').show();
-        });
-
-        // Change slide on swipe
-        $(parent).touchwipe({
-          wipeRight: function() {
-            var triggers = $(parent).find(child),
-              last_elem = $(parent).find(child).length-1,
-              target;
-
-            target = $(parent).find('.visible_item').prevAll().length;
-
-            if (target === last_elem) {
-              target = 0;
-            } else {
-              target++;
-            }
-
-            triggers.removeClass('visible_item').hide().eq(target).addClass('visible_item').show();
-          },
-          wipeLeft: function() {
-            var triggers = $(parent).find(child),
-              first_elem = 0,
-              last_elem = $(parent).find(child).length-1,
-              target;
-
-            target = $(parent).find('.visible_item').prevAll().length;
-
-            if (target === first_elem) {
-              target = last_elem;
-            } else {
-              target--;
-            }
-
-            triggers.removeClass('visible_item').hide().eq(target).addClass('visible_item').show();
-          },
-          min_move_x: 20,
-          min_move_y: 20,
-          preventDefaultEvents: true
-        });
-      }
+          activateRotation(itemsContainer, items);
+        }
+      });
     }
 
-    // Send each swipe block to activation function
-    function swipe_blocks() {
-      for (var i = swipe_array.length - 1; i >= 0; i--) {
-        activate_swipe($(swipe_array[i]));
-      }
+    /**
+     * Revert mobile features
+     */
+    function revertMobileFeatures() {
+      // Make block expandable if they collapsed
+      $(blocksBeingCollapsed).each(function (i, block) {
+        $(block).show().removeClass('collapsible').siblings('h2').removeClass('collapsible-title');
+      });
+
+      // Revert blocks rotation
+      $(blocksBeingRotated).each(function (i, block) {
+        if ($(block[0]).length !== 0) {
+          var itemsContainer = $(block[0]),
+              items = $(block[0]).find(block[1]);
+
+          items.show();
+          itemsContainer.find('.prev_item').hide();
+          itemsContainer.find('.next_item').hide();
+        }
+      });
     }
 
-    // Init collapsible blocks
-    collapsibleBlocks();
-    swipe_blocks();
+    // Features available for mobile device only
+    var isMobile = checkIfMobile(540);
+
+    // Activate or revert mobile features
+    if (isMobile) {
+      runMobileFeatures();
+    }
+    else {
+      revertMobileFeatures();
+    }
 
     // Check for changes on resize
     $(window).resize(function() {
-      collapsibleBlocks();
-      swipe_blocks();
+      isMobile = checkIfMobile(540);
+
+      // Activate mobile features
+      if (isMobile) {
+        runMobileFeatures();
+      }
+      else {
+        revertMobileFeatures();
+      }
     });
 
     // Toggle block state on click
-    $('.collapsible-title').click(function () {
+    $('.collapsible-title').live("click", function() {
       var title = $(this);
+
       title.siblings('.collapsible').toggle();
-      title.toggleClass('active');
+      title.toggleClass('expanded');
     });
 
     // Make publisher description folderable.
     $('#ting-object .publisherDescription').expander({
-      slicePoint:       350,
-      expandPrefix:     ' ',
-      expandText:       Drupal.t('More'),
+      slicePoint: 350,
+      expandPrefix: ' ',
+      expandText: Drupal.t('More'),
       userCollapseText: Drupal.t('Less')
     });
 

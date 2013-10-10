@@ -190,12 +190,14 @@
 
   .display-book .right,
   #ting-search-result ul li.display-book .record {
+    min-width: 128px;
     width: 70%;
   }
 
   .display-book .left,
   #ting-search-result ul li.display-book .picture {
     width: 30%;
+    min-width: 128px;
     margin: 0;
   }
 
@@ -752,7 +754,7 @@
     background: url(../img/expanded.png) 100% 50% no-repeat;
   }
 
-  .collapsible-title.active {
+  .collapsible-title.expanded {
     background: url(../img/collapsed.png) 100% 50% no-repeat;
   }
 
@@ -800,20 +802,20 @@
 }
 
 
-/* Swipe blocks
+/* Rotate blocks
   ----------------------------------------------------------------------------------------------------*/
-.swipe_container {
+.rotated_container {
   position: relative;
 }
 
-.swipe_item {
+.rotated_item {
   min-height: 50px;
 }
 
-.swipe_container .prev_slide,
-.swipe_container .next_slide {
+.rotated_container .prev_item,
+.rotated_container .next_item {
   display: block;
-  background-image: url("/sites/all/themes/ebog/images/cycle.png");
+  background-image: url(../images/cycle.png);
   height: 36px;
   width: 36px;
   position: absolute;
@@ -822,11 +824,11 @@
   text-indent: -9999px;
 }
 
-.swipe_container .prev_slide {
+.rotated_container .prev_item {
   left: -18px;
 }
 
-.swipe_container .next_slide {
+.rotated_container .next_item {
   right: -18px;
   background-position: 108px 0;
 }
