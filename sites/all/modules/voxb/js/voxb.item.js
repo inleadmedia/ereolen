@@ -68,10 +68,9 @@
           Drupal.voxb_item.button = null;
 
           if (Drupal.voxb_item.params.rating >= 0 && Drupal.voxb_item.params.item != '') {
-            $('div.ratingsContainer .ajax_anim').show();
-            setTimeout(function() {
+            $('div.ratingsContainer .ajax_anim').toggleClass('active', function() {
               Drupal.voxb_item.login_popup();
-            }, 100);
+            });
           }
         }
       });
@@ -316,7 +315,7 @@
               );
             }
             else if (Drupal.voxb_item.op == 'rate') {
-              $('div.ratingsContainer .ajax_anim').hide();
+              $('div.ratingsContainer .ajax_anim').toggleClass('active');
               Drupal.voxb_item.rating_set = false;
             }
           }
