@@ -126,12 +126,6 @@ function netsound_contact_error_form($form_state) {
     $form['contact_library']['#disabled'] = TRUE;
   }
 
-  $form['contact_login_number'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Det nummer du benytter ved login (Lånerkortnr. / CPR)'),
-    '#required' => TRUE
-  );
-
   $form['contact_title'] = array(
     '#type' => 'textfield',
     '#title' => t('Hvilken titel/titler drejer det sig om?'),
@@ -267,13 +261,6 @@ function netsound_contact_publizon_form($form_state) {
     $form['contact_library']['#disabled'] = TRUE;
   }
 
-
-  $form['contact_ssn'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Det nummer du benytter ved login (Lånerkortnr. / CPR)'),
-    '#required' => TRUE,
-  );
-
   $form['contact_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Navn'),
@@ -349,18 +336,11 @@ function netsound_contact_elib_form($form_state){
   	'#required' => TRUE
   );
 
-  $userinfo = publizon_user_get_credentials();
-  if ($userinfo) {
-    $form['contact_library']['#default_value'] = $userinfo['retailer_id'];
+  $user_info = publizon_user_get_credentials();
+  if (!empty($user_info)) {
+    $form['contact_library']['#default_value'] = $user_info['retailer_id'];
     $form['contact_library']['#disabled'] = TRUE;
   }
-
-
-  $form['contact_ssn'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Det nummer du benytter ved login (Lånerkortnr. / CPR)'),
-    '#required' => TRUE,
-  );
 
   $form['contact_name'] = array(
     '#type' => 'textfield',
@@ -534,7 +514,7 @@ function netsound_shortcutmenu_form_submit($form, &$form_state){
   $questions = explode("\n",variable_get('netsound_shortcutmenu', ''));
   if(is_array($questions)){
     foreach($questions as $line){
-      list($label,$link) = explode('|',$line);
+      list($label, $link) = explode('|',$line);
       $options[] = url(trim($link));
     }
   }
