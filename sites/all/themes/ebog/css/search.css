@@ -73,6 +73,7 @@
 
 #ting-result #pager {
   margin-top: 20px;
+  overflow: hidden;
 }
 
 #ting-result #pager .navwide,
