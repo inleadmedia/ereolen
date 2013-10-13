@@ -63,6 +63,11 @@
   display: inline;
 }
 
-#ting-download-popup-resellers #ting-object img {
+#ting-download-popup-resellers #ting-object .picture {
+  display: block;
+  float: none;
+}
+
+#ting-download-popup-resellers #ting-object .picture img {
   width: 65px;
 }
