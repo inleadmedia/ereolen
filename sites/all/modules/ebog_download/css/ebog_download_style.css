@@ -62,3 +62,7 @@
 #ting-download-popup-resellers .item-resellers .buy {
   display: inline;
 }
+
+#ting-download-popup-resellers #ting-object img {
+  width: 65px;
+}
