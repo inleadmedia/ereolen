@@ -97,10 +97,10 @@ jQuery(function($) {
       if (items.length > 1) {
         // Additional buttons to rotate items by click
         var prevItem = '<a href="#" class="prev_item">prev</a>',
-            nextItem = '<a href="#" class="next_item">next</a>',
+          nextItem = '<a href="#" class="next_item">next</a>',
 
-            // Last item
-            lastItem = items.length - 1;
+          // Last item
+          lastItem = items.length - 1;
 
         // Classes for CSS purposes
         itemsContainer.addClass('rotated_container');
