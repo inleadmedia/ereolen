@@ -449,8 +449,7 @@ voxb h3 {
   width: 120px;
 }
 
-.view-anmeldelser .field-field-book .record,
-.pane-front .feed-and-compare-front .record {
+.view-anmeldelser .field-field-book .record {
   float: left;
   width: 198px;
 }
@@ -534,17 +533,13 @@ voxb h3 {
   margin-right: 12px;
 }
 
+.feed_and_compare_item .display-book .left {
+  width: 130px;
+}
+
 .display-book .right {
   width: 200px;
   clear: none;
-}
-
-.feed-and-compare-front .display-book .right {
-  width: 140px;
-}
-
-.feed-and-compare-page .display-book .right {
-  width: 450px;
 }
 
 .display-book .picture img {
