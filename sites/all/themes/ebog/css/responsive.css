@@ -747,19 +747,6 @@
     margin-top: 10px;
   }
 
-  .collapsible-title {
-    cursor: pointer;
-    background: url(../img/expanded.png) 100% 50% no-repeat;
-  }
-
-  .collapsible-title.expanded {
-    background: url(../img/collapsed.png) 100% 50% no-repeat;
-  }
-
-  #page .container-16 .collapsible-title {
-    margin: 5px 0;
-  }
-
   .panel-separator,
   .panel-region-separator {
     height: auto;
