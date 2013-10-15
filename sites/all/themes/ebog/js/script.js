@@ -44,31 +44,34 @@ jQuery(function($) {
      */
     function carouselTabsHeight() {
       var highestTab = 0,
-        carousel = $('.carousel-tabs');
+        $carousel = $('.carousel-tabs');
 
-      // Reset previous height
-      carousel.find('li a').height('auto');
+      if ($carousel.length !== 0) {
 
-      // Find highest
-      carousel.find('li a').each(function() {
-        var tab = $(this);
+        // Reset previous height
+        $carousel.find('li a').height('auto');
 
-        if (tab.height() > highestTab) {
-          highestTab = tab.height();
-        }
-      });
-      carousel.find('li a').height(highestTab);
+        // Find highest
+        $carousel.find('li a').each(function() {
+          var tab = $(this);
+
+          if (tab.height() > highestTab) {
+            highestTab = tab.height();
+          }
+        });
+
+        // Set new height
+        $carousel.find('li a').height(highestTab);
+      }
     }
 
     // Make Carousel tabs same height.
-    if ($('.carousel-tabs').length !== 0) {
-      carouselTabsHeight();
-    }
+    carouselTabsHeight();
 
     /**
-     * Make block collapsible and expandable
+     * Make block collapsible and expandable.
      * @param  object blockSelector
-     *   jQuery selector for block which will be collapsed
+     *   jQuery selector for block which will be collapsed.
      */
 
     function makeBlockCollapsible(block) {
@@ -84,13 +87,13 @@ jQuery(function($) {
     }
 
     /**
-     * Slide to next item
+     * Slide to next item.
+     *
      * @param  object items
-     *   List of items
+     *   List of items.
      * @param  object lastItem
-     *   Last item in given items list
+     *   Last item in given items list.
      */
-
     function goToNextItem(items, lastItem) {
       var currentItem = items.parent().find('.visible_item').prevAll().length;
 
@@ -105,13 +108,13 @@ jQuery(function($) {
     }
 
     /**
-     * Slide to previous item
+     * Slide to previous item.
+     *
      * @param  object items
-     *   List of items
+     *   List of items.
      * @param  object lastItem
-     *   Last item in given items list
+     *   Last item in given items list.
      */
-
     function goToPrevItem(items, lastItem) {
       var currentItem = items.parent().find('.visible_item').prevAll().length;
 
@@ -129,11 +132,10 @@ jQuery(function($) {
      * Activate item Rotation for given block.
      *
      * @param object itemsContainer
-     *   Items container block
+     *   Items container block.
      * @param object items
-     *   List of items
+     *   List of items.
      */
-
     function activateRotation(itemsContainer, items) {
       // Additional buttons to rotate items by click
       var prevItem = '<a href="#" class="prev_item">prev</a>',
@@ -193,13 +195,12 @@ jQuery(function($) {
     }
 
     /**
-     * Checks if mobile device is active
+     * Checks if mobile device is active.
      * @param  int width
-     *   Maximum mobile width
+     *   Maximum mobile width.
      * return boolean
-     *   Return status
+     *   Return status.
      */
-
     function checkIfMobile(width) {
       var mobileWidth = $(document).width() <= width - (window.innerWidth - $(document).width()),
         mobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -210,9 +211,8 @@ jQuery(function($) {
     }
 
     /**
-     * Execute listed features for mobile devices
+     * Execute listed features for mobile devices.
      */
-
     function runMobileFeatures() {
       // Collapse block if it's available
       $(blocksBeingCollapsed).each(function(i, block) {
