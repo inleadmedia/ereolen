@@ -187,13 +187,11 @@
     width: 100%;
   }
 
-  .display-book .right,
   #ting-search-result ul li.display-book .record {
     min-width: 128px;
     width: 70%;
   }
 
-  .display-book .left,
   #ting-search-result ul li.display-book .picture {
     margin: 0;
     min-width: 128px;
@@ -583,11 +581,6 @@
     width: 50%;
   }
 
-  .feed-and-compare-front .display-book .right {
-    float: right;
-    width: 60%;
-  }
-
   .pane-recall-list-cart,
   .pane-publizon-loans-myloans {
     width: 47%;
@@ -902,3 +895,22 @@
   .touch .ajax_anim.active {
     display: none;
   }
+
+@media screen and (max-width: 960px) {
+  .feed_and_compare_item {
+    width: 100%;
+  }
+
+  .pane-front .feed-and-compare-front .record,
+  .pane-ebog-author-portrait-0 .ebog-author-portrait .ebog-author-portrait-descr {
+    width: auto;
+    float: none;
+    overflow: hidden;
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .feed-and-compare-front .display-book .right {
+    width: 140px;
+  }
+}
