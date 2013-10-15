@@ -765,9 +765,9 @@
     height: auto;
   }
 
-  .ebog-author-portrait {
+  .ebog-author-portrait-descr {
     max-height: 300px;
-    overflow-y: auto;
+    overflow-y: hidden;
   }
 }
 
@@ -802,9 +802,7 @@
 
 .ajax-loader {
   margin-left: -110px;
-  }  
 }
-
 
 /* Rotate blocks
   ----------------------------------------------------------------------------------------------------*/
