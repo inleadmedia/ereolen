@@ -40,6 +40,32 @@ jQuery(function($) {
     ];
 
     /**
+     * Carousel tabs equal height.
+     */
+    function carouselTabsHeight() {
+      var highestTab = 0,
+        carousel = $('.carousel-tabs');
+
+      // Reset previous height
+      carousel.find('li a').height('auto');
+
+      // Find highest
+      carousel.find('li a').each(function() {
+        var tab = $(this);
+
+        if (tab.height() > highestTab) {
+          highestTab = tab.height();
+        }
+      });
+      carousel.find('li a').height(highestTab);
+    }
+
+    // Make Carousel tabs same height.
+    if ($('.carousel-tabs').length !== 0) {
+      carouselTabsHeight();
+    }
+
+    /**
      * Make block collapsible and expandable
      * @param  object blockSelector
      *   jQuery selector for block which will be collapsed
@@ -305,6 +331,9 @@ jQuery(function($) {
       else {
         revertMobileFeatures();
       }
+
+      // Check for carousel tabs height changes on window resize
+      carouselTabsHeight();
     });
 
     // Toggle block state on click.
