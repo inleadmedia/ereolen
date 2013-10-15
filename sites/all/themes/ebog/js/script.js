@@ -14,28 +14,12 @@ jQuery(function($) {
     // Rotate listed blocks in mobile view
     var blocksBeingRotated = [
       [
-        '.feed-and-compare-front', // Items container
-        '.feed_and_compare_item' // Items
+        '.front .feed-and-compare-front', // Items container
+        '.feed_and_compare_item'          // Items
       ],
       [
-        '.view-latest-news',
+        '.front .view-latest-news',
         '.views-row'
-      ],
-      [
-        '#ting-search-result > ul',
-        'li.ting-collection'
-      ],
-      [
-        '.publizon-loans-list',
-        '.display-book'
-      ],
-      [
-        '.publizon-products-list',
-        '.display-book'
-      ],
-      [
-        '.view-faq',
-        '.item-list'
       ]
     ];
 
@@ -137,61 +121,64 @@ jQuery(function($) {
      *   List of items.
      */
     function activateRotation(itemsContainer, items) {
-      // Additional buttons to rotate items by click
-      var prevItem = '<a href="#" class="prev_item">prev</a>',
-        nextItem = '<a href="#" class="next_item">next</a>',
+      // Make changes only if more than 1 item in itemContainer
+      if (items.length > 1) {
+        // Additional buttons to rotate items by click
+        var prevItem = '<a href="#" class="prev_item">prev</a>',
+          nextItem = '<a href="#" class="next_item">next</a>',
 
-        // Last item
-        lastItem = items.length - 1;
+          // Last item
+          lastItem = items.length - 1;
 
-      // Classes for CSS purposes
-      itemsContainer.addClass('rotated_container');
-      items.addClass('rotated_item');
+        // Classes for CSS purposes
+        itemsContainer.addClass('rotated_container');
+        items.addClass('rotated_item');
 
-      // Append buttons to items container
-      if (itemsContainer.find('.prev_item:first').length === 0) {
-        $(prevItem).appendTo(itemsContainer);
-        $(nextItem).appendTo(itemsContainer);
-      }
-
-      // Show buttons if they were hidden on resize
-      itemsContainer.find('.prev_item:first').show();
-      itemsContainer.find('.next_item:first').show();
-
-      // Show only first item in items container
-      items.each(function(i, elem) {
-        if (i !== 0) {
-          $(elem).hide();
+        // Append buttons to items container
+        if (itemsContainer.find('.prev_item:first').length === 0) {
+          $(prevItem).appendTo(itemsContainer);
+          $(nextItem).appendTo(itemsContainer);
         }
-        else {
-          $(elem).addClass('visible_item');
-        }
-      });
 
-      // Change to next item on click
-      itemsContainer.find('.next_item:first').click(function(e) {
-        e.preventDefault();
-        goToNextItem(items, lastItem);
-      });
+        // Show buttons if they were hidden on resize
+        itemsContainer.find('.prev_item:first').show();
+        itemsContainer.find('.next_item:first').show();
 
-      // Change to previous item on click
-      itemsContainer.find('.prev_item:first').click(function(e) {
-        e.preventDefault();
-        goToPrevItem(items, lastItem);
-      });
+        // Show only first item in items container
+        items.each(function (i, elem) {
+          if (i !== 0) {
+            $(elem).hide();
+          }
+          else {
+            $(elem).addClass('visible_item');
+          }
+        });
 
-      // Change item on swipe
-      itemsContainer.touchwipe({
-        wipeRight: function() {
+        // Change to next item on click
+        itemsContainer.find('.next_item:first').click(function(e) {
+          e.preventDefault();
           goToNextItem(items, lastItem);
-        },
-        wipeLeft: function() {
+        });
+
+        // Change to previous item on click
+        itemsContainer.find('.prev_item:first').click(function(e) {
+          e.preventDefault();
           goToPrevItem(items, lastItem);
-        },
-        min_move_x: 20,
-        min_move_y: 20,
-        preventDefaultEvents: true
-      });
+        });
+
+        // Change item on swipe
+        itemsContainer.touchwipe({
+          wipeRight: function() {
+            goToNextItem(items, lastItem);
+          },
+          wipeLeft: function() {
+            goToPrevItem(items, lastItem);
+          },
+          min_move_x: 20,
+          min_move_y: 20,
+          preventDefaultEvents: true
+        });
+      }
     }
 
     /**
