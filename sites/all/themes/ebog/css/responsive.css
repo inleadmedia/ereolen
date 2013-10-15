@@ -756,6 +756,13 @@
     max-height: 300px;
     overflow-y: hidden;
   }
+
+  #page .visible_item {
+    border-bottom: none;
+    padding: 0;
+    width: 100%;
+    display: block;
+  }
 }
 
 @media screen and (min-width: 480px) and (max-width: 540px) {
@@ -789,6 +796,7 @@
 
 .ajax-loader {
   margin-left: -110px;
+  }
 }
 
 /* Rotate blocks
@@ -814,12 +822,12 @@
 }
 
 .rotated_container .prev_item {
-  left: -18px;
+  left: -20px;
 }
 
 .rotated_container .next_item {
   background-position: 108px 0;
-  right: -18px;
+  right: -20px;
 }
 
 /* Rating
