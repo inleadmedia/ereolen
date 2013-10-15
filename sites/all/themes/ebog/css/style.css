@@ -1204,3 +1204,16 @@ ul.nice-menu-down li.over a {
   overflow: hidden;
   width: 100%;
 }
+
+.collapsible-title {
+  cursor: pointer;
+  background: url(../img/expanded.png) 100% 50% no-repeat;
+}
+
+.collapsible-title.expanded {
+  background: url(../img/collapsed.png) 100% 50% no-repeat;
+}
+
+#page .container-16 .collapsible-title {
+  margin: 5px 0;
+}
