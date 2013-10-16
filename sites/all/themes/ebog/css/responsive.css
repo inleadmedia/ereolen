@@ -824,62 +824,69 @@
 
 /* Rating
   ----------------------------------------------------------------------------------------------------*/
-  .touch .addRatingContainer .show_rating,
-  .touch .addRatingContainer .userRate .rating {
-    cursor: pointer;
-    height: 16px;
-    text-indent: -9999px;
-    width: 16px;
-  }
+.touch .addRatingContainer .show_rating,
+.touch .addRatingContainer .show_rating + div .rating {
+  cursor: pointer;
+  height: 16px;
+  text-indent: -9999px;
+  width: 16px;
+}
 
-  .touch .addRatingContainer .show_rating,
-  .touch .addRatingContainer .userRate .rating.star-off,
-  .touch .addRatingContainer .userRate .rating {
-    background: url(../img/star-inactive.png) 0 0 no-repeat;
-  }
+.touch .addRatingContainer .show_rating,
+.touch .addRatingContainer .show_rating + div .rating.star-off,
+.touch .addRatingContainer .show_rating + div .rating {
+  background: url(../img/star-inactive.png) 0 0 no-repeat;
+}
 
-  .touch .addRatingContainer .userRate .rating.star-black {
-    background: url(../img/star-active.png) 0 0 no-repeat;
-  }
+.touch .addRatingContainer .show_rating + div .rating.star-black {
+  background: url(../img/star-active.png) 0 0 no-repeat;
+}
 
-  .touch .show_rating {
-    display: block;
-    float: left;
-  }
+.touch .show_rating {
+  display: block;
+  float: left;
+}
 
-  .touch .userRate {
-    display: none;
-    margin-left: 10px;
-  }
+.touch .show_rating + div {
+  display: none;
+  padding-left: 10px;
+  overflow: hidden;
+}
 
-  .touch .userRate.active {
-    display: block;
-    float: left;
-  }
+.touch #ting-object .ratingsContainer {
+  overflow: hidden;
+}
 
-  .touch .userRate .rating {
-    margin-right: 3px;
-  }
+.touch .show_rating + div.active {
+  display: block;
+  float: left;
+}
 
-  .touch .addRatingContainer {
-    float: none;
-    margin: 5px 0;
-  }
+.touch .show_rating + div .rating {
+  margin-right: 3px;
+}
 
-  .touch .ratingsContainer,
-  .touch .addRatingContainer {
-    overflow: hidden;
-  }
+.touch .addRatingContainer {
+  float: none;
+  margin: 5px 0;
+}
 
-  .voxb,
-  .touch .voxb {
-    margin-bottom: 10px;
-  }
+.touch .ratingsContainer,
+.touch .addRatingContainer {
+  overflow: hidden;
+}
 
-  .touch .ajax_anim,
-  .touch .ajax_anim.active {
-    display: none;
-  }
+.voxb,
+.touch .voxb {
+  padding-bottom: 10px;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+
+.touch .ajax_anim,
+.touch .ajax_anim.active {
+  display: none;
+}
 
 @media screen and (max-width: 960px) {
   .feed_and_compare_item {
