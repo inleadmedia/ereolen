@@ -278,7 +278,7 @@ jQuery(function($) {
       // Toggle rating start on button click.
       showRatingBtn.live("click", function(e) {
         e.preventDefault();
-        $(this).siblings('.userRate').toggleClass('active');
+        $(this).next('div').toggleClass('active');
       });
 
       // Blink selected rating on tap.
