@@ -1038,6 +1038,10 @@ ul.nice-menu-down ul {
   padding-left: 65px;
 }
 
+ul.nice-menu-down ul {
+  margin: 1px;
+}
+
 ul.nice-menu-down {
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;

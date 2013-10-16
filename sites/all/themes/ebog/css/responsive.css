@@ -654,7 +654,7 @@
 
   ul.nice-menu-down li a,
   ul.nice-menu-down li.menuparent a {
-    font-size: 90%;
+    font-size: 12px;
   }
 
   #footer #footer-first {
@@ -733,7 +733,8 @@
     margin-right: 0;
     padding-bottom: 5px;
     padding-left: 10px;
-    padding-top: 20px;
+    padding-top: 25px;
+    margin: 0;
   }
 
   ul.nice-menu-down ul {
@@ -823,8 +824,37 @@
   right: -20px;
 }
 
-/* Rating
+/* Mobile Menu
   ----------------------------------------------------------------------------------------------------*/
+#page .mobile-menu {
+  margin-top: 30px;
+}
+
+#page .mobile-menu > li {
+  position: static;
+}
+
+#page .mobile-menu > li a {
+  position: relative;
+  z-index: 100;
+}
+
+#page .mobile-menu ul {
+  margin: 0;
+  width: 100%;
+  border-top: 1px solid #fff;
+  -webkit-border-radius: 0 0 5px 5px;
+     -moz-border-radius: 0 0 5px 5px;
+          border-radius: 0 0 5px 5px;
+  overflow: hidden !important;
+}
+
+#page .mobile-menu ul li a {
+  text-decoration: none;
+}
+
+/* Rating
+----------------------------------------------------------------------------------------------------*/
 .touch .addRatingContainer .show_rating,
 .touch .addRatingContainer .show_rating + div .rating {
   cursor: pointer;

@@ -24,6 +24,17 @@ jQuery(function($) {
     ];
 
     /**
+     * Submenu top position.
+     * Needed if menu will be more than 1 row.
+     */
+    function subMenuPosition() {
+      var menu = $('.block-nice_menus .nice-menu');
+      var subMenu = menu.find('ul');
+
+      subMenu.css('top', menu.innerHeight());
+    }
+
+    /**
      * Carousel tabs equal height.
      */
     function carouselTabsHeight() {
@@ -51,6 +62,9 @@ jQuery(function($) {
 
     // Make Carousel tabs same height.
     carouselTabsHeight();
+
+    // SubMenu top position initialisation
+    subMenuPosition();
 
     /**
      * Make block collapsible and expandable.
@@ -214,6 +228,9 @@ jQuery(function($) {
           activateRotation($(block[0]), $(block[0]).find(block[1]));
         }
       });
+
+      // Add menu class if mobile
+      $('.block-nice_menus .nice-menu').addClass('mobile-menu');
     }
 
     /**
@@ -244,6 +261,9 @@ jQuery(function($) {
           itemsContainer.find('.next_item').hide();
         }
       });
+
+      // Revert mobile menu
+      $('.block-nice_menus .nice-menu').removeClass('mobile-menu');
     }
 
     /**
@@ -321,6 +341,9 @@ jQuery(function($) {
 
       // Check for carousel tabs height changes on window resize
       carouselTabsHeight();
+
+      // Check submenu top position on window resize
+      subMenuPosition();
     });
 
     // Toggle block state on click.
