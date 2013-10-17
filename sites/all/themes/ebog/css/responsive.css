@@ -740,9 +740,14 @@
 
   #page .visible_item {
     border-bottom: none;
+    margin: 0 auto;
     padding: 0;
-    width: 100%;
+    width: 98%;
     display: block;
+  }
+
+  .feed_and_compare_item.visible_item {
+    display: inline-block !important;
   }
 
   .section-ting .pane-netsound-review-2 {
