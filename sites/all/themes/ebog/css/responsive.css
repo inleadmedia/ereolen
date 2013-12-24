@@ -8,8 +8,49 @@
     display: none;
   }
 
-  #ting-search-result ul li.display-book .record .right {
+  #ting-search-result ul li.display-book {
+    position: relative;
+  }
+
+  #ting-search-result ul li.display-book *,
+  #ting-search-result ul li.display-book *:before,
+  #ting-search-result ul li.display-book *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  #ting-search-result ul li.display-book .picture {
+    width: 70px;
+    float: left;
+  }
+
+  #ting-search-result ul li.display-book .picture {
+    max-height: 104px;
+  }
+
+  #ting-search-result ul li.display-book .record {
     width: 100%;
+    padding-left: 80px;
+    float: none;
+  }
+
+  #ting-search-result .meta {
+    clear: none;
+  }
+
+  #ting-search-result ul li.display-book .record .right,
+  #ting-search-result ul li.display-book .record .left {
+    width: auto;
+    margin: 0;
+  }
+
+  #ting-search-result ul li.display-book .record .left {
+    float: left;
+  }
+
+  #ting-search-result ul li.display-book .record .right {
+    float: right;
   }
 
   body,
@@ -171,17 +212,6 @@
     padding: 10px 0;
   }
 
-  .display-book,
-  #ting-search-result ul li.display-book .record .left {
-    width: 100%;
-  }
-
-  #ting-search-result ul li.display-book .picture {
-    margin: 0;
-    min-width: 128px;
-    width: 30%;
-  }
-
   .panel-panel.panel-col .panel-separator,
   .panel-pane.pane-block.pane-netsound-review-1,
   .panel-pane.pane-block.pane-netsound-review-2,
@@ -333,11 +363,6 @@
 
   .tab-navigation-main-inner #ting-object #main {
     margin-bottom: 0;
-  }
-
-  #ting-search-result ul li.display-book .record {
-    width: 100%;
-    margin-top: 10px;
   }
 }
 
@@ -564,6 +589,36 @@
 
 
 @media screen and (max-width: 960px) {
+
+  .display-book .left,
+  .display-book .right,
+  .display-book .picture,
+  .display-book .title,
+  .display-book .author,
+  .display-book .extras,
+  .pane-latest-news
+  .view-latest-news .views-field-field-image-fid,
+  .pane-publizon-loans-myloans .loanperiod {
+    clear: none;
+    float: none;
+  }
+
+  .display-book {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .display-book .left {
+    float: left;
+    width: auto;
+  }
+
+  .display-book .right {
+    float: none;
+    width: auto;
+  }
+
+
   #user-login,
   .voxb textarea,
   #user-login .form-item input,
