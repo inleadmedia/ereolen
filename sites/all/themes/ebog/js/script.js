@@ -2,13 +2,38 @@ jQuery(function($) {
   "use strict";
   $(document).ready(function() {
 
+    // Add title to carousel. It will be expanded by click on it.
+    $('.block-ting_search_carousel').prepend('<h2 class="pane-title">' + Drupal.t("Inspiration") + '</h2>');
+
+    // Adttitional styling class for video block title
+    $('.block-ebog_embed_video > h2').addClass('pane-title');
+
+    /**
+     * Order of blocks for mobile.
+     */
+    function orderOfBlocks() {
+      $('.block-nice_menus').insertBefore('#search-box');
+      $('.block-fb_social').siblings('.block-block').insertAfter('.block-fb_social');
+
+      // Front page order.
+      if ($('.front').length !== 0) {
+        $('.block-nice_menus').insertBefore('#search-box');
+        $('.pane-latest-news').insertBefore('.pane-front');
+        $('.block-ting_search_carousel').insertAfter('.pane-latest-news');
+        $('.block-ebog_embed_video').insertAfter('.pane-ebog-author-portrait-0');
+      }
+    }
+
     // Collapse listed blocks in mobile view
     var blocksBeingCollapsed = [
       '.pane-latest-news .pane-content',
       '.block-publizon_user .content',
       '.block-ebog_author_portrait .content',
       '.pane-embedvideo .pane-content',
-      '.pane-front .pane-content'
+      '.pane-front .pane-content',
+      '.block-ebog_embed_video .content',
+      '.pane-ebog-author-portrait-0 .pane-content',
+      '.block-ting_search_carousel .content'
     ];
 
     // Rotate listed blocks in mobile view
@@ -193,6 +218,12 @@ jQuery(function($) {
           preventDefaultEvents: true
         });
       }
+    }
+
+    // Reorder elements on width = 540px.
+    if ($(document).width() <= 540 - (window.innerWidth - $(document).width())) {
+      // Change page blocks order
+      orderOfBlocks();
     }
 
     /**
