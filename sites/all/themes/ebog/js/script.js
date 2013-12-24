@@ -14,13 +14,13 @@ jQuery(function($) {
     // Rotate listed blocks in mobile view
     var blocksBeingRotated = [
       [
-        '.feed-and-compare-front', // Items container
-        '.feed_and_compare_item' // Items
-      ],
-      [
-        '.view-latest-news',
-        '.views-row'
+        '.view-latest-news', // Items container
+        '.views-row' // Items
       ]
+      // [
+      //   '.another items container',
+      //   '.another item'
+      // ],
     ];
 
     /**

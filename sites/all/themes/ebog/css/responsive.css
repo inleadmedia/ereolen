@@ -670,6 +670,15 @@
     background: none;
   }
 
+  .feed_and_compare_item {
+    display: none;
+  }
+
+  .feed_and_compare_item:first-of-type {
+    display: block;
+    border-bottom: none;
+  }
+
   #site-menu {
     border-top: 2px solid #DBDDDA;
     height: 32px;
