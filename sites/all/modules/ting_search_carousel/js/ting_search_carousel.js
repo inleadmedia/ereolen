@@ -56,7 +56,7 @@
 
   function carousel_activate() {
     carousel.elastislide({
-      imageW : 120,
+      imageW : 104,
       minItems : 2,
       margin : 10,
       onClick : function(item) {
@@ -114,6 +114,11 @@
       var current = $(this);
       current.parent().find('li').removeClass('active');
       current.addClass('active');
+
+      // Put clicked item at first position
+      if ($(document).width() <= 480 - (window.innerWidth - $(document).width())) {
+        current.insertBefore('.carousel-tabs li:first');
+      }
 
       // Remove current content and show spinner.
       $('.carousel-inner .carousel-runner').html('');
