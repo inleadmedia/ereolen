@@ -635,6 +635,10 @@
   #site-menu .block-menu {
     float: right;
   }
+
+  #header-regions {
+    height: auto;
+  }
 }
 
 @media screen and (max-width: 540px) {

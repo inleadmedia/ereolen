@@ -2,9 +2,6 @@ jQuery(function($) {
   "use strict";
   $(document).ready(function() {
 
-    // Add title to carousel. It will be expanded by click on it.
-    $('.block-ting_search_carousel').prepend('<h2 class="pane-title">' + Drupal.t("Inspiration") + '</h2>');
-
     // Adttitional styling class for video block title
     $('.block-ebog_embed_video > h2').addClass('pane-title');
 
@@ -224,6 +221,9 @@ jQuery(function($) {
     if ($(document).width() <= 540 - (window.innerWidth - $(document).width())) {
       // Change page blocks order
       orderOfBlocks();
+
+      // Add title to carousel. It will be expanded by click on it.
+      $('.block-ting_search_carousel').prepend('<h2 class="pane-title">' + Drupal.t("Inspiration") + '</h2>');
     }
 
     /**
