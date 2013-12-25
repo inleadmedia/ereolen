@@ -53,6 +53,10 @@
     float: right;
   }
 
+  .display-book .icons {
+    clear: none;
+  }
+
   body,
   #footer,
   #page {
@@ -617,6 +621,7 @@
   .display-book .right {
     float: none;
     width: auto;
+    padding-left: 83px;
   }
 
 
