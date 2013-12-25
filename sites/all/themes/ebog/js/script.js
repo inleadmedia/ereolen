@@ -221,9 +221,6 @@ jQuery(function($) {
     if ($(document).width() <= 540 - (window.innerWidth - $(document).width())) {
       // Change page blocks order
       orderOfBlocks();
-
-      // Add title to carousel. It will be expanded by click on it.
-      $('.block-ting_search_carousel').prepend('<h2 class="pane-title">' + Drupal.t("Inspiration") + '</h2>');
     }
 
     /**
@@ -246,6 +243,11 @@ jQuery(function($) {
      * Execute listed features for mobile devices.
      */
     function runMobileFeatures() {
+      // Add title to carousel. It will be expanded by click on it.
+      if ($('.block-ting_search_carousel .pane-title').length === 0) {
+        $('.block-ting_search_carousel').prepend('<h2 class="pane-title">' + Drupal.t("Inspiration") + '</h2>');
+      }
+
       // Collapse block if it's available
       $(blocksBeingCollapsed).each(function(i, block) {
         if ($(block).length !== 0) {
