@@ -718,6 +718,15 @@
     margin: 0 0 10px 0;
   }
 
+  .feed_and_compare_item {
+    display: none;
+  }
+
+  .feed_and_compare_item:first-of-type {
+    display: block;
+    border-bottom: none;
+  }
+
   #site-menu {
     border-top: 2px solid #DBDDDA;
     height: 32px;
@@ -899,7 +908,8 @@
   background: url(../img/star-inactive.png) 0 0 no-repeat;
 }
 
-.touch .addRatingContainer .show_rating + div .rating.star-black {
+.touch .addRatingContainer .show_rating + div .rating.star-black,
+.touch .addRatingContainer .show_rating + div .rating.star-on {
   background: url(../img/star-active.png) 0 0 no-repeat;
 }
 
