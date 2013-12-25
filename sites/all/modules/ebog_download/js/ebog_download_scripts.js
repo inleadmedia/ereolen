@@ -1,6 +1,6 @@
 (function ($) {
   $('.ebog-dlink').live('click', function() {
-    $('#ting-download-popup-info').dialog('close');
+    $('#ting-download-popup-info').dialog('close').remove();
   });
 
   var href = '';
@@ -45,8 +45,7 @@
           // Check if login dialog is open, if it is close it.
           var login_dialog = $('#ting-login-popup');
           if (login_dialog.length) {
-            $('#ting-login-popup').dialog('close');
-            $('#ting-login-popup').remove();
+            $('#ting-login-popup').dialog('close').remove();
           }
 
           // Remove ajax loader
@@ -57,7 +56,7 @@
           if (response.status == false) {
             popup_buttons = {};
             popup_buttons[translatable.close_label] = function() {
-              $('#ting-download-popup').dialog('close');
+              $('#ting-download-popup').dialog('close').remove();
             }
 
             $('<div id="ting-download-popup" title="' + response.title + '">' + response.content + '</div>').dialog({
@@ -136,7 +135,7 @@
             popup_buttons[translatable.cancel_label] = function() {
               // Close the form an remove it from the dom or close will not work
               // if displayed once more.
-              $('#ting-login-popup').dialog('close');
+              $('#ting-login-popup').dialog('close').remove();
               $('#ting-login-popup').remove();
             }
 
@@ -164,7 +163,6 @@
             // Close the form an remove it from the dom or close will not work
             // if displayed once more.
             $('#ting-download-popup').dialog('close');
-            $('#ting-download-popup').remove();
           }
 
 
@@ -189,7 +187,7 @@
           success : function(response) {
             button.css('visibility', 'visible');
             button.parent().find('.ajax-loader').remove();
-            $('#ting-download-popup').dialog('close');
+            $('#ting-download-popup').dialog('close').remove();
             $('#ting-download-popup-info').remove();
 
             var options = {};
@@ -215,7 +213,7 @@
                   lookup_retailers(function(response) {
                     button.css('visibility', 'visible');
                     button.parent().find('.ajax-loader').remove();
-                    $('#ting-download-popup').dialog('close');
+                    $('#ting-download-popup').dialog('close').remove();
                     $('#ting-download-popup-info').remove();
 
                     show_retailers(response);
@@ -224,7 +222,7 @@
               }
 
               popup_buttons[translatable.close_label] = function() {
-                $('#ting-download-popup-info').dialog('close');
+                $('#ting-download-popup-info').dialog('close').remove();
               }
 
               options = {
@@ -253,7 +251,7 @@
 
         popup_buttons = {};
         popup_buttons[translatable.ok_label] = function() {
-          $('#ting-download-popup-error').dialog('close');
+          $('#ting-download-popup-error').dialog('close').remove();
         }
 
         $('<div id="ting-download-popup-error" title="' + Drupal.t('Error') + '"><p>' + Drupal.t('Check all checkboxes') + '</p></div>').dialog({
@@ -310,7 +308,7 @@
       content.find('#ting-object').after(resellers_markup);
 
       buttons[translatable.close_label] = function() {
-        $('#ting-download-popup-resellers').dialog('close');
+        $('#ting-download-popup-resellers').dialog('close').remove();
       }
 
       var popup = $('<div id="ting-download-popup-resellers" title="' + Drupal.t('Prices') + '">' + content.html() + '</div>');
@@ -323,7 +321,7 @@
     }
 
     $('.item-reseller .buy button').live('click', function() {
-      $('#ting-download-popup-resellers').dialog('close');
+      $('#ting-download-popup-resellers').dialog('close').remove();
     });
   });
 })(jQuery);
