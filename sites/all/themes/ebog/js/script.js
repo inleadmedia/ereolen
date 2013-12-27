@@ -11,6 +11,7 @@ jQuery(function($) {
     function orderOfBlocks() {
       $('.block-nice_menus').insertBefore('#search-box');
       $('.block-fb_social').siblings('.block-block').insertAfter('.block-fb_social');
+      $('.block-ebog_banner').appendTo('#sidebar-first');
 
       // Front page order.
       if ($('.front').length !== 0) {
