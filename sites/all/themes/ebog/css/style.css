@@ -1220,3 +1220,11 @@ ul.nice-menu-down li.over a {
 #page .container-16 .collapsible-title {
   margin: 5px 0;
 }
+
+.rate-msg {
+  clear: both;
+  font-style: italic;
+  font-weight: bold;
+  padding-top: 5px;
+  font-size: 9px;
+}

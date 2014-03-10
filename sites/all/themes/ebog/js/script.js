@@ -241,9 +241,42 @@ jQuery(function($) {
     }
 
     /**
+     * Rate message
+     */
+    function rateMsg() {
+      if ($('.rate-msg').length === 0) {
+        $('.ratingsContainer').append('<div class="rate-msg">' + Drupal.t('Log in and click on the stars to rate the book') + '</div>');
+      }
+    }
+
+
+    /**
+     * Show 0 rating message
+     */
+    function rateCount() {
+      if ($('.ratingCountSpan').length === 0) {
+        $('.ratingsContainer').append('<span class="ratingCountSpan">(<span class="ratingVotesNumber">0 </span>' + Drupal.t('Vurderinger') + ')</span>');
+      }
+    }
+
+
+    /**
      * Execute listed features for mobile devices.
      */
     function runMobileFeatures() {
+      // Rating options
+
+      if ($('.not-logged-in').length !== 0) {
+
+        // Rating call to action message
+        rateMsg();
+
+      }
+
+      // Rating Counter
+      rateCount();
+
+
       // Add title to carousel. It will be expanded by click on it.
       if ($('.block-ting_search_carousel .pane-title').length === 0) {
         $('.block-ting_search_carousel').prepend('<h2 class="pane-title">' + Drupal.t("Inspiration") + '</h2>');
@@ -273,6 +306,14 @@ jQuery(function($) {
     function runTouchDeviceFeatures() {
       // Change rating
       enableTouchRatingOptions();
+
+      // Rating Counter
+      rateCount();
+
+      if ($('.not-logged-in').length !== 0) {
+        // Rating call to action message
+        rateMsg();
+      }
     }
 
     /**
@@ -323,18 +364,6 @@ jQuery(function($) {
      * Change rating for touch device.
      */
     function enableTouchRatingOptions() {
-      var buttonContainer = '<a href="#" class="show_rating">show rating</a>';
-
-      $(buttonContainer).prependTo($('.addRatingContainer'));
-
-      var showRatingBtn = $('.show_rating');
-
-      // Toggle rating start on button click.
-      showRatingBtn.live("click", function(e) {
-        e.preventDefault();
-        $(this).next('div').toggleClass('active');
-      });
-
       // Blink selected rating on tap.
       $('.userRate .rating').click(function() {
         var speed = 700;
@@ -359,6 +388,17 @@ jQuery(function($) {
     }
     else {
       revertMobileFeatures();
+    }
+
+    // Show login message for anonymous users
+    if ($('.touch').length !== 0 || (isMobile === true)) {
+      if ($('.not-logged-in').length !== 0) {
+
+        $('.addRatingContainer .rating').click(function (e) {
+          e.preventDefault();
+          alert(Drupal.t("Sign in to rate book"));
+        });
+      }
     }
 
     // Check for changes on resize.
