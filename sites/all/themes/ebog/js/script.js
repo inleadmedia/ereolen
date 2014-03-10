@@ -255,7 +255,7 @@ jQuery(function($) {
      */
     function rateCount() {
       if ($('.ratingCountSpan').length === 0) {
-        $('.ratingsContainer').append('<span class="ratingCountSpan">(<span class="ratingVotesNumber">0</span> Vurderinger)</span>');
+        $('.ratingsContainer').append('<span class="ratingCountSpan">(<span class="ratingVotesNumber">0 </span>' + Drupal.t('Vurderinger') + ')</span>');
       }
     }
 
