@@ -537,6 +537,10 @@ voxb h3 {
   width: 130px;
 }
 
+.feed_and_compare_item .right {
+  padding-left: 0;
+}
+
 .display-book .right {
   width: 200px;
   clear: none;
