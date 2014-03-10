@@ -958,33 +958,24 @@
 
 /* Rating
   ----------------------------------------------------------------------------------------------------*/
-.touch .addRatingContainer .show_rating,
-.touch .addRatingContainer .show_rating + div .rating {
+.touch .addRatingContainer > div .rating {
   cursor: pointer;
   height: 16px;
   text-indent: -9999px;
   width: 16px;
 }
 
-.touch .addRatingContainer .show_rating,
-.touch .addRatingContainer .show_rating + div .rating.star-off,
-.touch .addRatingContainer .show_rating + div .rating {
+.touch .addRatingContainer > div .rating.star-off,
+.touch .addRatingContainer > div .rating {
   background: url(../img/star-inactive.png) 0 0 no-repeat;
 }
 
-.touch .addRatingContainer .show_rating + div .rating.star-black,
-.touch .addRatingContainer .show_rating + div .rating.star-on {
+.touch .addRatingContainer > div .rating.star-black,
+.touch .addRatingContainer > div .rating.star-on {
   background: url(../img/star-active.png) 0 0 no-repeat;
 }
 
-.touch .show_rating {
-  display: block;
-  float: left;
-}
-
-.touch .show_rating + div {
-  display: none;
-  padding-left: 10px;
+.touch .addRatingContainer > div {
   overflow: hidden;
 }
 
@@ -992,12 +983,12 @@
   overflow: hidden;
 }
 
-.touch .show_rating + div.active {
+.touch .addRatingContainer > div.active {
   display: block;
   float: left;
 }
 
-.touch .show_rating + div .rating {
+.touch .addRatingContainer > div .rating {
   margin-right: 3px;
 }
 
