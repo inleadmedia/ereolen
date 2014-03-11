@@ -537,7 +537,7 @@ voxb h3 {
   width: 130px;
 }
 
-.feed_and_compare_item .right {
+#page .feed_and_compare_item .right {
   padding-left: 0;
 }
 
