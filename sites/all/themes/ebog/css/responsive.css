@@ -874,6 +874,11 @@
     width: 100%;
     margin-bottom: 10px;
   }
+
+  .not-front .block-views,
+  .not-front .block-ebog_embed_video {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 480px) and (max-width: 540px) {
